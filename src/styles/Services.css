@@ -130,13 +130,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
+  opacity: 1; /* Always visible for mobile users */
   transition: opacity 0.3s ease;
   border-radius: var(--border-radius-md);
 }
 
-.service-image:hover .service-overlay {
-  opacity: 1;
+/* On desktop, hide by default and show on hover */
+@media (hover: hover) and (pointer: fine) {
+  .service-overlay {
+    opacity: 0;
+  }
+  
+  .service-image:hover .service-overlay {
+    opacity: 1;
+  }
 }
 
 .learn-more-btn {
