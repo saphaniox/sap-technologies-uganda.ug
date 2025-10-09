@@ -1013,7 +1013,8 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                     <option value="">All Status</option>
                     <option value="pending">Pending</option>
                     <option value="read">Read</option>
-                    <option value="responded">Responded</option>
+                    <option value="replied">Replied</option>
+                    <option value="archived">Archived</option>
                   </select>
                 </div>
                 <button onClick={() => fetchContacts(1)} className="btn-refresh">
@@ -1060,7 +1061,8 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                           >
                             <option value="pending">Pending</option>
                             <option value="read">Read</option>
-                            <option value="responded">Responded</option>
+                            <option value="replied">Replied</option>
+                            <option value="archived">Archived</option>
                           </select>
                           <button
                             onClick={() => handleContactDelete(contact._id, contact.name)}
