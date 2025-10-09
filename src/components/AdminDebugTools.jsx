@@ -267,7 +267,7 @@ Email: ${authStatus?.user?.email || 'None'}
             // Test multiple endpoints to verify database connectivity
             const tests = await Promise.allSettled([
                 apiService.getProducts(),
-                apiService.getServices(),
+                apiService.getAllServices(),
                 apiService.getProjects()
             ]);
             
@@ -305,7 +305,7 @@ Overall Status: ${tests.every(t => t.status === 'fulfilled') ? '✅ All connecti
             // Test multiple API calls
             const [products, services, projects] = await Promise.all([
                 apiService.getProducts(),
-                apiService.getServices(),
+                apiService.getAllServices(),
                 apiService.getProjects()
             ]);
             
@@ -348,7 +348,7 @@ Performance: ${totalTime < 1000 ? '✅ Excellent' : totalTime < 2000 ? '⚠️ G
                 authStatus: await apiService.checkAuthStatus(),
                 apiTests: {
                     products: await apiService.getProducts().catch(e => ({ error: e.message })),
-                    services: await apiService.getServices().catch(e => ({ error: e.message })),
+                    services: await apiService.getAllServices().catch(e => ({ error: e.message })),
                     projects: await apiService.getProjects().catch(e => ({ error: e.message }))
                 }
             };
