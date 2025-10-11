@@ -1840,11 +1840,14 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                             <td>
                               <div className="product-image-cell">
                                 <img 
-                                  src={product.image ? `${apiService.baseURL}${product.image}` : "/images/default-product.jpg"}
+                                  src={product.image ? `${apiService.baseURL}${product.image}` : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f3f4f6' width='400' height='300'/%3E%3Ctext fill='%236b7280' font-family='Arial' font-size='20' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3ENo Image%3C/text%3E%3C/svg%3E"}
                                   alt={product.name}
                                   className="table-product-image"
                                   onError={(e) => {
-                                    e.target.src = "/images/default-product.jpg";
+                                    if (!e.target.dataset.errorHandled) {
+                                      e.target.dataset.errorHandled = 'true';
+                                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23ef4444' width='400' height='300'/%3E%3Ctext fill='%23ffffff' font-family='Arial' font-size='18' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImage Error%3C/text%3E%3C/svg%3E";
+                                    }
                                   }}
                                 />
                               </div>
