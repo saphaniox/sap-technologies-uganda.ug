@@ -528,7 +528,7 @@ const Awards = ({ onClose }) => {
                 <div key={nomination._id} className="top-nominee-card">
                   <div className="rank-badge">{index + 1}</div>
                   <div className="nominee-photo">
-                    <img src={nomination.nomineePhoto} alt={nomination.nomineeName} />
+                    <img src={nomination.nomineePhoto ? `${apiService.baseURL}${nomination.nomineePhoto}` : '/images/default-avatar.png'} alt={nomination.nomineeName} />
                   </div>
                   <div className="nominee-info">
                     <h3>{nomination.nomineeName}</h3>
@@ -703,7 +703,7 @@ const NominationCard = ({ nomination, onVote }) => {
       className="nomination-card"
     >
       <div className="nominee-photo">
-        <img src={nomination.nomineePhoto} alt={nomination.nomineeName} />
+        <img src={nomination.nomineePhoto ? `${apiService.baseURL}${nomination.nomineePhoto}` : '/images/default-avatar.png'} alt={nomination.nomineeName} />
         <div className="country-badge">{nomination.nomineeCountry}</div>
       </div>
       
