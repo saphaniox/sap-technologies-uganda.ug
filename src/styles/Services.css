@@ -213,6 +213,16 @@
   .service p {
     font-size: var(--text-sm);
   }
+
+  /* Remove blue overlay on mobile for clear image visibility */
+  .service-overlay {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .learn-more-btn {
+    padding: 10px 24px;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 320px) {
@@ -245,6 +255,16 @@
   .service h3 {
     font-size: var(--text-base);
     margin-bottom: var(--space-2);
+  }
+
+  /* Extra clear images on very small screens */
+  .service-overlay {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .learn-more-btn {
+    padding: 8px 20px;
+    font-size: 13px;
   }
 
   .service p {
@@ -379,6 +399,16 @@
   .service-icon {
     font-size: 2rem;
     margin-bottom: 1rem;
+  }
+
+  /* Clear image visibility on mobile */
+  .service-overlay {
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .learn-more-btn {
+    padding: 10px 22px;
+    font-size: 14px;
   }
 }
 
