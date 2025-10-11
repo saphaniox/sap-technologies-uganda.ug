@@ -452,8 +452,25 @@ const Account = ({ onClose }) => {
               <div className="activity-list">
                 {userActivity.length > 0 ? (
                   userActivity.slice().reverse().map((activity, index) => (
-                    <div key={index} className="activity-item">
-                      <span className="activity-text">{activity}</span>
+                    <div key={activity._id || index} className="activity-item">
+                      <div className="activity-header">
+                        <span className="activity-action">{activity.action}</span>
+                        <span className="activity-timestamp">
+                          {new Date(activity.timestamp).toLocaleString()}
+                        </span>
+                      </div>
+                      {(activity.ipAddress || activity.userAgent) && (
+                        <div className="activity-details">
+                          {activity.ipAddress && (
+                            <span className="activity-ip">IP: {activity.ipAddress}</span>
+                          )}
+                          {activity.userAgent && (
+                            <span className="activity-browser" title={activity.userAgent}>
+                              {activity.userAgent.substring(0, 50)}...
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                   ))
                 ) : (

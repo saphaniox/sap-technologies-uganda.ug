@@ -410,11 +410,62 @@
   margin-bottom: 8px;
   border-radius: 8px;
   border-left: 4px solid #667eea;
+  transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .activity-item:last-child {
   border-bottom: none;
   margin-bottom: 0;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 15px;
+}
+
+.activity-action {
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.activity-timestamp {
+  color: #718096;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.activity-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #a0aec0;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.activity-ip {
+  font-family: 'Courier New', monospace;
+  color: #4a5568;
+  font-size: 0.75rem;
+}
+
+.activity-browser {
+  color: #718096;
+  font-size: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .activity-text {
@@ -666,4 +717,34 @@
   .info-display label {
     min-width: auto;
   }
+}
+/* Dark Mode Support for Activity Log */
+[data-theme="dark"] .activity-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-left-color: var(--primary-color);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .activity-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .activity-action {
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .activity-timestamp {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .activity-details {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .activity-ip {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .activity-browser {
+  color: rgba(255, 255, 255, 0.5);
 }
