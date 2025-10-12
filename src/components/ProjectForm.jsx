@@ -35,6 +35,7 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import { LoadingButton } from "../utils/alerts.jsx";
+import { getImageUrl } from "../utils/imageUrl";
 import "../styles/AdminForms.css";
 
 const ProjectForm = ({ project, onClose, onSave }) => {
@@ -96,9 +97,7 @@ const ProjectForm = ({ project, onClose, onSave }) => {
       });
       if (project.images && project.images.length > 0) {
         // Convert relative paths to full URLs for existing images
-        const imageUrls = project.images.map(img => 
-          img.startsWith("http") ? img : `${apiService.baseURL}${img}`
-        );
+        const imageUrls = project.images.map(img => getImageUrl(img));
         setImagePreviews(imageUrls);
       }
     }
