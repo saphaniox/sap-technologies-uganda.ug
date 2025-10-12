@@ -202,9 +202,15 @@ const ProjectForm = ({ project, onClose, onSave }) => {
         type: "success", 
         message: project ? "Project updated successfully!" : "Project created successfully!" 
       });
-      setTimeout(() => setAlert({ type: "", message: "" }), 3000);
-
-      onSave();
+      
+      // Wait 1.5 seconds to show success message, then close and refresh
+      setTimeout(() => {
+        setAlert({ type: "", message: "" });
+        onSave();
+        onClose(); // Close the form
+        window.location.reload(); // Refresh to show updated data and prevent duplicates
+      }, 1500);
+      
     } catch (error) {
       console.error("Project form error:", error);
       setAlert({ 

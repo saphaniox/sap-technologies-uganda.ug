@@ -228,8 +228,15 @@ const ServiceForm = ({ service, onClose, onSave }) => {
         await apiService.createService(submitData);
       }
       setAlert({ type: "success", message: service ? "Service updated successfully!" : "Service created successfully!" });
-      setTimeout(() => setAlert({ type: "", message: "" }), 3000);
-      onSave();
+      
+      // Wait 1.5 seconds to show success message, then close and refresh
+      setTimeout(() => {
+        setAlert({ type: "", message: "" });
+        onSave();
+        onClose(); // Close the form
+        window.location.reload(); // Refresh to show updated data and prevent duplicates
+      }, 1500);
+      
     } catch (error) {
       console.error("Service form error:", error);
       
