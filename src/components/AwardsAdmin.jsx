@@ -135,12 +135,39 @@ const AwardsAdmin = () => {
       console.log("✅ Stats response:", response);
       
       // Backend returns: { status: "success", data: { generalStats, categoryStats, topNominations } }
-      const statsData = response.data;
+      const statsData = response.data || {};
       console.log("📝 Stats data:", statsData);
-      setStats(statsData);
+      
+      // Ensure we have default values
+      setStats({
+        generalStats: statsData.generalStats || {
+          totalNominations: 0,
+          approvedNominations: 0,
+          pendingNominations: 0,
+          totalVotes: 0,
+          ugandanNominees: 0,
+          internationalNominees: 0
+        },
+        categoryStats: Array.isArray(statsData.categoryStats) ? statsData.categoryStats : [],
+        topNominations: Array.isArray(statsData.topNominations) ? statsData.topNominations : []
+      });
     } catch (error) {
       console.error("❌ Error loading stats:", error);
       console.error("❌ Error details:", error.response?.data || error.message);
+      
+      // Set empty stats to prevent undefined errors
+      setStats({
+        generalStats: {
+          totalNominations: 0,
+          approvedNominations: 0,
+          pendingNominations: 0,
+          totalVotes: 0,
+          ugandanNominees: 0,
+          internationalNominees: 0
+        },
+        categoryStats: [],
+        topNominations: []
+      });
       
       // Show error to user
       await Swal.fire({
