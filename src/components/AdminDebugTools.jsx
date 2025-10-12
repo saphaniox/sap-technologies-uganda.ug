@@ -268,7 +268,7 @@ Email: ${authStatus?.user?.email || 'None'}
             const tests = await Promise.allSettled([
                 apiService.getProducts(),
                 apiService.getAllServices(),
-                apiService.getProjects()
+                apiService.getAllProjects()
             ]);
             
             const results = tests.map((test, index) => {
@@ -306,7 +306,7 @@ Overall Status: ${tests.every(t => t.status === 'fulfilled') ? '✅ All connecti
             const [products, services, projects] = await Promise.all([
                 apiService.getProducts(),
                 apiService.getAllServices(),
-                apiService.getProjects()
+                apiService.getAllProjects()
             ]);
             
             const endTime = performance.now();
@@ -349,7 +349,7 @@ Performance: ${totalTime < 1000 ? '✅ Excellent' : totalTime < 2000 ? '⚠️ G
                 apiTests: {
                     products: await apiService.getProducts().catch(e => ({ error: e.message })),
                     services: await apiService.getAllServices().catch(e => ({ error: e.message })),
-                    projects: await apiService.getProjects().catch(e => ({ error: e.message }))
+                    projects: await apiService.getAllProjects().catch(e => ({ error: e.message }))
                 }
             };
             
