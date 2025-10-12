@@ -31,6 +31,7 @@
 
 import { useState, useEffect } from "react";
 import apiService from "../services/api";
+import { getImageUrl } from "../utils/imageUrl";
 import "../styles/PartnerForm.css";
 
 const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
@@ -61,7 +62,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
         isActive: partner.isActive !== undefined ? partner.isActive : true,
         order: partner.order || 0
       });
-      setLogoPreview(partner.logo ? `${apiService.baseURL}${partner.logo}` : "");
+      setLogoPreview(getImageUrl(partner.logo) || "");
     } else {
       setFormData({
         name: "",

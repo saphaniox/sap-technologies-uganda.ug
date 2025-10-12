@@ -15,6 +15,7 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import BackToTop from "./BackToTop";
+import { getImageUrl } from "../utils/imageUrl";
 import "../styles/Account.css";
 
 const Account = ({ onClose }) => {
@@ -303,7 +304,7 @@ const Account = ({ onClose }) => {
                 <div className="profile-pic-container">
                   {userDetails?.profilePic ? (
                     <img 
-                      src={`${apiService.baseURL}${userDetails.profilePic}`} 
+                      src={getImageUrl(userDetails.profilePic)} 
                       alt="Profile" 
                       className="profile-pic" 
                     />

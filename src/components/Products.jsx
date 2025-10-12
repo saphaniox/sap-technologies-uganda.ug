@@ -16,6 +16,7 @@ import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import ProductInquiryForm from "./ProductInquiryForm";
 import { LoadingOverlay } from "../utils/alerts.jsx";
+import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/Products.css";
 
 const Products = () => {
@@ -192,12 +193,12 @@ const Products = () => {
                             <div key={product._id} className="product-card">
                                 <div className="product-image">
                                     <img 
-                                        src={product.image ? `${apiService.baseURL}${product.image}` : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f3f4f6' width='400' height='300'/%3E%3Ctext fill='%236b7280' font-family='Arial' font-size='20' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3ENo Image Available%3C/text%3E%3C/svg%3E"} 
+                                        src={getImageUrl(product.image) || PLACEHOLDERS.product} 
                                         alt={product.name}
                                         onError={(e) => {
                                             if (!e.target.dataset.errorHandled) {
                                                 e.target.dataset.errorHandled = 'true';
-                                                e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f3f4f6' width='400' height='300'/%3E%3Ctext fill='%236b7280' font-family='Arial' font-size='20' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImage Not Found%3C/text%3E%3C/svg%3E";
+                                                e.target.src = PLACEHOLDERS.error;
                                             }
                                         }}
                                     />

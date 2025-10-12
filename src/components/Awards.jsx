@@ -15,6 +15,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { showAlert } from "../utils/alerts";
 import apiService from "../services/api";
+import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import Footer from "./Footer";
 import PrivacyPolicy from "./PrivacyPolicy";
 import TermsOfService from "./TermsOfService";
@@ -528,7 +529,7 @@ const Awards = ({ onClose }) => {
                 <div key={nomination._id} className="top-nominee-card">
                   <div className="rank-badge">{index + 1}</div>
                   <div className="nominee-photo">
-                    <img src={nomination.nomineePhoto ? `${apiService.baseURL}${nomination.nomineePhoto}` : '/images/default-avatar.png'} alt={nomination.nomineeName} />
+                    <img src={getImageUrl(nomination.nomineePhoto) || PLACEHOLDERS.avatar} alt={nomination.nomineeName} />
                   </div>
                   <div className="nominee-info">
                     <h3>{nomination.nomineeName}</h3>
@@ -703,7 +704,7 @@ const NominationCard = ({ nomination, onVote }) => {
       className="nomination-card"
     >
       <div className="nominee-photo">
-        <img src={nomination.nomineePhoto ? `${apiService.baseURL}${nomination.nomineePhoto}` : '/images/default-avatar.png'} alt={nomination.nomineeName} />
+        <img src={getImageUrl(nomination.nomineePhoto) || PLACEHOLDERS.avatar} alt={nomination.nomineeName} />
         <div className="country-badge">{nomination.nomineeCountry}</div>
       </div>
       

@@ -16,6 +16,7 @@ import PartnerForm from "./PartnerForm";
 import PartnerRequestForm from "./PartnerRequestForm";
 import ConfirmDialog from "./ConfirmDialog";
 import { apiService } from "../services/api";
+import { getImageUrl } from "../utils/imageUrl";
 import "../styles/Partners.css";
 
 const Partners = () => {
@@ -276,7 +277,7 @@ const Partners = () => {
               )}
               <div className="partner-logo">
                 <img 
-                  src={partner.logo?.startsWith('http') ? partner.logo : `${apiService.baseURL}${partner.logo}`} 
+                  src={getImageUrl(partner.logo)} 
                   alt={`${partner.name} logo`}
                   onError={(e) => {
                     e.target.style.display = "none";

@@ -18,6 +18,7 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import { LoadingOverlay, LoadingButton } from "../utils/alerts.jsx";
+import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import BackToTop from "./BackToTop";
 import ServiceForm from "./ServiceForm";
 import ProjectForm from "./ProjectForm";
@@ -1498,7 +1499,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                           <div className="partner-logo-cell">
                             {partner.logo ? (
                               <img 
-                                src={`${apiService.baseURL}${partner.logo}`} 
+                                src={getImageUrl(partner.logo)} 
                                 alt={`${partner.name} logo`}
                                 className="partner-logo-thumbnail"
                               />
@@ -1840,13 +1841,13 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                             <td>
                               <div className="product-image-cell">
                                 <img 
-                                  src={product.image ? `${apiService.baseURL}${product.image}` : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f3f4f6' width='400' height='300'/%3E%3Ctext fill='%236b7280' font-family='Arial' font-size='20' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3ENo Image%3C/text%3E%3C/svg%3E"}
+                                  src={getImageUrl(product.image) || PLACEHOLDERS.product}
                                   alt={product.name}
                                   className="table-product-image"
                                   onError={(e) => {
                                     if (!e.target.dataset.errorHandled) {
                                       e.target.dataset.errorHandled = 'true';
-                                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23ef4444' width='400' height='300'/%3E%3Ctext fill='%23ffffff' font-family='Arial' font-size='18' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImage Error%3C/text%3E%3C/svg%3E";
+                                      e.target.src = PLACEHOLDERS.error;
                                     }
                                   }}
                                 />

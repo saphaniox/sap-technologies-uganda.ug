@@ -35,6 +35,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import apiService from "../services/api";
 import { showAlert } from "../utils/alerts";
+import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import Swal from "sweetalert2";
 import "../styles/AwardsAdmin.css";
 
@@ -582,11 +583,11 @@ const AwardsAdmin = () => {
         <div className="nominee-info">
           {nomination.nomineePhoto && (
             <img 
-              src={`${apiService.baseURL}${nomination.nomineePhoto}`}
+              src={getImageUrl(nomination.nomineePhoto)}
               alt={nomination.nomineeName}
               className="nominee-photo"
               onError={(e) => {
-                e.target.src = "/default-avatar.png";
+                e.target.src = PLACEHOLDERS.avatar;
               }}
             />
           )}

@@ -40,6 +40,7 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import { showAlert } from "../utils/alerts.jsx";
+import { getImageUrl } from "../utils/imageUrl";
 import "../styles/ProductForm.css";
 
 const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
@@ -86,7 +87,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 features: product.features?.length > 0 ? product.features : [""],
                 tags: product.tags?.length > 0 ? product.tags : [""]
             });
-            setImagePreview(product.image ? `${apiService.baseURL}${product.image}` : "");
+            setImagePreview(getImageUrl(product.image) || "");
         } else {
             // Reset form for new product
             setFormData({

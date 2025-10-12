@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Background3D from "./Background3D";
 import ServiceQuoteForm from "./ServiceQuoteForm";
 import apiService from "../services/api";
+import { getImageUrl } from "../utils/imageUrl";
 import { fadeInUp, staggerContainer, cardHover, iconSpin } from "../utils/animations";
 import { showAlert } from "../utils/alerts.jsx";
 import "../styles/Services.css";
@@ -150,7 +151,7 @@ const Services = () => {
           let imageUrl = "/images/web-design.png"; // fallback image
           
           if (service.image) {
-            imageUrl = service.image.startsWith("http") ? service.image : `${apiService.baseURL}${service.image}`;
+            imageUrl = getImageUrl(service.image);
           }
           
           return {
