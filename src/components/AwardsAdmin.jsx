@@ -72,6 +72,10 @@ const AwardsAdmin = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingNomination, setEditingNomination] = useState(null);
   const [statusSummary, setStatusSummary] = useState({});
+  const [showPhotoEditModal, setShowPhotoEditModal] = useState(false);
+  const [editingPhotoNomination, setEditingPhotoNomination] = useState(null);
+  const [newPhoto, setNewPhoto] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
 
   // Load data on component mount
   useEffect(() => {
@@ -290,6 +294,84 @@ const AwardsAdmin = () => {
       });
     } finally {
       setLoading(prev => ({ ...prev, deleting: false }));
+    }
+  };
+
+  // Handle edit nomination photo
+  const handleEditNominationPhoto = (nomination) => {
+    setEditingPhotoNomination(nomination);
+    setShowPhotoEditModal(true);
+    setNewPhoto(null);
+    setPhotoPreview(nomination.nomineePhoto ? getImageUrl(nomination.nomineePhoto) : null);
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewPhoto(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSavePhoto = async () => {
+    if (!editingPhotoNomination) return;
+
+    try {
+      setLoading(prev => ({ ...prev, updating: true }));
+
+      const formData = new FormData();
+      
+      // Add all existing nomination data
+      formData.append("nomineeName", editingPhotoNomination.nomineeName);
+      formData.append("nomineeTitle", editingPhotoNomination.nomineeTitle || "");
+      formData.append("nomineeCompany", editingPhotoNomination.nomineeCompany || "");
+      formData.append("nomineeCountry", editingPhotoNomination.nomineeCountry);
+      formData.append("category", editingPhotoNomination.category._id);
+      formData.append("nominationReason", editingPhotoNomination.nominationReason);
+      formData.append("achievements", editingPhotoNomination.achievements || "");
+      formData.append("impactDescription", editingPhotoNomination.impactDescription || "");
+      formData.append("nominatorName", editingPhotoNomination.nominatorName);
+      formData.append("nominatorEmail", editingPhotoNomination.nominatorEmail);
+      formData.append("nominatorPhone", editingPhotoNomination.nominatorPhone || "");
+      formData.append("nominatorOrganization", editingPhotoNomination.nominatorOrganization || "");
+      
+      // Add new photo if selected
+      if (newPhoto) {
+        formData.append("nomineePhoto", newPhoto);
+      }
+
+      const response = await apiService.updateNomination(editingPhotoNomination._id, formData);
+      
+      await Swal.fire({
+        title: '✅ Photo Updated!',
+        text: `Nominee photo has been updated successfully`,
+        icon: 'success',
+        timer: 3000,
+        showConfirmButton: false,
+        timerProgressBar: true
+      });
+
+      setShowPhotoEditModal(false);
+      setEditingPhotoNomination(null);
+      setNewPhoto(null);
+      setPhotoPreview(null);
+      await loadNominations(); // Reload the list
+    } catch (error) {
+      console.error("❌ Error updating photo:", error);
+      
+      await Swal.fire({
+        title: '❌ Update Failed',
+        text: error.response?.data?.message || error.message || "Failed to update photo",
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3b82f6'
+      });
+    } finally {
+      setLoading(prev => ({ ...prev, updating: false }));
     }
   };
 
@@ -781,6 +863,20 @@ const AwardsAdmin = () => {
         )}
 
         <button
+          className="action-btn edit-btn"
+          onClick={async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("✏️ Edit Photo clicked for:", nomination.nomineeName);
+            await new Promise(resolve => setTimeout(resolve, 100));
+            handleEditNominationPhoto(nomination);
+          }}
+          disabled={loading.updating}
+        >
+          📸 Edit Photo
+        </button>
+
+        <button
           className="action-btn delete-btn"
           onClick={async (e) => {
             e.preventDefault();
@@ -1221,6 +1317,80 @@ const AwardsAdmin = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Photo Edit Modal */}
+      {showPhotoEditModal && editingPhotoNomination && (
+        <div className="modal-overlay" onClick={() => setShowPhotoEditModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>📸 Edit Nominee Photo</h3>
+              <button 
+                className="close-modal-btn" 
+                onClick={() => setShowPhotoEditModal(false)}
+              >
+                ✖
+              </button>
+            </div>
+            
+            <div className="photo-edit-content">
+              <div className="nominee-info-summary">
+                <h4>{editingPhotoNomination.nomineeName}</h4>
+                <p>{editingPhotoNomination.nomineeTitle}</p>
+                <p>{editingPhotoNomination.nomineeCompany}</p>
+              </div>
+
+              <div className="photo-preview-section">
+                {photoPreview ? (
+                  <img 
+                    src={photoPreview} 
+                    alt="Preview" 
+                    className="photo-preview-large"
+                    onError={(e) => {
+                      e.target.src = PLACEHOLDERS.avatar;
+                    }}
+                  />
+                ) : (
+                  <div className="no-photo-placeholder">
+                    <p>👤 No photo available</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="photo-upload-section">
+                <label className="upload-label">
+                  📁 Choose New Photo
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+                {newPhoto && (
+                  <p className="file-selected">✅ Selected: {newPhoto.name}</p>
+                )}
+              </div>
+
+              <div className="modal-actions">
+                <button 
+                  className="save-btn"
+                  onClick={handleSavePhoto}
+                  disabled={loading.updating || !newPhoto}
+                >
+                  {loading.updating ? '⏳ Saving...' : '💾 Save Photo'}
+                </button>
+                <button 
+                  className="cancel-btn"
+                  onClick={() => setShowPhotoEditModal(false)}
+                  disabled={loading.updating}
+                >
+                  ❌ Cancel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -1162,3 +1162,146 @@
     font-size: 16px; /* Prevents zoom on iOS */
   }
 }
+/* Photo Edit Modal Styles */
+.photo-edit-content {
+  padding: 20px 0;
+}
+
+.nominee-info-summary {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+  margin-bottom: 25px;
+}
+
+.nominee-info-summary h4 {
+  margin: 0 0 8px 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.nominee-info-summary p {
+  margin: 4px 0;
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+.photo-preview-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 25px 0;
+  min-height: 300px;
+}
+
+.photo-preview-large {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+}
+
+.no-photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
+  border-radius: 12px;
+  border: 2px dashed #cbd5e0;
+}
+
+.no-photo-placeholder p {
+  font-size: 18px;
+  color: #64748b;
+  margin: 0;
+}
+
+.photo-upload-section {
+  text-align: center;
+  margin: 25px 0;
+}
+
+.upload-label {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.upload-label:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.file-selected {
+  margin-top: 12px;
+  color: #10b981;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.save-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+}
+
+.save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+}
+
+.edit-btn:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  transform: translateY(-2px);
+}

@@ -498,6 +498,13 @@ class ApiService {
     });
   }
 
+  async updateNomination(nominationId, formData) {
+    return this.request(`/awards/admin/nominations/${nominationId}`, {
+      method: "PUT",
+      body: formData
+    });
+  }
+
   async deleteNomination(nominationId) {
     return this.request(`/awards/admin/nominations/${nominationId}`, {
       method: "DELETE"
