@@ -148,11 +148,8 @@ const Services = () => {
       if (response.success && response.data.services.length > 0) {
         // Transform API data to match component structure
         const transformedServices = response.data.services.map(service => {
-          let imageUrl = "/images/web-design.png"; // fallback image
-          
-          if (service.image) {
-            imageUrl = getImageUrl(service.image);
-          }
+          // Use getImageUrl for service image, with SVG placeholder as fallback
+          let imageUrl = getImageUrl(service.image) || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f3f4f6' width='400' height='300'/%3E%3Ctext fill='%236b7280' font-family='Arial' font-size='20' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EService Image%3C/text%3E%3C/svg%3E";
           
           return {
             id: service._id || service.id,
