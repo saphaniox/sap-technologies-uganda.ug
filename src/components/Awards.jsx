@@ -266,9 +266,6 @@ const Awards = ({ onClose }) => {
 
   return (
     <div className="awards-standalone-page">
-      {/* Header */}
-      <Header />
-
       {/* Hero Section - Inspirational */}
       <section className="awards-hero-section">
         <div className="awards-hero-background">
