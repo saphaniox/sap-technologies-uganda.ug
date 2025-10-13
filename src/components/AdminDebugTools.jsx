@@ -559,7 +559,7 @@ Status: ${projects?.data?.projects?.length > 0 ? '✅ API Working' : '⚠️ No 
                 message: 'Debug test inquiry - safe to ignore'
             };
             
-            const response = await apiService.createProductInquiry(testInquiry);
+            const response = await apiService.submitProductInquiry(testInquiry);
             console.log('Inquiry response:', response);
             
             setResults(`
