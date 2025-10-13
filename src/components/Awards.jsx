@@ -278,25 +278,27 @@ const Awards = ({ onClose }) => {
         
         <div className="container awards-hero-container">
           <div className="awards-hero-content">
-            <div className="hero-badge">
+            <div className="hero-badge animated fadeInDown">
               <span className="badge-icon">🏆</span>
               <span className="badge-text">Saphaniox Awards 2025</span>
             </div>
             
-            <h1 className="awards-hero-title">
+            <h1 className="awards-hero-title animated fadeInUp">
               <span className="title-line title-line-1">Celebrating</span>
               <span className="title-line title-line-2">Excellence in</span>
-              <span className="title-line title-line-3">Engineering & Technology</span>
+              <span className="title-line title-line-3">
+                <span className="gradient-text">Engineering</span> & <span className="gradient-text">Technology</span>
+              </span>
             </h1>
             
-            <p className="awards-hero-subtitle">
+            <p className="awards-hero-subtitle animated fadeInUp delay-1">
               Recognizing outstanding contributions to technology advancement, innovation, 
               and engineering excellence in Uganda and across the international community. 
               Join us in honoring the minds that shape our digital future.
             </p>
             
             {/* Hero Stats */}
-            <div className="awards-hero-stats">
+            <div className="awards-hero-stats animated fadeInUp delay-2">
               <div className="hero-stat">
                 <div className="stat-icon">🎯</div>
                 <div className="stat-content">
@@ -323,7 +325,7 @@ const Awards = ({ onClose }) => {
             </div>
             
             {/* Hero Actions */}
-            <div className="awards-hero-actions">
+            <div className="awards-hero-actions animated fadeInUp delay-3">
               <button
                 className="awards-btn awards-btn-primary"
                 onClick={() => setShowNominationForm(true)}
@@ -333,7 +335,7 @@ const Awards = ({ onClose }) => {
               </button>
               <button
                 className="awards-btn awards-btn-secondary"
-                onClick={() => document.getElementById('nominations-section').scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('nominations-section')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <span className="btn-icon">🗳️</span>
                 <span className="btn-text">View & Vote</span>
