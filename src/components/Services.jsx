@@ -70,7 +70,7 @@ const Services = () => {
         "Custom Web Applications"
       ],
       technologies: ["React", "Vue.js", "Node.js", "WordPress", "Shopify"],
-      pricing: "Starting from $300",
+      pricing: "Starting from $199",
       deliveryTime: "2-4 weeks"
     },
     {
@@ -87,7 +87,7 @@ const Services = () => {
         "Print Design"
       ],
       technologies: ["Adobe Illustrator", "Photoshop", "InDesign", "Figma", "Canva Pro"],
-      pricing: "Starting from $100",
+      pricing: "Starting from $49",
       deliveryTime: "3-7 days"
     },
     {
@@ -104,7 +104,7 @@ const Services = () => {
         "AutoCAD Drawings"
       ],
       technologies: ["AutoCAD Electrical", "MATLAB", "PLC Programming", "SCADA", "Proteus"],
-      pricing: "Starting from $100",
+      pricing: "Starting from $79",
       deliveryTime: "1-3 weeks"
     },
     {
@@ -121,7 +121,7 @@ const Services = () => {
         "Cloud Solutions"
       ],
       technologies: ["React", "Python", "Java", "Flutter", "AWS"],
-      pricing: "Starting from $500", 
+      pricing: "Starting from $899", 
       deliveryTime: "4-12 weeks"
     }
   ];
