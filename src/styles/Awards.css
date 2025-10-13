@@ -648,6 +648,45 @@
   z-index: 1;
 }
 
+.awards-categories::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background-image: url('/images/logo.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.08;
+  z-index: 1;
+  animation: categoryLogoRotate 60s linear infinite, categoryLogoPulse 4s ease-in-out infinite;
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+@keyframes categoryLogoRotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes categoryLogoPulse {
+  0%, 100% {
+    opacity: 0.08;
+    filter: blur(1px);
+  }
+  50% {
+    opacity: 0.12;
+    filter: blur(2px);
+  }
+}
+
 .awards-categories .container {
   position: relative;
   z-index: 2;
@@ -3160,6 +3199,12 @@
     left: 10px;
     top: 80px;
   }
+  
+  .awards-categories::after {
+    width: 450px;
+    height: 450px;
+    opacity: 0.07;
+  }
 
   .awards-hero-section {
     min-height: auto;
@@ -3232,7 +3277,8 @@
 /* Mobile - 480px and below */
 @media (max-width: 480px) {
   .awards-hero-section {
-    padding: 80px 10px 40px;
+    padding: 140px 10px 40px;
+    min-height: auto;
   }
 
   .hero-logo-background {
@@ -3242,17 +3288,29 @@
   }
 
   .hero-badge {
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    font-size: 14px;
+    padding: 12px 24px;
+    margin-bottom: 25px;
+    font-size: 15px;
+    white-space: normal;
+    text-align: center;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .awards-categories::after {
+    width: 350px;
+    height: 350px;
+    opacity: 0.06;
   }
 
   .badge-icon {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .badge-text {
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 600;
   }
 
   .awards-hero-title {

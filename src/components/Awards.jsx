@@ -337,7 +337,7 @@ const Awards = ({ onClose }) => {
           <div className="awards-hero-content">
             <div className="hero-badge animated fadeInDown">
               <span className="badge-icon">🏆</span>
-              <span className="badge-text">Welcome to Saphaniox Awards 2025</span>
+              <span className="badge-text">5 Years of Saphaniox Awards</span>
             </div>
             
             <h1 className="awards-hero-title animated fadeInUp">
