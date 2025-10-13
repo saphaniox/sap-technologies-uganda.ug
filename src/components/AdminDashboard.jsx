@@ -682,7 +682,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       <div className="admin-modal">
         <div className="admin-content">
           <div className="admin-header">
-            <h2>Admin Dashboard Sap-Technologies Uganda</h2>
+            <h2>Dashboard - Sap Technologies Uganda</h2>
             <button className="close-btn" onClick={onClose}>&times;</button>
           </div>
           <div className="loading">Loading admin dashboard...</div>
@@ -696,7 +696,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       <div className="admin-modal">
         <div className="admin-content">
           <div className="admin-header">
-            <h2>Admin Dashboard Sap-Technologies Uganda</h2>
+            <h2>Dashboard - Sap Technologies Uganda</h2>
             <button className="close-btn" onClick={onClose}>&times;</button>
           </div>
           <div className="error-message">{error}</div>
@@ -709,7 +709,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     <div className="admin-modal">
       <div className="admin-content">
         <div className="admin-header">
-          <h2>Admin Dashboard Sap-Technologies Uganda</h2>
+          <h2>Dashboard - Sap Technologies Uganda</h2>
           <div className="admin-user-info">
             <span>Welcome, {user?.name}</span>
             <span className="admin-badge">ADMIN</span>
