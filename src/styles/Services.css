@@ -51,14 +51,7 @@
   background: -webkit-linear-gradient(90deg, #1a237e, #3949ab);
   background: -moz-linear-gradient(90deg, #1a237e, #3949ab);
   border-radius: 2px;
-  transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(26, 35, 126, 0.3);
-}
-
-.services h2:hover::after {
-  width: 80px;
-  height: 5px;
-  box-shadow: 0 3px 6px rgba(26, 35, 126, 0.4);
 }
 
 .services-list {
@@ -79,26 +72,9 @@
   overflow: hidden;
 }
 
-.service::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #1a237e, #3949ab);
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
-
-.service:hover::before {
-  transform: scaleX(1);
-}
-
 .service:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(26, 35, 126, 0.15);
-  border-color: #3949ab;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .service-image {
@@ -126,11 +102,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(26, 35, 126, 0.85);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 1; /* Always visible for mobile users */
+  opacity: 0; /* Hidden by default */
   transition: opacity 0.3s ease;
   border-radius: var(--border-radius-md);
 }
@@ -142,7 +118,7 @@
   }
   
   .service-image:hover .service-overlay {
-    opacity: 1;
+    opacity: 1; /* Show on hover */
   }
 }
 
@@ -162,7 +138,7 @@
 
 .learn-more-btn:hover {
   background: #ffffff;
-  color: #1a237e;
+  color: #000000;
   transform: scale(1.05);
 }
 
