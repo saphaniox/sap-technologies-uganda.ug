@@ -2454,16 +2454,19 @@
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
+  scroll-padding-top: 0;
+  padding-top: 0;
+  margin-top: 0;
 }
 
 /* Hero Section */
 .awards-hero-section {
   position: relative;
-  min-height: 85vh;
+  min-height: 100vh;
   display: flex !important;
   align-items: center;
   justify-content: center;
-  padding: 120px 20px 80px;
+  padding: 180px 20px 80px;
   overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   visibility: visible !important;
@@ -3140,6 +3143,10 @@
 
   .awards-hero-subtitle {
     font-size: 1.4rem;
+  }
+
+  .awards-hero-section {
+    padding: 200px 20px 100px;
   }
 }
 
