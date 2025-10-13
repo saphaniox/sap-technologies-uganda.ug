@@ -272,6 +272,7 @@ const Awards = ({ onClose }) => {
       {/* Hero Section - Inspirational */}
       <section className="awards-hero-section">
         <div className="awards-hero-background">
+          <div className="hero-logo-background"></div>
           <div className="hero-gradient-overlay"></div>
           <div className="hero-particles"></div>
         </div>
@@ -280,7 +281,7 @@ const Awards = ({ onClose }) => {
           <div className="awards-hero-content">
             <div className="hero-badge animated fadeInDown">
               <span className="badge-icon">🏆</span>
-              <span className="badge-text">Saphaniox Awards 2025</span>
+              <span className="badge-text">Welcome to Saphaniox Awards 2025</span>
             </div>
             
             <h1 className="awards-hero-title animated fadeInUp">
