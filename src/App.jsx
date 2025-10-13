@@ -213,6 +213,9 @@ function App() {
           {/* Certificate Verification Page - Public Route */}
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           
+          {/* Saphaniox Awards - Standalone Inspirational Page */}
+          <Route path="/awards" element={<Awards />} />
+          
           {/* Main Application - Default Route */}
           <Route path="/*" element={
             <>

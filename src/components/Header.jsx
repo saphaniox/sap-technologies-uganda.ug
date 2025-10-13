@@ -14,6 +14,7 @@
  * @component
  */
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import "../styles/Header.css";
@@ -173,7 +174,6 @@ const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccoun
             { id: "about", label: "About" },
             { id: "services", label: "Services" },
             { id: "portfolio", label: "Our Featured Projects" },
-            { id: "awards", label: "🏆 saphaniox awards 2025", action: onAwardsOpen },
             { id: "contact", label: "Contact" }
           ].map((link, index) => (
             <motion.li 
@@ -185,11 +185,7 @@ const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccoun
                 href={`#${link.id}`}
                 onClick={(e) => { 
                   e.preventDefault(); 
-                  if (link.action) {
-                    link.action();
-                  } else {
-                    scrollToSection(link.id);
-                  }
+                  scrollToSection(link.id);
                 }}
                 variants={linkVariants}
                 whileHover="hover"
@@ -208,6 +204,23 @@ const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccoun
               </motion.a>
             </motion.li>
           ))}
+
+          {/* Saphaniox Awards - Standalone Page Link */}
+          <motion.li 
+            variants={linkVariants}
+            custom={5}
+          >
+            <Link to="/awards">
+              <motion.span
+                className="link-text awards-link"
+                variants={linkVariants}
+                whileHover="hover"
+                whileTap="tap"
+              >
+                🏆 Saphaniox Awards 2025
+              </motion.span>
+            </Link>
+          </motion.li>
 
           {/* Admin-specific navigation items */}
           {userRole === "admin" && (

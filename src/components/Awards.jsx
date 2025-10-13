@@ -1,14 +1,14 @@
 /**
- * Awards Component
+ * Saphaniox Awards - Standalone Inspirational Page
  * 
- * SAP HANIOX Professional Awards system for recognizing excellence.
- * Features include:
- * - Browse award categories and nominations
- * - Submit nominations with photo uploads
- * - Vote for nominees
- * - Search and filter nominations by category/country
- * - Pagination and sorting options
- * - Professional awards ceremony platform
+ * A beautifully designed, standalone awards platform celebrating excellence
+ * in engineering and technology. Features include:
+ * - Inspiring hero section with dynamic animations
+ * - Category showcase with modern cards
+ * - Nomination submission system
+ * - Nominee gallery with voting
+ * - Search, filter, and pagination
+ * - Fully responsive and accessible
  * 
  * @component
  */
@@ -16,6 +16,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { showAlert } from "../utils/alerts";
 import apiService from "../services/api";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
+import Header from "./Header";
 import Footer from "./Footer";
 import PrivacyPolicy from "./PrivacyPolicy";
 import TermsOfService from "./TermsOfService";
@@ -264,201 +265,87 @@ const Awards = ({ onClose }) => {
   };
 
   return (
-    <div className="awards-modal-overlay" onClick={onClose}>
-      <div 
-        className="awards-modal-content" 
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div 
-          className="awards-modal-header"
-        >
-          <h2>🏆WELCOME TO SAPHANIOX AWARDS 2025</h2>
-          <button 
-            className="awards-modal-close" 
-            onClick={onClose}
-          >×</button>
+    <div className="awards-standalone-page">
+      {/* Header */}
+      <Header />
+
+      {/* Hero Section - Inspirational */}
+      <section className="awards-hero-section">
+        <div className="awards-hero-background">
+          <div className="hero-gradient-overlay"></div>
+          <div className="hero-particles"></div>
         </div>
         
-        <div 
-          className="awards-page"
-          ref={containerRef}
-        >
-      {/* Hero Section */}
-      <section 
-        className="awards-hero"
-      >
-        <div className="container">
-          <div 
-            className="hero-content"
-          >
-            <h1 
-              className="hero-title animated-title"
-            >
-              <span 
-                className="trophy-icon"
-              >
-                🏆
-              </span>
-              {' '}
-              <span
-                className="title-text"
-              >
-                <span 
-                  className="word-saphaniox"
-                >
-                  Saphaniox
-                </span>
-                {' '}
-                <span 
-                  className="word-awards"
-                >
-                  awards
-                </span>
-                {' '}
-                <span 
-                  className="word-2025"
-                >
-                  2025
-                </span>
-              </span>
-            </h1>
-            <p 
-              className="hero-subtitle clear-subtitle"
-            >
-              <span
-                className="subtitle-celebrating"
-              >
-                Celebrating
-              </span>
-              {' '}
-              <span
-                className="subtitle-excellence"
-              >
-                Excellence
-              </span>
-              {' '}
-              <span
-                className="subtitle-in"
-              >
-                in
-              </span>
-              {' '}
-              <span
-                className="subtitle-engineering"
-              >
-                Engineering
-              </span>
-              {' '}
-              <span
-                className="subtitle-ampersand"
-              >
-                &
-              </span>
-              {' '}
-              <span
-                className="subtitle-technology"
-              >
-                Technology
-              </span>
-            </p>
-            <p 
-              className="hero-description"
-            >
-              Recognizing outstanding contributions to technology advancement, innovation, and engineering excellence 
-              in Uganda and across the international community. Join us in honoring the minds that shape our digital future.
-            </p>
-            <div 
-              className="hero-stats"
-            >
-              <div 
-                className="stat"
-              >
-                <span className="stat-number">{categories.length}</span>
-                <span className="stat-label">Award Categories</span>
-              </div>
-              <div 
-                className="stat"
-              >
-                <span className="stat-number">{nominations.length}</span>
-                <span className="stat-label">Nominations</span>
-              </div>
-              <div 
-                className="stat"
-              >
-                <span className="stat-number">
-                  {nominations.reduce((total, nom) => total + nom.votes, 0)}
-                </span>
-                <span className="stat-label">Total Votes</span>
-              </div>
-            </div>
-            <div 
-              className="hero-actions"
-            >
-              <button
-                className="btn-primary btn-large"
-                onClick={() => setShowNominationForm(true)}
-              >
-                <span style={{ display: 'inline-block', marginRight: '8px' }}>
-                  🎯
-                </span>
-                <span>
-                  Nominate Someone
-                </span>
-              </button>
-              <button
-                className="btn-secondary btn-large"
-                onClick={() => document.getElementById('nominations')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                <span style={{ display: 'inline-block', marginRight: '8px' }}>
-                  🗳️
-                </span>
-                <span>
-                  View & Vote
-                </span>
-              </button>
+        <div className="container awards-hero-container">
+          <div className="awards-hero-content">
+            <div className="hero-badge">
+              <span className="badge-icon">🏆</span>
+              <span className="badge-text">Saphaniox Awards 2025</span>
             </div>
             
-            {/* Powered By Section */}
-            <div 
-              className="powered-by-section"
-            >
-              <p 
-                className="powered-by-text enhanced-powered-by"
-              >
-                <span 
-                  className="powered-word"
-                >
-                  powered
-                </span>
-                {' '}
-                <span 
-                  className="by-word"
-                >
-                  by
-                </span>
-                {' '}
-                <span 
-                  className="company-name enhanced-company-name"
-                >
-                  SAP Engineering & Technologies
-                </span>
-              </p>
-              
-              {/* Decorative elements */}
-              <div
-                className="powered-by-decorations"
-                style={{
-                  position: 'absolute',
-                  top: '-10px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  fontSize: '1.2rem',
-                  pointerEvents: 'none'
-                }}
-              >
-                ⚡✨⚡
+            <h1 className="awards-hero-title">
+              <span className="title-line title-line-1">Celebrating</span>
+              <span className="title-line title-line-2">Excellence in</span>
+              <span className="title-line title-line-3">Engineering & Technology</span>
+            </h1>
+            
+            <p className="awards-hero-subtitle">
+              Recognizing outstanding contributions to technology advancement, innovation, 
+              and engineering excellence in Uganda and across the international community. 
+              Join us in honoring the minds that shape our digital future.
+            </p>
+            
+            {/* Hero Stats */}
+            <div className="awards-hero-stats">
+              <div className="hero-stat">
+                <div className="stat-icon">🎯</div>
+                <div className="stat-content">
+                  <span className="stat-number">{categories.length}</span>
+                  <span className="stat-label">Award Categories</span>
+                </div>
+              </div>
+              <div className="hero-stat">
+                <div className="stat-icon">👥</div>
+                <div className="stat-content">
+                  <span className="stat-number">{nominations.length}</span>
+                  <span className="stat-label">Nominations</span>
+                </div>
+              </div>
+              <div className="hero-stat">
+                <div className="stat-icon">⭐</div>
+                <div className="stat-content">
+                  <span className="stat-number">
+                    {nominations.reduce((total, nom) => total + nom.votes, 0)}
+                  </span>
+                  <span className="stat-label">Total Votes</span>
+                </div>
               </div>
             </div>
+            
+            {/* Hero Actions */}
+            <div className="awards-hero-actions">
+              <button
+                className="awards-btn awards-btn-primary"
+                onClick={() => setShowNominationForm(true)}
+              >
+                <span className="btn-icon">✨</span>
+                <span className="btn-text">Submit Nomination</span>
+              </button>
+              <button
+                className="awards-btn awards-btn-secondary"
+                onClick={() => document.getElementById('nominations-section').scrollIntoView({ behavior: 'smooth' })}
+              >
+                <span className="btn-icon">🗳️</span>
+                <span className="btn-text">View & Vote</span>
+              </button>
+            </div>
+          </div>
+          
+          {/* Decorative Elements */}
+          <div className="hero-decoration">
+            <div className="decoration-circle decoration-circle-1"></div>
+            <div className="decoration-circle decoration-circle-2"></div>
+            <div className="decoration-circle decoration-circle-3"></div>
           </div>
         </div>
       </section>
@@ -669,8 +556,6 @@ const Awards = ({ onClose }) => {
         onTermsOfServiceOpen={handleTermsOfServiceOpen}
         onNavigate={handleFooterNavigate}
       />
-        </div>
-      </div>
       
       {/* Privacy Policy Modal */}
       {showPrivacyPolicy && (
