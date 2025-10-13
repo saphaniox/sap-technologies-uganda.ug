@@ -2879,6 +2879,40 @@
   }
 }
 
+/* Animation Delay Classes */
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.animated.fadeInUp {
+  animation-name: fadeInUp;
+}
+
+.animated.fadeInDown {
+  animation-name: fadeInDown;
+}
+
+.delay-1 {
+  animation-delay: 0.3s !important;
+}
+
+.delay-2 {
+  animation-delay: 0.6s !important;
+}
+
+.delay-3 {
+  animation-delay: 0.9s !important;
+}
+
+.delay-4 {
+  animation-delay: 1.2s !important;
+}
+
+.delay-5 {
+  animation-delay: 1.5s !important;
+}
+
 /* Hero Subtitle */
 .awards-hero-subtitle {
   font-size: 1.25rem;
