@@ -62,6 +62,7 @@ const Awards = ({ onClose }) => {
 
   // Nomination form state
   const [nominationForm, setNominationForm] = useState({
+    isSelfNomination: false,
     nomineeName: "",
     nomineeTitle: "",
     nomineeCompany: "",
@@ -154,10 +155,17 @@ const Awards = ({ onClose }) => {
 
     try {
       const formData = new FormData();
-      Object.keys(nominationForm).forEach(key => {
-        if (nominationForm[key] !== null && nominationForm[key] !== "") {
-          formData.append(key, nominationForm[key]);
-          console.log(`📝 Added to FormData: ${key} = ${nominationForm[key]}`);
+      
+      // For self-nominations, auto-fill nominator name with nominee name
+      const submissionData = { ...nominationForm };
+      if (submissionData.isSelfNomination && !submissionData.nominatorName) {
+        submissionData.nominatorName = submissionData.nomineeName;
+      }
+      
+      Object.keys(submissionData).forEach(key => {
+        if (submissionData[key] !== null && submissionData[key] !== "") {
+          formData.append(key, submissionData[key]);
+          console.log(`📝 Added to FormData: ${key} = ${submissionData[key]}`);
         }
       });
 
@@ -175,6 +183,7 @@ const Awards = ({ onClose }) => {
 
       // Reset form
       setNominationForm({
+        isSelfNomination: false,
         nomineeName: "",
         nomineeTitle: "",
         nomineeCompany: "",
@@ -833,6 +842,8 @@ const NominationCard = ({ nomination, onVote }) => {
 
 // Nomination Modal Component  
 const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClose, loading }) => {
+  const isSelf = nominationForm.isSelfNomination;
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content nomination-modal" onClick={(e) => e.stopPropagation()}>
@@ -842,25 +853,53 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
         </div>
 
         <form onSubmit={onSubmit} className="nomination-form">
+          {/* Nomination Type Selector */}
+          <div className="nomination-type-selector">
+            <label className={!isSelf ? 'active' : ''}>
+              <input
+                type="radio"
+                name="nominationType"
+                checked={!isSelf}
+                onChange={() => onChange({ target: { name: 'isSelfNomination', value: false } })}
+              />
+              <span className="radio-content">
+                <span className="radio-icon">🎯</span>
+                <span className="radio-text">I'm nominating someone else</span>
+              </span>
+            </label>
+            <label className={isSelf ? 'active' : ''}>
+              <input
+                type="radio"
+                name="nominationType"
+                checked={isSelf}
+                onChange={() => onChange({ target: { name: 'isSelfNomination', value: true } })}
+              />
+              <span className="radio-content">
+                <span className="radio-icon">⭐</span>
+                <span className="radio-text">I'm nominating myself</span>
+              </span>
+            </label>
+          </div>
+
           {/* Nominee Information */}
           <div className="form-section">
-            <h3>👤 Nominee Information</h3>
+            <h3>👤 {isSelf ? 'Your Information' : 'Nominee Information'}</h3>
             
             <div className="form-row">
               <div className="form-group">
-                <label>Full Name *</label>
+                <label>{isSelf ? 'Your Full Name *' : 'Full Name *'}</label>
                 <input
                   type="text"
                   name="nomineeName"
                   value={nominationForm.nomineeName}
                   onChange={onChange}
                   required
-                  placeholder="Enter nominee's full name"
+                  placeholder={isSelf ? "Enter your full name" : "Enter nominee's full name"}
                 />
               </div>
               
               <div className="form-group">
-                <label>Professional Title</label>
+                <label>{isSelf ? 'Your Professional Title' : 'Professional Title'}</label>
                 <input
                   type="text"
                   name="nomineeTitle"
@@ -873,7 +912,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
 
             <div className="form-row">
               <div className="form-group">
-                <label>Company/Organization</label>
+                <label>{isSelf ? 'Your Company/Organization' : 'Company/Organization'}</label>
                 <input
                   type="text"
                   name="nomineeCompany"
@@ -906,7 +945,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
             </div>
 
             <div className="form-group">
-              <label>Photo *</label>
+              <label>{isSelf ? 'Your Photo *' : 'Photo *'}</label>
               <input
                 type="file"
                 name="nomineePhoto"
@@ -914,7 +953,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
                 accept="image/*"
                 required
               />
-              <small>Upload a professional photo of the nominee (max 5MB)</small>
+              <small>Upload a professional photo {isSelf ? 'of yourself' : 'of the nominee'} (max 5MB)</small>
             </div>
           </div>
 
@@ -943,99 +982,139 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
 
           {/* Nomination Details */}
           <div className="form-section">
-            <h3>📝 Nomination Details</h3>
+            <h3>📝 {isSelf ? 'Why You Deserve This Award' : 'Nomination Details'}</h3>
             
             <div className="form-group">
-              <label>Why should this person win? *</label>
+              <label>{isSelf ? 'Why do you deserve this award? *' : 'Why should this person win? *'}</label>
               <textarea
                 name="nominationReason"
                 value={nominationForm.nominationReason}
                 onChange={onChange}
                 required
                 rows={4}
-                placeholder="Explain why this person deserves to win this award (minimum 50 characters)"
+                placeholder={isSelf 
+                  ? "Explain why you deserve to win this award (minimum 50 characters)" 
+                  : "Explain why this person deserves to win this award (minimum 50 characters)"}
                 minLength={50}
               />
               <small>{nominationForm.nominationReason.length}/1000 characters</small>
             </div>
 
             <div className="form-group">
-              <label>Key Achievements</label>
+              <label>{isSelf ? 'Your Key Achievements' : 'Key Achievements'}</label>
               <textarea
                 name="achievements"
                 value={nominationForm.achievements}
                 onChange={onChange}
                 rows={3}
-                placeholder="List the nominee's key achievements and accomplishments"
+                placeholder={isSelf 
+                  ? "List your key achievements and accomplishments" 
+                  : "List the nominee's key achievements and accomplishments"}
               />
             </div>
 
             <div className="form-group">
-              <label>Impact Description</label>
+              <label>{isSelf ? 'Your Impact on the Industry' : 'Impact Description'}</label>
               <textarea
                 name="impactDescription"
                 value={nominationForm.impactDescription}
                 onChange={onChange}
                 rows={3}
-                placeholder="Describe the impact of their work on the community or industry"
+                placeholder={isSelf 
+                  ? "Describe the impact of your work on the community or industry" 
+                  : "Describe the impact of their work on the community or industry"}
               />
             </div>
           </div>
 
-          {/* Nominator Information */}
-          <div className="form-section">
-            <h3>👨‍💼 Your Information</h3>
-            
-            <div className="form-row">
-              <div className="form-group">
-                <label>Your Full Name *</label>
-                <input
-                  type="text"
-                  name="nominatorName"
-                  value={nominationForm.nominatorName}
-                  onChange={onChange}
-                  required
-                  placeholder="Enter your full name"
-                />
-              </div>
+          {/* Nominator Information - Only show for non-self nominations */}
+          {!isSelf && (
+            <div className="form-section">
+              <h3>👨‍💼 Your Information</h3>
               
-              <div className="form-group">
-                <label>Your Email *</label>
-                <input
-                  type="email"
-                  name="nominatorEmail"
-                  value={nominationForm.nominatorEmail}
-                  onChange={onChange}
-                  required
-                  placeholder="your.email@example.com"
-                />
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Your Full Name *</label>
+                  <input
+                    type="text"
+                    name="nominatorName"
+                    value={nominationForm.nominatorName}
+                    onChange={onChange}
+                    required
+                    placeholder="Enter your full name"
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Your Email *</label>
+                  <input
+                    type="email"
+                    name="nominatorEmail"
+                    value={nominationForm.nominatorEmail}
+                    onChange={onChange}
+                    required
+                    placeholder="your.email@example.com"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Phone Number</label>
-                <input
-                  type="tel"
-                  name="nominatorPhone"
-                  value={nominationForm.nominatorPhone}
-                  onChange={onChange}
-                  placeholder="+256 xxx xxx xxx"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Your Organization</label>
-                <input
-                  type="text"
-                  name="nominatorOrganization"
-                  value={nominationForm.nominatorOrganization}
-                  onChange={onChange}
-                  placeholder="Your company or organization"
-                />
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Phone Number</label>
+                  <input
+                    type="tel"
+                    name="nominatorPhone"
+                    value={nominationForm.nominatorPhone}
+                    onChange={onChange}
+                    placeholder="+256 xxx xxx xxx"
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Your Organization</label>
+                  <input
+                    type="text"
+                    name="nominatorOrganization"
+                    value={nominationForm.nominatorOrganization}
+                    onChange={onChange}
+                    placeholder="Your company or organization"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Contact Information - Only show for self nominations */}
+          {isSelf && (
+            <div className="form-section">
+              <h3>📧 Your Contact Information</h3>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Your Email *</label>
+                  <input
+                    type="email"
+                    name="nominatorEmail"
+                    value={nominationForm.nominatorEmail}
+                    onChange={onChange}
+                    required
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Phone Number</label>
+                  <input
+                    type="tel"
+                    name="nominatorPhone"
+                    value={nominationForm.nominatorPhone}
+                    onChange={onChange}
+                    placeholder="+256 xxx xxx xxx"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="form-actions">
             <button type="button" className="btn-secondary" onClick={onClose}>

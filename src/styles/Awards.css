@@ -1461,6 +1461,95 @@
   padding: 2rem;
 }
 
+/* Nomination Type Selector */
+.nomination-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 15px;
+  margin-bottom: 2rem;
+}
+
+.nomination-type-selector label {
+  display: flex;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nomination-type-selector label::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nomination-type-selector label:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+  transform: translateY(-2px);
+}
+
+.nomination-type-selector label:hover::before {
+  opacity: 1;
+}
+
+.nomination-type-selector input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.nomination-type-selector label.active {
+  border-color: #667eea;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+}
+
+.nomination-type-selector label.active::before {
+  opacity: 0;
+}
+
+.nomination-type-selector .radio-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.nomination-type-selector .radio-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.nomination-type-selector .radio-text {
+  font-size: 1rem;
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.nomination-type-selector label.active .radio-text {
+  font-weight: 600;
+}
+
 .form-section {
   margin-bottom: 3rem;
 }
@@ -1692,6 +1781,24 @@
   
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .nomination-type-selector {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .nomination-type-selector label {
+    padding: 1rem;
+  }
+
+  .nomination-type-selector .radio-text {
+    font-size: 0.95rem;
+  }
+
+  .nomination-type-selector .radio-icon {
+    font-size: 1.3rem;
   }
   
   .category-selection {
@@ -2307,6 +2414,33 @@
 /* Nomination Form */
 [data-theme="dark"] .nomination-form {
   background: rgba(44, 62, 80, 0.5);
+}
+
+/* Dark Mode - Nomination Type Selector */
+[data-theme="dark"] .nomination-type-selector {
+  background: linear-gradient(135deg, rgba(44, 62, 80, 0.8) 0%, rgba(52, 73, 94, 0.8) 100%);
+}
+
+[data-theme="dark"] .nomination-type-selector label {
+  background: rgba(26, 26, 26, 0.6);
+  border-color: rgba(62, 74, 92, 0.5);
+  color: #ecf0f1;
+}
+
+[data-theme="dark"] .nomination-type-selector label::before {
+  background: linear-gradient(135deg, rgba(93, 173, 226, 0.15) 0%, rgba(155, 89, 182, 0.15) 100%);
+}
+
+[data-theme="dark"] .nomination-type-selector label:hover {
+  border-color: #5dade2;
+  box-shadow: 0 4px 15px rgba(93, 173, 226, 0.3);
+}
+
+[data-theme="dark"] .nomination-type-selector label.active {
+  border-color: #5dade2;
+  background: linear-gradient(135deg, #5dade2 0%, #9b59b6 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(93, 173, 226, 0.5);
 }
 
 [data-theme="dark"] .form-group label {
