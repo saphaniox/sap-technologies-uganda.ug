@@ -151,15 +151,37 @@ const Awards = ({ onClose }) => {
       showAlert.error("Error", "Please upload a photo of the nominee");
       return;
     }
+
+    // Validate required fields for self-nominations
+    if (nominationForm.isSelfNomination) {
+      if (!nominationForm.nominatorEmail) {
+        showAlert.error("Error", "Please provide your email address");
+        return;
+      }
+    } else {
+      // Validate required fields for other nominations
+      if (!nominationForm.nominatorName) {
+        showAlert.error("Error", "Please provide your full name");
+        return;
+      }
+      if (!nominationForm.nominatorEmail) {
+        showAlert.error("Error", "Please provide your email address");
+        return;
+      }
+    }
+
     setLoading(prev => ({ ...prev, submitting: true }));
 
     try {
       const formData = new FormData();
       
-      // For self-nominations, auto-fill nominator name with nominee name
+      // For self-nominations, auto-fill nominator name and organization with nominee data
       const submissionData = { ...nominationForm };
-      if (submissionData.isSelfNomination && !submissionData.nominatorName) {
+      if (submissionData.isSelfNomination) {
         submissionData.nominatorName = submissionData.nomineeName;
+        if (!submissionData.nominatorOrganization) {
+          submissionData.nominatorOrganization = submissionData.nomineeCompany || "";
+        }
       }
       
       Object.keys(submissionData).forEach(key => {
@@ -1040,7 +1062,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
                     name="nominatorName"
                     value={nominationForm.nominatorName}
                     onChange={onChange}
-                    required
+                    required={!isSelf}
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -1052,7 +1074,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
                     name="nominatorEmail"
                     value={nominationForm.nominatorEmail}
                     onChange={onChange}
-                    required
+                    required={!isSelf}
                     placeholder="your.email@example.com"
                   />
                 </div>
