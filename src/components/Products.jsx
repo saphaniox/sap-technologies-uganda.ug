@@ -248,7 +248,34 @@ const Products = () => {
 
                                     <div className="product-footer">
                                         <div className="product-price">
-                                            {product.formattedPrice || "Contact for Price"}
+                                            {(() => {
+                                                // Handle price display based on type
+                                                if (!product.price || product.price.type === "contact-for-price") {
+                                                    return "Contact for Price";
+                                                }
+                                                
+                                                const amount = product.price.amount;
+                                                const currency = product.price.currency;
+                                                const type = product.price.type;
+                                                
+                                                // Format the price with currency
+                                                let formattedPrice = "";
+                                                if (amount && currency) {
+                                                    // Format number with commas
+                                                    const formattedAmount = parseFloat(amount).toLocaleString('en-US', {
+                                                        minimumFractionDigits: 0,
+                                                        maximumFractionDigits: 2
+                                                    });
+                                                    formattedPrice = `${currency} ${formattedAmount}`;
+                                                }
+                                                
+                                                // Add negotiable indicator
+                                                if (type === "negotiable") {
+                                                    return formattedPrice ? `${formattedPrice} (Negotiable)` : "Negotiable";
+                                                }
+                                                
+                                                return formattedPrice || "Contact for Price";
+                                            })()}
                                         </div>
                                         <div className="product-availability">
                                             <span className={`availability-status ${product.availability}`}>

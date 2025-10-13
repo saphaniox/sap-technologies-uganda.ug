@@ -76,7 +76,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 category: product.category || "Other",
                 price: {
                     amount: product.price?.amount || "",
-                    currency: product.price?.currency || "USD",
+                    currency: product.price?.currency || "",
                     type: product.price?.type || "contact-for-price"
                 },
                 availability: product.availability || "custom-order",
@@ -97,7 +97,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 category: "Other",
                 price: {
                     amount: "",
-                    currency: "USD",
+                    currency: "",
                     type: "contact-for-price"
                 },
                 availability: "custom-order",
@@ -364,6 +364,96 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                                 </div>
                             )}
                         </div>
+                    </div>
+
+                    {/* Price Configuration */}
+                    <div className="form-section">
+                        <h3>Price Configuration</h3>
+                        
+                        <div className="form-group">
+                            <label htmlFor="price.type">Price Type *</label>
+                            <select
+                                id="price.type"
+                                name="price.type"
+                                value={formData.price.type}
+                                onChange={handleInputChange}
+                                required
+                            >
+                                <option value="fixed">Fixed Price</option>
+                                <option value="negotiable">Negotiable</option>
+                                <option value="contact-for-price">Contact for Price</option>
+                            </select>
+                            <small className="form-help">Choose how pricing works for this product</small>
+                        </div>
+
+                        {(formData.price.type === "fixed" || formData.price.type === "negotiable") && (
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label htmlFor="price.amount">
+                                        {formData.price.type === "fixed" ? "Price Amount *" : "Starting Price"}
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="price.amount"
+                                        name="price.amount"
+                                        value={formData.price.amount}
+                                        onChange={handleInputChange}
+                                        min="0"
+                                        step="0.01"
+                                        required={formData.price.type === "fixed"}
+                                        placeholder="Enter price amount"
+                                    />
+                                    <small className="form-help">
+                                        {formData.price.type === "fixed" 
+                                            ? "Exact selling price" 
+                                            : "Base price for negotiations"}
+                                    </small>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="price.currency">Currency *</label>
+                                    <select
+                                        id="price.currency"
+                                        name="price.currency"
+                                        value={formData.price.currency}
+                                        onChange={handleInputChange}
+                                        required={formData.price.type === "fixed" || formData.price.type === "negotiable"}
+                                    >
+                                        <option value="">Select Currency</option>
+                                        <optgroup label="Popular Currencies">
+                                            <option value="UGX">🇺🇬 UGX - Ugandan Shilling</option>
+                                            <option value="USD">🇺🇸 USD - US Dollar</option>
+                                            <option value="EUR">🇪🇺 EUR - Euro</option>
+                                            <option value="GBP">🇬🇧 GBP - British Pound</option>
+                                        </optgroup>
+                                        <optgroup label="African Currencies">
+                                            <option value="KES">🇰🇪 KES - Kenyan Shilling</option>
+                                            <option value="TZS">🇹🇿 TZS - Tanzanian Shilling</option>
+                                            <option value="RWF">🇷🇼 RWF - Rwandan Franc</option>
+                                            <option value="ZAR">🇿🇦 ZAR - South African Rand</option>
+                                            <option value="NGN">🇳🇬 NGN - Nigerian Naira</option>
+                                            <option value="GHS">🇬🇭 GHS - Ghanaian Cedi</option>
+                                        </optgroup>
+                                        <optgroup label="Other Currencies">
+                                            <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+                                            <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+                                            <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+                                            <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
+                                            <option value="INR">🇮🇳 INR - Indian Rupee</option>
+                                            <option value="AED">🇦🇪 AED - UAE Dirham</option>
+                                            <option value="SAR">🇸🇦 SAR - Saudi Riyal</option>
+                                        </optgroup>
+                                    </select>
+                                    <small className="form-help">Select the currency for the price</small>
+                                </div>
+                            </div>
+                        )}
+
+                        {formData.price.type === "contact-for-price" && (
+                            <div className="info-box">
+                                <p>ℹ️ Users will need to contact you for pricing information. No price will be displayed on the website.</p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Technical Specifications */}
