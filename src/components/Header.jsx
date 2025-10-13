@@ -14,7 +14,7 @@
  * @component
  */
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import "../styles/Header.css";
@@ -29,6 +29,10 @@ const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccoun
   const [isScrolled, setIsScrolled] = useState(false);
   // Currently active navigation link
   const [activeLink, setActiveLink] = useState("home");
+  
+  // Get current location to check if we're on Awards page
+  const location = useLocation();
+  const isAwardsPage = location.pathname === "/awards";
 
   /**
    * Set up responsive behavior and scroll effects
@@ -145,6 +149,14 @@ const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccoun
           variants={logoVariants}
           whileHover="hover"
           whileTap={{ scale: 0.9 }}
+          onClick={() => {
+            if (isAwardsPage) {
+              window.location.href = "/";
+            } else {
+              scrollToSection("home");
+            }
+          }}
+          style={{ cursor: "pointer" }}
         >
           <motion.img 
             src="/images/logo2.jpg" 
@@ -181,27 +193,42 @@ const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccoun
               variants={linkVariants}
               custom={index}
             >
-              <motion.a
-                href={`#${link.id}`}
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  scrollToSection(link.id);
-                }}
-                variants={linkVariants}
-                whileHover="hover"
-                whileTap="tap"
-                className={activeLink === link.id ? "active" : ""}
-              >
-                <motion.span className="link-text">
-                  {link.label}
-                </motion.span>
-                <motion.div 
-                  className="link-underline"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.a>
+              {isAwardsPage ? (
+                // On Awards page, link back to homepage sections
+                <Link to={`/#${link.id}`}>
+                  <motion.span 
+                    className="link-text"
+                    variants={linkVariants}
+                    whileHover="hover"
+                    whileTap="tap"
+                  >
+                    {link.label}
+                  </motion.span>
+                </Link>
+              ) : (
+                // On homepage, scroll to sections
+                <motion.a
+                  href={`#${link.id}`}
+                  onClick={(e) => { 
+                    e.preventDefault(); 
+                    scrollToSection(link.id);
+                  }}
+                  variants={linkVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  className={activeLink === link.id ? "active" : ""}
+                >
+                  <motion.span className="link-text">
+                    {link.label}
+                  </motion.span>
+                  <motion.div 
+                    className="link-underline"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </motion.a>
+              )}
             </motion.li>
           ))}
 
