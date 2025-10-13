@@ -648,45 +648,6 @@
   z-index: 1;
 }
 
-.awards-categories::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  background-image: url('/images/logo.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.08;
-  z-index: 1;
-  animation: categoryLogoRotate 60s linear infinite, categoryLogoPulse 4s ease-in-out infinite;
-  filter: blur(1px);
-  pointer-events: none;
-}
-
-@keyframes categoryLogoRotate {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
-@keyframes categoryLogoPulse {
-  0%, 100% {
-    opacity: 0.08;
-    filter: blur(1px);
-  }
-  50% {
-    opacity: 0.12;
-    filter: blur(2px);
-  }
-}
-
 .awards-categories .container {
   position: relative;
   z-index: 2;
@@ -753,8 +714,40 @@
   z-index: 1;
 }
 
+.category-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  height: 180px;
+  background-image: url('/images/logo2.jpg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.12;
+  z-index: 0;
+  animation: cardLogoRotate 45s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes cardLogoRotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 .category-card:hover::before {
   opacity: 1;
+}
+
+.category-card:hover::after {
+  opacity: 0.18;
+  animation: cardLogoRotate 30s linear infinite;
 }
 
 .category-card:hover {
@@ -3200,10 +3193,10 @@
     top: 80px;
   }
   
-  .awards-categories::after {
-    width: 450px;
-    height: 450px;
-    opacity: 0.07;
+  .category-card::after {
+    width: 150px;
+    height: 150px;
+    opacity: 0.12;
   }
 
   .awards-hero-section {
@@ -3298,10 +3291,10 @@
     margin-right: auto;
   }
   
-  .awards-categories::after {
-    width: 350px;
-    height: 350px;
-    opacity: 0.06;
+  .category-card::after {
+    width: 120px;
+    height: 120px;
+    opacity: 0.10;
   }
 
   .badge-icon {
@@ -4062,6 +4055,29 @@
   background: #1da851;
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+}
+
+.social-btn.tiktok {
+  background: #000000;
+  color: white;
+}
+
+.social-btn.tiktok:hover {
+  background: #ff0050;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(255, 0, 80, 0.4);
+}
+
+.social-btn.instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: white;
+}
+
+.social-btn.instagram:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(225, 48, 108, 0.4);
+  filter: brightness(1.1);
 }
 
 /* ============================================
