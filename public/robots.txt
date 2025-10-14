@@ -1,0 +1,27 @@
+# robots.txt for SAP Technologies Uganda
+# https://sap-technologies.ug
+
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow admin and authentication pages from being indexed
+Disallow: /admin
+Disallow: /login
+Disallow: /api/
+
+# Allow specific pages
+Allow: /
+Allow: /about
+Allow: /services
+Allow: /products
+Allow: /portfolio
+Allow: /contact
+Allow: /awards
+Allow: /partners
+
+# Sitemap location
+Sitemap: https://sap-technologies.ug/sitemap.xml
+
+# Crawl-delay for courtesy (optional)
+Crawl-delay: 1

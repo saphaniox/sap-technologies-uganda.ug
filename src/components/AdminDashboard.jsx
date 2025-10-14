@@ -709,7 +709,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     <div className="admin-modal">
       <div className="admin-content">
         <div className="admin-header">
-          <h2>Dashboard - Sap Technologies Uganda</h2>
+          <h2>Admin-Dashboard - SAP-Technologies Uganda</h2>
           <div className="admin-user-info">
             <span>Welcome, {user?.name}</span>
             <span className="admin-badge">ADMIN</span>
