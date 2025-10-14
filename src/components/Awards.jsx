@@ -114,7 +114,11 @@ const Awards = ({ onClose }) => {
       const response = await apiService.get("/awards/categories");
       setCategories(response.data.categories);
     } catch (error) {
-      showAlert.error("Error", "Failed to load award categories");
+      console.error("Failed to load categories:", error);
+      // Only show error if it's not a network/timeout issue
+      if (!error.message?.includes("Failed to fetch")) {
+        showAlert.error("Error", "Failed to load award categories");
+      }
     } finally {
       setLoading(prev => ({ ...prev, categories: false }));
     }
@@ -138,7 +142,11 @@ const Awards = ({ onClose }) => {
       setNominations(response.data.nominations);
       setPagination(response.data.pagination);
     } catch (error) {
-      showAlert.error("Error", "Failed to load nominations");
+      console.error("Failed to load nominations:", error);
+      // Only show error alert if it's not a network/timeout issue
+      if (!error.message?.includes("Failed to fetch") && !error.message?.includes("NetworkError")) {
+        showAlert.error("Error", "Failed to load nominations. Please try again.");
+      }
     } finally {
       setLoading(prev => ({ ...prev, nominations: false }));
     }
@@ -390,14 +398,18 @@ const Awards = ({ onClose }) => {
               <div className="hero-stat">
                 <div className="stat-icon">🎯</div>
                 <div className="stat-content">
-                  <span className="stat-number">{categories.length}</span>
+                  <span className="stat-number">
+                    {loading.categories ? "..." : categories.length}
+                  </span>
                   <span className="stat-label">Award Categories</span>
                 </div>
               </div>
               <div className="hero-stat">
                 <div className="stat-icon">👥</div>
                 <div className="stat-content">
-                  <span className="stat-number">{nominations.length}</span>
+                  <span className="stat-number">
+                    {loading.nominations ? "..." : nominations.length}
+                  </span>
                   <span className="stat-label">Nominations</span>
                 </div>
               </div>
@@ -405,7 +417,7 @@ const Awards = ({ onClose }) => {
                 <div className="stat-icon">⭐</div>
                 <div className="stat-content">
                   <span className="stat-number">
-                    {nominations.reduce((total, nom) => total + nom.votes, 0)}
+                    {loading.nominations ? "..." : nominations.reduce((total, nom) => total + (nom.votes || 0), 0)}
                   </span>
                   <span className="stat-label">Total Votes</span>
                 </div>
