@@ -16,7 +16,7 @@ Your website now has:
 1. Go to: https://search.google.com/search-console/welcome
 2. Click "Start Now"
 3. Sign in with your Google account
-4. Choose "URL prefix" and enter: `https://sap-technologies.ug`
+4. Choose "URL prefix" and enter: `https://www.sap-technologies.com`
 5. Choose verification method (easiest is HTML tag):
    - Copy the meta tag they give you
    - Contact me to add it to your site, OR
@@ -35,13 +35,13 @@ Your website now has:
 **Speed up the process - don't wait for Google to find you**
 
 1. In Google Search Console, click "URL Inspection" (top)
-2. Enter: `https://sap-technologies.ug`
+2. Enter: `https://www.sap-technologies.com`
 3. Click "Request Indexing"
 4. Repeat for important pages:
-   - `https://sap-technologies.ug/#services`
-   - `https://sap-technologies.ug/#products`
-   - `https://sap-technologies.ug/#contact`
-   - `https://sap-technologies.ug/awards`
+   - `https://www.sap-technologies.com/#services`
+   - `https://www.sap-technologies.com/#products`
+   - `https://www.sap-technologies.com/#contact`
+   - `https://www.sap-technologies.com/awards`
 
 ## 📱 Bonus: Google My Business (10 minutes - HIGHLY RECOMMENDED!)
 **This gets you on Google Maps and local search!**
@@ -66,7 +66,7 @@ Your website now has:
 ## 🔍 How to Check if You're on Google
 
 1. Wait 24-48 hours after submitting
-2. Search on Google: `site:sap-technologies.ug`
+2. Search on Google: `site:www.sap-technologies.com`
 3. You should see your pages listed
 
 ## 📊 Monitor Your Progress

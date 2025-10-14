@@ -31,7 +31,7 @@
 
 ### Step 1: Submit to Google Search Console
 1. Go to https://search.google.com/search-console
-2. Add your property: `https://sap-technologies.ug`
+2. Add your property: `https://www.sap-technologies.com`
 3. Verify ownership using one of these methods:
    - HTML file upload
    - Meta tag verification
@@ -40,7 +40,7 @@
 
 ### Step 2: Submit Sitemap to Google
 1. In Google Search Console, go to "Sitemaps"
-2. Add sitemap URL: `https://sap-technologies.ug/sitemap.xml`
+2. Add sitemap URL: `https://www.sap-technologies.com/sitemap.xml`
 3. Click "Submit"
 
 ### Step 3: Request Indexing

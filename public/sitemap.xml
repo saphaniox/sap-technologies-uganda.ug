@@ -4,7 +4,7 @@
   
   <!-- Homepage -->
   <url>
-    <loc>https://sap-technologies.ug/</loc>
+    <loc>https://www.sap-technologies.com/</loc>
     <lastmod>2025-10-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -12,7 +12,7 @@
   
   <!-- About Page -->
   <url>
-    <loc>https://sap-technologies.ug/#about</loc>
+    <loc>https://www.sap-technologies.com/#about</loc>
     <lastmod>2025-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -20,7 +20,7 @@
   
   <!-- Services Page -->
   <url>
-    <loc>https://sap-technologies.ug/#services</loc>
+    <loc>https://www.sap-technologies.com/#services</loc>
     <lastmod>2025-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -28,7 +28,7 @@
   
   <!-- Products Page -->
   <url>
-    <loc>https://sap-technologies.ug/#products</loc>
+    <loc>https://www.sap-technologies.com/#products</loc>
     <lastmod>2025-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -36,7 +36,7 @@
   
   <!-- Portfolio Page -->
   <url>
-    <loc>https://sap-technologies.ug/#portfolio</loc>
+    <loc>https://www.sap-technologies.com/#portfolio</loc>
     <lastmod>2025-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -44,7 +44,7 @@
   
   <!-- Partners Page -->
   <url>
-    <loc>https://sap-technologies.ug/#partners</loc>
+    <loc>https://www.sap-technologies.com/#partners</loc>
     <lastmod>2025-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -52,7 +52,7 @@
   
   <!-- Contact Page -->
   <url>
-    <loc>https://sap-technologies.ug/#contact</loc>
+    <loc>https://www.sap-technologies.com/#contact</loc>
     <lastmod>2025-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -60,7 +60,7 @@
   
   <!-- Awards Page -->
   <url>
-    <loc>https://sap-technologies.ug/awards</loc>
+    <loc>https://www.sap-technologies.com/awards</loc>
     <lastmod>2025-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -68,7 +68,7 @@
   
   <!-- Certificate Verify Page -->
   <url>
-    <loc>https://sap-technologies.ug/certificate/verify</loc>
+    <loc>https://www.sap-technologies.com/certificate/verify</loc>
     <lastmod>2025-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
