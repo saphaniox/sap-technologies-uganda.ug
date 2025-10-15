@@ -48,13 +48,13 @@ const Products = () => {
     useEffect(() => {
         /**
          * Fetch Products and Categories
-         * Loads featured products and available categories from API
+         * Loads all products and available categories from API
          */
         const fetchData = async () => {
             try {
                 setLoading(true);
                 const [productsResponse, categoriesResponse] = await Promise.all([
-                    apiService.request("/api/products?featured=true&limit=6"),
+                    apiService.request("/api/products"),  // Get all products
                     apiService.request("/api/products/categories")
                 ]);
 
@@ -86,8 +86,8 @@ const Products = () => {
             setSelectedCategory(category);
             
             const endpoint = category === "all" 
-                ? "/api/products?featured=true&limit=6"
-                : `/api/products?category=${encodeURIComponent(category)}&limit=6`;
+                ? "/api/products"  // Get all products, no limit
+                : `/api/products?category=${encodeURIComponent(category)}`;
             
             const response = await apiService.request(endpoint);
             

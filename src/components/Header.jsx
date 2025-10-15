@@ -19,7 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import "../styles/Header.css";
 
-const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccountOpen, onAdminOpen, onAwardsOpen, onLogout }) => {
+const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccountOpen, onAdminOpen, onLogout }) => {
   /**
    * UI State Management
    */

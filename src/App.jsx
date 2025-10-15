@@ -53,14 +53,14 @@ function App() {
   const [showTermsOfService, setShowTermsOfService] = useState(() => {
     return localStorage.getItem("showTermsOfService") === "true";
   });
-  const [showAwards, setShowAwards] = useState(() => {
-    return localStorage.getItem("showAwards") === "true";
-  });
 
   // Initialize the app - check if user is already logged in and set up animations
   useEffect(() => {
     checkAuthStatus(); // See if user has a valid session
     initializeAnimations(); // Start up our page animations
+    
+    // Clean up legacy localStorage values
+    localStorage.removeItem("showAwards");
     
     // Inject micro-animation styles
     const styleElement = document.createElement("style");
@@ -138,7 +138,6 @@ function App() {
       localStorage.removeItem("showAdmin");
       localStorage.removeItem("showPrivacyPolicy");
       localStorage.removeItem("showTermsOfService");
-      localStorage.removeItem("showAwards");
     } catch (error) {
       console.error("Logout error:", error);
       // Force logout on client side even if server request fails
@@ -152,7 +151,6 @@ function App() {
       localStorage.removeItem("showAdmin");
       localStorage.removeItem("showPrivacyPolicy");
       localStorage.removeItem("showTermsOfService");
-      localStorage.removeItem("showAwards");
     }
   };
 
@@ -196,16 +194,6 @@ function App() {
     localStorage.removeItem("showTermsOfService");
   };
 
-  const handleAwardsOpen = () => {
-    setShowAwards(true);
-    localStorage.setItem("showAwards", "true");
-  };
-
-  const handleAwardsClose = () => {
-    setShowAwards(false);
-    localStorage.removeItem("showAwards");
-  };
-
   return (
     <ErrorBoundary>
       <div className="App">
@@ -226,7 +214,6 @@ function App() {
                 onAuthModalOpen={handleAuthModalOpen}
                 onAccountOpen={handleAccountOpen}
                 onAdminOpen={handleAdminOpen}
-                onAwardsOpen={handleAwardsOpen}
                 onLogout={handleLogout}
               />
               
@@ -284,12 +271,6 @@ function App() {
               {showTermsOfService && (
                 <TermsOfService 
                   onClose={handleTermsOfServiceClose}
-                />
-              )}
-
-              {showAwards && (
-                <Awards 
-                  onClose={handleAwardsClose}
                 />
               )}
             </>
