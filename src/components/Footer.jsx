@@ -134,7 +134,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
         <p>
           Designed & Powered by{" "}
           <a 
-            href="https://sap-technologies.com" 
+            href="https://www.sap-technologies.com" 
             target="_blank" 
             rel="noopener noreferrer"
             className="credits-link"

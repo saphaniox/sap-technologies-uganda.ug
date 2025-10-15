@@ -606,8 +606,13 @@ const Awards = ({ onClose }) => {
                     className="category-stats"
                   >
                     <span className="nominations-count">
-                      {category.approvedNominations} nominations
+                      🎯 {category.approvedNominations || 0} approved
                     </span>
+                    {category.totalNominations > category.approvedNominations && (
+                      <span className="nominations-pending">
+                        ⏳ {(category.totalNominations || 0) - (category.approvedNominations || 0)} pending
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}

@@ -833,9 +833,26 @@
   backdrop-filter: blur(10px);
 }
 
+.nominations-pending {
+  background: rgba(255, 183, 77, 0.15);
+  color: #ffb74d;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
 .category-card.active .nominations-count {
   background: rgba(255, 255, 255, 0.25);
   color: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.category-card.active .nominations-pending {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -2243,6 +2260,16 @@
 [data-theme="dark"] .category-stats {
   background: rgba(26, 26, 26, 0.5);
   border-top: 1px solid rgba(62, 74, 92, 0.5);
+}
+
+[data-theme="dark"] .nominations-count {
+  background: rgba(93, 173, 226, 0.2);
+  color: #5dade2;
+}
+
+[data-theme="dark"] .nominations-pending {
+  background: rgba(255, 183, 77, 0.2);
+  color: #ffb74d;
 }
 
 [data-theme="dark"] .category-stat-value {
