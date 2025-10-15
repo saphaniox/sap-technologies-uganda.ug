@@ -68,7 +68,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
         <div className="footer-brand">
           <img src="/images/logo2.jpg" alt="SAP Logo" className="footer-logo" />
           <span>SAP Technologies</span>
-          <p>Kampala, Uganda</p>
+          <p>Kampala Uganda</p>
         </div>
         
         <div className="footer-links">
@@ -80,8 +80,8 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
             <li><a href="#portfolio" onClick={(e) => { e.preventDefault(); scrollToSection("portfolio"); }}>Our Featured Projects</a></li>
             <li><a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection("contact"); }}>Contact</a></li>
             <li><a href="#companies" onClick={(e) => { e.preventDefault(); scrollToSection("companies"); }}>Our Platforms</a></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SAP Engineering"); }}>SAP Engineering</a></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SAP Online Learning"); }}>SAP Online Learning</a></li>
+            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SAP-Engineering"); }}>SAP Engineering</a></li>
+            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SAP Online-Learning"); }}>SAP Online Learning</a></li>
             <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SAP E-Commerce"); }}>SAP E-Commerce</a></li>
           </ul>
         </div>
