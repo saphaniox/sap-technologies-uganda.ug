@@ -23,6 +23,9 @@ const API_BASE_URL = getApiUrl();
 class ApiService {
   constructor() {
     this.baseURL = API_BASE_URL;
+    // Simple in-memory cache for GET requests
+    this.cache = new Map();
+    this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
     // Log API configuration in development
     if (import.meta.env.DEV) {
       console.log('API Configuration:', {
@@ -34,6 +37,46 @@ class ApiService {
     }
   }
 
+  /**
+   * Get cached data if available and not expired
+   * @private
+   */
+  getCached(key) {
+    const cached = this.cache.get(key);
+    if (!cached) return null;
+    
+    const now = Date.now();
+    if (now - cached.timestamp > this.cacheTimeout) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return cached.data;
+  }
+
+  /**
+   * Store data in cache
+   * @private
+   */
+  setCache(key, data) {
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now()
+    });
+  }
+
+  /**
+   * Clear cache for specific key or all cache
+   * @public
+   */
+  clearCache(key = null) {
+    if (key) {
+      this.cache.delete(key);
+    } else {
+      this.cache.clear();
+    }
+  }
+
   // Main method for making HTTP requests to our backend
   // This handles all the common stuff like headers, cookies, and error handling
   async request(endpoint, options = {}) {
@@ -41,22 +84,42 @@ class ApiService {
     const apiEndpoint = endpoint.startsWith('/api') ? endpoint : `/api${endpoint}`;
     const url = `${this.baseURL}${apiEndpoint}`;
     
+    // Check cache for GET requests (unless explicitly disabled)
+    const method = (options.method || "GET").toUpperCase();
+    const cacheKey = `${method}:${url}`;
+    const useCache = options.useCache !== false && method === "GET";
+    
+    if (useCache) {
+      const cached = this.getCached(cacheKey);
+      if (cached) {
+        console.log('📦 Serving from cache:', cacheKey);
+        return cached;
+      }
+    }
+    
     // Set up headers - but be careful with file uploads!
     // FormData needs special handling (browser sets Content-Type automatically)
     const headers = {};
-    if (!(options.body instanceof FormData)) {
+    if (options.body && !(options.body instanceof FormData)) {
       headers["Content-Type"] = "application/json";
     }
     
-    const config = {
-      method: "GET", // Default to GET request
-      headers: {
-        ...headers,
-        ...options.headers,
-      },
-      credentials: "include", // Super important! This sends cookies so server knows who we are
-      ...options,
+    // Merge headers properly, avoiding issues with undefined
+    const mergedHeaders = {
+      ...headers,
+      ...(options.headers || {})
     };
+    
+    const config = {
+      method: method,
+      headers: mergedHeaders,
+      credentials: "include", // Super important! This sends cookies so server knows who we are
+    };
+    
+    // Add body if present
+    if (options.body) {
+      config.body = options.body;
+    }
 
     try {
       // Actually make the request to our server
@@ -92,7 +155,7 @@ class ApiService {
         }
         
         // Create enhanced error with response data
-        const error = new Error(data.message || `HTTP error! status: ${response.status}`);
+        const error = new Error(data?.message || `HTTP error! status: ${response.status}`);
         error.response = {
           status: response.status,
           statusText: response.statusText,
@@ -101,11 +164,17 @@ class ApiService {
         throw error;
       }
 
+      // Only cache successful GET responses with valid data
+      if (useCache && response.ok && data) {
+        this.setCache(cacheKey, data);
+      }
+
       return data;
     } catch (error) {
       // Only log errors that aren"t authentication-related to reduce console noise
       if (!error.message.includes("Authentication required")) {
         console.error("API request failed:", error);
+        console.error("Request details:", { endpoint, method, url });
       }
       throw error;
     }
@@ -321,7 +390,10 @@ class ApiService {
       config.headers = { "Content-Type": "application/json" };
     }
     
-    return this.request("/api/admin/services", config);
+    const result = await this.request("/api/admin/services", config);
+    // Clear services cache after mutation
+    this.clearCache();
+    return result;
   }
 
   async updateService(serviceId, serviceData) {
@@ -337,13 +409,19 @@ class ApiService {
       config.headers = { "Content-Type": "application/json" };
     }
     
-    return this.request(`/api/admin/services/${serviceId}`, config);
+    const result = await this.request(`/api/admin/services/${serviceId}`, config);
+    // Clear services cache after mutation
+    this.clearCache();
+    return result;
   }
 
   async deleteService(serviceId) {
-    return this.request(`/api/admin/services/${serviceId}`, {
+    const result = await this.request(`/api/admin/services/${serviceId}`, {
       method: "DELETE",
     });
+    // Clear services cache after mutation
+    this.clearCache();
+    return result;
   }
 
   async toggleServiceFeatured(serviceId) {
@@ -383,7 +461,10 @@ class ApiService {
       config.headers = { "Content-Type": "application/json" };
     }
     
-    return this.request("/api/admin/projects", config);
+    const result = await this.request("/api/admin/projects", config);
+    // Clear projects cache after mutation
+    this.clearCache();
+    return result;
   }
 
   async updateProject(projectId, projectData) {
@@ -398,14 +479,18 @@ class ApiService {
       config.body = JSON.stringify(projectData);
       config.headers = { "Content-Type": "application/json" };
     }
-    
-    return this.request(`/api/admin/projects/${projectId}`, config);
-  }
 
-  async deleteProject(projectId) {
-    return this.request(`/api/admin/projects/${projectId}`, {
+    const result = await this.request(`/api/admin/projects/${projectId}`, config);
+    // Clear projects cache after mutation
+    this.clearCache();
+    return result;
+  }  async deleteProject(projectId) {
+    const result = await this.request(`/api/admin/projects/${projectId}`, {
       method: "DELETE",
     });
+    // Clear projects cache after mutation
+    this.clearCache();
+    return result;
   }
 
   async toggleProjectFeatured(projectId) {
@@ -543,23 +628,32 @@ class ApiService {
   }
 
   async createProduct(formData) {
-    return this.request("/api/products/admin/products", {
+    const result = await this.request("/api/products/admin/products", {
       method: "POST",
       body: formData
     });
+    // Clear products cache after mutation
+    this.clearCache();
+    return result;
   }
 
   async updateProduct(productId, formData) {
-    return this.request(`/api/products/admin/products/${productId}`, {
+    const result = await this.request(`/api/products/admin/products/${productId}`, {
       method: "PUT",
       body: formData
     });
+    // Clear products cache after mutation
+    this.clearCache();
+    return result;
   }
 
   async deleteProduct(productId) {
-    return this.request(`/api/products/admin/products/${productId}`, {
+    const result = await this.request(`/api/products/admin/products/${productId}`, {
       method: "DELETE"
     });
+    // Clear products cache after mutation
+    this.clearCache();
+    return result;
   }
 
   async updateProductOrder(products) {
