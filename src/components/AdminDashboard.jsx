@@ -341,7 +341,14 @@ const AdminDashboard = ({ user, onClose }) => {
       if (response && response.data) {
         console.log("✅ Product inquiries loaded:", response.data.inquiries?.length || 0);
         setProductInquiries(response.data.inquiries || []);
-        setProductInquiriesPagination(response.data.pagination || { currentPage: 1, totalPages: 1 });
+        // Backend returns: totalPages, currentPage, total (not wrapped in pagination object)
+        setProductInquiriesPagination({
+          currentPage: parseInt(response.data.currentPage) || 1,
+          totalPages: parseInt(response.data.totalPages) || 1,
+          totalInquiries: response.data.total || 0,
+          hasPrev: parseInt(response.data.currentPage) > 1,
+          hasNext: parseInt(response.data.currentPage) < parseInt(response.data.totalPages)
+        });
       } else {
         console.warn("⚠️ No data in response");
         setProductInquiries([]);
@@ -370,7 +377,15 @@ const AdminDashboard = ({ user, onClose }) => {
       if (response && response.data) {
         console.log("✅ Service quotes loaded:", response.data.quotes?.length || 0);
         setServiceQuotes(response.data.quotes || []);
-        setServiceQuotesPagination(response.data.pagination || { currentPage: 1, totalPages: 1 });
+        // Backend returns: pagination: { page, limit, total, pages }
+        const pagination = response.data.pagination || {};
+        setServiceQuotesPagination({
+          currentPage: parseInt(pagination.page) || 1,
+          totalPages: parseInt(pagination.pages) || 1,
+          totalQuotes: pagination.total || 0,
+          hasPrev: parseInt(pagination.page) > 1,
+          hasNext: parseInt(pagination.page) < parseInt(pagination.pages)
+        });
       } else {
         console.warn("⚠️ No data in response");
         setServiceQuotes([]);
