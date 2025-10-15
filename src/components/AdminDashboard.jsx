@@ -43,6 +43,8 @@ const AdminDashboard = ({ user, onClose }) => {
   const [partners, setPartners] = useState([]); // Business partners
   const [partnershipRequests, setPartnershipRequests] = useState([]); // New partnership requests
   const [products, setProducts] = useState([]); // Company products
+  const [productInquiries, setProductInquiries] = useState([]); // Product inquiry submissions
+  const [serviceQuotes, setServiceQuotes] = useState([]); // Service quote requests
   
   // UI state for loading and error handling
   const [loading, setLoading] = useState(true);
@@ -60,6 +62,8 @@ const AdminDashboard = ({ user, onClose }) => {
   const [partnersPagination, setPartnersPagination] = useState({ currentPage: 1, totalPages: 1 });
   const [partnershipRequestsPagination, setPartnershipRequestsPagination] = useState({ currentPage: 1, totalPages: 1 });
   const [productsPagination, setProductsPagination] = useState({ currentPage: 1, totalPages: 1 });
+  const [productInquiriesPagination, setProductInquiriesPagination] = useState({ currentPage: 1, totalPages: 1 });
+  const [serviceQuotesPagination, setServiceQuotesPagination] = useState({ currentPage: 1, totalPages: 1 });
 
   // Search and filter states
   const [usersSearch, setUsersSearch] = useState("");
@@ -80,6 +84,10 @@ const AdminDashboard = ({ user, onClose }) => {
   const [productsSearch, setProductsSearch] = useState("");
   const [productsCategoryFilter, setProductsCategoryFilter] = useState("");
   const [productsStatusFilter, setProductsStatusFilter] = useState("");
+  const [productInquiriesSearch, setProductInquiriesSearch] = useState("");
+  const [productInquiriesStatusFilter, setProductInquiriesStatusFilter] = useState("");
+  const [serviceQuotesSearch, setServiceQuotesSearch] = useState("");
+  const [serviceQuotesStatusFilter, setServiceQuotesStatusFilter] = useState("");
 
   // Form states for creating/editing
   const [showServiceForm, setShowServiceForm] = useState(false);
@@ -149,11 +157,17 @@ const AdminDashboard = ({ user, onClose }) => {
       case "products":
         fetchProducts();
         break;
+      case "product-inquiries":
+        fetchProductInquiries();
+        break;
+      case "service-quotes":
+        fetchServiceQuotes();
+        break;
       case "awards":
         // Awards data is loaded by the AwardsAdmin component itself
         break;
     }
-  }, [activeTab, usersSearch, usersRoleFilter, contactsSearch, contactsStatusFilter, newslettersSearch, servicesSearch, servicesCategoryFilter, servicesStatusFilter, projectsSearch, projectsCategoryFilter, projectsStatusFilter, partnersSearch, partnersStatusFilter, partnershipRequestsSearch, partnershipRequestsStatusFilter, productsSearch, productsCategoryFilter, productsStatusFilter]);
+  }, [activeTab, usersSearch, usersRoleFilter, contactsSearch, contactsStatusFilter, newslettersSearch, servicesSearch, servicesCategoryFilter, servicesStatusFilter, projectsSearch, projectsCategoryFilter, projectsStatusFilter, partnersSearch, partnersStatusFilter, partnershipRequestsSearch, partnershipRequestsStatusFilter, productsSearch, productsCategoryFilter, productsStatusFilter, productInquiriesSearch, productInquiriesStatusFilter, serviceQuotesSearch, serviceQuotesStatusFilter]);
 
   const fetchDashboardData = async () => {
     try {
@@ -307,6 +321,64 @@ const AdminDashboard = ({ user, onClose }) => {
       console.error("❌ Products fetch error:", error);
       console.error("Error details:", error.message, error.response);
       setProducts([]);
+    }
+  };
+
+  const fetchProductInquiries = async (page = 1) => {
+    try {
+      console.log("📨 Fetching product inquiries... Page:", page);
+      const params = {
+        page,
+        limit: 10,
+        search: productInquiriesSearch,
+        status: productInquiriesStatusFilter === "all" ? "" : productInquiriesStatusFilter
+      };
+      
+      console.log("📨 Request params:", params);
+      const response = await apiService.getProductInquiries(params);
+      console.log("📨 Product inquiries response:", response);
+      
+      if (response && response.data) {
+        console.log("✅ Product inquiries loaded:", response.data.inquiries?.length || 0);
+        setProductInquiries(response.data.inquiries || []);
+        setProductInquiriesPagination(response.data.pagination || { currentPage: 1, totalPages: 1 });
+      } else {
+        console.warn("⚠️ No data in response");
+        setProductInquiries([]);
+      }
+    } catch (error) {
+      console.error("❌ Product inquiries fetch error:", error);
+      console.error("Error details:", error.message, error.response);
+      setProductInquiries([]);
+    }
+  };
+
+  const fetchServiceQuotes = async (page = 1) => {
+    try {
+      console.log("💼 Fetching service quotes... Page:", page);
+      const params = {
+        page,
+        limit: 10,
+        search: serviceQuotesSearch,
+        status: serviceQuotesStatusFilter === "all" ? "" : serviceQuotesStatusFilter
+      };
+      
+      console.log("💼 Request params:", params);
+      const response = await apiService.getServiceQuotes(params);
+      console.log("💼 Service quotes response:", response);
+      
+      if (response && response.data) {
+        console.log("✅ Service quotes loaded:", response.data.quotes?.length || 0);
+        setServiceQuotes(response.data.quotes || []);
+        setServiceQuotesPagination(response.data.pagination || { currentPage: 1, totalPages: 1 });
+      } else {
+        console.warn("⚠️ No data in response");
+        setServiceQuotes([]);
+      }
+    } catch (error) {
+      console.error("❌ Service quotes fetch error:", error);
+      console.error("Error details:", error.message, error.response);
+      setServiceQuotes([]);
     }
   };
 
@@ -670,6 +742,66 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     }
   };
 
+  const handleUpdateInquiryStatus = async (inquiryId, newStatus) => {
+    try {
+      const response = await apiService.updateInquiryStatus(inquiryId, { status: newStatus });
+      
+      if (response && response.data) {
+        setAutoMessage("Product inquiry status updated successfully");
+        fetchProductInquiries(productInquiriesPagination.currentPage);
+      }
+    } catch (error) {
+      setAutoMessage("Failed to update inquiry status: " + error.message, true);
+    }
+  };
+
+  const handleDeleteInquiry = async (inquiryId, productName) => {
+    if (!window.confirm(`Are you sure you want to delete the inquiry for ${productName}?`)) {
+      return;
+    }
+
+    try {
+      const response = await apiService.deleteInquiry(inquiryId);
+      
+      if (response) {
+        setAutoMessage("Product inquiry deleted successfully");
+        fetchProductInquiries(productInquiriesPagination.currentPage);
+      }
+    } catch (error) {
+      setAutoMessage("Failed to delete inquiry: " + error.message, true);
+    }
+  };
+
+  const handleUpdateQuoteStatus = async (quoteId, newStatus) => {
+    try {
+      const response = await apiService.updateQuoteStatus(quoteId, { status: newStatus });
+      
+      if (response && response.data) {
+        setAutoMessage("Service quote status updated successfully");
+        fetchServiceQuotes(serviceQuotesPagination.currentPage);
+      }
+    } catch (error) {
+      setAutoMessage("Failed to update quote status: " + error.message, true);
+    }
+  };
+
+  const handleDeleteQuote = async (quoteId, serviceName) => {
+    if (!window.confirm(`Are you sure you want to delete the quote for ${serviceName}?`)) {
+      return;
+    }
+
+    try {
+      const response = await apiService.deleteQuote(quoteId);
+      
+      if (response) {
+        setAutoMessage("Service quote deleted successfully");
+        fetchServiceQuotes(serviceQuotesPagination.currentPage);
+      }
+    } catch (error) {
+      setAutoMessage("Failed to delete quote: " + error.message, true);
+    }
+  };
+
   const formatUptime = (seconds) => {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
@@ -777,6 +909,18 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
             onClick={() => setActiveTab("products")}
           >
             📦 Products ({products.length || 0})
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === "product-inquiries" ? "active" : ""}`}
+            onClick={() => setActiveTab("product-inquiries")}
+          >
+            📨 Product Inquiries ({productInquiries.length || 0})
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === "service-quotes" ? "active" : ""}`}
+            onClick={() => setActiveTab("service-quotes")}
+          >
+            💼 Service Quotes ({serviceQuotes.length || 0})
           </button>
           <button 
             className={`tab-btn ${activeTab === "awards" ? "active" : ""}`}
@@ -1942,6 +2086,334 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                       className="btn-page"
                       onClick={() => fetchProducts(productsPagination.currentPage + 1)}
                       disabled={!productsPagination.hasNext}
+                    >
+                      Next →
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Product Inquiries Tab */}
+          {activeTab === "product-inquiries" && (
+            <div className="tab-panel">
+              <div className="section-header">
+                <h2>Product Inquiries</h2>
+                <p>Customer inquiries about products - saved even if emails fail</p>
+              </div>
+
+              {/* Product Inquiries Controls */}
+              <div className="controls-section">
+                <div className="right-controls">
+                  <input
+                    type="text"
+                    placeholder="Search inquiries..."
+                    value={productInquiriesSearch}
+                    onChange={(e) => setProductInquiriesSearch(e.target.value)}
+                    className="search-input"
+                  />
+                  <select
+                    value={productInquiriesStatusFilter}
+                    onChange={(e) => setProductInquiriesStatusFilter(e.target.value)}
+                    className="filter-select"
+                  >
+                    <option value="">All Status</option>
+                    <option value="new">🆕 New</option>
+                    <option value="contacted">📞 Contacted</option>
+                    <option value="resolved">✅ Resolved</option>
+                    <option value="closed">❌ Closed</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Product Inquiries Table */}
+              <div className="data-table">
+                <div className="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Product</th>
+                        <th>Customer Email</th>
+                        <th>Phone</th>
+                        <th>Preferred Contact</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {productInquiries.length === 0 ? (
+                        <tr>
+                          <td colSpan="8" style={{ textAlign: 'center', padding: '2rem' }}>
+                            <div>
+                              <p>No product inquiries found</p>
+                              <small>
+                                {productInquiriesSearch || productInquiriesStatusFilter 
+                                  ? "Try adjusting your filters or search terms"
+                                  : "Product inquiries will appear here when customers submit them"
+                                }
+                              </small>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : (
+                        productInquiries.map((inquiry) => (
+                          <tr key={inquiry._id}>
+                            <td>
+                              <strong>{inquiry.productName || 'Product Deleted'}</strong>
+                            </td>
+                            <td>{inquiry.customerEmail}</td>
+                            <td>{inquiry.customerPhone || '-'}</td>
+                            <td>
+                              <span className="contact-method">
+                                {inquiry.preferredContact || 'Email'}
+                              </span>
+                            </td>
+                            <td>
+                              <div className="message-preview" title={inquiry.message}>
+                                {inquiry.message?.substring(0, 50)}{inquiry.message?.length > 50 ? '...' : ''}
+                              </div>
+                            </td>
+                            <td>
+                              <select
+                                value={inquiry.status || 'new'}
+                                onChange={(e) => handleUpdateInquiryStatus(inquiry._id, e.target.value)}
+                                className={`status-select status-${inquiry.status || 'new'}`}
+                              >
+                                <option value="new">🆕 New</option>
+                                <option value="contacted">📞 Contacted</option>
+                                <option value="resolved">✅ Resolved</option>
+                                <option value="closed">❌ Closed</option>
+                              </select>
+                            </td>
+                            <td>{new Date(inquiry.createdAt).toLocaleDateString()}</td>
+                            <td>
+                              <div className="action-buttons">
+                                <button
+                                  className="btn-small btn-view"
+                                  onClick={() => {
+                                    alert(`
+Product: ${inquiry.productName}
+Customer: ${inquiry.customerEmail}
+Phone: ${inquiry.customerPhone || 'N/A'}
+Preferred Contact: ${inquiry.preferredContact}
+Message: ${inquiry.message}
+Submitted: ${new Date(inquiry.createdAt).toLocaleString()}
+IP: ${inquiry.metadata?.ipAddress || 'N/A'}
+                                    `.trim());
+                                  }}
+                                  title="View Details"
+                                >
+                                  <i className="fas fa-eye"></i> View
+                                </button>
+                                <button
+                                  className="btn-small btn-delete"
+                                  onClick={() => handleDeleteInquiry(inquiry._id, inquiry.productName)}
+                                  title="Delete Inquiry"
+                                >
+                                  <i className="fas fa-trash"></i> Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Product Inquiries Pagination */}
+                {productInquiriesPagination.totalPages > 1 && (
+                  <div className="pagination">
+                    <button 
+                      className="btn-page"
+                      onClick={() => fetchProductInquiries(productInquiriesPagination.currentPage - 1)}
+                      disabled={!productInquiriesPagination.hasPrev}
+                    >
+                      ← Previous
+                    </button>
+                    <span className="page-info">
+                      Page {productInquiriesPagination.currentPage} of {productInquiriesPagination.totalPages}
+                      ({productInquiriesPagination.totalInquiries || 0} inquiries)
+                    </span>
+                    <button 
+                      className="btn-page"
+                      onClick={() => fetchProductInquiries(productInquiriesPagination.currentPage + 1)}
+                      disabled={!productInquiriesPagination.hasNext}
+                    >
+                      Next →
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Service Quotes Tab */}
+          {activeTab === "service-quotes" && (
+            <div className="tab-panel">
+              <div className="section-header">
+                <h2>Service Quote Requests</h2>
+                <p>Customer quote requests for services - saved even if emails fail</p>
+              </div>
+
+              {/* Service Quotes Controls */}
+              <div className="controls-section">
+                <div className="right-controls">
+                  <input
+                    type="text"
+                    placeholder="Search quotes..."
+                    value={serviceQuotesSearch}
+                    onChange={(e) => setServiceQuotesSearch(e.target.value)}
+                    className="search-input"
+                  />
+                  <select
+                    value={serviceQuotesStatusFilter}
+                    onChange={(e) => setServiceQuotesStatusFilter(e.target.value)}
+                    className="filter-select"
+                  >
+                    <option value="">All Status</option>
+                    <option value="new">🆕 New</option>
+                    <option value="contacted">📞 Contacted</option>
+                    <option value="quoted">💰 Quoted</option>
+                    <option value="accepted">✅ Accepted</option>
+                    <option value="rejected">❌ Rejected</option>
+                    <option value="expired">⏰ Expired</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Service Quotes Table */}
+              <div className="data-table">
+                <div className="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Service</th>
+                        <th>Customer</th>
+                        <th>Company</th>
+                        <th>Contact</th>
+                        <th>Budget</th>
+                        <th>Timeline</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {serviceQuotes.length === 0 ? (
+                        <tr>
+                          <td colSpan="9" style={{ textAlign: 'center', padding: '2rem' }}>
+                            <div>
+                              <p>No service quotes found</p>
+                              <small>
+                                {serviceQuotesSearch || serviceQuotesStatusFilter 
+                                  ? "Try adjusting your filters or search terms"
+                                  : "Service quote requests will appear here when customers submit them"
+                                }
+                              </small>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : (
+                        serviceQuotes.map((quote) => (
+                          <tr key={quote._id}>
+                            <td>
+                              <strong>{quote.serviceName || 'Service Deleted'}</strong>
+                            </td>
+                            <td>
+                              <div>
+                                <strong>{quote.customerName}</strong>
+                                <br />
+                                <small>{quote.customerEmail}</small>
+                              </div>
+                            </td>
+                            <td>{quote.companyName || '-'}</td>
+                            <td>
+                              <div>
+                                {quote.customerPhone}
+                                <br />
+                                <span className="contact-method">
+                                  {quote.preferredContact}
+                                </span>
+                              </div>
+                            </td>
+                            <td>{quote.budget || '-'}</td>
+                            <td>{quote.timeline || '-'}</td>
+                            <td>
+                              <select
+                                value={quote.status || 'new'}
+                                onChange={(e) => handleUpdateQuoteStatus(quote._id, e.target.value)}
+                                className={`status-select status-${quote.status || 'new'}`}
+                              >
+                                <option value="new">🆕 New</option>
+                                <option value="contacted">📞 Contacted</option>
+                                <option value="quoted">💰 Quoted</option>
+                                <option value="accepted">✅ Accepted</option>
+                                <option value="rejected">❌ Rejected</option>
+                                <option value="expired">⏰ Expired</option>
+                              </select>
+                            </td>
+                            <td>{new Date(quote.createdAt).toLocaleDateString()}</td>
+                            <td>
+                              <div className="action-buttons">
+                                <button
+                                  className="btn-small btn-view"
+                                  onClick={() => {
+                                    alert(`
+Service: ${quote.serviceName}
+Customer: ${quote.customerName}
+Email: ${quote.customerEmail}
+Phone: ${quote.customerPhone}
+Company: ${quote.companyName || 'N/A'}
+Preferred Contact: ${quote.preferredContact}
+Budget: ${quote.budget || 'Not specified'}
+Timeline: ${quote.timeline || 'Not specified'}
+Project Details: ${quote.projectDetails}
+Submitted: ${new Date(quote.createdAt).toLocaleString()}
+IP: ${quote.metadata?.ipAddress || 'N/A'}
+                                    `.trim());
+                                  }}
+                                  title="View Details"
+                                >
+                                  <i className="fas fa-eye"></i> View
+                                </button>
+                                <button
+                                  className="btn-small btn-delete"
+                                  onClick={() => handleDeleteQuote(quote._id, quote.serviceName)}
+                                  title="Delete Quote"
+                                >
+                                  <i className="fas fa-trash"></i> Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Service Quotes Pagination */}
+                {serviceQuotesPagination.totalPages > 1 && (
+                  <div className="pagination">
+                    <button 
+                      className="btn-page"
+                      onClick={() => fetchServiceQuotes(serviceQuotesPagination.currentPage - 1)}
+                      disabled={!serviceQuotesPagination.hasPrev}
+                    >
+                      ← Previous
+                    </button>
+                    <span className="page-info">
+                      Page {serviceQuotesPagination.currentPage} of {serviceQuotesPagination.totalPages}
+                      ({serviceQuotesPagination.totalQuotes || 0} quotes)
+                    </span>
+                    <button 
+                      className="btn-page"
+                      onClick={() => fetchServiceQuotes(serviceQuotesPagination.currentPage + 1)}
+                      disabled={!serviceQuotesPagination.hasNext}
                     >
                       Next →
                     </button>
