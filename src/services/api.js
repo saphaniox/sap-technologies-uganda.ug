@@ -597,7 +597,7 @@ class ApiService {
   }
 
   async getAwardsStats() {
-    return this.request("/awards/admin/stats");
+    return this.request("/api/awards/admin/stats");
   }
 
   async createAdminNomination(formData) {
