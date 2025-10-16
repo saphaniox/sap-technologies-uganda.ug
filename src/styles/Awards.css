@@ -856,17 +856,17 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Category Countdown Badge - Top Right Corner */
+/* Category Countdown Badge - Top Right Corner - Compact */
 .category-countdown-badge {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 8px;
+  right: 8px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
-  padding: 10px 12px;
+  border-radius: 6px;
+  padding: 4px 6px;
   box-shadow: 
-    0 8px 20px rgba(102, 126, 234, 0.3),
-    0 3px 10px rgba(118, 75, 162, 0.2);
+    0 4px 12px rgba(102, 126, 234, 0.25),
+    0 2px 6px rgba(118, 75, 162, 0.15);
   z-index: 10;
   pointer-events: none;
   backdrop-filter: blur(10px);
@@ -877,83 +877,68 @@
 .category-card:hover .category-countdown-badge {
   transform: scale(1.05);
   box-shadow: 
-    0 12px 28px rgba(102, 126, 234, 0.4),
-    0 5px 15px rgba(118, 75, 162, 0.3);
+    0 6px 16px rgba(102, 126, 234, 0.3),
+    0 3px 8px rgba(118, 75, 162, 0.2);
 }
 
 .category-countdown-badge .countdown-badge-content {
   display: flex;
   align-items: center;
-  gap: 3px;
-  margin-bottom: 4px;
+  gap: 2px;
 }
 
 .category-countdown-badge .countdown-time {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 28px;
+  min-width: 18px;
 }
 
 .category-countdown-badge .countdown-time strong {
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 700;
   color: #ffffff;
   line-height: 1;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .category-countdown-badge .countdown-time span {
-  font-size: 9px;
+  font-size: 6px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.8);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 2px;
+  letter-spacing: 0.3px;
+  margin-top: 1px;
 }
 
 .category-countdown-badge .countdown-separator {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 14px;
+  font-size: 8px;
   font-weight: 600;
-  margin: 0 2px;
+  margin: 0 1px;
   align-self: flex-start;
-  margin-top: 2px;
-}
-
-.category-countdown-badge .countdown-badge-label {
-  font-size: 10px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  white-space: nowrap;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 3px 8px;
-  border-radius: 6px;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 /* Active category card countdown badge enhancement */
 .category-card.active .category-countdown-badge {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   box-shadow: 
-    0 10px 30px rgba(240, 147, 251, 0.4),
-    0 5px 15px rgba(245, 87, 108, 0.3);
+    0 6px 18px rgba(240, 147, 251, 0.35),
+    0 3px 10px rgba(245, 87, 108, 0.25);
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
 @keyframes pulse-glow {
   0%, 100% {
     box-shadow: 
-      0 10px 30px rgba(240, 147, 251, 0.4),
-      0 5px 15px rgba(245, 87, 108, 0.3);
+      0 6px 18px rgba(240, 147, 251, 0.35),
+      0 3px 10px rgba(245, 87, 108, 0.25);
   }
   50% {
     box-shadow: 
-      0 15px 40px rgba(240, 147, 251, 0.6),
-      0 8px 20px rgba(245, 87, 108, 0.5);
+      0 8px 24px rgba(240, 147, 251, 0.5),
+      0 4px 12px rgba(245, 87, 108, 0.4);
   }
 }
 
@@ -3446,27 +3431,27 @@
   
   /* Category countdown badge - Tablet */
   .category-countdown-badge {
-    top: 12px;
-    right: 12px;
-    padding: 8px 10px;
-    border-radius: 10px;
+    top: 6px;
+    right: 6px;
+    padding: 3px 5px;
+    border-radius: 5px;
+  }
+  
+  .category-countdown-badge .countdown-time {
+    min-width: 16px;
   }
   
   .category-countdown-badge .countdown-time strong {
-    font-size: 14px;
+    font-size: 9px;
   }
   
   .category-countdown-badge .countdown-time span {
-    font-size: 8px;
+    font-size: 5px;
   }
   
   .category-countdown-badge .countdown-separator {
-    font-size: 12px;
-  }
-  
-  .category-countdown-badge .countdown-badge-label {
-    font-size: 9px;
-    padding: 2px 6px;
+    font-size: 7px;
+    margin: 0 1px;
   }
   
   .social-btn {
@@ -3586,34 +3571,28 @@
   
   /* Category countdown badge - Mobile */
   .category-countdown-badge {
-    top: 10px;
-    right: 10px;
-    padding: 6px 8px;
-    border-radius: 8px;
+    top: 5px;
+    right: 5px;
+    padding: 3px 4px;
+    border-radius: 4px;
   }
   
   .category-countdown-badge .countdown-time {
-    min-width: 22px;
+    min-width: 14px;
   }
   
   .category-countdown-badge .countdown-time strong {
-    font-size: 12px;
+    font-size: 8px;
   }
   
   .category-countdown-badge .countdown-time span {
-    font-size: 7px;
-    margin-top: 1px;
+    font-size: 5px;
+    margin-top: 0.5px;
   }
   
   .category-countdown-badge .countdown-separator {
-    font-size: 10px;
-    margin: 0 1px;
-  }
-  
-  .category-countdown-badge .countdown-badge-label {
-    font-size: 8px;
-    padding: 2px 5px;
-    letter-spacing: 0.5px;
+    font-size: 6px;
+    margin: 0;
   }
 
   .badge-icon {

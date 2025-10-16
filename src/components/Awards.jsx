@@ -608,8 +608,12 @@ const Awards = ({ onClose }) => {
                         <strong>{countdown.minutes.toString().padStart(2, '0')}</strong>
                         <span>M</span>
                       </div>
+                      <span className="countdown-separator">:</span>
+                      <div className="countdown-time">
+                        <strong>{countdown.seconds.toString().padStart(2, '0')}</strong>
+                        <span>S</span>
+                      </div>
                     </div>
-                    <div className="countdown-badge-label">⏰ Deadline</div>
                   </div>
 
                   <div 
