@@ -237,11 +237,11 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                         timer: 4000 // 4 seconds timer
                     }
                 );
-                onSuccess();
+                if (onSuccess) onSuccess(submitData); // Pass data to parent if callback exists
                 onClose();
             }
         } catch (error) {
-            console.error("Product form error:", error);
+            console.error("❌ Product form error:", error);
             await showAlert.error(
                 "Error",
                 error.message || "Failed to save product. Please try again.",

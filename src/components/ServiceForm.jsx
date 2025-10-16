@@ -232,13 +232,13 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       // Wait 1.5 seconds to show success message, then close and refresh
       setTimeout(() => {
         setAlert({ type: "", message: "" });
-        onSave();
+        if (onSave) onSave(submitData); // Pass data to parent if callback exists
         onClose(); // Close the form
         window.location.reload(); // Refresh to show updated data and prevent duplicates
       }, 1500);
       
     } catch (error) {
-      console.error("Service form error:", error);
+      console.error("❌ Service form error:", error);
       
       // Handle authentication errors
       if (error.message === "Authentication required") {

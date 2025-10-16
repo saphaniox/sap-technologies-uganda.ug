@@ -536,21 +536,10 @@ const AdminDashboard = ({ user, onClose }) => {
 
   // Service handlers
   const handleServiceSubmit = async (serviceData) => {
-    try {
-      if (editingService) {
-        await apiService.updateService(editingService._id, serviceData);
-        setAutoMessage("Service updated successfully");
-      } else {
-        await apiService.createService(serviceData);
-        setAutoMessage("Service created successfully");
-      }
-      setShowServiceForm(false);
-      setEditingService(null);
-      fetchServices(servicesPagination.currentPage);
-      fetchDashboardStats();
-    } catch (error) {
-      setAutoMessage("Failed to save service: " + error.message);
-    }
+    // ServiceForm handles the API call, this is just a callback
+    setEditingService(null);
+    setShowServiceForm(false);
+    // Note: ServiceForm already calls window.location.reload()
   };
 
   const handleServiceEdit = (service) => {
@@ -589,21 +578,11 @@ const AdminDashboard = ({ user, onClose }) => {
 
   // Project handlers
   const handleProjectSubmit = async (projectData) => {
-    try {
-      if (editingProject) {
-        await apiService.updateProject(editingProject._id, projectData);
-        setAutoMessage("Project updated successfully");
-      } else {
-        await apiService.createProject(projectData);
-        setAutoMessage("Project created successfully");
-      }
-      setShowProjectForm(false);
-      setEditingProject(null);
-      fetchProjects(projectsPagination.currentPage);
-      fetchDashboardStats();
-    } catch (error) {
-      setAutoMessage("Failed to save project: " + error.message);
-    }
+    // ProjectForm handles the API call, this is just a callback
+    // We can optionally refresh data here if needed
+    setEditingProject(null);
+    setShowProjectForm(false);
+    // Note: ProjectForm already calls window.location.reload()
   };
 
   const handleProjectEdit = (project) => {

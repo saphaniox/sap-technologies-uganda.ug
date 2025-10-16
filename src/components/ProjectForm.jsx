@@ -205,16 +205,16 @@ const ProjectForm = ({ project, onClose, onSave }) => {
       // Wait 1.5 seconds to show success message, then close and refresh
       setTimeout(() => {
         setAlert({ type: "", message: "" });
-        onSave();
+        if (onSave) onSave(submitData); // Pass data to parent if callback exists
         onClose(); // Close the form
         window.location.reload(); // Refresh to show updated data and prevent duplicates
       }, 1500);
       
     } catch (error) {
-      console.error("Project form error:", error);
+      console.error("❌ Project form error:", error);
       setAlert({ 
         type: "error", 
-        message: error.response?.data?.message || "Failed to save project" 
+        message: error.response?.data?.message || error.message || "Failed to save project" 
       });
     } finally {
       setLoading(false);
