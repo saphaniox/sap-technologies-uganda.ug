@@ -591,6 +591,27 @@ const Awards = ({ onClose }) => {
                   className={`category-card ${selectedCategory === category._id ? 'active' : ''}`}
                   onClick={() => setSelectedCategory(selectedCategory === category._id ? "" : category._id)}
                 >
+                  {/* Countdown Timer - Top Right Corner */}
+                  <div className="category-countdown-badge">
+                    <div className="countdown-badge-content">
+                      <div className="countdown-time">
+                        <strong>{countdown.days}</strong>
+                        <span>D</span>
+                      </div>
+                      <span className="countdown-separator">:</span>
+                      <div className="countdown-time">
+                        <strong>{countdown.hours.toString().padStart(2, '0')}</strong>
+                        <span>H</span>
+                      </div>
+                      <span className="countdown-separator">:</span>
+                      <div className="countdown-time">
+                        <strong>{countdown.minutes.toString().padStart(2, '0')}</strong>
+                        <span>M</span>
+                      </div>
+                    </div>
+                    <div className="countdown-badge-label">⏰ Deadline</div>
+                  </div>
+
                   <div 
                     className="category-icon"
                   >
