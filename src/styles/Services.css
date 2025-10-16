@@ -111,7 +111,7 @@
   border-radius: var(--border-radius-md);
 }
 
-/* On desktop, hide by default and show on hover */
+/* On desktop with mouse, hide by default and show on hover */
 @media (hover: hover) and (pointer: fine) {
   .service-overlay {
     opacity: 0;
@@ -119,6 +119,14 @@
   
   .service-image:hover .service-overlay {
     opacity: 1; /* Show on hover */
+  }
+}
+
+/* On touch devices (tablets, phones), always show the button */
+@media (hover: none) and (pointer: coarse) {
+  .service-overlay {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -190,9 +198,10 @@
     font-size: var(--text-sm);
   }
 
-  /* Remove blue overlay on mobile for clear image visibility */
+  /* Always show overlay on mobile so users can see and tap the button */
   .service-overlay {
-    background: rgba(0, 0, 0, 0.3);
+    opacity: 1 !important;
+    background: rgba(0, 0, 0, 0.6);
   }
 
   .learn-more-btn {
@@ -233,9 +242,10 @@
     margin-bottom: var(--space-2);
   }
 
-  /* Extra clear images on very small screens */
+  /* Always show overlay on extra small screens */
   .service-overlay {
-    background: rgba(0, 0, 0, 0.2);
+    opacity: 1 !important;
+    background: rgba(0, 0, 0, 0.6);
   }
 
   .learn-more-btn {
@@ -377,9 +387,10 @@
     margin-bottom: 1rem;
   }
 
-  /* Clear image visibility on mobile */
+  /* Always show overlay on mobile so users can see and tap the button */
   .service-overlay {
-    background: rgba(0, 0, 0, 0.25);
+    opacity: 1 !important;
+    background: rgba(0, 0, 0, 0.6);
   }
 
   .learn-more-btn {
