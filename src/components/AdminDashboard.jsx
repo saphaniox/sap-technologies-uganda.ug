@@ -477,9 +477,12 @@ const AdminDashboard = ({ user, onClose }) => {
 
     try {
       await apiService.deleteUserAdmin(userId);
+      // Instantly remove from UI
+      setUsers(prev => prev.filter(user => user._id !== userId));
       setAutoMessage(`User "${userName}" deleted successfully`);
+      // Refetch to ensure data consistency and update stats
       fetchUsers(usersPagination.currentPage);
-      fetchDashboardStats(); // Refresh stats
+      fetchDashboardStats();
     } catch (error) {
       setAutoMessage("Failed to delete user: " + error.message);
     }
@@ -502,9 +505,12 @@ const AdminDashboard = ({ user, onClose }) => {
 
     try {
       await apiService.deleteContactAdmin(contactId);
+      // Instantly remove from UI
+      setContacts(prev => prev.filter(contact => contact._id !== contactId));
       setAutoMessage("Contact deleted successfully");
+      // Refetch to ensure data consistency and update stats
       fetchContacts(contactsPagination.currentPage);
-      fetchDashboardStats(); // Refresh stats
+      fetchDashboardStats();
     } catch (error) {
       setAutoMessage("Failed to delete contact: " + error.message);
     }
@@ -517,9 +523,12 @@ const AdminDashboard = ({ user, onClose }) => {
 
     try {
       await apiService.deleteNewsletterSubscriber(subscriberId);
+      // Instantly remove from UI
+      setNewsletters(prev => prev.filter(subscriber => subscriber._id !== subscriberId));
       setAutoMessage("Newsletter subscriber removed successfully");
+      // Refetch to ensure data consistency and update stats
       fetchNewsletters(newslettersPagination.currentPage);
-      fetchDashboardStats(); // Refresh stats
+      fetchDashboardStats();
     } catch (error) {
       setAutoMessage("Failed to remove subscriber: " + error.message);
     }
@@ -746,7 +755,10 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       });
 
       if (response.ok) {
+        // Instantly remove from UI
+        setPartnershipRequests(prev => prev.filter(request => request._id !== requestId));
         setAutoMessage("Partnership request deleted successfully");
+        // Refetch to ensure data consistency
         fetchPartnershipRequests(partnershipRequestsPagination.currentPage);
       } else {
         const errorData = await response.json();
@@ -779,7 +791,10 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       const response = await apiService.deleteInquiry(inquiryId);
       
       if (response) {
+        // Instantly remove from UI
+        setProductInquiries(prev => prev.filter(inquiry => inquiry._id !== inquiryId));
         setAutoMessage("Product inquiry deleted successfully");
+        // Refetch to ensure data consistency
         fetchProductInquiries(productInquiriesPagination.currentPage);
       }
     } catch (error) {
@@ -809,7 +824,10 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       const response = await apiService.deleteQuote(quoteId);
       
       if (response) {
+        // Instantly remove from UI
+        setServiceQuotes(prev => prev.filter(quote => quote._id !== quoteId));
         setAutoMessage("Service quote deleted successfully");
+        // Refetch to ensure data consistency
         fetchServiceQuotes(serviceQuotesPagination.currentPage);
       }
     } catch (error) {

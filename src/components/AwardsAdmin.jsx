@@ -270,6 +270,9 @@ const AwardsAdmin = () => {
       const response = await apiService.deleteNomination(nominationId);
       console.log("✅ Nomination deleted successfully:", response);
       
+      // Instantly remove from UI
+      setNominations(prev => prev.filter(nom => nom._id !== nominationId));
+      
       await Swal.fire({
         title: '🗑️ Deleted!',
         text: `Nomination for "${nomineeName}" has been deleted successfully.`,
@@ -279,8 +282,9 @@ const AwardsAdmin = () => {
         timerProgressBar: true
       });
       
-      await loadNominations(); // Reload the list
-      await loadAwardsStats(); // Update stats
+      // Reload in background to ensure data consistency
+      await loadNominations();
+      await loadAwardsStats();
     } catch (error) {
       console.error("❌ Error deleting nomination:", error);
       console.error("Error details:", error.response?.data);
@@ -510,6 +514,9 @@ const AwardsAdmin = () => {
       const response = await apiService.deleteAwardsCategory(categoryId);
       console.log("✅ Category deleted successfully:", response);
       
+      // Instantly remove from UI
+      setCategories(prev => prev.filter(cat => cat._id !== categoryId));
+      
       // Show success message
       await Swal.fire({
         title: '🗑️ Deleted!',
@@ -520,8 +527,9 @@ const AwardsAdmin = () => {
         timerProgressBar: true
       });
       
-      await loadCategories(); // Reload categories
-      await loadNominations(); // Reload nominations in case some were affected
+      // Reload in background to ensure data consistency
+      await loadCategories();
+      await loadNominations();
     } catch (error) {
       console.error("❌ Error deleting category:", error);
       console.error("Error details:", error.response?.data);

@@ -114,10 +114,12 @@ const Partners = () => {
 
     try {
       await apiService.deletePartner(partnerToDelete._id);
-      // Refresh the partners list
-      fetchPartners();
+      // Instantly remove from UI
+      setPartners(prev => prev.filter(p => p._id !== partnerToDelete._id));
       setShowDeleteDialog(false);
       setPartnerToDelete(null);
+      // Refresh in background to ensure data consistency
+      fetchPartners();
     } catch (error) {
       console.error("Error deleting partner:", error);
       alert("Network error. Please try again.");
