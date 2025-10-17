@@ -48,6 +48,7 @@ const AdminDashboard = ({ user, onClose }) => {
   
   // UI state for loading and error handling
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false); // For updates/deletions without blocking UI
   const [error, setError] = useState("");
   const [message, setMessage] = useState(""); // Success/error messages for user actions
   const [refreshInterval, setRefreshInterval] = useState(null); // Auto-refresh timer
@@ -850,7 +851,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
   // Certificates list handler
   const fetchAllCertificates = async (page = 1) => {
     try {
-      setLoading(prev => ({ ...prev, updating: true }));
+      setUpdating(true);
       const response = await apiService.request('/api/certificates/all', {
         method: 'GET',
         params: {
@@ -869,7 +870,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       console.error("Error fetching certificates:", error);
       setAutoMessage("Failed to load certificates: " + error.message, true);
     } finally {
-      setLoading(prev => ({ ...prev, updating: false }));
+      setUpdating(false);
     }
   };
 
@@ -941,7 +942,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     if (!result.isConfirmed) return;
 
     try {
-      setLoading(prev => ({ ...prev, updating: true }));
+      setUpdating(true);
       
       const response = await apiService.request(`/api/certificates/delete/${nominationId}`, {
         method: 'DELETE'
@@ -974,7 +975,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
         confirmButtonColor: '#dc2626'
       });
     } finally {
-      setLoading(prev => ({ ...prev, updating: false }));
+      setUpdating(false);
     }
   };
 
@@ -2776,7 +2777,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                   </div>
 
                   {/* Certificates Table */}
-                  {loading.updating ? (
+                  {updating ? (
                     <div className="loading-state">Loading certificates...</div>
                   ) : allCertificates.length === 0 ? (
                     <div className="empty-state">
@@ -2841,7 +2842,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                                     onClick={() => handleDeleteCertificate(cert._id, cert.nomineeName)}
                                     className="action-btn delete-btn"
                                     title="Delete Certificate"
-                                    disabled={loading.updating}
+                                    disabled={updating}
                                   >
                                     🗑️ Delete
                                   </button>
