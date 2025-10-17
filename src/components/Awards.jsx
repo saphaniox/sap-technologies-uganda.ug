@@ -616,10 +616,12 @@ const Awards = ({ onClose }) => {
                     </div>
                   </div>
 
-                  <div 
-                    className="category-icon"
-                  >
-                    {category.icon}
+                  <div className="category-icon">
+                    <img 
+                      src="/images/saphaniox-awards-image.jpg" 
+                      alt="SAPHANIOX Awards 2025"
+                      className="category-awards-image"
+                    />
                   </div>
                   <h3>
                     {category.name}
