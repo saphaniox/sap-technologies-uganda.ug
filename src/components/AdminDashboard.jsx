@@ -93,6 +93,11 @@ const AdminDashboard = ({ user, onClose }) => {
   const [currentSignature, setCurrentSignature] = useState(null);
   const [signatureFile, setSignatureFile] = useState(null);
   const [uploadingSignature, setUploadingSignature] = useState(false);
+  const [settingsSubTab, setSettingsSubTab] = useState("signature");
+  const [allCertificates, setAllCertificates] = useState([]);
+  const [certificatesPagination, setCertificatesPagination] = useState({ currentPage: 1, totalPages: 1, totalCertificates: 0 });
+  const [certificatesSearch, setCertificatesSearch] = useState("");
+  const [certificatesTypeFilter, setCertificatesTypeFilter] = useState("");
 
   // Form states for creating/editing
   const [showServiceForm, setShowServiceForm] = useState(false);
@@ -172,10 +177,14 @@ const AdminDashboard = ({ user, onClose }) => {
         // Awards data is loaded by the AwardsAdmin component itself
         break;
       case "settings":
-        fetchCurrentSignature();
+        if (settingsSubTab === "signature") {
+          fetchCurrentSignature();
+        } else if (settingsSubTab === "certificates") {
+          fetchAllCertificates(certificatesPagination.currentPage);
+        }
         break;
     }
-  }, [activeTab, usersSearch, usersRoleFilter, contactsSearch, contactsStatusFilter, newslettersSearch, servicesSearch, servicesCategoryFilter, servicesStatusFilter, projectsSearch, projectsCategoryFilter, projectsStatusFilter, partnersSearch, partnersStatusFilter, partnershipRequestsSearch, partnershipRequestsStatusFilter, productsSearch, productsCategoryFilter, productsStatusFilter, productInquiriesSearch, productInquiriesStatusFilter, serviceQuotesSearch, serviceQuotesStatusFilter]);
+  }, [activeTab, settingsSubTab, certificatesSearch, certificatesTypeFilter, certificatesPagination.currentPage, usersSearch, usersRoleFilter, contactsSearch, contactsStatusFilter, newslettersSearch, servicesSearch, servicesCategoryFilter, servicesStatusFilter, projectsSearch, projectsCategoryFilter, projectsStatusFilter, partnersSearch, partnersStatusFilter, partnershipRequestsSearch, partnershipRequestsStatusFilter, productsSearch, productsCategoryFilter, productsStatusFilter, productInquiriesSearch, productInquiriesStatusFilter, serviceQuotesSearch, serviceQuotesStatusFilter]);
 
   const fetchDashboardData = async () => {
     try {
@@ -832,6 +841,32 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     } catch (error) {
       // No signature configured yet
       setCurrentSignature(null);
+    }
+  };
+
+  // Certificates list handler
+  const fetchAllCertificates = async (page = 1) => {
+    try {
+      setLoading(prev => ({ ...prev, updating: true }));
+      const response = await apiService.request('/api/certificates/all', {
+        method: 'GET',
+        params: {
+          page,
+          limit: 20,
+          search: certificatesSearch,
+          type: certificatesTypeFilter
+        }
+      });
+      
+      if (response && response.data) {
+        setAllCertificates(response.data.certificates);
+        setCertificatesPagination(response.data.pagination);
+      }
+    } catch (error) {
+      console.error("Error fetching certificates:", error);
+      setAutoMessage("Failed to load certificates: " + error.message, true);
+    } finally {
+      setLoading(prev => ({ ...prev, updating: false }));
     }
   };
 
@@ -2573,64 +2608,209 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                 <h2>⚙️ Certificate Settings</h2>
               </div>
 
-              <div className="settings-section">
-                <h3>Certificate Signature</h3>
-                <p className="section-description">
-                  Upload a signature image that will appear on all generated certificates. 
-                  The signature will be displayed above "SAPHANIOX Awards Committee" text.
-                </p>
-
-                {currentSignature && (
-                  <div className="current-signature">
-                    <h4>Current Signature:</h4>
-                    <div className="signature-info">
-                      <p><strong>File:</strong> {currentSignature.originalName}</p>
-                      <p><strong>Uploaded:</strong> {new Date(currentSignature.uploadedAt).toLocaleDateString()}</p>
-                      <p><strong>Size:</strong> {(currentSignature.size / 1024).toFixed(2)} KB</p>
-                    </div>
-                    <button 
-                      className="btn-delete"
-                      onClick={handleDeleteSignature}
-                    >
-                      🗑️ Delete Current Signature
-                    </button>
-                  </div>
-                )}
-
-                <form onSubmit={handleSignatureUpload} className="signature-upload-form">
-                  <div className="form-group">
-                    <label htmlFor="signatureFile">
-                      {currentSignature ? "Upload New Signature" : "Upload Signature"}
-                    </label>
-                    <input
-                      type="file"
-                      id="signatureFile"
-                      accept="image/png,image/jpeg,image/jpg"
-                      onChange={(e) => setSignatureFile(e.target.files[0])}
-                      disabled={uploadingSignature}
-                    />
-                    {signatureFile && (
-                      <p className="file-selected">
-                        Selected: {signatureFile.name} ({(signatureFile.size / 1024).toFixed(2)} KB)
-                      </p>
-                    )}
-                    <small>Accepted formats: PNG, JPG, JPEG (Max 5MB)</small>
-                  </div>
-
-                  <button 
-                    type="submit" 
-                    className="btn-primary"
-                    disabled={!signatureFile || uploadingSignature}
-                  >
-                    {uploadingSignature ? "Uploading..." : "Upload Signature"}
-                  </button>
-                </form>
-
-                <div className="signature-preview-note">
-                  <strong>Note:</strong> The signature will be embedded in certificates at 120x40 pixels. 
-                  For best results, use a transparent PNG with your signature centered.
-                </div>
+              {/* Settings Subtabs */}
+              <div className="subtab-navigation">
+                <button 
+                  className={`subtab-btn ${settingsSubTab === "signature" ? "active" : ""}`}
+                  onClick={() => setSettingsSubTab("signature")}
+                >
+                  ✍️ Signature
+                </button>
+                <button 
+                  className={`subtab-btn ${settingsSubTab === "certificates" ? "active" : ""}`}
+                  onClick={() => setSettingsSubTab("certificates")}
+                >
+                  📜 All Certificates
+                </button>
               </div>
+
+              {/* Signature Subtab */}
+              {settingsSubTab === "signature" && (
+                <div className="settings-section">
+                  <h3>Certificate Signature</h3>
+                  <p className="section-description">
+                    Upload a signature image that will appear on all generated certificates. 
+                    The signature will be displayed above "SAPHANIOX Awards Committee" text.
+                  </p>
+
+                  {currentSignature && (
+                    <div className="current-signature">
+                      <h4>Current Signature:</h4>
+                      <div className="signature-info">
+                        <p><strong>File:</strong> {currentSignature.originalName}</p>
+                        <p><strong>Uploaded:</strong> {new Date(currentSignature.uploadedAt).toLocaleDateString()}</p>
+                        <p><strong>Size:</strong> {(currentSignature.size / 1024).toFixed(2)} KB</p>
+                      </div>
+                      <button 
+                        className="btn-delete"
+                        onClick={handleDeleteSignature}
+                      >
+                        🗑️ Delete Current Signature
+                      </button>
+                    </div>
+                  )}
+
+                  <form onSubmit={handleSignatureUpload} className="signature-upload-form">
+                    <div className="form-group">
+                      <label htmlFor="signatureFile">
+                        {currentSignature ? "Upload New Signature" : "Upload Signature"}
+                      </label>
+                      <input
+                        type="file"
+                        id="signatureFile"
+                        accept="image/png,image/jpeg,image/jpg"
+                        onChange={(e) => setSignatureFile(e.target.files[0])}
+                        disabled={uploadingSignature}
+                      />
+                      {signatureFile && (
+                        <p className="file-selected">
+                          Selected: {signatureFile.name} ({(signatureFile.size / 1024).toFixed(2)} KB)
+                        </p>
+                      )}
+                      <small>Accepted formats: PNG, JPG, JPEG (Max 5MB)</small>
+                    </div>
+
+                    <button 
+                      type="submit" 
+                      className="btn-primary"
+                      disabled={!signatureFile || uploadingSignature}
+                    >
+                      {uploadingSignature ? "Uploading..." : "Upload Signature"}
+                    </button>
+                  </form>
+
+                  <div className="signature-preview-note">
+                    <strong>Note:</strong> The signature will be embedded in certificates at 120x40 pixels. 
+                    For best results, use a transparent PNG with your signature centered.
+                  </div>
+                </div>
+              )}
+
+              {/* Certificates List Subtab */}
+              {settingsSubTab === "certificates" && (
+                <div className="settings-section">
+                  <h3>Generated Certificates</h3>
+                  <p className="section-description">
+                    View and manage all generated certificates with verification links.
+                  </p>
+
+                  {/* Search and Filter Controls */}
+                  <div className="certificates-controls">
+                    <input
+                      type="text"
+                      placeholder="Search by nominee name or certificate ID..."
+                      value={certificatesSearch}
+                      onChange={(e) => setCertificatesSearch(e.target.value)}
+                      className="search-input"
+                    />
+                    <select
+                      value={certificatesTypeFilter}
+                      onChange={(e) => setCertificatesTypeFilter(e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="">All Types</option>
+                      <option value="winner">Winners</option>
+                      <option value="finalist">Finalists</option>
+                      <option value="participation">Participation</option>
+                    </select>
+                  </div>
+
+                  {/* Certificates Table */}
+                  {loading.updating ? (
+                    <div className="loading-state">Loading certificates...</div>
+                  ) : allCertificates.length === 0 ? (
+                    <div className="empty-state">
+                      <p>No certificates found. Generate certificates from the Awards tab.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="certificates-table-container">
+                        <table className="certificates-table">
+                          <thead>
+                            <tr>
+                              <th>Nominee</th>
+                              <th>Category</th>
+                              <th>Type</th>
+                              <th>Certificate ID</th>
+                              <th>Generated</th>
+                              <th>Storage</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {allCertificates.map((cert) => (
+                              <tr key={cert._id}>
+                                <td><strong>{cert.nomineeName}</strong></td>
+                                <td>{cert.categoryName || "N/A"}</td>
+                                <td>
+                                  <span className={`badge badge-${cert.status}`}>
+                                    {cert.status === "winner" ? "🏆 Winner" : 
+                                     cert.status === "finalist" ? "🥈 Finalist" : 
+                                     "📜 Participation"}
+                                  </span>
+                                </td>
+                                <td>
+                                  <code className="cert-id">{cert.certificateId}</code>
+                                </td>
+                                <td>{new Date(cert.generatedAt).toLocaleDateString()}</td>
+                                <td>
+                                  <span className={`badge badge-${cert.storage}`}>
+                                    {cert.storage === "cloudinary" ? "☁️ Cloud" : "💾 Local"}
+                                  </span>
+                                </td>
+                                <td className="actions-cell">
+                                  <a 
+                                    href={cert.downloadUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="action-btn download-btn"
+                                    title="Download Certificate"
+                                  >
+                                    ⬇️ Download
+                                  </a>
+                                  <a 
+                                    href={cert.verificationUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="action-btn verify-btn"
+                                    title="View Verification Page"
+                                  >
+                                    ✅ Verify
+                                  </a>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Pagination */}
+                      {certificatesPagination.totalPages > 1 && (
+                        <div className="pagination">
+                          <button 
+                            className="btn-page"
+                            onClick={() => fetchAllCertificates(certificatesPagination.currentPage - 1)}
+                            disabled={!certificatesPagination.hasPrevPage}
+                          >
+                            ← Previous
+                          </button>
+                          <span className="page-info">
+                            Page {certificatesPagination.currentPage} of {certificatesPagination.totalPages}
+                            ({certificatesPagination.totalCertificates || 0} certificates)
+                          </span>
+                          <button 
+                            className="btn-page"
+                            onClick={() => fetchAllCertificates(certificatesPagination.currentPage + 1)}
+                            disabled={!certificatesPagination.hasNextPage}
+                          >
+                            Next →
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
