@@ -784,7 +784,9 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     }
 
     try {
+      console.log("🗑️ Attempting to delete inquiry:", inquiryId);
       const response = await apiService.deleteInquiry(inquiryId);
+      console.log("✅ Delete response:", response);
       
       if (response) {
         // Instantly remove from UI
@@ -794,7 +796,8 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
         fetchProductInquiries(productInquiriesPagination.currentPage);
       }
     } catch (error) {
-      setAutoMessage("Failed to delete inquiry: " + error.message, true);
+      console.error("❌ Delete inquiry error:", error);
+      setAutoMessage("Failed to delete inquiry: " + (error.response?.data?.message || error.message), true);
     }
   };
 
