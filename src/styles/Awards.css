@@ -720,13 +720,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 250px;
-  height: 250px;
+  width: 280px;
+  height: 280px;
   background-image: url('/images/saphaniox-awards-image.jpg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.15;
+  opacity: 0.25;
   z-index: 0;
   animation: cardLogoRotate 45s linear infinite;
   pointer-events: none;
@@ -771,34 +771,16 @@
 .category-icon {
   font-size: 4rem;
   margin-bottom: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
   transform: translateZ(30px);
   transition: all 0.4s ease;
   position: relative;
   z-index: 2;
-  width: 100%;
-  height: 200px;
-}
-
-.category-awards-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 12px;
-  transition: all 0.4s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .category-card:hover .category-icon {
-  transform: translateZ(40px) scale(1.05);
+  transform: translateZ(40px) scale(1.1);
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
-}
-
-.category-card:hover .category-awards-image {
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-  transform: scale(1.02);
 }
 
 .category-card h3 {
@@ -3624,9 +3606,9 @@
   }
   
   .category-card::after {
-    width: 200px;
-    height: 200px;
-    opacity: 0.12;
+    width: 220px;
+    height: 220px;
+    opacity: 0.22;
   }
 
   .awards-hero-section {
@@ -3722,9 +3704,9 @@
   }
   
   .category-card::after {
-    width: 150px;
-    height: 150px;
-    opacity: 0.10;
+    width: 170px;
+    height: 170px;
+    opacity: 0.20;
   }
   
   /* Category countdown badge - Mobile */
@@ -4316,11 +4298,6 @@
 
   .category-icon {
     font-size: 3rem;
-    height: 150px;
-  }
-
-  .category-awards-image {
-    border-radius: 8px;
   }
 
   .category-card h3 {
