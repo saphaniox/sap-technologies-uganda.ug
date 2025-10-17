@@ -986,11 +986,59 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">🚀</div>
+                  <div className="stat-icon">�</div>
+                  <div className="stat-info">
+                    <h3>{dashboardStats?.stats?.totalServiceQuotes || 0}</h3>
+                    <p>Service Quotes</p>
+                    <small>+{dashboardStats?.stats?.newServiceQuotesLast30Days || 0} this month</small>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">�🚀</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalProjects || 0}</h3>
                     <p>Projects</p>
                     <small>{dashboardStats?.stats?.completedProjects || 0} completed</small>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">🤝</div>
+                  <div className="stat-info">
+                    <h3>{dashboardStats?.stats?.totalPartners || 0}</h3>
+                    <p>Partners</p>
+                    <small>{dashboardStats?.stats?.activePartners || 0} active</small>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">🔔</div>
+                  <div className="stat-info">
+                    <h3>{dashboardStats?.stats?.totalPartnershipRequests || 0}</h3>
+                    <p>Partnership Requests</p>
+                    <small>{dashboardStats?.stats?.pendingPartnershipRequests || 0} pending</small>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">📦</div>
+                  <div className="stat-info">
+                    <h3>{dashboardStats?.stats?.totalProducts || 0}</h3>
+                    <p>Products</p>
+                    <small>{dashboardStats?.stats?.featuredProducts || 0} featured</small>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">📋</div>
+                  <div className="stat-info">
+                    <h3>{dashboardStats?.stats?.totalProductInquiries || 0}</h3>
+                    <p>Product Inquiries</p>
+                    <small>+{dashboardStats?.stats?.newProductInquiriesLast30Days || 0} this month</small>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">🏆</div>
+                  <div className="stat-info">
+                    <h3>{dashboardStats?.stats?.totalAwards || 0}</h3>
+                    <p>Award Nominations</p>
+                    <small>{dashboardStats?.stats?.approvedAwards || 0} approved</small>
                   </div>
                 </div>
               </div>
