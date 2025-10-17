@@ -249,8 +249,8 @@ const AwardsAdmin = () => {
           html: `
             <p>Certificate for <strong>${nomineeName}</strong> has been generated successfully.</p>
             <p><strong>Certificate ID:</strong> ${response.certificateId}</p>
-            <p><strong>File:</strong> ${response.filename}</p>
-            <p class="certificate-path">Saved to: <code>server/uploads/certificates/${response.filename}</code></p>
+            <p><strong>Storage:</strong> ${response.storage === 'cloudinary' ? 'Cloudinary (CDN)' : 'Local Server'}</p>
+            ${response.cloudinaryUrl ? `<p class="certificate-path"><small>CDN URL: <code>${response.cloudinaryUrl}</code></small></p>` : ''}
           `,
           icon: 'success',
           confirmButtonText: 'Download Certificate',
@@ -260,8 +260,11 @@ const AwardsAdmin = () => {
           cancelButtonColor: '#6b7280'
         }).then((result) => {
           if (result.isConfirmed) {
-            // Download the certificate
-            window.open(`${apiService.baseURL}${response.downloadUrl}`, '_blank');
+            // Download the certificate - check if downloadUrl is already a full URL
+            const downloadUrl = response.downloadUrl.startsWith('http') 
+              ? response.downloadUrl 
+              : `${apiService.baseURL}${response.downloadUrl}`;
+            window.open(downloadUrl, '_blank');
           }
         });
         
