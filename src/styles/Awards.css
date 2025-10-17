@@ -720,13 +720,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 180px;
-  height: 180px;
-  background-image: url('/images/logo2.jpg');
+  width: 250px;
+  height: 250px;
+  background-image: url('/images/saphaniox-awards-image.jpg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.12;
+  opacity: 0.15;
   z-index: 0;
   animation: cardLogoRotate 45s linear infinite;
   pointer-events: none;
@@ -3624,8 +3624,8 @@
   }
   
   .category-card::after {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     opacity: 0.12;
   }
 
@@ -3722,8 +3722,8 @@
   }
   
   .category-card::after {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     opacity: 0.10;
   }
   
