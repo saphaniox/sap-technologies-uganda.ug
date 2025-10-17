@@ -488,6 +488,38 @@
   box-shadow: 0 2px 4px rgba(107, 114, 128, 0.2);
 }
 
+.nomination-actions .certificate-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.nomination-actions .certificate-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.nomination-actions .certificate-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+.nomination-actions .download-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.nomination-actions .download-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.nomination-actions .download-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
 .nomination-actions .delete-btn {
   background: linear-gradient(135deg, #f87171, #ef4444);
   color: white;
@@ -510,6 +542,24 @@
   cursor: not-allowed;
   transform: none !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Certificate path display in Swal */
+.certificate-path {
+  background: #f3f4f6;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.certificate-path code {
+  background: #e5e7eb;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  color: #1f2937;
+  font-size: 0.85rem;
 }
 
 /* Pagination */

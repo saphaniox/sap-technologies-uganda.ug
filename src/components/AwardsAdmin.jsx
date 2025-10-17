@@ -222,6 +222,66 @@ const AwardsAdmin = () => {
     }
   };
 
+  const handleGenerateCertificate = async (nominationId, nomineeName, status) => {
+    console.log("📜 Generating certificate for:", nominationId, nomineeName, status);
+    
+    // Check if eligible for certificate
+    if (!['winner', 'finalist', 'approved'].includes(status)) {
+      await Swal.fire({
+        title: 'Not Eligible',
+        html: `Certificates can only be generated for <strong>Winners</strong>, <strong>Finalists</strong>, or <strong>Approved</strong> nominations.<br><br>Current status: <strong>${status}</strong>`,
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3b82f6'
+      });
+      return;
+    }
+
+    setLoading(prev => ({ ...prev, updating: true }));
+    try {
+      const response = await apiService.request(`/api/certificates/generate/${nominationId}`, {
+        method: 'POST'
+      });
+      
+      if (response) {
+        await Swal.fire({
+          title: 'Certificate Generated!',
+          html: `
+            <p>Certificate for <strong>${nomineeName}</strong> has been generated successfully.</p>
+            <p><strong>Certificate ID:</strong> ${response.certificateId}</p>
+            <p><strong>File:</strong> ${response.filename}</p>
+            <p class="certificate-path">Saved to: <code>server/uploads/certificates/${response.filename}</code></p>
+          `,
+          icon: 'success',
+          confirmButtonText: 'Download Certificate',
+          showCancelButton: true,
+          cancelButtonText: 'Close',
+          confirmButtonColor: '#10b981',
+          cancelButtonColor: '#6b7280'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Download the certificate
+            window.open(`${apiService.baseURL}${response.downloadUrl}`, '_blank');
+          }
+        });
+        
+        // Reload nominations to show certificate status
+        loadNominations();
+      }
+    } catch (error) {
+      console.error("Error generating certificate:", error);
+      await Swal.fire({
+        title: 'Generation Failed',
+        text: error.message || 'Failed to generate certificate',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#ef4444'
+      });
+    } finally {
+      setLoading(prev => ({ ...prev, updating: false }));
+    }
+  };
+
   const handleDeleteNomination = async (nominationId, nomineeName) => {
     console.log("🗑️ Attempting to delete nomination:", nominationId, nomineeName);
     
@@ -883,6 +943,38 @@ const AwardsAdmin = () => {
         >
           📸 Edit Photo
         </button>
+
+        {['winner', 'finalist', 'approved'].includes(nomination.status) && (
+          <button
+            className="action-btn certificate-btn"
+            onClick={async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log("📜 Generate Certificate clicked for:", nomination.nomineeName);
+              await new Promise(resolve => setTimeout(resolve, 100));
+              await handleGenerateCertificate(nomination._id, nomination.nomineeName, nomination.status);
+            }}
+            disabled={loading.updating}
+            title={nomination.certificateFile ? "Certificate already generated - Click to regenerate" : "Generate certificate"}
+          >
+            {nomination.certificateFile ? '📜 Regenerate' : '📜 Generate'} Certificate
+          </button>
+        )}
+
+        {nomination.certificateFile && (
+          <button
+            className="action-btn download-btn"
+            onClick={async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log("⬇️ Download Certificate clicked for:", nomination.nomineeName);
+              window.open(`${apiService.baseURL}/api/certificates/download/${nomination.certificateFile}`, '_blank');
+            }}
+            title="Download existing certificate"
+          >
+            ⬇️ Download
+          </button>
+        )}
 
         <button
           className="action-btn delete-btn"
