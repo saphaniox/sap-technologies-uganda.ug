@@ -88,6 +88,11 @@ const AdminDashboard = ({ user, onClose }) => {
   const [productInquiriesStatusFilter, setProductInquiriesStatusFilter] = useState("");
   const [serviceQuotesSearch, setServiceQuotesSearch] = useState("");
   const [serviceQuotesStatusFilter, setServiceQuotesStatusFilter] = useState("");
+  
+  // Settings states
+  const [currentSignature, setCurrentSignature] = useState(null);
+  const [signatureFile, setSignatureFile] = useState(null);
+  const [uploadingSignature, setUploadingSignature] = useState(false);
 
   // Form states for creating/editing
   const [showServiceForm, setShowServiceForm] = useState(false);
@@ -165,6 +170,9 @@ const AdminDashboard = ({ user, onClose }) => {
         break;
       case "awards":
         // Awards data is loaded by the AwardsAdmin component itself
+        break;
+      case "settings":
+        fetchCurrentSignature();
         break;
     }
   }, [activeTab, usersSearch, usersRoleFilter, contactsSearch, contactsStatusFilter, newslettersSearch, servicesSearch, servicesCategoryFilter, servicesStatusFilter, projectsSearch, projectsCategoryFilter, projectsStatusFilter, partnersSearch, partnersStatusFilter, partnershipRequestsSearch, partnershipRequestsStatusFilter, productsSearch, productsCategoryFilter, productsStatusFilter, productInquiriesSearch, productInquiriesStatusFilter, serviceQuotesSearch, serviceQuotesStatusFilter]);
@@ -814,6 +822,67 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     }
   };
 
+  // Signature management handlers
+  const fetchCurrentSignature = async () => {
+    try {
+      const response = await apiService.request('/api/certificates/signature/current', {
+        method: 'GET'
+      });
+      setCurrentSignature(response.data);
+    } catch (error) {
+      // No signature configured yet
+      setCurrentSignature(null);
+    }
+  };
+
+  const handleSignatureUpload = async (e) => {
+    e.preventDefault();
+    
+    if (!signatureFile) {
+      setAutoMessage("Please select a signature image first", true);
+      return;
+    }
+
+    setUploadingSignature(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('signature', signatureFile);
+
+      const response = await apiService.request('/api/certificates/signature/upload', {
+        method: 'POST',
+        body: formData,
+        isFormData: true
+      });
+
+      if (response) {
+        setAutoMessage("Signature uploaded successfully! Certificates will now include this signature.");
+        setSignatureFile(null);
+        fetchCurrentSignature();
+      }
+    } catch (error) {
+      setAutoMessage("Failed to upload signature: " + error.message, true);
+    } finally {
+      setUploadingSignature(false);
+    }
+  };
+
+  const handleDeleteSignature = async () => {
+    if (!window.confirm("Are you sure you want to delete the current signature? Certificates will use default text signature.")) {
+      return;
+    }
+
+    try {
+      await apiService.request('/api/certificates/signature/current', {
+        method: 'DELETE'
+      });
+      setAutoMessage("Signature deleted successfully");
+      setCurrentSignature(null);
+    } catch (error) {
+      setAutoMessage("Failed to delete signature: " + error.message, true);
+    }
+  };
+
   const formatUptime = (seconds) => {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
@@ -939,6 +1008,12 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
             onClick={() => setActiveTab("awards")}
           >
             🏆 Awards Management
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === "settings" ? "active" : ""}`}
+            onClick={() => setActiveTab("settings")}
+          >
+            ⚙️ Settings
           </button>
         </div>
 
@@ -2488,6 +2563,74 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
             <div className="tab-panel">
               {console.log("🏆 Rendering Awards Tab!")}
               <AwardsAdmin />
+            </div>
+          )}
+
+          {/* Settings Tab */}
+          {activeTab === "settings" && (
+            <div className="tab-panel">
+              <div className="section-header">
+                <h2>⚙️ Certificate Settings</h2>
+              </div>
+
+              <div className="settings-section">
+                <h3>Certificate Signature</h3>
+                <p className="section-description">
+                  Upload a signature image that will appear on all generated certificates. 
+                  The signature will be displayed above "SAPHANIOX Awards Committee" text.
+                </p>
+
+                {currentSignature && (
+                  <div className="current-signature">
+                    <h4>Current Signature:</h4>
+                    <div className="signature-info">
+                      <p><strong>File:</strong> {currentSignature.originalName}</p>
+                      <p><strong>Uploaded:</strong> {new Date(currentSignature.uploadedAt).toLocaleDateString()}</p>
+                      <p><strong>Size:</strong> {(currentSignature.size / 1024).toFixed(2)} KB</p>
+                    </div>
+                    <button 
+                      className="btn-delete"
+                      onClick={handleDeleteSignature}
+                    >
+                      🗑️ Delete Current Signature
+                    </button>
+                  </div>
+                )}
+
+                <form onSubmit={handleSignatureUpload} className="signature-upload-form">
+                  <div className="form-group">
+                    <label htmlFor="signatureFile">
+                      {currentSignature ? "Upload New Signature" : "Upload Signature"}
+                    </label>
+                    <input
+                      type="file"
+                      id="signatureFile"
+                      accept="image/png,image/jpeg,image/jpg"
+                      onChange={(e) => setSignatureFile(e.target.files[0])}
+                      disabled={uploadingSignature}
+                    />
+                    {signatureFile && (
+                      <p className="file-selected">
+                        Selected: {signatureFile.name} ({(signatureFile.size / 1024).toFixed(2)} KB)
+                      </p>
+                    )}
+                    <small>Accepted formats: PNG, JPG, JPEG (Max 5MB)</small>
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    className="btn-primary"
+                    disabled={!signatureFile || uploadingSignature}
+                  >
+                    {uploadingSignature ? "Uploading..." : "Upload Signature"}
+                  </button>
+                </form>
+
+                <div className="signature-preview-note">
+                  <strong>Note:</strong> The signature will be embedded in certificates at 120x40 pixels. 
+                  For best results, use a transparent PNG with your signature centered.
+                </div>
+              </div>
             </div>
           )}
         </div>

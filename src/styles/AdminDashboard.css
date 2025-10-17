@@ -1233,3 +1233,187 @@
 [data-theme="dark"] .btn-view:hover {
   background: #4f46e5;
 }
+
+/* Settings Tab Styles */
+.settings-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+  font-size: 1.5rem;
+  color: #1a202c;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.section-description {
+  color: #718096;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.current-signature {
+  background: #f7fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.current-signature h4 {
+  color: #2d3748;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.signature-info {
+  margin-bottom: 1rem;
+}
+
+.signature-info p {
+  color: #4a5568;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.signature-info strong {
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.signature-upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.signature-upload-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.signature-upload-form label {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 1rem;
+}
+
+.signature-upload-form input[type="file"] {
+  padding: 0.75rem;
+  border: 2px dashed #cbd5e0;
+  border-radius: 8px;
+  background: #f7fafc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.signature-upload-form input[type="file"]:hover {
+  border-color: #667eea;
+  background: #edf2f7;
+}
+
+.signature-upload-form input[type="file"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.file-selected {
+  color: #38a169;
+  font-weight: 500;
+  margin: 0;
+  padding: 0.5rem;
+  background: #f0fff4;
+  border-radius: 4px;
+}
+
+.signature-upload-form small {
+  color: #718096;
+  font-size: 0.85rem;
+}
+
+.signature-upload-form button {
+  align-self: flex-start;
+}
+
+.signature-preview-note {
+  background: #ebf8ff;
+  border-left: 4px solid #4299e1;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 2rem;
+  color: #2c5282;
+  line-height: 1.6;
+}
+
+.signature-preview-note strong {
+  color: #1a365d;
+}
+
+/* Dark mode for settings */
+[data-theme="dark"] .settings-section {
+  background: rgba(26, 32, 44, 0.95);
+}
+
+[data-theme="dark"] .settings-section h3 {
+  color: #f7fafc;
+}
+
+[data-theme="dark"] .section-description {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .current-signature {
+  background: rgba(45, 55, 72, 0.6);
+  border-color: rgba(74, 85, 104, 0.4);
+}
+
+[data-theme="dark"] .current-signature h4 {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .signature-info p {
+  color: #cbd5e0;
+}
+
+[data-theme="dark"] .signature-info strong {
+  color: #f7fafc;
+}
+
+[data-theme="dark"] .signature-upload-form label {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .signature-upload-form input[type="file"] {
+  background: rgba(45, 55, 72, 0.6);
+  border-color: rgba(74, 85, 104, 0.6);
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .signature-upload-form input[type="file"]:hover {
+  border-color: #667eea;
+  background: rgba(45, 55, 72, 0.8);
+}
+
+[data-theme="dark"] .file-selected {
+  background: rgba(72, 187, 120, 0.1);
+  color: #68d391;
+}
+
+[data-theme="dark"] .signature-upload-form small {
+  color: #a0aec0;
+}
+
+[data-theme="dark"] .signature-preview-note {
+  background: rgba(66, 153, 225, 0.1);
+  border-color: #4299e1;
+  color: #90cdf4;
+}
+
+[data-theme="dark"] .signature-preview-note strong {
+  color: #bee3f8;
+}
