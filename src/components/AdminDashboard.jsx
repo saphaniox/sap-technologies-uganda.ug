@@ -918,6 +918,63 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     }
   };
 
+  const handleDeleteCertificate = async (nominationId, nomineeName) => {
+    const result = await Swal.fire({
+      title: 'Delete Certificate?',
+      html: `
+        <p>Are you sure you want to delete the certificate for <strong>${nomineeName}</strong>?</p>
+        <p style="color: #dc2626; margin-top: 1rem;">
+          ⚠️ This action cannot be undone. The certificate file will be permanently deleted from storage.
+        </p>
+      `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, Delete Certificate',
+      cancelButtonText: 'Cancel'
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      setLoading(prev => ({ ...prev, updating: true }));
+      
+      const response = await apiService.request(`/api/certificates/delete/${nominationId}`, {
+        method: 'DELETE'
+      });
+
+      if (response) {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Certificate Deleted!',
+          html: `
+            <p>The certificate for <strong>${nomineeName}</strong> has been successfully deleted.</p>
+            <p style="margin-top: 1rem; color: #059669;">
+              ✓ Certificate file removed from storage<br>
+              ✓ Database records cleared<br>
+              ✓ Cloud storage cleaned (if applicable)
+            </p>
+          `,
+          confirmButtonColor: '#667eea'
+        });
+
+        // Refresh the certificate list
+        await fetchAllCertificates(certificatesPagination.currentPage);
+      }
+    } catch (error) {
+      console.error("Error deleting certificate:", error);
+      await Swal.fire({
+        icon: 'error',
+        title: 'Delete Failed',
+        text: error.message || 'Failed to delete certificate. Please try again.',
+        confirmButtonColor: '#dc2626'
+      });
+    } finally {
+      setLoading(prev => ({ ...prev, updating: false }));
+    }
+  };
+
   const formatUptime = (seconds) => {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
@@ -2777,6 +2834,14 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                                   >
                                     ✅ Verify
                                   </a>
+                                  <button
+                                    onClick={() => handleDeleteCertificate(cert._id, cert.nomineeName)}
+                                    className="action-btn delete-btn"
+                                    title="Delete Certificate"
+                                    disabled={loading.updating}
+                                  >
+                                    🗑️ Delete
+                                  </button>
                                 </td>
                               </tr>
                             ))}
