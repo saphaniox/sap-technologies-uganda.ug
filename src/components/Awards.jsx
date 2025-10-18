@@ -376,7 +376,16 @@ const Awards = ({ onClose }) => {
         
         <div className="container awards-hero-container">
           <div className="awards-hero-content">
-            <div className="hero-badge animated fadeInDown">
+            {/* Awards Logo */}
+            <div className="awards-logo animated fadeInDown">
+              <img 
+                src="/images/saphaniox-awards-image.jpg" 
+                alt="Saphaniox Awards Logo" 
+                className="awards-logo-image"
+              />
+            </div>
+
+            <div className="hero-badge animated fadeInDown delay-1">
               <span className="badge-icon">🏆</span>
               <span className="badge-text">5 Years of Saphaniox Awards</span>
             </div>

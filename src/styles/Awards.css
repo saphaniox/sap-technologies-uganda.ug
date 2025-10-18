@@ -3141,6 +3141,38 @@
   margin: 0 auto;
 }
 
+/* Awards Logo */
+.awards-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  animation: fadeInDown 1s ease;
+}
+
+.awards-logo-image {
+  width: 180px;
+  height: auto;
+  max-width: 100%;
+  border-radius: 20px;
+  box-shadow: 
+    0 10px 40px rgba(79, 70, 229, 0.3),
+    0 0 60px rgba(124, 58, 237, 0.2),
+    0 0 20px rgba(219, 39, 119, 0.3);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+}
+
+.awards-logo-image:hover {
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 
+    0 15px 60px rgba(79, 70, 229, 0.5),
+    0 0 80px rgba(124, 58, 237, 0.4),
+    0 0 40px rgba(219, 39, 119, 0.5);
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.5));
+}
+
 /* Hero Badge */
 .hero-badge {
   display: inline-flex;
@@ -3622,6 +3654,10 @@
     opacity: 0.12;
   }
 
+  .awards-logo-image {
+    width: 160px;
+  }
+
   .awards-hero-title {
     font-size: 2.5rem;
   }
@@ -3690,6 +3726,10 @@
     width: 350px;
     height: 350px;
     opacity: 0.10;
+  }
+
+  .awards-logo-image {
+    width: 140px;
   }
 
   .hero-badge {
