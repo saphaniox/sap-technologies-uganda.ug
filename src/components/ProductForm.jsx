@@ -51,7 +51,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
         category: "Other",
         price: {
             amount: "",
-            currency: "USD",
+            currency: "UGX",
             type: "contact-for-price"
         },
         availability: "custom-order",
@@ -97,7 +97,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 category: "Other",
                 price: {
                     amount: "",
-                    currency: "",
+                    currency: "UGX",
                     type: "contact-for-price"
                 },
                 availability: "custom-order",
@@ -135,9 +135,48 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            // Validate file size (10MB max)
+            const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+            if (file.size > maxSize) {
+                showAlert.error(
+                    "File Too Large",
+                    "Image size must be less than 10MB. Please choose a smaller file.",
+                    {
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    }
+                );
+                e.target.value = ''; // Clear the input
+                return;
+            }
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showAlert.error(
+                    "Invalid File Type",
+                    "Please select an image file (JPG, PNG, GIF, etc.)",
+                    {
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    }
+                );
+                e.target.value = ''; // Clear the input
+                return;
+            }
+
             setImage(file);
             const reader = new FileReader();
             reader.onload = (e) => setImagePreview(e.target.result);
+            reader.onerror = () => {
+                showAlert.error(
+                    "Error Reading File",
+                    "Failed to read the image file. Please try again.",
+                    {
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    }
+                );
+            };
             reader.readAsDataURL(file);
         }
     };
