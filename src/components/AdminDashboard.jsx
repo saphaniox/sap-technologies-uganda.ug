@@ -883,6 +883,27 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       return;
     }
 
+    // Validate file size (minimum 1KB, maximum 5MB)
+    const minSize = 1024; // 1KB
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    
+    if (signatureFile.size < minSize) {
+      setAutoMessage(`Signature file is too small (${signatureFile.size} bytes). Minimum size is 1KB. The file may be corrupted. Please select a valid signature image.`, true);
+      return;
+    }
+    
+    if (signatureFile.size > maxSize) {
+      setAutoMessage(`Signature file is too large (${(signatureFile.size / 1024 / 1024).toFixed(2)}MB). Maximum size is 5MB.`, true);
+      return;
+    }
+    
+    // Validate file type
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (!allowedTypes.includes(signatureFile.type)) {
+      setAutoMessage(`Invalid file type: ${signatureFile.type}. Only PNG and JPEG images are allowed.`, true);
+      return;
+    }
+
     setUploadingSignature(true);
 
     try {
@@ -896,7 +917,8 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       });
 
       if (response) {
-        setAutoMessage("Signature uploaded successfully! Certificates will now include this signature.");
+        const sizeKB = (signatureFile.size / 1024).toFixed(2);
+        setAutoMessage(`Signature uploaded successfully! (${sizeKB}KB) Certificates will now include this signature.`);
         setSignatureFile(null);
         fetchCurrentSignature();
       }
