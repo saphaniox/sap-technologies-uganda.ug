@@ -2,7 +2,7 @@
 // This pings the backend every 10 minutes to prevent it from sleeping
 
 const BACKEND_URL = "https://sap-technologies-ug.onrender.com";
-const PING_INTERVAL = 10 * 60 * 1000; // 10 minutes
+const PING_INTERVAL = 8 * 60 * 1000; // 8 minutes (safer margin before 15min sleep)
 
 class RenderKeepAlive {
   constructor() {
@@ -23,7 +23,7 @@ class RenderKeepAlive {
 
   async ping() {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/health`, {
+      const response = await fetch(`${BACKEND_URL}/health`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json'
