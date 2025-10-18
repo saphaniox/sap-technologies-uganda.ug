@@ -793,7 +793,8 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
         // Instantly remove from UI
         setProductInquiries(prev => prev.filter(inquiry => inquiry._id !== inquiryId));
         setAutoMessage("Product inquiry deleted successfully");
-        // Refetch to ensure data consistency
+        // Clear API cache and refetch to ensure data consistency
+        try { apiService.clearCache(); } catch(e) { /* ignore */ }
         fetchProductInquiries(productInquiriesPagination.currentPage);
       }
     } catch (error) {

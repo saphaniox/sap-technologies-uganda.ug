@@ -93,7 +93,16 @@ class ApiService {
       const cached = this.getCached(cacheKey);
       if (cached) {
         console.log('📦 Serving from cache:', cacheKey);
-        return cached;
+        // Return a deep clone to avoid same-reference state updates in React
+        try {
+          // Use structuredClone when available for performance
+          if (typeof structuredClone === 'function') {
+            return structuredClone(cached);
+          }
+        } catch (e) {
+          // structuredClone may not exist in all environments
+        }
+        return JSON.parse(JSON.stringify(cached));
       }
     }
     
@@ -114,6 +123,10 @@ class ApiService {
       method: method,
       headers: mergedHeaders,
       credentials: "include", // Super important! This sends cookies so server knows who we are
+      // Avoid HTTP-level caching for GET requests so intermediaries and the browser
+      // don't serve stale responses. Components should still rely on the in-memory
+      // cache which we manage explicitly.
+      ...(method === 'GET' ? { cache: options.cacheMode || 'no-store' } : {}),
     };
     
     // Add body if present
@@ -167,6 +180,19 @@ class ApiService {
       // Only cache successful GET responses with valid data
       if (useCache && response.ok && data) {
         this.setCache(cacheKey, data);
+      }
+
+      // After any successful mutating request, clear the cache so
+      // subsequent GETs fetch fresh data. This prevents the UI from
+      // showing stale data that requires a manual page refresh.
+      if (method !== 'GET' && response.ok) {
+        try {
+          this.clearCache();
+          if (import.meta.env.DEV) console.log('🧹 API cache cleared after mutation:', method, url);
+        } catch (e) {
+          // Non-fatal - log in development
+          if (import.meta.env.DEV) console.warn('Failed to clear API cache after mutation', e);
+        }
       }
 
       return data;

@@ -345,9 +345,10 @@ const AwardsAdmin = () => {
         timerProgressBar: true
       });
       
-      // Reload in background to ensure data consistency
-      await loadNominations();
-      await loadAwardsStats();
+  // Clear API cache and reload in background to ensure data consistency
+  try { apiService.clearCache(); } catch (e) { /* ignore */ }
+  await loadNominations();
+  await loadAwardsStats();
     } catch (error) {
       console.error("❌ Error deleting nomination:", error);
       console.error("Error details:", error.response?.data);
