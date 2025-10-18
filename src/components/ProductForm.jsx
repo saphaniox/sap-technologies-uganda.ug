@@ -382,14 +382,48 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                                     onChange={handleInputChange}
                                     required
                                 >
-                                    <option value="IoT Devices">IoT Devices</option>
-                                    <option value="Software Solutions">Software Solutions</option>
-                                    <option value="Web Applications">Web Applications</option>
-                                    <option value="Mobile Apps">Mobile Apps</option>
-                                    <option value="Hardware">Hardware</option>
-                                    <option value="Electronics">Electronics</option>
-                                    <option value="AI/ML Products">AI/ML Products</option>
-                                    <option value="Other">Other</option>
+                                    <optgroup label="Software & Digital">
+                                        <option value="Software Solutions">Software Solutions</option>
+                                        <option value="Web Applications">Web Applications</option>
+                                        <option value="Mobile Apps">Mobile Apps</option>
+                                        <option value="Desktop Applications">Desktop Applications</option>
+                                        <option value="Enterprise Software">Enterprise Software</option>
+                                        <option value="SaaS Products">SaaS Products</option>
+                                    </optgroup>
+                                    
+                                    <optgroup label="Hardware & Electronics">
+                                        <option value="IoT Devices">IoT Devices</option>
+                                        <option value="Hardware">Hardware</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Electricals">Electricals</option>
+                                        <option value="Networking Equipment">Networking Equipment</option>
+                                        <option value="Computer Hardware">Computer Hardware</option>
+                                        <option value="Smart Home Devices">Smart Home Devices</option>
+                                    </optgroup>
+                                    
+                                    <optgroup label="Emerging Tech">
+                                        <option value="AI/ML Products">AI/ML Products</option>
+                                        <option value="Automation Solutions">Automation Solutions</option>
+                                        <option value="Robotics">Robotics</option>
+                                        <option value="Blockchain Solutions">Blockchain Solutions</option>
+                                        <option value="Cloud Services">Cloud Services</option>
+                                    </optgroup>
+                                    
+                                    <optgroup label="Industry Specific">
+                                        <option value="Security Solutions">Security Solutions</option>
+                                        <option value="POS Systems">POS Systems</option>
+                                        <option value="Medical Devices">Medical Devices</option>
+                                        <option value="Agricultural Tech">Agricultural Tech</option>
+                                        <option value="Educational Tech">Educational Tech</option>
+                                        <option value="Financial Tech">Financial Tech</option>
+                                    </optgroup>
+                                    
+                                    <optgroup label="General">
+                                        <option value="Accessories">Accessories</option>
+                                        <option value="Components">Components</option>
+                                        <option value="Tools & Equipment">Tools & Equipment</option>
+                                        <option value="Other">Other</option>
+                                    </optgroup>
                                 </select>
                             </div>
 
