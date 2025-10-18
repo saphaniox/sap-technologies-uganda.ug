@@ -1157,22 +1157,7 @@
   transform: translateZ(0);
 }
 
-.nomination-card .nominee-photo::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 2;
-}
-
-.nomination-card:hover .nominee-photo::before {
-  opacity: 1;
-}
+/* Removed overlay for clear nominee photos */
 
 .nomination-card .nominee-photo img {
   width: 100%;
