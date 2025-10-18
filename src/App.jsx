@@ -128,6 +128,8 @@ function App() {
   const handleLogout = async () => {
     try {
       await apiService.logout();
+      // Clear API cache to ensure fresh auth state
+      apiService.clearCache();
       setIsAuthenticated(false);
       setUserName("");
       setUserDetails(null);
@@ -141,6 +143,7 @@ function App() {
     } catch (error) {
       console.error("Logout error:", error);
       // Force logout on client side even if server request fails
+      apiService.clearCache();
       setIsAuthenticated(false);
       setUserName("");
       setUserDetails(null);
@@ -208,6 +211,7 @@ function App() {
           <Route path="/*" element={
             <>
               <Header 
+                key={`header-${isAuthenticated ? 'auth' : 'guest'}`}
                 isAuthenticated={isAuthenticated}
                 userName={userName}
                 userRole={userDetails?.role}
