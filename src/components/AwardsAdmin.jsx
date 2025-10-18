@@ -986,7 +986,9 @@ const AwardsAdmin = () => {
               e.preventDefault();
               e.stopPropagation();
               console.log("⬇️ Download Certificate clicked for:", nomination.nomineeName);
-              window.open(`${apiService.baseURL}/api/certificates/download/${nomination.certificateFile}`, '_blank');
+              // Extract just the filename from the path (handles both relative and absolute paths)
+              const filename = nomination.certificateFile.split(/[/\\]/).pop();
+              window.open(`${apiService.baseURL}/api/certificates/download/${filename}`, '_blank');
             }}
             title="Download existing certificate"
           >
