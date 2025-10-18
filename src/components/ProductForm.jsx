@@ -282,14 +282,22 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
         } catch (error) {
             console.error("❌ Product form error:", error);
             console.error("❌ Error response data:", error.response?.data);
+            console.error("❌ Error response errors array:", error.response?.data?.errors);
             
             // Handle validation errors with field details
             let errorMessage = error.message || "Failed to save product. Please try again.";
             
             if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
+                console.log("🔍 Processing errors:", JSON.stringify(error.response.data.errors, null, 2));
+                
                 // Format validation errors nicely
                 const validationErrors = error.response.data.errors
-                    .map(err => `• ${err.field}: ${err.message}`)
+                    .map(err => {
+                        // Handle different error structures
+                        const field = err.field || err.path || 'unknown';
+                        const message = err.message || err.msg || JSON.stringify(err);
+                        return `• ${field}: ${message}`;
+                    })
                     .join('\n');
                 errorMessage = `Validation failed:\n\n${validationErrors}`;
             } else if (error.response?.data?.message) {
