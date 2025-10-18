@@ -21,7 +21,9 @@ import Footer from "./Footer";
 import PrivacyPolicy from "./PrivacyPolicy";
 import TermsOfService from "./TermsOfService";
 import BackToTop from "./BackToTop";
+import { Icon } from "./IconLibrary";
 import "../styles/Awards.css";
+import "../styles/IconLibrary.css";
 
 const Awards = ({ onClose }) => {
   const navigate = useNavigate();
@@ -619,7 +621,7 @@ const Awards = ({ onClose }) => {
                   <div 
                     className="category-icon"
                   >
-                    {category.icon}
+                    <Icon name={category.iconName || 'trophy'} size={48} />
                   </div>
                   <h3>
                     {category.name}
@@ -631,11 +633,17 @@ const Awards = ({ onClose }) => {
                     className="category-stats"
                   >
                     <span className="nominations-count">
-                      🎯 {category.approvedNominations || 0} approved
+                      <span className="stat-icon-wrapper approved">
+                        <Icon name="target" size={20} />
+                      </span>
+                      {category.approvedNominations || 0} approved
                     </span>
                     {category.totalNominations > category.approvedNominations && (
                       <span className="nominations-pending">
-                        ⏳ {(category.totalNominations || 0) - (category.approvedNominations || 0)} pending
+                        <span className="stat-icon-wrapper pending">
+                          <Icon name="clock" size={20} />
+                        </span>
+                        {(category.totalNominations || 0) - (category.approvedNominations || 0)} pending
                       </span>
                     )}
                   </div>

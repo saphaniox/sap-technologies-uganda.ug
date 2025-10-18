@@ -37,7 +37,9 @@ import apiService from "../services/api";
 import { showAlert } from "../utils/alerts";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import Swal from "sweetalert2";
+import { Icon } from "./IconLibrary";
 import "../styles/AwardsAdmin.css";
+import "../styles/IconLibrary.css";
 
 const AwardsAdmin = () => {
   console.log("🏆 AwardsAdmin component is rendering!");
@@ -637,42 +639,54 @@ const AwardsAdmin = () => {
     return (
       <div className="awards-stats-grid">
         <div className="stat-card">
-          <div className="stat-icon">📊</div>
+          <div className="stat-icon-wrapper total">
+            <Icon name="chart" size={24} />
+          </div>
           <div className="stat-info">
             <h3>{generalStats.totalNominations || 0}</h3>
             <p>Total Nominations</p>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">✅</div>
+          <div className="stat-icon-wrapper approved">
+            <Icon name="check" size={24} />
+          </div>
           <div className="stat-info">
             <h3>{generalStats.approvedNominations || 0}</h3>
             <p>Approved</p>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">⏳</div>
+          <div className="stat-icon-wrapper pending">
+            <Icon name="clock" size={24} />
+          </div>
           <div className="stat-info">
             <h3>{generalStats.pendingNominations || 0}</h3>
             <p>Pending Review</p>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🗳️</div>
+          <div className="stat-icon-wrapper votes">
+            <Icon name="ballot" size={24} />
+          </div>
           <div className="stat-info">
             <h3>{generalStats.totalVotes || 0}</h3>
             <p>Total Votes</p>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🇺🇬</div>
+          <div className="stat-icon-wrapper regional">
+            <Icon name="flag" size={24} />
+          </div>
           <div className="stat-info">
             <h3>{generalStats.ugandanNominees || 0}</h3>
             <p>Ugandan Nominees</p>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">🌍</div>
+          <div className="stat-icon-wrapper global">
+            <Icon name="globe" size={24} />
+          </div>
           <div className="stat-info">
             <h3>{generalStats.internationalNominees || 0}</h3>
             <p>International</p>
