@@ -842,9 +842,20 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       const response = await apiService.request('/api/certificates/signature/current', {
         method: 'GET'
       });
-      setCurrentSignature(response.data);
+      
+      // Handle both response.signature and response.data patterns
+      const signatureData = response.signature || response.data?.signature || response.data;
+      
+      // Check if signature exists and is not corrupted
+      if (signatureData && signatureData.isCorrupted) {
+        console.warn('⚠️ Signature file is corrupted:', signatureData.actualSize, 'bytes');
+        setCurrentSignature(null);
+      } else {
+        setCurrentSignature(signatureData);
+      }
     } catch (error) {
-      // No signature configured yet
+      // No signature configured yet or error loading
+      console.log('ℹ️ No signature configured or error loading:', error.message);
       setCurrentSignature(null);
     }
   };
