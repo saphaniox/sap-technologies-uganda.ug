@@ -1,17 +1,3 @@
-/**
- * Products Component
- * 
- * Displays our key products with detailed specifications and features.
- * Features include:
- * - Product catalog with images and descriptions
- * - Category filtering system
- * - Technical specifications display
- * - Product inquiry form integration
- * - Availability status indicators
- * - Price and tag information
- * 
- * @component
- */
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import ProductInquiryForm from "./ProductInquiryForm";

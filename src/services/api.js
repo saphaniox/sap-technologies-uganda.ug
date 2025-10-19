@@ -1,20 +1,12 @@
-// API Service - handles all communication between frontend and backend
-// This is like a translator that helps our React app talk to our Express server
-// It handles authentication, error handling, and data formatting
-
-// API configuration - environment-aware URL selection
 const isLocalhost = typeof window !== 'undefined' && 
   (window.location.hostname === 'localhost' || 
    window.location.hostname === '127.0.0.1' || 
    window.location.hostname === '0.0.0.0');
 
-// Get API URL from environment or use fallback
 const getApiUrl = () => {
-  // In development, use empty string to force Vite proxy
   if (isLocalhost && import.meta.env.DEV) {
     return import.meta.env.VITE_API_URL || "";
   }
-  // In production, use environment variable or fallback
   return import.meta.env.VITE_API_URL || "https://sap-technologies-ug.onrender.com";
 };
 
@@ -23,10 +15,9 @@ const API_BASE_URL = getApiUrl();
 class ApiService {
   constructor() {
     this.baseURL = API_BASE_URL;
-    // Simple in-memory cache for GET requests
     this.cache = new Map();
     this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
-    // Log API configuration in development
+    
     if (import.meta.env.DEV) {
       console.log('API Configuration:', {
         baseURL: this.baseURL,
@@ -37,10 +28,6 @@ class ApiService {
     }
   }
 
-  /**
-   * Get cached data if available and not expired
-   * @private
-   */
   getCached(key) {
     const cached = this.cache.get(key);
     if (!cached) return null;
@@ -54,10 +41,6 @@ class ApiService {
     return cached.data;
   }
 
-  /**
-   * Store data in cache
-   * @private
-   */
   setCache(key, data) {
     this.cache.set(key, {
       data,
@@ -65,10 +48,6 @@ class ApiService {
     });
   }
 
-  /**
-   * Clear cache for specific key or all cache
-   * @public
-   */
   clearCache(key = null) {
     if (key) {
       this.cache.delete(key);
@@ -76,9 +55,6 @@ class ApiService {
       this.cache.clear();
     }
   }
-
-  // Main method for making HTTP requests to our backend
-  // This handles all the common stuff like headers, cookies, and error handling
   async request(endpoint, options = {}) {
     // Ensure endpoint starts with /api unless it already does
     const apiEndpoint = endpoint.startsWith('/api') ? endpoint : `/api${endpoint}`;

@@ -1,31 +1,5 @@
-/**
- * Image URL Helper Utility
- * 
- * Handles both local and Cloudinary image URLs correctly.
- * 
- * @module utils/imageUrl
- */
-
 import apiService from '../services/api';
 
-/**
- * Get the correct image URL for display
- * - If URL starts with http/https, use it directly (Cloudinary, external URLs)
- * - Otherwise, prepend the API base URL (local storage)
- * 
- * @param {string|null|undefined} imagePath - The image path from the API
- * @returns {string|null} - The complete image URL or null
- * 
- * @example
- * getImageUrl('/uploads/products/image.jpg') 
- * // => 'https://api.example.com/uploads/products/image.jpg'
- * 
- * getImageUrl('https://res.cloudinary.com/xxx/image.jpg')
- * // => 'https://res.cloudinary.com/xxx/image.jpg'
- * 
- * getImageUrl(null) 
- * // => null
- */
 export const getImageUrl = (imagePath) => {
   if (!imagePath) return null;
   
@@ -38,23 +12,10 @@ export const getImageUrl = (imagePath) => {
   return `${apiService.baseURL}${imagePath}`;
 };
 
-/**
- * Get image URL with fallback placeholder
- * 
- * @param {string|null|undefined} imagePath - The image path from the API
- * @param {string} placeholder - Fallback placeholder (SVG data URI or path)
- * @returns {string} - The complete image URL or placeholder
- */
 export const getImageUrlWithFallback = (imagePath, placeholder) => {
   return getImageUrl(imagePath) || placeholder;
 };
 
-/**
- * Check if a path is a Cloudinary URL
- * 
- * @param {string} path - The path to check
- * @returns {boolean} - True if it's a Cloudinary URL
- */
 export const isCloudinaryUrl = (path) => {
   return path && typeof path === 'string' && path.includes('cloudinary.com');
 };

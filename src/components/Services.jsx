@@ -1,16 +1,3 @@
-/**
- * Services Component
- * 
- * Displays our comprehensive service portfolio with interactive cards and detailed modals.
- * Features include:
- * - Default core services (Web Design, Graphics, Electrical Engineering, Software)
- * - Additional services loaded from API/database
- * - Interactive modal popups with full service details
- * - Quote request form integration
- * - Smooth animations and hover effects
- * 
- * @component
- */
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Background3D from "./Background3D";

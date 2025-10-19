@@ -1,18 +1,3 @@
-/**
- * Header Component
- * 
- * Top navigation bar that stays visible across all pages.
- * Features include:
- * - Responsive mobile menu with smooth animations
- * - User authentication state display
- * - Smooth scrolling navigation to page sections
- * - Scroll-based styling (changes appearance when scrolled)
- * - Theme toggle integration (dark/light mode)
- * - Admin/user dashboard access
- * - Professional animations with Framer Motion
- * 
- * @component
- */
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,38 +5,22 @@ import ThemeToggle from "./ThemeToggle";
 import "../styles/Header.css";
 
 const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccountOpen, onAdminOpen, onLogout }) => {
-  /**
-   * UI State Management
-   */
-  // Tracks if viewport is mobile size (≤700px)
   const [isMobile, setIsMobile] = useState(false);
-  // Indicates if user has scrolled down the page
   const [isScrolled, setIsScrolled] = useState(false);
-  // Currently active navigation link
   const [activeLink, setActiveLink] = useState("home");
   
-  // Get current location to check if we're on Awards page
   const location = useLocation();
   const isAwardsPage = location.pathname === "/awards";
 
-  /**
-   * Set up responsive behavior and scroll effects
-   * Monitors window resize and scroll events
-   */
   useEffect(() => {
-    /**
-     * Check if viewport is mobile size
-     */
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 700);
     };
     
-    // Add visual effects when user scrolls down
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     
-    // Initialize on component mount
     handleResize();
     window.addEventListener("resize", handleResize);
     window.addEventListener("scroll", handleScroll);

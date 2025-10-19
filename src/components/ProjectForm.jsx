@@ -1,37 +1,3 @@
-/**
- * Project Form Component (Admin)
- * 
- * Comprehensive form for creating and editing portfolio projects.
- * 
- * Features:
- * - Create new projects or edit existing ones
- * - Project information (title, descriptions, category)
- * - Client information (name, company, industry)
- * - Technology stack array (dynamic add/remove)
- * - Features array (dynamic add/remove)
- * - Multiple image uploads with previews
- * - Project URLs (live site, repository)
- * - Date tracking (start date, completion date)
- * - Status management (in-progress, completed, on-hold)
- * - Featured project flag
- * - Form validation
- * - Loading states
- * - Success/error alerts
- * 
- * Categories:
- * - E-commerce Platform | Learning Management System
- * - Mobile Application | IoT Solution | Web Application
- * - Portfolio Website | Business Platform
- * - Graphics Design | Electrical Project | Other
- * 
- * Props:
- * - project: Project object for edit mode (null for create)
- * - onClose: Callback to close form
- * - onSave: Callback after successful save
- * 
- * @component
- */
-
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import { LoadingButton } from "../utils/alerts.jsx";

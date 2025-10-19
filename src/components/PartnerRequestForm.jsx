@@ -1,32 +1,3 @@
-/**
- * Partner Request Form Component
- * 
- * Modal form for companies to submit partnership/sponsorship requests.
- * 
- * Features:
- * - Company information fields (name, email, website, description)
- * - Contact person field
- * - Form validation
- * - Loading states
- * - Success/error messaging
- * - Auto-close on success
- * - Form reset after submission
- * - Modal overlay
- * 
- * Form Fields:
- * - Company Name (required)
- * - Contact Email (required, validated)
- * - Website URL (optional)
- * - Description (required, company/partnership details)
- * - Contact Person (required)
- * 
- * Props:
- * - isOpen: Boolean to control modal visibility
- * - onClose: Callback to close modal
- * 
- * @component
- */
-
 import { useState } from "react";
 import apiService from "../services/api";
 import "../styles/PartnerRequestForm.css";

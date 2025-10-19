@@ -1,17 +1,3 @@
-/**
- * Account Component
- * 
- * User account management page for viewing and updating profile.
- * Features:
- * - View profile details (name, email, avatar)
- * - Edit profile information
- * - Upload profile picture
- * - Change password
- * - View account activity history
- * - Tab navigation between sections
- * 
- * @component
- */
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import BackToTop from "./BackToTop";

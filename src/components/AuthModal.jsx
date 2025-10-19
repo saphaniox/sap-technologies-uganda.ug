@@ -1,16 +1,3 @@
-/**
- * AuthModal Component
- * 
- * Authentication modal for user login and registration.
- * Features:
- * - Login and signup forms with validation
- * - Password visibility toggle
- * - Form submission with loading states
- * - Success/error alerts
- * - Automatic mode switching after signup
- * 
- * @component
- */
 import React, { useState } from "react";
 import apiService from "../services/api";
 import { showAlert, LoadingButton, Spinners } from "../utils/alerts.jsx";

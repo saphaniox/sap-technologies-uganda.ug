@@ -1,39 +1,3 @@
-/**
- * Service Quote Form Component
- * 
- * Comprehensive form for customers to request quotes for services.
- * 
- * Features:
- * - Customer information (name, email, phone, company)
- * - Preferred contact method selection
- * - Project details textarea
- * - Budget range dropdown
- * - Timeline/deadline dropdown
- * - Form validation with error messages
- * - Loading states
- * - Success animation and message
- * - Auto-close on success
- * - Form reset after submission
- * - Service reference tracking
- * 
- * Form Fields:
- * - Customer Name (required)
- * - Customer Email (required, validated)
- * - Customer Phone (optional)
- * - Company Name (optional)
- * - Preferred Contact (email, phone, both)
- * - Project Details (optional)
- * - Budget Range (< $5K to > $50K, Not sure)
- * - Timeline (ASAP, 1-2 weeks, 1 month, 2-3 months, 3+ months, Flexible)
- * 
- * Props:
- * - service: Service object with details
- * - onClose: Callback to close modal
- * - onSubmit: Callback with form data on submission
- * 
- * @component
- */
-
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { showAlert } from "../utils/alerts.jsx";

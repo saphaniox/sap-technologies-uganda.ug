@@ -1,34 +1,3 @@
-/**
- * Product Inquiry Form Component
- * 
- * Modal form for customers to inquire about specific products.
- * 
- * Features:
- * - Customer email and phone fields
- * - Preferred contact method selection (email, phone, both)
- * - Message/inquiry details textarea
- * - Email validation
- * - Phone validation (when phone is preferred contact)
- * - Loading states
- * - Success/error messaging
- * - Auto-close on success
- * - Form reset after submission
- * - Product reference display
- * 
- * Form Fields:
- * - Customer Email (required, validated)
- * - Customer Phone (required if phone is preferred contact)
- * - Preferred Contact (email, phone, both)
- * - Message (optional, additional inquiry details)
- * 
- * Props:
- * - product: Product object with details
- * - onClose: Callback to close modal
- * - onSubmit: Callback with form data on submission
- * 
- * @component
- */
-
 import { useState } from "react";
 import PropTypes from "prop-types";
 import "../styles/ProductInquiryForm.css";

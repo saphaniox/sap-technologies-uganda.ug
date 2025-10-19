@@ -1,33 +1,3 @@
-/**
- * Forgot Password Component
- * 
- * Modal for handling password reset flow with email verification code.
- * 
- * Features:
- * - Two-step password reset process
- * - Email verification code request
- * - Verification code validation
- * - New password setting with confirmation
- * - Password visibility toggle
- * - Countdown timer for resend code (60 seconds)
- * - Form validation
- * - Loading states
- * - Success/error alerts
- * - Accessible form inputs
- * 
- * Reset Flow:
- * 1. User enters email address
- * 2. System sends 6-digit verification code
- * 3. User enters code and new password
- * 4. System validates and updates password
- * 
- * Props:
- * - isOpen: Boolean to control modal visibility
- * - onClose: Callback to close modal and reset state
- * 
- * @component
- */
-
 // Forgot Password Modal Component
 // Handles password reset flow with verification code
 import React, { useState } from "react";

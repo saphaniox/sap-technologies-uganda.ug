@@ -1,18 +1,3 @@
-/**
- * Footer Component
- * 
- * Bottom section with navigation, contact info, and social links.
- * Features include:
- * - Quick navigation links to all sections
- * - Sister platform links with coming soon alerts
- * - Contact information (email, phone)
- * - Social media links (LinkedIn, GitHub, Twitter, Facebook, WhatsApp)
- * - Newsletter subscription form
- * - Privacy policy and terms of service links
- * - Copyright information
- * 
- * @component
- */
 import React from "react";
 import { showAlert } from "../utils/alerts.jsx";
 import Newsletter from "./Newsletter";

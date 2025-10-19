@@ -1,17 +1,3 @@
-/**
- * Contact Component
- * 
- * Provides a contact form for users to reach out to SAP Technologies.
- * Features include:
- * - Interactive contact form with validation
- * - Real-time field focus effects
- * - Email and phone contact information display
- * - Form submission with loading states
- * - Success/error alert notifications
- * - Smooth animations with Framer Motion
- * 
- * @component
- */
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import apiService from "../services/api";

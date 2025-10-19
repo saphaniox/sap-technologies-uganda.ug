@@ -1,17 +1,3 @@
-/**
- * Newsletter Component
- * 
- * Newsletter subscription form for capturing user emails.
- * Features:
- * - Email input with validation
- * - Loading states during submission
- * - Success/error feedback messages
- * - Benefits display (tech updates, insights)
- * - Trust indicators (secure, spam-free)
- * - Auto-dismissing messages
- * 
- * @component
- */
 import React, { useState } from "react";
 import apiService from "../services/api";
 import "../styles/Newsletter.css";

@@ -1,25 +1,3 @@
-/**
- * Canvas3D Component
- * 
- * Advanced 3D scene with interactive geometric shapes and text.
- * 
- * Features:
- * - Floating geometric shapes (spheres, boxes, tori)
- * - Animated 3D text with custom styling
- * - Distortion effects and materials
- * - Orbit controls for user interaction
- * - Environment lighting and stars background
- * - Continuous rotation animations
- * - Color-coded shapes with gradients
- * 
- * Technologies:
- * - React Three Fiber (R3F) for React-based 3D
- * - React Three Drei for helper components
- * - Three.js for 3D graphics engine
- * 
- * @component
- */
-
 import React, { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { 

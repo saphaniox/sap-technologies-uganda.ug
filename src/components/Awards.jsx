@@ -1,17 +1,3 @@
-/**
- * Saphaniox Awards - Standalone Inspirational Page
- * 
- * A beautifully designed, standalone awards platform celebrating excellence
- * in engineering and technology. Features include:
- * - Inspiring hero section with dynamic animations
- * - Category showcase with modern cards
- * - Nomination submission system
- * - Nominee gallery with voting
- * - Search, filter, and pagination
- * - Fully responsive and accessible
- * 
- * @component
- */
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { showAlert } from "../utils/alerts";
@@ -672,8 +658,9 @@ const Awards = ({ onClose }) => {
               {getTopNominations().map((nomination, index) => (
                 <div key={nomination._id} className="top-nominee-card">
                   <div className="rank-badge">{index + 1}</div>
-                  <div className="nominee-photo">
+                  <div className="nominee-photo" style={{ position: 'relative' }}>
                     <img src={getImageUrl(nomination.nomineePhoto) || PLACEHOLDERS.avatar} alt={nomination.nomineeName} />
+                    <div className="country-badge">{nomination.nomineeCountry}</div>
                   </div>
                   <div className="nominee-info">
                     <h3>{nomination.nomineeName}</h3>
@@ -863,7 +850,7 @@ const NominationCard = ({ nomination, onVote }) => {
     <div 
       className="nomination-card"
     >
-      <div className="nominee-photo">
+      <div className="nominee-photo" style={{ position: 'relative' }}>
         <img src={getImageUrl(nomination.nomineePhoto) || PLACEHOLDERS.avatar} alt={nomination.nomineeName} />
         <div className="country-badge">{nomination.nomineeCountry}</div>
       </div>

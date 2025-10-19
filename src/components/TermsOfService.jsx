@@ -1,39 +1,3 @@
-/**
- * Terms of Service Component
- * 
- * Full-screen modal displaying SAP Technologies terms and conditions
- * for using services and website.
- * 
- * Features:
- * - Complete terms of service documentation
- * - Service descriptions and limitations
- * - User obligations and responsibilities
- * - Payment terms and intellectual property rights
- * - Warranty disclaimers and liability limitations
- * - Dispute resolution and governing law
- * - Animated modal entrance
- * - Back to top button for navigation
- * - Close button functionality
- * - Last updated date display
- * 
- * Sections Covered:
- * - Acceptance of terms
- * - Services overview
- * - User accounts and responsibilities
- * - Payment and billing
- * - Intellectual property
- * - Service modifications
- * - Warranties and disclaimers
- * - Limitation of liability
- * - Termination conditions
- * - Governing law and disputes
- * 
- * Props:
- * - onClose: Callback to close the modal
- * 
- * @component
- */
-
 import React from "react";
 import { motion } from "framer-motion";
 import BackToTop from "./BackToTop";

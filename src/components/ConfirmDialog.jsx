@@ -1,29 +1,3 @@
-/**
- * Confirm Dialog Component
- * 
- * Reusable confirmation modal for destructive or important actions.
- * 
- * Features:
- * - Customizable title and message
- * - Two action types (danger, warning)
- * - Custom button text
- * - Icon based on type
- * - Modal overlay with backdrop
- * - Accessible button labels
- * 
- * Props:
- * - isOpen: Boolean to control visibility
- * - title: Dialog title text
- * - message: Confirmation message
- * - onConfirm: Callback for confirmation
- * - onCancel: Callback for cancel
- * - confirmText: Custom confirm button text (default: "Delete")
- * - cancelText: Custom cancel button text (default: "Cancel")
- * - type: "danger" or "warning" for styling
- * 
- * @component
- */
-
 import React from "react";
 import "../styles/ConfirmDialog.css";
 

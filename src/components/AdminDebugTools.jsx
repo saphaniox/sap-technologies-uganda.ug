@@ -1,32 +1,3 @@
-/**
- * Admin Debug Tools Component
- * 
- * Development and testing tool for admins to diagnose issues
- * and test system functionality.
- * 
- * Features:
- * - Button click handler testing
- * - SweetAlert/alert system testing
- * - API endpoint testing
- * - Database connection verification
- * - Email service testing
- * - Authentication system checks
- * - Results display console
- * - Error logging and reporting
- * 
- * Test Categories:
- * - UI/UX Tests (button clicks, alerts, modals)
- * - Backend Tests (API calls, database queries)
- * - Service Tests (email, WhatsApp, certificates)
- * - Authentication Tests (login, sessions, tokens)
- * 
- * Usage:
- * Only accessible to admin/superadmin users.
- * Should be removed or secured in production.
- * 
- * @component
- */
-
 import React, { useState } from 'react';
 import { showAlert } from '../utils/alerts.jsx';
 import apiService from '../services/api';

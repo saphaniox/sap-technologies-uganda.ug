@@ -1,30 +1,3 @@
-/**
- * Component Error Boundary
- * 
- * Error boundary wrapper for individual components to prevent
- * full app crashes from component-level errors.
- * 
- * Features:
- * - Catches JavaScript errors in child components
- * - Displays user-friendly error fallback UI
- * - Provides retry functionality
- * - Logs errors to console for debugging
- * - Shows component name in error message
- * - Prevents error propagation to parent components
- * 
- * Usage:
- * Wrap any component that might throw errors:
- * <ComponentErrorBoundary componentName="MyComponent">
- *   <MyComponent />
- * </ComponentErrorBoundary>
- * 
- * Props:
- * - componentName: Display name for error message
- * - children: Component(s) to wrap and protect
- * 
- * @component
- */
-
 import React from "react";
 
 class ComponentErrorBoundary extends React.Component {

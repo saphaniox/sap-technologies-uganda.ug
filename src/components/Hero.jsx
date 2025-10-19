@@ -1,17 +1,4 @@
-﻿/**
- * Hero Component
- * 
- * Landing section with animated typing effect and call-to-action buttons.
- * Features include:
- * - Rotating typewriter animation showcasing our services
- * - 3D animated background
- * - Interactive CTA buttons with loading states
- * - Smooth scrolling navigation to other sections
- * - Responsive design for all devices
- * 
- * @component
- */
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Background3D from "./Background3D";
 import { withLoading } from "../utils/alerts.jsx";

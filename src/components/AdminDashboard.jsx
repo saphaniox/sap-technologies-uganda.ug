@@ -1,20 +1,3 @@
-/**
- * AdminDashboard Component
- * 
- * Central control panel for managing the entire application.
- * Features:
- * - Dashboard overview with statistics and charts
- * - User management (view, edit, delete users)
- * - Contact form submissions management
- * - Newsletter subscribers management
- * - Services, projects, partners, products management
- * - System health monitoring
- * - Auto-refresh capabilities
- * - Search and filter functionality
- * - Pagination for large datasets
- * 
- * @component
- */
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import { LoadingOverlay, LoadingButton } from "../utils/alerts.jsx";

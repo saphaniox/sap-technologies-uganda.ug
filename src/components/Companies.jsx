@@ -1,15 +1,3 @@
-/**
- * Companies Component
- * 
- * Showcases SAP Technologies sister companies and platforms.
- * Features include:
- * - Display of related business platforms
- * - Coming soon indicators for platforms in development
- * - Professional card layout with images and descriptions
- * - Interactive alert notifications for unreleased platforms
- * 
- * @component
- */
 import React from "react";
 import { showAlert } from "../utils/alerts.jsx";
 import "../styles/Companies.css";

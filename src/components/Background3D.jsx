@@ -1,24 +1,3 @@
-/**
- * Background3D Component
- * 
- * Animated 3D background with floating geometric shapes.
- * 
- * Features:
- * - Multiple floating shapes (spheres, boxes, tori)
- * - Continuous rotation animations
- * - Semi-transparent materials for subtle effect
- * - Customizable colors and speeds
- * - Low-impact rendering for background use
- * - Ambient and directional lighting
- * 
- * Use Case:
- * - Background decoration for hero sections
- * - Adds depth and motion to static pages
- * - Creates modern, tech-focused aesthetic
- * 
- * @component
- */
-
 import React, { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Sphere, Box, Torus } from "@react-three/drei";

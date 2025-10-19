@@ -224,6 +224,26 @@
   object-fit: cover;
   border: 3px solid #3b82f6;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  display: block;
+}
+
+.country-badge-admin {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(44, 62, 80, 0.85);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  max-width: 70%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .nominee-info h3 {

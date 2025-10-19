@@ -1,35 +1,3 @@
-/**
- * Privacy Policy Component
- * 
- * Full-screen modal displaying SAP Technologies privacy policy
- * and data handling practices.
- * 
- * Features:
- * - Complete privacy policy documentation
- * - Sections on data collection, usage, protection
- * - GDPR and data privacy compliance information
- * - User rights and cookie policy
- * - Contact information for privacy inquiries
- * - Animated modal entrance
- * - Back to top button for long content
- * - Close button to dismiss modal
- * - Last updated date display
- * 
- * Sections Covered:
- * - Information collection
- * - Data usage and processing
- * - Data security measures
- * - Third-party services
- * - User rights and choices
- * - Cookie policy
- * - Contact information
- * 
- * Props:
- * - onClose: Callback to close the modal
- * 
- * @component
- */
-
 import React from "react";
 import { motion } from "framer-motion";
 import BackToTop from "./BackToTop";

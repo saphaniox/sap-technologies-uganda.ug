@@ -1,26 +1,3 @@
-/**
- * Hero3D Component
- * 
- * Centerpiece 3D visualization for hero section with animated sphere
- * and orbiting elements.
- * 
- * Features:
- * - Central animated sphere with distortion effects
- * - Orbiting satellite elements
- * - Metallic and transparent materials
- * - Continuous floating and rotation animations
- * - Environment lighting for realistic reflections
- * - Responsive 3D scene
- * 
- * Visual Effects:
- * - Distortion animation on main sphere
- * - Vertical floating motion
- * - Circular orbit pattern for satellites
- * - Color-coded elements
- * 
- * @component
- */
-
 import React, { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Text3D, Center, Environment, MeshDistortMaterial, Sphere } from "@react-three/drei";

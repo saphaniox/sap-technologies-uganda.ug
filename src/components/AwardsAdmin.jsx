@@ -1,36 +1,3 @@
-/**
- * Awards Admin Component
- * 
- * Comprehensive admin panel for managing the SAP HANIOX Professional Awards.
- * 
- * Features:
- * - Nomination management (view, edit, approve, reject, delete)
- * - Category management (create, edit, delete, activate/deactivate)
- * - Winner and finalist selection
- * - Bulk operations on nominations
- * - Search and filtering by status, category, country
- * - Pagination for large datasets
- * - Statistics dashboard (total nominations, by status, by category)
- * - Status workflow management
- * - Email notifications for winners
- * - Certificate generation integration
- * - Photo preview and management
- * 
- * Sub-Tabs:
- * - Nominations: Manage all award nominations
- * - Categories: Manage award categories
- * - Statistics: View awards analytics
- * 
- * Status Options:
- * - pending: New submission
- * - approved: Accepted nomination
- * - rejected: Declined nomination
- * - winner: Category winner
- * - finalist: Runner-up
- * 
- * @component
- */
-
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import apiService from "../services/api";
@@ -776,16 +743,22 @@ const AwardsAdmin = () => {
     >
       <div className="nomination-header">
         <div className="nominee-info">
-          {nomination.nomineePhoto && (
-            <img 
-              src={getImageUrl(nomination.nomineePhoto)}
-              alt={nomination.nomineeName}
-              className="nominee-photo"
-              onError={(e) => {
-                e.target.src = PLACEHOLDERS.avatar;
-              }}
-            />
-          )}
+          <div style={{ position: 'relative', width: 80, height: 80 }}>
+            {nomination.nomineePhoto && (
+              <img 
+                src={getImageUrl(nomination.nomineePhoto)}
+                alt={nomination.nomineeName}
+                className="nominee-photo"
+                onError={(e) => {
+                  e.target.src = PLACEHOLDERS.avatar;
+                }}
+              />
+            )}
+            {/* Country badge overlay */}
+            <div className="country-badge-admin">
+              {nomination.nomineeCountry}
+            </div>
+          </div>
           <div>
             <h3>{nomination.nomineeName}</h3>
             {nomination.nomineeTitle && (
@@ -794,7 +767,6 @@ const AwardsAdmin = () => {
             {nomination.nomineeCompany && (
               <p className="nominee-company">{nomination.nomineeCompany}</p>
             )}
-            <p className="nominee-country">📍 {nomination.nomineeCountry}</p>
           </div>
         </div>
         <div className="nomination-meta">

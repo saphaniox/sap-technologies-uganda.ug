@@ -1,28 +1,3 @@
-/**
- * Back To Top Button Component
- * 
- * Animated button that appears when user scrolls down and
- * smoothly scrolls back to page top when clicked.
- * 
- * Features:
- * - Auto-show after scrolling 300px down
- * - Smooth scroll animation to top
- * - Framer Motion animations (fade, scale, bounce)
- * - Hover effects with shadow
- * - Tap feedback animation
- * - Spring physics for natural movement
- * - Arrow icon indicator
- * - Fixed position (bottom-right corner)
- * 
- * Animations:
- * - Entry: Fade in with scale and vertical slide
- * - Exit: Fade out with scale and vertical slide
- * - Hover: Scale up with shadow glow
- * - Tap: Scale down feedback
- * 
- * @component
- */
-
 import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";

@@ -1,34 +1,3 @@
-/**
- * Partner Form Component (Admin)
- * 
- * Modal form for admins to create and edit business partners/sponsors.
- * 
- * Features:
- * - Create new partners or edit existing ones
- * - Partner information (name, website, description)
- * - Logo upload with preview
- * - Active/inactive status toggle
- * - Display order/priority management
- * - Character count limits
- * - Form validation with error messages
- * - Loading states during submission
- * - Image file validation
- * - Logo preview for existing partners
- * 
- * Field Limits:
- * - Name: 100 characters
- * - Description: 500 characters
- * - Logo: Image file (jpg, png, gif, webp)
- * 
- * Props:
- * - isOpen: Boolean to control modal visibility
- * - onClose: Callback to close modal
- * - partner: Partner object for edit mode (null for create)
- * - onSave: Callback after successful save with updated data
- * 
- * @component
- */
-
 import { useState, useEffect } from "react";
 import apiService from "../services/api";
 import { getImageUrl } from "../utils/imageUrl";

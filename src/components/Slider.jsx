@@ -1,28 +1,3 @@
-/**
- * Slider Component
- * 
- * Image carousel/slider showcasing key services and offerings.
- * 
- * Features:
- * - Auto-advancing slides (5-second intervals)
- * - Manual navigation (previous/next buttons)
- * - Slide indicators/dots for direct navigation
- * - Smooth fade transitions
- * - Responsive images
- * - Title and description overlay
- * - Pause on hover (optional)
- * 
- * Slides Include:
- * - Web Design services
- * - Graphics Design & Logo
- * - Electrical Engineering
- * - Software Solutions
- * - Business Platforms
- * - Learning Management System
- * 
- * @component
- */
-
 import React, { useState, useEffect } from "react";
 import "../styles/Slider.css";
 

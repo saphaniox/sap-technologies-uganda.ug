@@ -1,31 +1,3 @@
-/**
- * Theme Toggle Component
- * 
- * Animated toggle button for switching between light and dark themes.
- * 
- * Features:
- * - Smooth theme switching animation
- * - Sun/moon icon indicators
- * - Sliding toggle with track
- * - Optional text label display
- * - Framer Motion animations
- * - Hover and tap feedback
- * - Accessible ARIA labels
- * - Persists theme preference
- * 
- * Props:
- * - className: Additional CSS classes
- * - showLabel: Display "Dark/Light Mode" text label
- * 
- * Animations:
- * - Toggle slider: Slides between light/dark positions
- * - Icons: Rotate and scale transitions
- * - Hover: Scale up slightly
- * - Tap: Scale down feedback
- * 
- * @component
- */
-
 import React from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../contexts/ThemeContext";

@@ -1,39 +1,3 @@
-/**
- * Alerts Demo Component
- * 
- * Development tool showcasing all available alert types and loading
- * indicators from the alerts utility system.
- * 
- * Features:
- * - SweetAlert2 demonstrations (success, error, warning, info)
- * - Confirmation dialogs with callbacks
- * - Custom HTML alerts
- * - All React Spinners types (12+ varieties)
- * - Loading overlay demonstrations
- * - Loading button states
- * - Higher-order component (withLoading) examples
- * - Live spinner customization
- * 
- * Alert Types:
- * - Success: Positive feedback messages
- * - Error: Error and failure notifications
- * - Warning: Caution and warning messages
- * - Info: Informational notices
- * - Confirm: Yes/No confirmation dialogs
- * - Custom: HTML content alerts
- * 
- * Spinner Types:
- * - BeatLoader, BounceLoader, CircleLoader, ClipLoader
- * - DotLoader, FadeLoader, GridLoader, HashLoader
- * - PacmanLoader, PuffLoader, RingLoader, SyncLoader
- * 
- * Usage:
- * Development and testing tool only.
- * Not intended for production use.
- * 
- * @component
- */
-
 // Demo component showcasing SweetAlert2 and React Spinners usage
 // This component demonstrates all available alerts and spinner types
 

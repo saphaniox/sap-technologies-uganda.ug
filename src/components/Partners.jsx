@@ -1,16 +1,3 @@
-/**
- * Partners Component
- * 
- * Displays our trusted business partners and allows partnership requests.
- * Features include:
- * - Partner showcase with logos and information
- * - Partner management (add, edit, delete) for admins
- * - Partnership request form for potential partners
- * - Authentication-based admin controls
- * - Responsive grid layout
- * 
- * @component
- */
 import { useState, useEffect } from "react";
 import PartnerForm from "./PartnerForm";
 import PartnerRequestForm from "./PartnerRequestForm";

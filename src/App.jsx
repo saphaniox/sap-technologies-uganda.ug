@@ -1,5 +1,3 @@
-// Main App component - this is the heart of our React application
-// It handles user authentication, page navigation, and renders all the main components
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -30,17 +28,14 @@ import "./styles/App.css";
 import "./styles/ErrorBoundary.css";
 
 function App() {
-  // Authentication state - tracks if user is logged in and their basic info
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
   const [userDetails, setUserDetails] = useState(null);
   
-  // Modal state for login/signup popup
   const [authModal, setAuthModal] = useState({ isOpen: false, mode: "login" });
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   
-  // Page/component visibility states - we use localStorage to remember user preferences
-  // This way if they refresh the page, they stay on the same section
+  // Persist page visibility across refreshes
   const [showAccount, setShowAccount] = useState(() => {
     return localStorage.getItem("showAccount") === "true";
   });
@@ -54,15 +49,12 @@ function App() {
     return localStorage.getItem("showTermsOfService") === "true";
   });
 
-  // Initialize the app - check if user is already logged in and set up animations
   useEffect(() => {
-    checkAuthStatus(); // See if user has a valid session
-    initializeAnimations(); // Start up our page animations
+    checkAuthStatus();
+    initializeAnimations();
     
-    // Clean up legacy localStorage values
     localStorage.removeItem("showAwards");
     
-    // Inject micro-animation styles
     const styleElement = document.createElement("style");
     styleElement.textContent = microAnimationStyles;
     document.head.appendChild(styleElement);
@@ -81,13 +73,11 @@ function App() {
         setUserName(authStatus.user.name || "");
         setUserDetails(authStatus.user);
       } else {
-        // User not authenticated - this is normal, no error
         setIsAuthenticated(false);
         setUserName("");
         setUserDetails(null);
       }
     } catch (error) {
-      // Only log actual errors (not authentication issues)
       console.error("Error checking authentication status:", error);
       setIsAuthenticated(false);
       setUserName("");
