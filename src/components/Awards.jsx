@@ -48,15 +48,17 @@ const Awards = ({ onClose }) => {
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [showTermsOfService, setShowTermsOfService] = useState(false);
 
-  // Nomination form state
+  // Nomination form state with optional fields marked
   const [nominationForm, setNominationForm] = useState({
     isSelfNomination: false,
+    // Required fields
     nomineeName: "",
-    nomineeTitle: "",
-    nomineeCompany: "",
     nomineeCountry: "Uganda",
     nomineePhoto: null,
     category: "",
+    // Optional fields
+    nomineeTitle: "",
+    nomineeCompany: "",
     nominationReason: "",
     achievements: "",
     impactDescription: "",
@@ -866,9 +868,11 @@ const NominationCard = ({ nomination, onVote }) => {
           {nomination.category?.icon} {nomination.category?.name}
         </div>
 
-        <div className="nomination-reason">
-          <p>{nomination.nominationReason.substring(0, 120)}...</p>
-        </div>
+        {nomination.nominationReason && (
+          <div className="nomination-reason">
+            <p>{nomination.nominationReason.substring(0, 120)}...</p>
+          </div>
+        )}
 
         {nomination.achievements && (
           <div className="achievements">
@@ -967,7 +971,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
               </div>
               
               <div className="form-group">
-                <label>{isSelf ? 'Your Professional Title' : 'Professional Title'}</label>
+                <label>{isSelf ? 'Your Professional Title (Optional)' : 'Professional Title (Optional)'}</label>
                 <input
                   type="text"
                   name="nomineeTitle"
@@ -980,7 +984,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
 
             <div className="form-row">
               <div className="form-group">
-                <label>{isSelf ? 'Your Company/Organization' : 'Company/Organization'}</label>
+                <label>{isSelf ? 'Your Company/Organization (Optional)' : 'Company/Organization (Optional)'}</label>
                 <input
                   type="text"
                   name="nomineeCompany"
@@ -1239,23 +1243,21 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
             <h3>📝 {isSelf ? 'Why You Deserve This Award' : 'Nomination Details'}</h3>
             
             <div className="form-group">
-              <label>{isSelf ? 'Why do you deserve this award? *' : 'Why should this person win? *'}</label>
+              <label>{isSelf ? 'Why do you deserve this award? (Optional)' : 'Why should this person win? (Optional)'}</label>
               <textarea
                 name="nominationReason"
                 value={nominationForm.nominationReason}
                 onChange={onChange}
-                required
                 rows={4}
                 placeholder={isSelf 
-                  ? "Explain why you deserve to win this award (minimum 50 characters)" 
-                  : "Explain why this person deserves to win this award (minimum 50 characters)"}
-                minLength={50}
+                  ? "Explain why you deserve to win this award" 
+                  : "Explain why this person deserves to win this award"}
               />
               <small>{nominationForm.nominationReason.length}/1000 characters</small>
             </div>
 
             <div className="form-group">
-              <label>{isSelf ? 'Your Key Achievements' : 'Key Achievements'}</label>
+              <label>{isSelf ? 'Your Key Achievements (Optional)' : 'Key Achievements (Optional)'}</label>
               <textarea
                 name="achievements"
                 value={nominationForm.achievements}
@@ -1268,7 +1270,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
             </div>
 
             <div className="form-group">
-              <label>{isSelf ? 'Your Impact on the Industry' : 'Impact Description'}</label>
+              <label>{isSelf ? 'Your Impact on the Industry (Optional)' : 'Impact Description (Optional)'}</label>
               <textarea
                 name="impactDescription"
                 value={nominationForm.impactDescription}
@@ -1314,7 +1316,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>Phone Number</label>
+                  <label>Phone Number (Optional)</label>
                   <input
                     type="tel"
                     name="nominatorPhone"
@@ -1325,7 +1327,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
                 </div>
                 
                 <div className="form-group">
-                  <label>Your Organization</label>
+                  <label>Your Organization (Optional)</label>
                   <input
                     type="text"
                     name="nominatorOrganization"
@@ -1357,7 +1359,7 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
                 </div>
                 
                 <div className="form-group">
-                  <label>Phone Number</label>
+                  <label>Phone Number (Optional)</label>
                   <input
                     type="tel"
                     name="nominatorPhone"

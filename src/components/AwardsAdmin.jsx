@@ -1333,7 +1333,7 @@ const AwardsAdmin = () => {
                   </div>
                   
                   <div className="form-group">
-                    <label>Title/Position</label>
+                    <label>Title/Position (Optional)</label>
                     <input 
                       type="text" 
                       name="nomineeTitle" 
@@ -1344,7 +1344,7 @@ const AwardsAdmin = () => {
                 
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Company</label>
+                    <label>Company (Optional)</label>
                     <input 
                       type="text" 
                       name="nomineeCompany" 
@@ -1385,12 +1385,10 @@ const AwardsAdmin = () => {
                 </div>
                 
                 <div className="form-group">
-                  <label>Reason for Nomination *</label>
+                  <label>Reason for Nomination</label>
                   <textarea 
                     name="nominationReason" 
-                    required
                     rows="3"
-                    minLength="20"
                     placeholder="Brief reason why they deserve this award..."
                   />
                 </div>
