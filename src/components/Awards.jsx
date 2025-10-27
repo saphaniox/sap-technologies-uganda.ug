@@ -1250,8 +1250,8 @@ const NominationModal = ({ categories, nominationForm, onChange, onSubmit, onClo
                 onChange={onChange}
                 rows={4}
                 placeholder={isSelf 
-                  ? "Explain why you deserve to win this award" 
-                  : "Explain why this person deserves to win this award"}
+                  ? "Explain why you deserve to win this award (optional)" 
+                  : "Explain why this person deserves to win this award (optional)"}
               />
               <small>{nominationForm.nominationReason.length}/1000 characters</small>
             </div>

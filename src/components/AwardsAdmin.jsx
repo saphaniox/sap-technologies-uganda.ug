@@ -1385,11 +1385,11 @@ const AwardsAdmin = () => {
                 </div>
                 
                 <div className="form-group">
-                  <label>Reason for Nomination</label>
+                  <label>Reason for Nomination (Optional)</label>
                   <textarea 
                     name="nominationReason" 
                     rows="3"
-                    placeholder="Brief reason why they deserve this award..."
+                    placeholder="Brief reason why they deserve this award (optional)..."
                   />
                 </div>
               </div>
