@@ -1,11 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://sap-technologies-ug.onrender.com/api/$1"
-    },
-    {
-      "source": "/((?!api|assets|images|_next|favicon.ico|vite.svg).*)",
+      "source": "/((?!assets|images|_next|favicon.ico|vite.svg).*)",
       "destination": "/index.html"
     }
   ],
