@@ -1481,7 +1481,7 @@
   transform: translateY(-2px);
 }
 
-/* Trophy icon styling */\n.trophy-icon {\n  display: inline-block;\n  font-size: 4.5rem;\n  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));\n  margin-right: 1rem;\n  transition: all 0.3s ease;\n}\n\n.trophy-icon:hover {\n  transform: scale(1.1) rotate(10deg);\n  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1));\n}\n\n.hero-title:hover {\n  transform: translateZ(20px) rotateX(10deg);\n}\n\n/* Trophy icon styling */
+/* Trophy icon styling */
 .trophy-icon {
   display: inline-block;
   font-size: 4.5rem;

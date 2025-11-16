@@ -9,6 +9,7 @@ import PartnerForm from "./PartnerForm";
 import ProductForm from "./ProductForm";
 import AdminDebugTools from "./AdminDebugTools";
 import AwardsAdmin from "./AwardsAdmin";
+import VisitorAnalytics from "./VisitorAnalytics";
 import "../styles/AdminDashboard.css";
 
 const AdminDashboard = ({ user, onClose }) => {
@@ -1121,6 +1122,12 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
             onClick={() => setActiveTab("awards")}
           >
             🏆 Awards Management
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === "analytics" ? "active" : ""}`}
+            onClick={() => setActiveTab("analytics")}
+          >
+            📊 Visitor Analytics
           </button>
           <button 
             className={`tab-btn ${activeTab === "settings" ? "active" : ""}`}
@@ -2676,6 +2683,13 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
             <div className="tab-panel">
               {console.log("🏆 Rendering Awards Tab!")}
               <AwardsAdmin />
+            </div>
+          )}
+
+          {/* Visitor Analytics Tab */}
+          {activeTab === "analytics" && (
+            <div className="tab-panel">
+              <VisitorAnalytics />
             </div>
           )}
 

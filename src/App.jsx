@@ -24,10 +24,14 @@ import BackToTop from "./components/BackToTop";
 import apiService from "./services/api";
 import { initializeAnimations } from "./utils/animations";
 import { microAnimationStyles } from "./utils/microAnimations.jsx";
+import { useVisitorTracking } from "./hooks/useVisitorTracking";
 import "./styles/App.css";
 import "./styles/ErrorBoundary.css";
 
 function App() {
+  // Enable visitor tracking
+  useVisitorTracking();
+  
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
   const [userDetails, setUserDetails] = useState(null);

@@ -89,6 +89,16 @@ class ApiService {
       headers["Content-Type"] = "application/json";
     }
     
+    // Add visitor tracking headers
+    const sessionId = sessionStorage.getItem("visitor_session_id");
+    const fingerprint = sessionStorage.getItem("x-fingerprint");
+    if (sessionId) {
+      headers["X-Session-ID"] = sessionId;
+    }
+    if (fingerprint) {
+      headers["X-Fingerprint"] = fingerprint;
+    }
+    
     // Merge headers properly, avoiding issues with undefined
     const mergedHeaders = {
       ...headers,
