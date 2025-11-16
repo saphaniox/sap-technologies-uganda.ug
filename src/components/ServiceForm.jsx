@@ -25,6 +25,8 @@ const ServiceForm = ({ service, onClose, onSave }) => {
   });
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [existingImage, setExistingImage] = useState(null);
+  const [deleteImage, setDeleteImage] = useState(false);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
   useEffect(() => {
@@ -79,8 +81,14 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       
       if (service.image) {
         // Convert relative path to full URL for existing image
-        setImagePreview(getImageUrl(service.image));
+        const imageUrl = getImageUrl(service.image);
+        setImagePreview(imageUrl);
+        setExistingImage(service.image);
+      } else {
+        setImagePreview(null);
+        setExistingImage(null);
       }
+      setDeleteImage(false);
       console.log("✅ Form data populated", { 
         features: processedFeatures, 
         technologies: processedTechnologies 
@@ -138,7 +146,19 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       const reader = new FileReader();
       reader.onload = (e) => setImagePreview(e.target.result);
       reader.readAsDataURL(file);
+      setDeleteImage(false);
     }
+  };
+
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    setFormData(prev => ({ ...prev, image: null }));
+    if (existingImage) {
+      setDeleteImage(true);
+    }
+    // Reset file input
+    const fileInput = document.getElementById('image');
+    if (fileInput) fileInput.value = '';
   };
 
   const handleSubmit = async (e) => {
@@ -149,6 +169,12 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       const submitData = new FormData();
       
       console.log("📋 Form data to submit:", formData);
+      
+      // Add deleteImage flag if user wants to remove existing image
+      if (deleteImage) {
+        submitData.append('deleteImage', 'true');
+        console.log("  🗑️ Marking existing image for deletion");
+      }
       
       // Add all form fields
       Object.keys(formData).forEach(key => {
@@ -493,6 +519,14 @@ const ServiceForm = ({ service, onClose, onSave }) => {
             {imagePreview && (
               <div className="image-preview">
                 <img src={imagePreview} alt="Preview" />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="btn-remove-image"
+                  title="Remove image"
+                >
+                  <i className="fas fa-times"></i> Remove Image
+                </button>
               </div>
             )}
           </div>

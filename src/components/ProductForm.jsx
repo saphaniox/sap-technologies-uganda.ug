@@ -26,6 +26,8 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
 
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState("");
+    const [existingImage, setExistingImage] = useState(null);
+    const [deleteImage, setDeleteImage] = useState(false);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -49,6 +51,8 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 tags: product.tags?.length > 0 ? product.tags : [""]
             });
             setImagePreview(getImageUrl(product.image) || "");
+            setExistingImage(product.image || null);
+            setDeleteImage(false);
         } else {
             // Reset form for new product
             setFormData({
@@ -70,6 +74,8 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 tags: [""]
             });
             setImagePreview("");
+            setExistingImage(null);
+            setDeleteImage(false);
         }
         setImage(null);
     }, [product]);
@@ -126,6 +132,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
             }
 
             setImage(file);
+            setDeleteImage(false);
             const reader = new FileReader();
             reader.onload = (e) => setImagePreview(e.target.result);
             reader.onerror = () => {
@@ -140,6 +147,19 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const handleRemoveImage = () => {
+        setImage(null);
+        setImagePreview("");
+        if (existingImage) {
+            setDeleteImage(true);
+        }
+        // Reset file input
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach(input => {
+            if (input.accept === 'image/*') input.value = '';
+        });
     };
 
     const handleTechnicalSpecChange = (index, field, value) => {
@@ -216,6 +236,11 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
             // Add image if provided
             if (image) {
                 submitData.append("productImage", image);
+            }
+            
+            // Add deleteImage flag if user wants to remove existing image
+            if (deleteImage) {
+                submitData.append('deleteImage', 'true');
             }
 
             let response;
@@ -418,6 +443,14 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                             {imagePreview && (
                                 <div className="image-preview">
                                     <img src={imagePreview} alt="Preview" />
+                                    <button
+                                        type="button"
+                                        onClick={handleRemoveImage}
+                                        className="btn-remove-image"
+                                        title="Remove image"
+                                    >
+                                        <i className="fas fa-times"></i> Remove Image
+                                    </button>
                                 </div>
                             )}
                         </div>

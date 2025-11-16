@@ -27,6 +27,9 @@ const ProjectForm = ({ project, onClose, onSave }) => {
   });
   const [loading, setLoading] = useState(false);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
+  const [newImageFiles, setNewImageFiles] = useState([]);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
   useEffect(() => {
@@ -62,10 +65,21 @@ const ProjectForm = ({ project, onClose, onSave }) => {
         images: []
       });
       if (project.images && project.images.length > 0) {
+        // Store original image paths
+        setExistingImages(project.images);
         // Convert relative paths to full URLs for existing images
-        const imageUrls = project.images.map(img => getImageUrl(img));
+        const imageUrls = project.images.map(img => ({
+          url: getImageUrl(img),
+          path: img,
+          isExisting: true
+        }));
         setImagePreviews(imageUrls);
+      } else {
+        setExistingImages([]);
+        setImagePreviews([]);
       }
+      setImagesToDelete([]);
+      setNewImageFiles([]);
     }
   }, [project]);
 
@@ -113,21 +127,42 @@ const ProjectForm = ({ project, onClose, onSave }) => {
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
-      setFormData(prev => ({ ...prev, images: files }));
+      // Add new files to existing array
+      setNewImageFiles(prev => [...prev, ...files]);
       
-      // Generate previews
-      const previews = [];
-      files.forEach((file, index) => {
+      // Generate previews for new images
+      files.forEach((file) => {
         const reader = new FileReader();
         reader.onload = (e) => {
-          previews[index] = e.target.result;
-          if (previews.length === files.length) {
-            setImagePreviews([...previews]);
-          }
+          setImagePreviews(prev => [...prev, {
+            url: e.target.result,
+            file: file,
+            isExisting: false
+          }]);
         };
         reader.readAsDataURL(file);
       });
     }
+    // Reset file input
+    e.target.value = '';
+  };
+
+  const handleRemoveImage = (index) => {
+    const imageToRemove = imagePreviews[index];
+    
+    if (imageToRemove.isExisting) {
+      // Mark existing image for deletion
+      setImagesToDelete(prev => [...prev, imageToRemove.path]);
+    } else {
+      // Remove from new files array
+      const fileIndex = newImageFiles.findIndex(f => f === imageToRemove.file);
+      if (fileIndex !== -1) {
+        setNewImageFiles(prev => prev.filter((_, i) => i !== fileIndex));
+      }
+    }
+    
+    // Remove from previews
+    setImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -140,8 +175,9 @@ const ProjectForm = ({ project, onClose, onSave }) => {
       
       // Add all form fields
       Object.keys(formData).forEach(key => {
-        if (key === "images" && Array.isArray(formData[key]) && formData[key][0] instanceof File) {
-          formData[key].forEach(file => {
+        if (key === "images") {
+          // Add new image files
+          newImageFiles.forEach(file => {
             submitData.append("images", file);
           });
         } else if (key === "technologies" || key === "features") {
@@ -156,6 +192,11 @@ const ProjectForm = ({ project, onClose, onSave }) => {
           submitData.append(key, formData[key]);
         }
       });
+
+      // Add images to delete
+      if (imagesToDelete.length > 0) {
+        submitData.append('imagesToDelete', JSON.stringify(imagesToDelete));
+      }
 
       if (project?._id) {
         await apiService.updateProject(project._id, submitData);
@@ -466,7 +507,18 @@ const ProjectForm = ({ project, onClose, onSave }) => {
               <div className="images-preview">
                 {imagePreviews.map((preview, index) => (
                   <div key={index} className="image-preview">
-                    <img src={preview} alt={`Preview ${index + 1}`} />
+                    <img src={preview.url} alt={`Preview ${index + 1}`} />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      className="btn-remove-image"
+                      title="Remove image"
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                    {preview.isExisting && (
+                      <span className="image-badge">Existing</span>
+                    )}
                   </div>
                 ))}
               </div>
