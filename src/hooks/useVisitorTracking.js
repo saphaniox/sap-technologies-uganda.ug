@@ -1,6 +1,21 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
+// Get API base URL
+const getApiUrl = () => {
+  const isLocalhost = typeof window !== 'undefined' && 
+    (window.location.hostname === 'localhost' || 
+     window.location.hostname === '127.0.0.1' || 
+     window.location.hostname === '0.0.0.0');
+  
+  if (isLocalhost && import.meta.env.DEV) {
+    return import.meta.env.VITE_API_URL || "";
+  }
+  return import.meta.env.VITE_API_URL || "https://sap-technologies-ug.onrender.com";
+};
+
+const API_BASE_URL = getApiUrl();
+
 // Generate a unique fingerprint for the visitor
 const generateFingerprint = () => {
   const canvas = document.createElement("canvas");
@@ -105,10 +120,12 @@ export const useVisitorTracking = () => {
       const timeOnPage = Math.floor((Date.now() - startTimeRef.current) / 1000);
       
       try {
-        await fetch("/api/visitor/track", {
+        await fetch(`${API_BASE_URL}/api/visitor/track`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "X-Session-ID": sessionId.current,
+            "X-Fingerprint": fingerprint.current,
           },
           body: JSON.stringify({
             sessionId: sessionId.current,
@@ -155,11 +172,14 @@ export const useVisitorTracking = () => {
 export const trackEvent = async (eventName, eventValue = "") => {
   try {
     const sessionId = getSessionId();
+    const fingerprint = generateFingerprint();
     
-    await fetch("/api/visitor/track", {
+    await fetch(`${API_BASE_URL}/api/visitor/track`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Session-ID": sessionId,
+        "X-Fingerprint": fingerprint,
       },
       body: JSON.stringify({
         sessionId,
