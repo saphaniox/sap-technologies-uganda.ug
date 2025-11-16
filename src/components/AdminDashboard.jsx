@@ -174,13 +174,21 @@ const AdminDashboard = ({ user, onClose }) => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      await Promise.all([
-        fetchDashboardStats(),
-        fetchSystemHealth()
-      ]);
+      setError("");
+      // Fetch critical dashboard data
+      await fetchDashboardStats();
+      // Fetch system health (less critical, don't block on failure)
+      await fetchSystemHealth();
     } catch (error) {
-      setError("Failed to load dashboard data");
       console.error("Dashboard fetch error:", error);
+      if (error.message?.includes("Authentication") || error.message?.includes("401")) {
+        setError("Your session has expired. Please log in again.");
+        setTimeout(() => {
+          if (onClose) onClose();
+        }, 2000);
+      } else {
+        setError(error.message || "Failed to load dashboard data");
+      }
     } finally {
       setLoading(false);
     }
@@ -192,8 +200,15 @@ const AdminDashboard = ({ user, onClose }) => {
       setDashboardStats(response.data);
     } catch (error) {
       console.error("Stats fetch error:", error);
-      if (error.message === "Authentication required") {
-        window.location.href = "/login";
+      if (error.message === "Authentication required" || error.message?.includes("Authentication")) {
+        setError("Session expired. Please log in again.");
+        setLoading(false);
+        // Close admin dashboard and trigger re-login
+        setTimeout(() => {
+          if (onClose) onClose();
+        }, 2000);
+      } else {
+        setError("Failed to load dashboard stats");
       }
     }
   };
@@ -204,8 +219,11 @@ const AdminDashboard = ({ user, onClose }) => {
       setSystemHealth(response.data.system);
     } catch (error) {
       console.error("System health fetch error:", error);
-      if (error.message === "Authentication required") {
-        window.location.href = "/login";
+      if (error.message === "Authentication required" || error.message?.includes("Authentication")) {
+        // Already handled by fetchDashboardStats
+        return;
+      } else {
+        console.error("Failed to load system health:", error.message);
       }
     }
   };
