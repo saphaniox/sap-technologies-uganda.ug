@@ -125,19 +125,32 @@ const About = () => {
               variants={fadeInUp}
               whileHover={{ 
                 y: -10,
-                boxShadow: "0 20px 40px rgba(102, 126, 234, 0.2)",
+                boxShadow: "0 30px 60px rgba(102, 126, 234, 0.25)",
                 transition: { duration: 0.3 }
               }}
             >
-              <div className="mvv-icon">🎯</div>
-              <h3>Our Mission</h3>
-              <p>
-                To empower businesses and communities across Uganda and Africa with innovative, 
-                world-class technology solutions that transform ideas into reality and drive 
-                sustainable growth. We are committed to delivering excellence in web design, 
-                branding, electrical engineering, and software development while fostering 
-                innovation and creating lasting value for our clients.
-              </p>
+              <div className="mvv-header">
+                <div className="mvv-icon-wrapper mission-icon">
+                  <span className="mvv-icon">🎯</span>
+                </div>
+                <h3>Our Mission</h3>
+              </div>
+              <div className="mvv-content">
+                <p className="mvv-lead">
+                  Empowering Africa Through Innovation & Excellence
+                </p>
+                <p className="mvv-description">
+                  We are dedicated to transforming businesses and communities across Uganda and Africa through 
+                  cutting-edge technology solutions. Our mission encompasses delivering world-class web design, 
+                  strategic branding, advanced electrical engineering, and bespoke software development that 
+                  converts visionary ideas into tangible realities.
+                </p>
+                <p className="mvv-description">
+                  By fostering innovation, maintaining unwavering quality standards, and building lasting 
+                  partnerships, we create sustainable value that propels our clients toward unprecedented growth 
+                  and competitive advantage in the digital economy.
+                </p>
+              </div>
             </motion.div>
 
             {/* Vision */}
@@ -146,19 +159,32 @@ const About = () => {
               variants={fadeInUp}
               whileHover={{ 
                 y: -10,
-                boxShadow: "0 20px 40px rgba(16, 185, 129, 0.2)",
+                boxShadow: "0 30px 60px rgba(16, 185, 129, 0.25)",
                 transition: { duration: 0.3 }
               }}
             >
-              <div className="mvv-icon">🔭</div>
-              <h3>Our Vision</h3>
-              <p>
-                To be Africa's leading technology partner, recognized for transforming businesses 
-                through innovation, creativity, and technical excellence. We envision a future 
-                where every enterprise, from startups to established organizations, has access 
-                to cutting-edge technology solutions that enable them to compete globally and 
-                thrive in the digital age.
-              </p>
+              <div className="mvv-header">
+                <div className="mvv-icon-wrapper vision-icon">
+                  <span className="mvv-icon">🔭</span>
+                </div>
+                <h3>Our Vision</h3>
+              </div>
+              <div className="mvv-content">
+                <p className="mvv-lead">
+                  Africa's Premier Technology Innovation Partner
+                </p>
+                <p className="mvv-description">
+                  We aspire to be the foremost technology partner across Africa, distinguished by our unwavering 
+                  commitment to innovation, creative excellence, and technical mastery. Our vision extends beyond 
+                  mere service delivery—we seek to fundamentally transform how businesses operate in the digital era.
+                </p>
+                <p className="mvv-description">
+                  We envision an inclusive technological landscape where every enterprise—from ambitious startups 
+                  to established industry leaders—has seamless access to sophisticated, cutting-edge solutions that 
+                  empower them to compete on the global stage, drive meaningful impact, and flourish in an 
+                  increasingly interconnected world.
+                </p>
+              </div>
             </motion.div>
 
             {/* Core Values */}
@@ -167,42 +193,93 @@ const About = () => {
               variants={fadeInUp}
               whileHover={{ 
                 y: -10,
-                boxShadow: "0 20px 40px rgba(245, 158, 11, 0.2)",
+                boxShadow: "0 30px 60px rgba(245, 158, 11, 0.25)",
                 transition: { duration: 0.3 }
               }}
             >
-              <div className="mvv-icon">⭐</div>
-              <h3>Core Values</h3>
-              <div className="core-values-list">
-                <div className="value-item">
-                  <span className="value-emoji">💡</span>
-                  <div>
-                    <strong>Innovation:</strong> We push boundaries and embrace new ideas to deliver cutting-edge solutions.
-                  </div>
+              <div className="mvv-header">
+                <div className="mvv-icon-wrapper values-icon">
+                  <span className="mvv-icon">⭐</span>
                 </div>
-                <div className="value-item">
-                  <span className="value-emoji">🏆</span>
-                  <div>
-                    <strong>Excellence:</strong> We are committed to delivering the highest quality in everything we do.
-                  </div>
-                </div>
-                <div className="value-item">
-                  <span className="value-emoji">🤝</span>
-                  <div>
-                    <strong>Integrity:</strong> We operate with honesty, transparency, and accountability.
-                  </div>
-                </div>
-                <div className="value-item">
-                  <span className="value-emoji">🌍</span>
-                  <div>
-                    <strong>Impact:</strong> We create solutions that make a meaningful difference in our communities.
-                  </div>
-                </div>
-                <div className="value-item">
-                  <span className="value-emoji">👥</span>
-                  <div>
-                    <strong>Collaboration:</strong> We believe in the power of teamwork and partnership.
-                  </div>
+                <h3>Core Values</h3>
+              </div>
+              <div className="mvv-content">
+                <p className="mvv-lead">
+                  Principles That Define Our Excellence
+                </p>
+                <div className="core-values-list">
+                  <motion.div 
+                    className="value-item"
+                    whileHover={{ x: 8, transition: { duration: 0.2 } }}
+                  >
+                    <div className="value-icon-circle innovation-circle">
+                      <span className="value-emoji">💡</span>
+                    </div>
+                    <div className="value-content">
+                      <h4>Innovation</h4>
+                      <p>Continuously pushing technological boundaries, embracing transformative ideas, and pioneering solutions that redefine industry standards.</p>
+                    </div>
+                  </motion.div>
+                  <motion.div 
+                    className="value-item"
+                    whileHover={{ x: 8, transition: { duration: 0.2 } }}
+                  >
+                    <div className="value-icon-circle excellence-circle">
+                      <span className="value-emoji">🏆</span>
+                    </div>
+                    <div className="value-content">
+                      <h4>Excellence</h4>
+                      <p>Maintaining uncompromising quality standards, meticulous attention to detail, and an unwavering commitment to delivering exceptional results.</p>
+                    </div>
+                  </motion.div>
+                  <motion.div 
+                    className="value-item"
+                    whileHover={{ x: 8, transition: { duration: 0.2 } }}
+                  >
+                    <div className="value-icon-circle integrity-circle">
+                      <span className="value-emoji">🤝</span>
+                    </div>
+                    <div className="value-content">
+                      <h4>Integrity</h4>
+                      <p>Operating with absolute honesty, transparency, and ethical accountability in every interaction and decision we make.</p>
+                    </div>
+                  </motion.div>
+                  <motion.div 
+                    className="value-item"
+                    whileHover={{ x: 8, transition: { duration: 0.2 } }}
+                  >
+                    <div className="value-icon-circle impact-circle">
+                      <span className="value-emoji">🌍</span>
+                    </div>
+                    <div className="value-content">
+                      <h4>Impact</h4>
+                      <p>Creating meaningful, sustainable solutions that drive positive change, empower communities, and contribute to Africa's digital transformation.</p>
+                    </div>
+                  </motion.div>
+                  <motion.div 
+                    className="value-item"
+                    whileHover={{ x: 8, transition: { duration: 0.2 } }}
+                  >
+                    <div className="value-icon-circle collaboration-circle">
+                      <span className="value-emoji">👥</span>
+                    </div>
+                    <div className="value-content">
+                      <h4>Collaboration</h4>
+                      <p>Fostering strategic partnerships, embracing diverse perspectives, and leveraging collective expertise to achieve extraordinary outcomes.</p>
+                    </div>
+                  </motion.div>
+                  <motion.div 
+                    className="value-item"
+                    whileHover={{ x: 8, transition: { duration: 0.2 } }}
+                  >
+                    <div className="value-icon-circle customer-circle">
+                      <span className="value-emoji">🎯</span>
+                    </div>
+                    <div className="value-content">
+                      <h4>Customer-Centricity</h4>
+                      <p>Placing client success at the heart of everything we do, understanding unique needs, and delivering tailored solutions that exceed expectations.</p>
+                    </div>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
