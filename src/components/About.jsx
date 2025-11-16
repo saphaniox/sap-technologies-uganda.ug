@@ -110,6 +110,105 @@ const About = () => {
           </motion.div>
         </motion.div>
 
+        {/* Mission, Vision & Core Values Section */}
+        <motion.div 
+          className="mission-vision-section"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.div className="mvv-grid" variants={staggerContainer}>
+            {/* Mission */}
+            <motion.div 
+              className="mvv-card mission-card"
+              variants={fadeInUp}
+              whileHover={{ 
+                y: -10,
+                boxShadow: "0 20px 40px rgba(102, 126, 234, 0.2)",
+                transition: { duration: 0.3 }
+              }}
+            >
+              <div className="mvv-icon">🎯</div>
+              <h3>Our Mission</h3>
+              <p>
+                To empower businesses and communities across Uganda and Africa with innovative, 
+                world-class technology solutions that transform ideas into reality and drive 
+                sustainable growth. We are committed to delivering excellence in web design, 
+                branding, electrical engineering, and software development while fostering 
+                innovation and creating lasting value for our clients.
+              </p>
+            </motion.div>
+
+            {/* Vision */}
+            <motion.div 
+              className="mvv-card vision-card"
+              variants={fadeInUp}
+              whileHover={{ 
+                y: -10,
+                boxShadow: "0 20px 40px rgba(16, 185, 129, 0.2)",
+                transition: { duration: 0.3 }
+              }}
+            >
+              <div className="mvv-icon">🔭</div>
+              <h3>Our Vision</h3>
+              <p>
+                To be Africa's leading technology partner, recognized for transforming businesses 
+                through innovation, creativity, and technical excellence. We envision a future 
+                where every enterprise, from startups to established organizations, has access 
+                to cutting-edge technology solutions that enable them to compete globally and 
+                thrive in the digital age.
+              </p>
+            </motion.div>
+
+            {/* Core Values */}
+            <motion.div 
+              className="mvv-card values-card"
+              variants={fadeInUp}
+              whileHover={{ 
+                y: -10,
+                boxShadow: "0 20px 40px rgba(245, 158, 11, 0.2)",
+                transition: { duration: 0.3 }
+              }}
+            >
+              <div className="mvv-icon">⭐</div>
+              <h3>Core Values</h3>
+              <div className="core-values-list">
+                <div className="value-item">
+                  <span className="value-emoji">💡</span>
+                  <div>
+                    <strong>Innovation:</strong> We push boundaries and embrace new ideas to deliver cutting-edge solutions.
+                  </div>
+                </div>
+                <div className="value-item">
+                  <span className="value-emoji">🏆</span>
+                  <div>
+                    <strong>Excellence:</strong> We are committed to delivering the highest quality in everything we do.
+                  </div>
+                </div>
+                <div className="value-item">
+                  <span className="value-emoji">🤝</span>
+                  <div>
+                    <strong>Integrity:</strong> We operate with honesty, transparency, and accountability.
+                  </div>
+                </div>
+                <div className="value-item">
+                  <span className="value-emoji">🌍</span>
+                  <div>
+                    <strong>Impact:</strong> We create solutions that make a meaningful difference in our communities.
+                  </div>
+                </div>
+                <div className="value-item">
+                  <span className="value-emoji">👥</span>
+                  <div>
+                    <strong>Collaboration:</strong> We believe in the power of teamwork and partnership.
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
         {/* Team Section - Showcasing our talented team members */}
         <motion.div 
           className="team-section"

@@ -27,6 +27,123 @@
   margin: 0 auto;
 }
 
+/* Mission, Vision & Values Section */
+.mission-vision-section {
+  margin-top: var(--space-16);
+  margin-bottom: var(--space-16);
+}
+
+.mvv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+.mvv-card {
+  background: var(--color-white);
+  border-radius: var(--border-radius-xl);
+  padding: var(--space-10);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-duration-300) var(--transition-timing-ease);
+  text-align: center;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.mvv-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary-500), var(--color-primary-600));
+  transform: scaleX(0);
+  transition: transform var(--transition-duration-300) var(--transition-timing-ease);
+}
+
+.mvv-card:hover::before {
+  transform: scaleX(1);
+}
+
+.mission-card {
+  border-top: 4px solid #667eea;
+}
+
+.vision-card {
+  border-top: 4px solid #10b981;
+}
+
+.values-card {
+  border-top: 4px solid #f59e0b;
+}
+
+.mvv-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-6);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.mvv-card h3 {
+  font-size: var(--text-2xl);
+  color: var(--color-primary-600);
+  margin-bottom: var(--space-6);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.mvv-card p {
+  font-size: var(--text-base);
+  color: var(--color-gray-700);
+  line-height: var(--leading-relaxed);
+  text-align: left;
+  margin: 0;
+}
+
+.core-values-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  text-align: left;
+}
+
+.value-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-gray-50);
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-duration-300) var(--transition-timing-ease);
+  border-left: 3px solid var(--color-primary-300);
+}
+
+.value-item:hover {
+  background: var(--color-primary-50);
+  border-left-color: var(--color-primary-500);
+  transform: translateX(5px);
+}
+
+.value-emoji {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.value-item strong {
+  color: var(--color-primary-600);
+  font-weight: 700;
+  display: block;
+  margin-bottom: var(--space-1);
+}
+
+.value-item div {
+  color: var(--color-gray-700);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
 /* Team Section Styles */
 .team-section {
   margin-top: var(--space-16);
@@ -252,6 +369,52 @@
     font-size: var(--text-base);
   }
 
+  /* Mission, Vision, Values responsive */
+  .mission-vision-section {
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-12);
+  }
+
+  .mvv-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .mvv-card {
+    padding: var(--space-6);
+  }
+
+  .mvv-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .mvv-card h3 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .mvv-card p {
+    font-size: var(--text-sm);
+  }
+
+  .core-values-list {
+    gap: var(--space-4);
+  }
+
+  .value-item {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .value-emoji {
+    font-size: 1.25rem;
+  }
+
+  .value-item div {
+    font-size: var(--text-xs);
+  }
+
   .team-section {
     margin-top: var(--space-12);
   }
@@ -317,6 +480,43 @@
 
   .about p {
     font-size: var(--text-sm);
+  }
+
+  /* Mission, Vision, Values extra small screens */
+  .mission-vision-section {
+    margin-top: var(--space-10);
+    margin-bottom: var(--space-10);
+  }
+
+  .mvv-grid {
+    gap: var(--space-4);
+  }
+
+  .mvv-card {
+    padding: var(--space-5);
+  }
+
+  .mvv-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .mvv-card h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+  }
+
+  .mvv-card p {
+    font-size: var(--text-xs);
+  }
+
+  .value-item {
+    padding: var(--space-2);
+    gap: var(--space-2);
+  }
+
+  .value-emoji {
+    font-size: 1rem;
   }
 
   .team-section {
