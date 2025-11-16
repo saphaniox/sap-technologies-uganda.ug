@@ -544,6 +544,15 @@ class ApiService {
     return this.request("/api/public/projects/categories");
   }
 
+  // Alias for backward compatibility
+  async getProjectCategories() {
+    return this.getPublicProjectCategories();
+  }
+
+  async getServiceCategories() {
+    return this.getPublicServiceCategories();
+  }
+
   // Partner methods
   async getPartners() {
     return this.request("/api/partners/public");
