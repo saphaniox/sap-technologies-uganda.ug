@@ -432,10 +432,11 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
 
                     {/* Image Upload */}
                     <div className="form-section">
-                        <h3>Product Image</h3>
+                        <h3>Product Images (Max 5)</h3>
                         <div className="image-upload-section">
                             <input
                                 type="file"
+                                multiple
                                 accept="image/*"
                                 onChange={handleImageChange}
                                 className="image-input"
@@ -446,9 +447,10 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                                 type="button"
                                 onClick={() => document.getElementById('productImage').click()}
                                 className="btn-add-image"
-                                title="Add image"
+                                title="Add images"
+                                disabled={imagePreview && true}
                             >
-                                <i className="fas fa-plus"></i>
+                                <i className="fas fa-plus"></i> Add Images
                             </button>
                             {imagePreview && (
                                 <div className="image-preview">
@@ -459,7 +461,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                                         className="btn-remove-image"
                                         title="Remove image"
                                     >
-                                        <i className="fas fa-times"></i>
+                                        <i className="fas fa-trash-alt"></i>
                                     </button>
                                 </div>
                             )}

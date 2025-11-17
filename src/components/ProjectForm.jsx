@@ -495,7 +495,7 @@ const ProjectForm = ({ project, onClose, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="images">Project Images (optional, Max 5)</label>
+            <label htmlFor="images">Project Images (Max 5)</label>
             <div className="image-upload-controls">
               <input
                 type="file"
@@ -512,7 +512,7 @@ const ProjectForm = ({ project, onClose, onSave }) => {
                 title="Add images"
                 disabled={imagePreviews.length >= 5}
               >
-                <i className="fas fa-plus"></i>
+                <i className="fas fa-plus"></i> Add Images
               </button>
               {imagePreviews.length >= 5 && (
                 <small style={{ marginLeft: '10px', color: '#999' }}>Maximum 5 images reached</small>
@@ -529,7 +529,7 @@ const ProjectForm = ({ project, onClose, onSave }) => {
                       className="btn-remove-image"
                       title="Remove image"
                     >
-                      <i className="fas fa-times"></i>
+                      <i className="fas fa-trash-alt"></i>
                     </button>
                     {preview.isExisting && (
                       <span className="image-badge">Existing</span>

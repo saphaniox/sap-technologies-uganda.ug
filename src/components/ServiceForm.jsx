@@ -24,9 +24,10 @@ const ServiceForm = ({ service, onClose, onSave }) => {
     image: null
   });
   const [loading, setLoading] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [existingImage, setExistingImage] = useState(null);
-  const [deleteImage, setDeleteImage] = useState(false);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
+  const [newImageFiles, setNewImageFiles] = useState([]);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
   useEffect(() => {
@@ -79,16 +80,22 @@ const ServiceForm = ({ service, onClose, onSave }) => {
         image: null
       });
       
-      if (service.image) {
-        // Convert relative path to full URL for existing image
-        const imageUrl = getImageUrl(service.image);
-        setImagePreview(imageUrl);
-        setExistingImage(service.image);
+      // Handle images - support both single image (old) and array (new)
+      const images = service.images || (service.image ? [service.image] : []);
+      if (images.length > 0) {
+        setExistingImages(images);
+        const imageUrls = images.map(img => ({
+          url: getImageUrl(img),
+          path: img,
+          isExisting: true
+        }));
+        setImagePreviews(imageUrls);
       } else {
-        setImagePreview(null);
-        setExistingImage(null);
+        setExistingImages([]);
+        setImagePreviews([]);
       }
-      setDeleteImage(false);
+      setImagesToDelete([]);
+      setNewImageFiles([]);
       console.log("✅ Form data populated", { 
         features: processedFeatures, 
         technologies: processedTechnologies 
@@ -139,26 +146,45 @@ const ServiceForm = ({ service, onClose, onSave }) => {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData(prev => ({ ...prev, image: file }));
-      const reader = new FileReader();
-      reader.onload = (e) => setImagePreview(e.target.result);
-      reader.readAsDataURL(file);
-      setDeleteImage(false);
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setImagePreview(null);
-    setFormData(prev => ({ ...prev, image: null }));
-    if (existingImage) {
-      setDeleteImage(true);
+  const handleImagesChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      // Add new files to existing array
+      setNewImageFiles(prev => [...prev, ...files]);
+      
+      // Generate previews for new images
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreviews(prev => [...prev, {
+            url: e.target.result,
+            file: file,
+            isExisting: false
+          }]);
+        };
+        reader.readAsDataURL(file);
+      });
     }
     // Reset file input
-    const fileInput = document.getElementById('image');
-    if (fileInput) fileInput.value = '';
+    e.target.value = '';
+  };
+
+  const handleRemoveImage = (index) => {
+    const imageToRemove = imagePreviews[index];
+    
+    if (imageToRemove.isExisting) {
+      // Mark existing image for deletion
+      setImagesToDelete(prev => [...prev, imageToRemove.path]);
+    } else {
+      // Remove from new files array
+      const fileIndex = newImageFiles.findIndex(f => f === imageToRemove.file);
+      if (fileIndex !== -1) {
+        setNewImageFiles(prev => prev.filter((_, i) => i !== fileIndex));
+      }
+    }
+    
+    // Remove from previews
+    setImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -178,10 +204,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       
       // Add all form fields
       Object.keys(formData).forEach(key => {
-        if (key === "image" && formData[key] instanceof File) {
-          submitData.append("image", formData[key]);
-          console.log("  ✅ Added image file");
-        } else if (key === "features" || key === "technologies") {
+        if (key === "features" || key === "technologies") {
           // Filter out empty strings and ensure all items are strings
           const cleanArray = formData[key]
             .filter(item => item && typeof item === "string" && item.trim())
@@ -209,6 +232,16 @@ const ServiceForm = ({ service, onClose, onSave }) => {
           }
         }
       });
+      
+      // Add new image files
+      newImageFiles.forEach(file => {
+        submitData.append("images", file);
+      });
+      
+      // Add images to delete
+      if (imagesToDelete.length > 0) {
+        submitData.append('imagesToDelete', JSON.stringify(imagesToDelete));
+      }
       
       console.log("📤 Submitting service data...");
       if (service?._id) {
@@ -509,35 +542,47 @@ const ServiceForm = ({ service, onClose, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="image">Service Image</label>
+            <label htmlFor="images">Service Images (Max 5)</label>
             <div className="image-upload-controls">
               <input
                 type="file"
-                id="image"
+                id="images"
+                multiple
                 accept="image/*"
-                onChange={handleImageChange}
+                onChange={handleImagesChange}
                 style={{ display: 'none' }}
               />
               <button
                 type="button"
-                onClick={() => document.getElementById('image').click()}
+                onClick={() => document.getElementById('images').click()}
                 className="btn-add-image"
-                title="Add image"
+                title="Add images"
+                disabled={imagePreviews.length >= 5}
               >
-                <i className="fas fa-plus"></i>
+                <i className="fas fa-plus"></i> Add Images
               </button>
+              {imagePreviews.length >= 5 && (
+                <small style={{ marginLeft: '10px', color: '#999' }}>Maximum 5 images reached</small>
+              )}
             </div>
-            {imagePreview && (
-              <div className="image-preview">
-                <img src={imagePreview} alt="Preview" />
-                <button
-                  type="button"
-                  onClick={handleRemoveImage}
-                  className="btn-remove-image"
-                  title="Remove image"
-                >
-                  <i className="fas fa-times"></i>
-                </button>
+            {imagePreviews.length > 0 && (
+              <div className="images-preview">
+                {imagePreviews.map((preview, index) => (
+                  <div key={index} className="image-preview">
+                    <img src={preview.url} alt={`Preview ${index + 1}`} />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      className="btn-remove-image"
+                      title="Remove image"
+                    >
+                      <i className="fas fa-trash-alt"></i>
+                    </button>
+                    {preview.isExisting && (
+                      <span className="image-badge">Existing</span>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
           </div>
