@@ -93,6 +93,7 @@ const AdminDashboard = ({ user, onClose }) => {
   const [editingProject, setEditingProject] = useState(null);
   const [editingPartner, setEditingPartner] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [hasFetchedInitialData, setHasFetchedInitialData] = useState(false);
 
   // Utility function to set message with auto-dismissal
   const setAutoMessage = (msg, isError = false) => {
@@ -102,7 +103,11 @@ const AdminDashboard = ({ user, onClose }) => {
   };
 
   useEffect(() => {
-    fetchDashboardData();
+    // Prevent duplicate calls in React Strict Mode
+    if (!hasFetchedInitialData) {
+      setHasFetchedInitialData(true);
+      fetchDashboardData();
+    }
     
     // Set up auto-refresh every 30 seconds
     const interval = setInterval(() => {

@@ -121,17 +121,19 @@ const Portfolio = () => {
       // Request projects from the backend API
       const response = await apiService.getPublicProjects();
       
-      // Check if we got valid project data
+              // Check if we got valid project data
       if (response.success && response.data.projects.length > 0) {
         // Transform API data into consistent format
         const transformedProjects = response.data.projects.map(project => ({
           title: project.title,
           image: project.image || "/images/portfolio-app.jpg", // Fallback image
           description: project.description,
-          techStack: Array.isArray(project.techStack) ? project.techStack : []
-        }));
-        
-        setApiProjects(transformedProjects);
+          techStack: Array.isArray(project.technologies) 
+            ? project.technologies.map(tech => 
+                typeof tech === "string" ? tech : tech.name || ""
+              ).filter(tech => tech.trim())
+            : []
+        }));        setApiProjects(transformedProjects);
       } else {
         // No projects found, set empty array
         setApiProjects([]);
@@ -229,7 +231,7 @@ const Portfolio = () => {
                   <h4 className="tech-stack-label">Technologies:</h4>
                   <div className="tech-stack">
                     {item.techStack.map((tech, techIndex) => (
-                      <span key={techIndex} className="tech-tag">{tech}</span>
+                      <span key={techIndex} className="tech-tag">{typeof tech === "string" ? tech : tech.name || tech}</span>
                     ))}
                   </div>
                 </div>
@@ -267,7 +269,7 @@ const Portfolio = () => {
                       <h4 className="tech-stack-label">Technologies:</h4>
                       <div className="tech-stack">
                         {item.techStack.map((tech, techIndex) => (
-                          <span key={techIndex} className="tech-tag">{tech}</span>
+                          <span key={techIndex} className="tech-tag">{typeof tech === "string" ? tech : tech.name || tech}</span>
                         ))}
                       </div>
                     </div>
