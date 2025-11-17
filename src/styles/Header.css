@@ -1395,6 +1395,8 @@
 
 .profile-name {
   font-weight: 600;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 /* Admin mode profile picture */
