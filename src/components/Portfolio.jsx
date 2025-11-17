@@ -129,9 +129,13 @@ const Portfolio = () => {
           image: project.image || "/images/portfolio-app.jpg", // Fallback image
           description: project.description,
           techStack: Array.isArray(project.technologies) 
-            ? project.technologies.map(tech => 
-                typeof tech === "string" ? tech : tech.name || ""
-              ).filter(tech => tech.trim())
+            ? project.technologies
+                .map(tech => {
+                  if (typeof tech === "string") return tech;
+                  if (tech && typeof tech === "object" && tech.name) return String(tech.name);
+                  return String(tech || "");
+                })
+                .filter(tech => tech && tech.trim())
             : []
         }));        setApiProjects(transformedProjects);
       } else {
@@ -230,9 +234,10 @@ const Portfolio = () => {
                 <div className="tech-stack-section">
                   <h4 className="tech-stack-label">Technologies:</h4>
                   <div className="tech-stack">
-                    {item.techStack.map((tech, techIndex) => (
-                      <span key={techIndex} className="tech-tag">{typeof tech === "string" ? tech : tech.name || tech}</span>
-                    ))}
+                    {item.techStack.map((tech, techIndex) => {
+                      const techText = typeof tech === "string" ? tech : (tech?.name || String(tech || ""));
+                      return <span key={techIndex} className="tech-tag">{techText}</span>;
+                    })}
                   </div>
                 </div>
               </div>
@@ -268,9 +273,10 @@ const Portfolio = () => {
                     <div className="tech-stack-section">
                       <h4 className="tech-stack-label">Technologies:</h4>
                       <div className="tech-stack">
-                        {item.techStack.map((tech, techIndex) => (
-                          <span key={techIndex} className="tech-tag">{typeof tech === "string" ? tech : tech.name || tech}</span>
-                        ))}
+                        {item.techStack.map((tech, techIndex) => {
+                          const techText = typeof tech === "string" ? tech : (tech?.name || String(tech || ""));
+                          return <span key={techIndex} className="tech-tag">{techText}</span>;
+                        })}
                       </div>
                     </div>
                   </div>
