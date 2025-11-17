@@ -3,13 +3,16 @@ import apiService from '../services/api';
 export const getImageUrl = (imagePath) => {
   if (!imagePath) return null;
   
+  // Ensure imagePath is a string
+  const pathStr = typeof imagePath === 'string' ? imagePath : String(imagePath);
+  
   // If it's already a full URL (Cloudinary, external), use it directly
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-    return imagePath;
+  if (pathStr.startsWith('http://') || pathStr.startsWith('https://')) {
+    return pathStr;
   }
   
   // Otherwise, it's a local path - prepend the API base URL
-  return `${apiService.baseURL}${imagePath}`;
+  return `${apiService.baseURL}${pathStr}`;
 };
 
 export const getImageUrlWithFallback = (imagePath, placeholder) => {
