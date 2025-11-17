@@ -439,7 +439,17 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                                 accept="image/*"
                                 onChange={handleImageChange}
                                 className="image-input"
+                                id="productImage"
+                                style={{ display: 'none' }}
                             />
+                            <button
+                                type="button"
+                                onClick={() => document.getElementById('productImage').click()}
+                                className="btn-add-image"
+                                title="Add image"
+                            >
+                                <i className="fas fa-plus"></i>
+                            </button>
                             {imagePreview && (
                                 <div className="image-preview">
                                     <img src={imagePreview} alt="Preview" />
@@ -449,7 +459,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                                         className="btn-remove-image"
                                         title="Remove image"
                                     >
-                                        <i className="fas fa-times"></i> Remove Image
+                                        <i className="fas fa-times"></i>
                                     </button>
                                 </div>
                             )}

@@ -441,6 +441,45 @@
 }
 
 /* Image Management Styles */
+.image-upload-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.btn-add-image {
+  background: linear-gradient(135deg, #0d7377 0%, #14a085 100%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(20, 160, 133, 0.4);
+  font-size: 1.2rem;
+}
+
+.btn-add-image:hover:not(:disabled) {
+  background: linear-gradient(135deg, #14a085 0%, #0d7377 100%);
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(20, 160, 133, 0.6);
+}
+
+.btn-add-image:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-add-image i {
+  font-size: 1.2rem;
+}
+
 .image-preview {
   position: relative;
   display: inline-block;
@@ -467,25 +506,24 @@
   background: rgba(239, 68, 68, 0.9);
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .btn-remove-image:hover {
   background: rgba(220, 38, 38, 1);
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .btn-remove-image i {
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .image-badge {

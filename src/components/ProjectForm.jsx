@@ -496,13 +496,28 @@ const ProjectForm = ({ project, onClose, onSave }) => {
 
           <div className="form-group">
             <label htmlFor="images">Project Images (optional, Max 5)</label>
-            <input
-              type="file"
-              id="images"
-              multiple
-              accept="image/*"
-              onChange={handleImagesChange}
-            />
+            <div className="image-upload-controls">
+              <input
+                type="file"
+                id="images"
+                multiple
+                accept="image/*"
+                onChange={handleImagesChange}
+                style={{ display: 'none' }}
+              />
+              <button
+                type="button"
+                onClick={() => document.getElementById('images').click()}
+                className="btn-add-image"
+                title="Add images"
+                disabled={imagePreviews.length >= 5}
+              >
+                <i className="fas fa-plus"></i>
+              </button>
+              {imagePreviews.length >= 5 && (
+                <small style={{ marginLeft: '10px', color: '#999' }}>Maximum 5 images reached</small>
+              )}
+            </div>
             {imagePreviews.length > 0 && (
               <div className="images-preview">
                 {imagePreviews.map((preview, index) => (

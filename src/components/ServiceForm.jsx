@@ -510,12 +510,23 @@ const ServiceForm = ({ service, onClose, onSave }) => {
 
           <div className="form-group">
             <label htmlFor="image">Service Image</label>
-            <input
-              type="file"
-              id="image"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
+            <div className="image-upload-controls">
+              <input
+                type="file"
+                id="image"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+              <button
+                type="button"
+                onClick={() => document.getElementById('image').click()}
+                className="btn-add-image"
+                title="Add image"
+              >
+                <i className="fas fa-plus"></i>
+              </button>
+            </div>
             {imagePreview && (
               <div className="image-preview">
                 <img src={imagePreview} alt="Preview" />
@@ -525,7 +536,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
                   className="btn-remove-image"
                   title="Remove image"
                 >
-                  <i className="fas fa-times"></i> Remove Image
+                  <i className="fas fa-times"></i>
                 </button>
               </div>
             )}
