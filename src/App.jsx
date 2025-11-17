@@ -209,6 +209,7 @@ function App() {
                 isAuthenticated={isAuthenticated}
                 userName={userName}
                 userRole={userDetails?.role}
+                userProfilePic={userDetails?.profilePic}
                 onAuthModalOpen={handleAuthModalOpen}
                 onAccountOpen={handleAccountOpen}
                 onAdminOpen={handleAdminOpen}

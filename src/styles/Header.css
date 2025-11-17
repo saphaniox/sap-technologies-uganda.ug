@@ -1365,3 +1365,80 @@
     background: rgba(0, 0, 0, 0.3);
   }
 }
+
+/* Profile Picture in Header */
+.account-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-pic-small {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.account-btn:hover .profile-pic-small {
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.profile-icon {
+  font-size: 1.2rem;
+}
+
+.profile-name {
+  font-weight: 600;
+}
+
+/* Admin mode profile picture */
+.nav-admin .profile-pic-small {
+  border-color: rgba(52, 152, 219, 0.5);
+}
+
+.nav-admin .account-btn:hover .profile-pic-small {
+  border-color: rgba(52, 152, 219, 1);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .profile-pic-small {
+  border-color: rgba(236, 240, 241, 0.3);
+}
+
+[data-theme="dark"] .account-btn:hover .profile-pic-small {
+  border-color: rgba(236, 240, 241, 0.6);
+}
+
+/* Mobile responsiveness for profile picture */
+@media (max-width: 768px) {
+  .profile-pic-small {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .profile-name {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-profile {
+    gap: 0.3rem;
+  }
+  
+  .profile-pic-small {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .profile-name {
+    font-size: 0.85rem;
+  }
+}

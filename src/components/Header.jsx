@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
+import { getImageUrl } from "../utils/imageUrl";
 import "../styles/Header.css";
 
-const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccountOpen, onAdminOpen, onLogout }) => {
+const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthModalOpen, onAccountOpen, onAdminOpen, onLogout }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState("home");
@@ -318,7 +319,18 @@ const Header = ({ isAuthenticated, userName, userRole, onAuthModalOpen, onAccoun
                     whileTap="tap"
                     className="account-btn"
                   >
-                    <motion.span>👤 {userName || "My Account"}</motion.span>
+                    <motion.div className="account-profile">
+                      {userProfilePic ? (
+                        <img 
+                          src={getImageUrl(userProfilePic)} 
+                          alt={userName || "Profile"}
+                          className="profile-pic-small"
+                        />
+                      ) : (
+                        <span className="profile-icon">👤</span>
+                      )}
+                      <span className="profile-name">{userName || "My Account"}</span>
+                    </motion.div>
                   </motion.a>
                 </motion.li>
                 
