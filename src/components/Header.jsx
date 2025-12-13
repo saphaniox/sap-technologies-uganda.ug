@@ -366,13 +366,23 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           </AnimatePresence>
         </motion.ul>
         
-        {/* Theme Toggle */}
+        {/* Theme Toggle with Welcome Message for Mobile */}
         <motion.div 
           className="nav-theme-toggle"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
+          {isMobile && (
+            <motion.div 
+              className="mobile-welcome"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.6 }}
+            >
+              <span className="welcome-text">Welcome to SAP Technologies</span>
+            </motion.div>
+          )}
           <ThemeToggle />
         </motion.div>
       </motion.nav>

@@ -1444,3 +1444,83 @@
     font-size: 0.85rem;
   }
 }
+
+/* Mobile Welcome Message */
+.mobile-welcome {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+  animation: welcome-pulse 3s ease-in-out infinite;
+}
+
+.welcome-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: welcome-gradient 3s ease infinite;
+}
+
+@keyframes welcome-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(26, 35, 126, 0.4);
+  }
+}
+
+@keyframes welcome-gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Dark mode for mobile welcome */
+[data-theme="dark"] .mobile-welcome {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .welcome-text {
+  background: linear-gradient(45deg, #3498db, #5dade2, #3498db);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Adjust nav-theme-toggle for mobile */
+@media (max-width: 768px) {
+  .nav-theme-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-text {
+    font-size: 0.8rem;
+  }
+  
+  .mobile-welcome {
+    padding: 0.4rem 0.8rem;
+  }
+}
