@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Header from "./components/Header";
+import SeasonalGreeting from "./components/SeasonalGreeting";
 import CertificateVerify from "./pages/CertificateVerify";
 import Hero from "./components/Hero";
 import Slider from "./components/Slider";
@@ -215,6 +216,8 @@ function App() {
                 onAdminOpen={handleAdminOpen}
                 onLogout={handleLogout}
               />
+              
+              <SeasonalGreeting />
               
               <main>
                 <Hero />
