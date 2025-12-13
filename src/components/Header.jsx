@@ -380,7 +380,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.6 }}
             >
-              <span className="welcome-text">Welcome to SAP Technologies</span>
+              <span className="welcome-text">Welcome to SAP-Technologies Uganda</span>
             </motion.div>
           )}
           <ThemeToggle />
