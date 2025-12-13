@@ -146,7 +146,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
-            SAP Technologies
+            SAP-Technologies Uganda
           </motion.span>
         </motion.div>
 
