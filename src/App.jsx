@@ -55,6 +55,9 @@ function App() {
   });
 
   useEffect(() => {
+    // Wake up the server immediately on site access
+    apiService.wakeUpServer();
+    
     checkAuthStatus();
     initializeAnimations();
     

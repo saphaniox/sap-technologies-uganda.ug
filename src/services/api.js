@@ -48,6 +48,31 @@ class ApiService {
     });
   }
 
+  // Wake up the server (for free tier on Render)
+  async wakeUpServer() {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+      
+      console.log('🔔 Waking up server...');
+      const response = await fetch(`${this.baseURL}/api/health`, {
+        method: 'GET',
+        signal: controller.signal,
+        // Don't wait for the response
+        priority: 'low'
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (response.ok) {
+        console.log('✅ Server is awake');
+      }
+    } catch (error) {
+      // Silently fail - this is just a wake-up call
+      console.log('⏰ Server wake-up initiated (may take 30-60 seconds on first load)');
+    }
+  }
+
   clearCache(key = null) {
     if (key) {
       this.cache.delete(key);
