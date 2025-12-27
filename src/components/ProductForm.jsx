@@ -235,7 +235,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
 
             // Add image if provided
             if (image) {
-                submitData.append("productImage", image);
+                submitData.append("images", image); // Changed from "productImage" to "images" to match server
             }
             
             // Add deleteImage flag if user wants to remove existing image
