@@ -4,18 +4,12 @@ import "../styles/SeasonalGreeting.css";
 
 const SeasonalGreeting = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const [showSnowflakes, setShowSnowflakes] = useState(true);
+  const [currentMonth] = useState(new Date().getMonth()); // 0 = January, 11 = December
 
-  // Create snowflakes
-  const snowflakes = Array.from({ length: 30 }, (_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    animationDuration: `${Math.random() * 3 + 5}s`,
-    animationDelay: `${Math.random() * 5}s`,
-    fontSize: `${Math.random() * 10 + 10}px`,
-  }));
+  // Determine if it's December (show Christmas greeting) or other months (show product launches)
+  const isDecember = currentMonth === 11;
 
-  // Auto-hide after 10 seconds
+  // Auto-hide after 15 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
@@ -39,26 +33,6 @@ const SeasonalGreeting = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <div className="seasonal-greeting">
-            {/* Snowflakes Animation */}
-            {showSnowflakes && (
-              <div className="snowflakes" aria-hidden="true">
-                {snowflakes.map((flake) => (
-                  <div
-                    key={flake.id}
-                    className="snowflake"
-                    style={{
-                      left: flake.left,
-                      animationDuration: flake.animationDuration,
-                      animationDelay: flake.animationDelay,
-                      fontSize: flake.fontSize,
-                    }}
-                  >
-                    ❄
-                  </div>
-                ))}
-              </div>
-            )}
-
             {/* Close Button */}
             <button
               className="seasonal-close-btn"
@@ -72,9 +46,19 @@ const SeasonalGreeting = () => {
             <div className="seasonal-content">
               {/* Decorative Elements */}
               <div className="seasonal-decorations">
-                <span className="decoration">🎄</span>
-                <span className="decoration">✨</span>
-                <span className="decoration">🎅</span>
+                {isDecember ? (
+                  <>
+                    <span className="decoration">🎄</span>
+                    <span className="decoration">⭐</span>
+                    <span className="decoration">🎁</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="decoration">💡</span>
+                    <span className="decoration">🚀</span>
+                    <span className="decoration">📱</span>
+                  </>
+                )}
               </div>
 
               {/* Greeting Text */}
@@ -89,12 +73,25 @@ const SeasonalGreeting = () => {
                   ease: "easeInOut",
                 }}
               >
-                <h2 className="seasonal-title">
-                  🎄 Merry Christmas! 🎄
-                </h2>
-                <p className="seasonal-subtitle">
-                  & Happy New Year 2026!
-                </p>
+                {isDecember ? (
+                  <>
+                    <h2 className="seasonal-title">
+                      🎄 Merry Christmas & Happy New Year! 🎉
+                    </h2>
+                    <p className="seasonal-subtitle">
+                      Wishing You Joy, Success, and Innovation in the Coming Year!
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="seasonal-title">
+                      🚀 Exciting New Launches! 🚀
+                    </h2>
+                    <p className="seasonal-subtitle">
+                      SAP Smart Home System & SAP Business Management Software
+                    </p>
+                  </>
+                )}
               </motion.div>
 
               {/* Message */}
@@ -104,15 +101,37 @@ const SeasonalGreeting = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 1 }}
               >
-                Wishing you and your loved ones a joyful holiday season filled with peace, 
-                prosperity, and endless possibilities. Thank you for being part of our journey!
+                {isDecember ? (
+                  <>
+                    As we celebrate this wonderful season, we extend our warmest wishes to you and your loved ones.
+                    May this festive period bring you joy, prosperity, and success.
+                    Thank you for your continued trust and partnership throughout the year.
+                    Here's to a bright and innovative New Year ahead!
+                  </>
+                ) : (
+                  <>
+                    We're excited to announce the launch of our SAP Smart Home System and SAP Business Management Software!
+                    These innovative solutions are designed to enhance your home automation and streamline your business operations.
+                    Stay tuned for more details and thank you for being part of our journey!
+                  </>
+                )}
               </motion.p>
 
               {/* Decorative Bottom */}
               <div className="seasonal-decorations bottom">
-                <span className="decoration">🎁</span>
-                <span className="decoration">⭐</span>
-                <span className="decoration">🎊</span>
+                {isDecember ? (
+                  <>
+                    <span className="decoration">🎅</span>
+                    <span className="decoration">🔔</span>
+                    <span className="decoration">❄️</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="decoration">🏠</span>
+                    <span className="decoration">💼</span>
+                    <span className="decoration">📊</span>
+                  </>
+                )}
               </div>
 
               {/* From SAP Technologies */}
