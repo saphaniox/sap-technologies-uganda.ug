@@ -135,7 +135,7 @@ const PrivacyPolicy = ({ onClose }) => {
               If you have any questions about this Privacy Policy, please contact us:
             </p>
             <div className="contact-info">
-              <p><strong>Email:</strong> privacy@sap-technologies.com</p>
+              <p><strong>Email:</strong> saptechnologies256@gmail.com</p>
               <p><strong>Phone:</strong> +256 706 564 628</p>
               <p><strong>Address:</strong> Kampala, Uganda</p>
             </div>

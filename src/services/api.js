@@ -784,6 +784,16 @@ class ApiService {
     return response.data?.user;
   }
 
+  // Check if current user is admin
+  async isAdmin() {
+    try {
+      const user = await this.getCurrentUser();
+      return user && user.role === "admin";
+    } catch (error) {
+      return false;
+    }
+  }
+
   // Generic HTTP methods
   async get(endpoint, options = {}) {
     return this.request(endpoint, {

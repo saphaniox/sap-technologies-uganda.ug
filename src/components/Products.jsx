@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import ProductInquiryForm from "./ProductInquiryForm";
-import { LoadingOverlay } from "../utils/alerts.jsx";
+import ProductForm from "./ProductForm";
+import ConfirmDialog from "./ConfirmDialog";
+import { LoadingOverlay, showAlert } from "../utils/alerts.jsx";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/Products.css";
 
@@ -27,6 +29,28 @@ const Products = () => {
     const [showInquiryForm, setShowInquiryForm] = useState(false);
     // Available product categories with counts
     const [categories, setCategories] = useState([]);
+    
+    /**
+     * Admin State Management
+     */
+    // Current user (to check admin role)
+    const [user, setUser] = useState(null);
+    // Controls product form modal visibility (admin)
+    const [showProductForm, setShowProductForm] = useState(false);
+    // Product being edited (admin)
+    const [editingProduct, setEditingProduct] = useState(null);
+    // Controls delete confirmation dialog
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    // Product selected for deletion
+    const [productToDelete, setProductToDelete] = useState(null);
+    // Admin statistics
+    const [adminStats, setAdminStats] = useState(null);
+    const [loadingStats, setLoadingStats] = useState(false);
+    
+    /**
+     * WhatsApp Support Number
+     */
+    const WHATSAPP_NUMBER = "+256706564628";
 
     /**
      * Load products and categories on component mount
@@ -60,7 +84,42 @@ const Products = () => {
         };
 
         fetchData();
+        checkUserAuth();
     }, []);
+
+    /**
+     * Check if user is authenticated and is admin
+     */
+    const checkUserAuth = async () => {
+        try {
+            const currentUser = await apiService.getCurrentUser();
+            setUser(currentUser);
+            // If admin, fetch statistics
+            if (currentUser && currentUser.role === "admin") {
+                fetchAdminStats();
+            }
+        } catch {
+            // User not authenticated, which is fine
+            setUser(null);
+        }
+    };
+
+    /**
+     * Fetch Admin Statistics
+     */
+    const fetchAdminStats = async () => {
+        try {
+            setLoadingStats(true);
+            const response = await apiService.getProductAnalytics();
+            if (response.success) {
+                setAdminStats(response.data);
+            }
+        } catch (error) {
+            console.error("Error fetching admin stats:", error);
+        } finally {
+            setLoadingStats(false);
+        }
+    };
 
     /**
      * Filter Products by Category
@@ -123,6 +182,78 @@ const Products = () => {
         }
     };
 
+    /**
+     * Admin Functions
+     */
+    // Refresh products list
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
+            const response = await apiService.request("/api/products");
+            if (response.status === "success") {
+                setProducts(response.data.products);
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            setError("Failed to load products.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Handle edit product
+    const handleEdit = (product) => {
+        setEditingProduct(product);
+        setShowProductForm(true);
+    };
+
+    // Handle delete product
+    const handleDelete = (product) => {
+        setProductToDelete(product);
+        setShowDeleteDialog(true);
+    };
+
+    // Confirm delete product
+    const confirmDelete = async () => {
+        if (!productToDelete) return;
+
+        try {
+            await apiService.deleteProduct(productToDelete._id);
+            // Instantly remove from UI
+            setProducts(prev => prev.filter(p => p._id !== productToDelete._id));
+            setShowDeleteDialog(false);
+            setProductToDelete(null);
+            await showAlert.success("Product Deleted", "The product has been successfully deleted.");
+            // Refresh in background to ensure data consistency
+            fetchProducts();
+        } catch (error) {
+            console.error("Error deleting product:", error);
+            await showAlert.error("Delete Failed", error.message || "Failed to delete product. Please try again.");
+        }
+    };
+
+    // Cancel delete
+    const cancelDelete = () => {
+        setShowDeleteDialog(false);
+        setProductToDelete(null);
+    };
+
+    // Handle product save success
+    const handleProductSave = () => {
+        fetchProducts();
+        setShowProductForm(false);
+        setEditingProduct(null);
+    };
+
+    /**
+     * WhatsApp Contact Handler
+     */
+    const handleWhatsAppContact = (product) => {
+        const message = encodeURIComponent(`Hi, I'm interested in ${product.name}. Can you provide more information?`);
+        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=${message}`;
+        window.open(whatsappUrl, '_blank');
+    };
+
     if (loading) {
         return <LoadingOverlay message="Loading products..." />;
     }
@@ -142,6 +273,309 @@ const Products = () => {
     return (
         <section className="products-section" id="products">
             <div className="container">
+                {/* Admin Navigation Sidebar - Side by Side */}
+                {user && user.role === "admin" && (
+                    <div style={{
+                        position: "fixed",
+                        right: "20px",
+                        top: "100px",
+                        width: "280px",
+                        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        color: "white",
+                        padding: "20px",
+                        borderRadius: "12px",
+                        boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
+                        zIndex: 1000,
+                        maxHeight: "calc(100vh - 120px)",
+                        overflowY: "auto"
+                    }}>
+                        <h3 style={{ margin: "0 0 15px 0", fontSize: "1.3rem", borderBottom: "2px solid rgba(255,255,255,0.3)", paddingBottom: "10px" }}>
+                            🛠️ Admin Panel
+                        </h3>
+                        <p style={{ margin: "0 0 20px 0", fontSize: "0.9rem", opacity: 0.9 }}>{user.name}</p>
+                        
+                        {/* Quick Actions */}
+                        <div style={{ marginBottom: "20px" }}>
+                            <h4 style={{ fontSize: "1rem", margin: "0 0 10px 0" }}>📦 Products</h4>
+                            <button
+                                onClick={() => {
+                                    setEditingProduct(null);
+                                    setShowProductForm(true);
+                                }}
+                                style={{
+                                    width: "100%",
+                                    background: "rgba(255,255,255,0.2)",
+                                    border: "1px solid rgba(255,255,255,0.3)",
+                                    color: "white",
+                                    padding: "10px",
+                                    borderRadius: "6px",
+                                    cursor: "pointer",
+                                    fontSize: "0.9rem",
+                                    marginBottom: "8px",
+                                    transition: "all 0.2s"
+                                }}
+                                onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                                onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                            >
+                                + Add Product
+                            </button>
+                            <button
+                                onClick={() => window.location.href = "#products"}
+                                style={{
+                                    width: "100%",
+                                    background: "rgba(255,255,255,0.2)",
+                                    border: "1px solid rgba(255,255,255,0.3)",
+                                    color: "white",
+                                    padding: "10px",
+                                    borderRadius: "6px",
+                                    cursor: "pointer",
+                                    fontSize: "0.9rem",
+                                    transition: "all 0.2s"
+                                }}
+                                onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                                onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                            >
+                                📊 Manage Products
+                            </button>
+                        </div>
+
+                        {/* Services */}
+                        <div style={{ marginBottom: "20px" }}>
+                            <h4 style={{ fontSize: "1rem", margin: "0 0 10px 0" }}>🛠️ Services</h4>
+                            <button
+                                onClick={() => {
+                                    const servicesSection = document.getElementById("services");
+                                    if (servicesSection) servicesSection.scrollIntoView({ behavior: "smooth" });
+                                }}
+                                style={{
+                                    width: "100%",
+                                    background: "rgba(255,255,255,0.2)",
+                                    border: "1px solid rgba(255,255,255,0.3)",
+                                    color: "white",
+                                    padding: "10px",
+                                    borderRadius: "6px",
+                                    cursor: "pointer",
+                                    fontSize: "0.9rem",
+                                    transition: "all 0.2s"
+                                }}
+                                onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                                onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                            >
+                                📊 Manage Services
+                            </button>
+                        </div>
+
+                        {/* Portfolio */}
+                        <div style={{ marginBottom: "20px" }}>
+                            <h4 style={{ fontSize: "1rem", margin: "0 0 10px 0" }}>🚀 Projects</h4>
+                            <button
+                                onClick={() => {
+                                    const portfolioSection = document.getElementById("portfolio");
+                                    if (portfolioSection) portfolioSection.scrollIntoView({ behavior: "smooth" });
+                                }}
+                                style={{
+                                    width: "100%",
+                                    background: "rgba(255,255,255,0.2)",
+                                    border: "1px solid rgba(255,255,255,0.3)",
+                                    color: "white",
+                                    padding: "10px",
+                                    borderRadius: "6px",
+                                    cursor: "pointer",
+                                    fontSize: "0.9rem",
+                                    transition: "all 0.2s"
+                                }}
+                                onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                                onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                            >
+                                📊 Manage Projects
+                            </button>
+                        </div>
+
+                        {/* Partners */}
+                        <div style={{ marginBottom: "20px" }}>
+                            <h4 style={{ fontSize: "1rem", margin: "0 0 10px 0" }}>🤝 Partners</h4>
+                            <button
+                                onClick={() => {
+                                    const partnersSection = document.getElementById("partners");
+                                    if (partnersSection) partnersSection.scrollIntoView({ behavior: "smooth" });
+                                }}
+                                style={{
+                                    width: "100%",
+                                    background: "rgba(255,255,255,0.2)",
+                                    border: "1px solid rgba(255,255,255,0.3)",
+                                    color: "white",
+                                    padding: "10px",
+                                    borderRadius: "6px",
+                                    cursor: "pointer",
+                                    fontSize: "0.9rem",
+                                    transition: "all 0.2s"
+                                }}
+                                onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                                onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                            >
+                                📊 Manage Partners
+                            </button>
+                        </div>
+
+                        {/* Statistics */}
+                        {adminStats && !loadingStats && (
+                            <div style={{ marginTop: "20px", paddingTop: "20px", borderTop: "2px solid rgba(255,255,255,0.3)" }}>
+                                <h4 style={{ fontSize: "1rem", margin: "0 0 15px 0" }}>📊 Statistics</h4>
+                                <div style={{ fontSize: "0.85rem", lineHeight: "1.8" }}>
+                                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                                        <span>Total Products:</span>
+                                        <strong>{adminStats.totalProducts || products.length}</strong>
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                                        <span>Categories:</span>
+                                        <strong>{categories.length}</strong>
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                                        <span>Featured:</span>
+                                        <strong>{adminStats.featuredCount || products.filter(p => p.isFeatured).length}</strong>
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <span>In Stock:</span>
+                                        <strong>{adminStats.inStockCount || products.filter(p => p.availability === "in-stock").length}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Dashboard Link */}
+                        <div style={{ marginTop: "20px", paddingTop: "20px", borderTop: "2px solid rgba(255,255,255,0.3)" }}>
+                            <button
+                                onClick={() => window.location.href = "/admin"}
+                                style={{
+                                    width: "100%",
+                                    background: "rgba(255,255,255,0.95)",
+                                    border: "none",
+                                    color: "#667eea",
+                                    padding: "12px",
+                                    borderRadius: "6px",
+                                    cursor: "pointer",
+                                    fontSize: "0.95rem",
+                                    fontWeight: "bold",
+                                    transition: "all 0.2s"
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.background = "white";
+                                    e.target.style.transform = "scale(1.02)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.background = "rgba(255,255,255,0.95)";
+                                    e.target.style.transform = "scale(1)";
+                                }}
+                            >
+                                🎛️ Full Dashboard
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Admin Info Panel - Displayed at Top for Admins */}
+                {user && user.role === "admin" && (
+                    <div className="admin-info-panel" style={{
+                        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        color: "white",
+                        padding: "20px",
+                        borderRadius: "12px",
+                        marginBottom: "30px",
+                        boxShadow: "0 10px 30px rgba(0,0,0,0.2)"
+                    }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
+                            <div>
+                                <h3 style={{ margin: "0 0 10px 0", fontSize: "1.5rem" }}>👨‍💼 Admin Mode Active</h3>
+                                <p style={{ margin: 0, opacity: 0.9 }}>Welcome back, {user.name}! You have full control over products.</p>
+                            </div>
+                            <button 
+                                className="add-product-btn admin-btn"
+                                onClick={() => {
+                                    setEditingProduct(null);
+                                    setShowProductForm(true);
+                                }}
+                                style={{
+                                    background: "white",
+                                    color: "#667eea",
+                                    border: "none",
+                                    padding: "12px 24px",
+                                    borderRadius: "8px",
+                                    fontWeight: "bold",
+                                    cursor: "pointer",
+                                    fontSize: "1rem",
+                                    transition: "transform 0.2s"
+                                }}
+                                onMouseEnter={(e) => e.target.style.transform = "scale(1.05)"}
+                                onMouseLeave={(e) => e.target.style.transform = "scale(1)"}
+                            >
+                                + Add Product
+                            </button>
+                        </div>
+                        
+                        {/* Admin Statistics */}
+                        {adminStats && !loadingStats && (
+                            <div style={{
+                                display: "grid",
+                                gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+                                gap: "15px",
+                                marginTop: "20px"
+                            }}>
+                                <div style={{
+                                    background: "rgba(255,255,255,0.15)",
+                                    padding: "15px",
+                                    borderRadius: "8px",
+                                    textAlign: "center"
+                                }}>
+                                    <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{adminStats.totalProducts || products.length}</div>
+                                    <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Total Products</div>
+                                </div>
+                                <div style={{
+                                    background: "rgba(255,255,255,0.15)",
+                                    padding: "15px",
+                                    borderRadius: "8px",
+                                    textAlign: "center"
+                                }}>
+                                    <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{categories.length}</div>
+                                    <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Categories</div>
+                                </div>
+                                <div style={{
+                                    background: "rgba(255,255,255,0.15)",
+                                    padding: "15px",
+                                    borderRadius: "8px",
+                                    textAlign: "center"
+                                }}>
+                                    <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{adminStats.featuredCount || products.filter(p => p.isFeatured).length}</div>
+                                    <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Featured</div>
+                                </div>
+                                <div style={{
+                                    background: "rgba(255,255,255,0.15)",
+                                    padding: "15px",
+                                    borderRadius: "8px",
+                                    textAlign: "center"
+                                }}>
+                                    <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{adminStats.inStockCount || products.filter(p => p.availability === "in-stock").length}</div>
+                                    <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>In Stock</div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* User Info Badge - For logged-in non-admin users */}
+                {user && user.role !== "admin" && (
+                    <div style={{
+                        background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+                        color: "#333",
+                        padding: "15px 20px",
+                        borderRadius: "10px",
+                        marginBottom: "20px",
+                        textAlign: "center",
+                        boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
+                    }}>
+                        <span style={{ fontSize: "1.1rem" }}>👋 Welcome back, <strong>{user.name}</strong>!</span>
+                    </div>
+                )}
+
                 <div className="section-header">
                     <h2 className="section-title">Our Key Products</h2>
                     <p className="section-subtitle">
@@ -198,7 +632,34 @@ const Products = () => {
                                         >
                                             📨 Inquire Now
                                         </button>
+                                        <button 
+                                            className="whatsapp-btn"
+                                            onClick={() => handleWhatsAppContact(product)}
+                                            title="Contact us on WhatsApp"
+                                        >
+                                            💬 WhatsApp
+                                        </button>
                                     </div>
+                                    
+                                    {/* Admin Controls */}
+                                    {user && user.role === "admin" && (
+                                        <div className="admin-controls">
+                                            <button 
+                                                className="edit-btn"
+                                                onClick={() => handleEdit(product)}
+                                                title="Edit Product"
+                                            >
+                                                ✏️
+                                            </button>
+                                            <button 
+                                                className="delete-btn"
+                                                onClick={() => handleDelete(product)}
+                                                title="Delete Product"
+                                            >
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="product-content">
@@ -312,6 +773,33 @@ const Products = () => {
                     product={selectedProduct}
                     onClose={handleCloseInquiryForm}
                     onSubmit={handleSubmitInquiry}
+                />
+            )}
+
+            {/* Product Form Modal (Admin) */}
+            {showProductForm && (
+                <ProductForm 
+                    isOpen={showProductForm}
+                    product={editingProduct}
+                    onClose={() => {
+                        setShowProductForm(false);
+                        setEditingProduct(null);
+                    }}
+                    onSave={handleProductSave}
+                />
+            )}
+
+            {/* Delete Confirmation Dialog (Admin) */}
+            {showDeleteDialog && (
+                <ConfirmDialog
+                    isOpen={showDeleteDialog}
+                    title="Delete Product"
+                    message={`Are you sure you want to delete "${productToDelete?.name}"? This action cannot be undone.`}
+                    onConfirm={confirmDelete}
+                    onCancel={cancelDelete}
+                    confirmText="Delete"
+                    cancelText="Cancel"
+                    type="danger"
                 />
             )}
         </section>

@@ -84,8 +84,8 @@ const Contact = () => {
     {
       icon: "📧",
       title: "Email",
-      info: "ceo@saptechnologies.com",
-      link: "mailto:ceo@saptechnologies.com"
+      info: "saptechnologies256@gmail.com",
+      link: "mailto:saptechnologies256@gmail.com"
     },
     {
       icon: "📱",

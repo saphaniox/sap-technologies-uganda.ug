@@ -73,7 +73,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
         
         <div className="footer-contact">
           <h4>Contact</h4>
-          <p>Email: <a href="mailto:info@sap-technologies.com">info@sap-technologies.com</a></p>
+          <p>Email: <a href="mailto:saptechnologies256@gmail.com">saptechnologies256@gmail.com</a></p>
           <p>Phone: <a href="tel:+256706564628">+256 706 564 628</a></p>
         </div>
         
@@ -85,7 +85,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
             <a href="https://x.com/SaphanMuganza2?t=-9Ox4ssAxetvwLcFRtQ2YA&s=09" target="_blank" rel="noopener noreferrer" title="Twitter">Twitter</a>
             <a href="https://www.facebook.com/profile.php?id=61563028584961" target="_blank" rel="noopener noreferrer" title="Facebook">Facebook</a>
             <a href="https://wa.me/256706564628" target="_blank" rel="noopener noreferrer" title="WhatsApp">WhatsApp</a>
-            <a href="mailto:saphaniox@gmail.com" title="Email">Email</a>
+            <a href="mailto:saptechnologies256@gmail.com" title="Email">Email</a>
           </div>
           
           <Newsletter />

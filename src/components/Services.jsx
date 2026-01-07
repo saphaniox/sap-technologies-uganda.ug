@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Background3D from "./Background3D";
 import ServiceQuoteForm from "./ServiceQuoteForm";
+import ServiceForm from "./ServiceForm";
+import ConfirmDialog from "./ConfirmDialog";
 import apiService from "../services/api";
 import { getImageUrl } from "../utils/imageUrl";
 import { fadeInUp, staggerContainer, cardHover, iconSpin } from "../utils/animations";
@@ -30,10 +32,32 @@ const Services = () => {
   const [error, setError] = useState(null);
   
   /**
+   * Admin State Management
+   */
+  // Current user (to check admin role)
+  const [user, setUser] = useState(null);
+  // Controls service form modal visibility (admin)
+  const [showServiceForm, setShowServiceForm] = useState(false);
+  // Service being edited (admin)
+  const [editingService, setEditingService] = useState(null);
+  // Controls delete confirmation dialog
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  // Service selected for deletion
+  const [serviceToDelete, setServiceToDelete] = useState(null);
+  // Admin statistics
+  const [adminStats, setAdminStats] = useState(null);
+  const [loadingStats, setLoadingStats] = useState(false);
+  
+  /**
    * Persist service data across re-renders
    * Prevents data loss during form submission or modal transitions
    */
   const quoteServiceRef = useRef(null);
+  
+  /**
+   * WhatsApp Support Number
+   */
+  const WHATSAPP_NUMBER = "+256706564628";
 
   /**
    * Core Services Array
@@ -118,7 +142,42 @@ const Services = () => {
    */
   useEffect(() => {
     fetchServices();
+    checkUserAuth();
   }, []);
+
+  /**
+   * Check if user is authenticated and is admin
+   */
+  const checkUserAuth = async () => {
+    try {
+      const currentUser = await apiService.getCurrentUser();
+      setUser(currentUser);
+      // If admin, fetch statistics
+      if (currentUser && currentUser.role === "admin") {
+        fetchAdminStats();
+      }
+    } catch {
+      // User not authenticated, which is fine
+      setUser(null);
+    }
+  };
+
+  /**
+   * Fetch Admin Statistics
+   */
+  const fetchAdminStats = async () => {
+    try {
+      setLoadingStats(true);
+      const response = await apiService.getServiceStats();
+      if (response.success) {
+        setAdminStats(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching admin stats:", error);
+    } finally {
+      setLoadingStats(false);
+    }
+  };
 
   /**
    * Fetch Additional Services from API
@@ -154,7 +213,9 @@ const Services = () => {
             pricing: service.price && service.price.startingPrice 
               ? `Starting from $${service.price.startingPrice}` 
               : service.pricing || "Contact for pricing",
-            deliveryTime: service.deliveryTime || "Contact for timeline"
+            deliveryTime: service.deliveryTime || "Contact for timeline",
+            // Store original service data for admin operations
+            _originalData: service
           };
         });
         
@@ -245,6 +306,63 @@ const Services = () => {
     handleCloseModal();
   };
 
+  /**
+   * Admin Functions
+   */
+  // Handle edit service
+  const handleEdit = (service) => {
+    // Use original data if available, otherwise use the service
+    setEditingService(service._originalData || service);
+    setShowServiceForm(true);
+  };
+
+  // Handle delete service
+  const handleDelete = (service) => {
+    setServiceToDelete(service);
+    setShowDeleteDialog(true);
+  };
+
+  // Confirm delete service
+  const confirmDelete = async () => {
+    if (!serviceToDelete) return;
+
+    try {
+      await apiService.deleteService(serviceToDelete.id);
+      // Instantly remove from UI
+      setApiServices(prev => prev.filter(s => s.id !== serviceToDelete.id));
+      setShowDeleteDialog(false);
+      setServiceToDelete(null);
+      await showAlert.success("Service Deleted", "The service has been successfully deleted.");
+      // Refresh in background to ensure data consistency
+      fetchServices();
+    } catch (error) {
+      console.error("Error deleting service:", error);
+      await showAlert.error("Delete Failed", error.message || "Failed to delete service. Please try again.");
+    }
+  };
+
+  // Cancel delete
+  const cancelDelete = () => {
+    setShowDeleteDialog(false);
+    setServiceToDelete(null);
+  };
+
+  // Handle service save success
+  const handleServiceSave = () => {
+    fetchServices();
+    setShowServiceForm(false);
+    setEditingService(null);
+  };
+
+  /**
+   * WhatsApp Contact Handler
+   */
+  const handleWhatsAppContact = (service) => {
+    const message = encodeURIComponent(`Hi, I'm interested in ${service.title}. Can you provide more information?`);
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <>
       {/* Main Services Section */}
@@ -252,6 +370,306 @@ const Services = () => {
         {/* Animated 3D background */}
         <Background3D className="services-3d-background" />
         <div className="container">
+          {/* Admin Navigation Sidebar - Side by Side */}
+          {user && user.role === "admin" && (
+            <div style={{
+              position: "fixed",
+              right: "20px",
+              top: "100px",
+              width: "280px",
+              background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+              color: "white",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
+              zIndex: 1000,
+              maxHeight: "calc(100vh - 120px)",
+              overflowY: "auto"
+            }}>
+              <h3 style={{ margin: "0 0 15px 0", fontSize: "1.3rem", borderBottom: "2px solid rgba(255,255,255,0.3)", paddingBottom: "10px" }}>
+                🛠️ Admin Panel
+              </h3>
+              <p style={{ margin: "0 0 20px 0", fontSize: "0.9rem", opacity: 0.9 }}>{user.name}</p>
+              
+              {/* Quick Actions */}
+              <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ fontSize: "1rem", margin: "0 0 10px 0" }}>🛠️ Services</h4>
+                <button
+                  onClick={() => {
+                    setEditingService(null);
+                    setShowServiceForm(true);
+                  }}
+                  style={{
+                    width: "100%",
+                    background: "rgba(255,255,255,0.2)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: "white",
+                    padding: "10px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
+                    marginBottom: "8px",
+                    transition: "all 0.2s"
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                  onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                >
+                  + Add Service
+                </button>
+                <button
+                  onClick={() => window.location.href = "#services"}
+                  style={{
+                    width: "100%",
+                    background: "rgba(255,255,255,0.2)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: "white",
+                    padding: "10px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
+                    transition: "all 0.2s"
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                  onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                >
+                  📊 Manage Services
+                </button>
+              </div>
+
+              <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ fontSize: "1rem", margin: "0 0 10px 0" }}>📦 Products</h4>
+                <button
+                  onClick={() => {
+                    const productsSection = document.getElementById("products");
+                    if (productsSection) productsSection.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  style={{
+                    width: "100%",
+                    background: "rgba(255,255,255,0.2)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: "white",
+                    padding: "10px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
+                    transition: "all 0.2s"
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                  onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                >
+                  📊 Manage Products
+                </button>
+              </div>
+
+              <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ fontSize: "1rem", margin: "0 0 10px 0" }}>🚀 Projects</h4>
+                <button
+                  onClick={() => {
+                    const portfolioSection = document.getElementById("portfolio");
+                    if (portfolioSection) portfolioSection.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  style={{
+                    width: "100%",
+                    background: "rgba(255,255,255,0.2)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: "white",
+                    padding: "10px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
+                    transition: "all 0.2s"
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                  onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                >
+                  📊 Manage Projects
+                </button>
+              </div>
+
+              <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ fontSize: "1rem", margin: "0 0 10px 0" }}>🤝 Partners</h4>
+                <button
+                  onClick={() => {
+                    const partnersSection = document.getElementById("partners");
+                    if (partnersSection) partnersSection.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  style={{
+                    width: "100%",
+                    background: "rgba(255,255,255,0.2)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: "white",
+                    padding: "10px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontSize: "0.9rem",
+                    transition: "all 0.2s"
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = "rgba(255,255,255,0.3)"}
+                  onMouseLeave={(e) => e.target.style.background = "rgba(255,255,255,0.2)"}
+                >
+                  📊 Manage Partners
+                </button>
+              </div>
+
+              {/* Statistics */}
+              {adminStats && !loadingStats && (
+                <div style={{ marginTop: "20px", paddingTop: "20px", borderTop: "2px solid rgba(255,255,255,0.3)" }}>
+                  <h4 style={{ fontSize: "1rem", margin: "0 0 15px 0" }}>📊 Statistics</h4>
+                  <div style={{ fontSize: "0.85rem", lineHeight: "1.8" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                      <span>Total Services:</span>
+                      <strong>{defaultServices.length + apiServices.length}</strong>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                      <span>Default:</span>
+                      <strong>{defaultServices.length}</strong>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                      <span>Custom:</span>
+                      <strong>{apiServices.length}</strong>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <span>Featured:</span>
+                      <strong>{adminStats.featuredCount || 0}</strong>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Dashboard Link */}
+              <div style={{ marginTop: "20px", paddingTop: "20px", borderTop: "2px solid rgba(255,255,255,0.3)" }}>
+                <button
+                  onClick={() => window.location.href = "/admin"}
+                  style={{
+                    width: "100%",
+                    background: "rgba(255,255,255,0.95)",
+                    border: "none",
+                    color: "#f5576c",
+                    padding: "12px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontSize: "0.95rem",
+                    fontWeight: "bold",
+                    transition: "all 0.2s"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = "white";
+                    e.target.style.transform = "scale(1.02)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = "rgba(255,255,255,0.95)";
+                    e.target.style.transform = "scale(1)";
+                  }}
+                >
+                  🎛️ Full Dashboard
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Admin Info Panel - Displayed at Top for Admins */}
+          {user && user.role === "admin" && (
+            <div className="admin-info-panel" style={{
+              background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+              color: "white",
+              padding: "20px",
+              borderRadius: "12px",
+              marginBottom: "30px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.2)"
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
+                <div>
+                  <h3 style={{ margin: "0 0 10px 0", fontSize: "1.5rem" }}>👨‍💻 Admin Mode Active</h3>
+                  <p style={{ margin: 0, opacity: 0.9 }}>Managing services as {user.name}</p>
+                </div>
+                <button 
+                  className="add-service-btn admin-btn"
+                  onClick={() => {
+                    setEditingService(null);
+                    setShowServiceForm(true);
+                  }}
+                  style={{
+                    background: "white",
+                    color: "#f5576c",
+                    border: "none",
+                    padding: "12px 24px",
+                    borderRadius: "8px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    fontSize: "1rem",
+                    transition: "transform 0.2s"
+                  }}
+                  onMouseEnter={(e) => e.target.style.transform = "scale(1.05)"}
+                  onMouseLeave={(e) => e.target.style.transform = "scale(1)"}
+                >
+                  + Add Service
+                </button>
+              </div>
+              
+              {/* Admin Statistics */}
+              {adminStats && !loadingStats && (
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+                  gap: "15px",
+                  marginTop: "20px"
+                }}>
+                  <div style={{
+                    background: "rgba(255,255,255,0.15)",
+                    padding: "15px",
+                    borderRadius: "8px",
+                    textAlign: "center"
+                  }}>
+                    <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{defaultServices.length + apiServices.length}</div>
+                    <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Total Services</div>
+                  </div>
+                  <div style={{
+                    background: "rgba(255,255,255,0.15)",
+                    padding: "15px",
+                    borderRadius: "8px",
+                    textAlign: "center"
+                  }}>
+                    <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{defaultServices.length}</div>
+                    <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Default Services</div>
+                  </div>
+                  <div style={{
+                    background: "rgba(255,255,255,0.15)",
+                    padding: "15px",
+                    borderRadius: "8px",
+                    textAlign: "center"
+                  }}>
+                    <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{apiServices.length}</div>
+                    <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Custom Services</div>
+                  </div>
+                  <div style={{
+                    background: "rgba(255,255,255,0.15)",
+                    padding: "15px",
+                    borderRadius: "8px",
+                    textAlign: "center"
+                  }}>
+                    <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{adminStats.featuredCount || 0}</div>
+                    <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Featured</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* User Info Badge - For logged-in non-admin users */}
+          {user && user.role !== "admin" && (
+            <div style={{
+              background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+              color: "#333",
+              padding: "15px 20px",
+              borderRadius: "10px",
+              marginBottom: "20px",
+              textAlign: "center",
+              boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
+            }}>
+              <span style={{ fontSize: "1.1rem" }}>👋 Welcome back, <strong>{user.name}</strong>!</span>
+            </div>
+          )}
+
           {/* Section title with animation */}
           <motion.h2 
             variants={fadeInUp}
@@ -320,6 +738,15 @@ const Services = () => {
                       >
                         Learn More
                       </motion.button>
+                      <motion.button 
+                        className="whatsapp-btn-service"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleWhatsAppContact(service)}
+                        title="Contact us on WhatsApp"
+                      >
+                        💬 WhatsApp
+                      </motion.button>
                     </div>
                   </div>
                   <h3>{service.title}</h3>
@@ -379,7 +806,36 @@ const Services = () => {
                           >
                             Learn More
                           </motion.button>
+                          <motion.button 
+                            className="whatsapp-btn-service"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handleWhatsAppContact(service)}
+                            title="Contact us on WhatsApp"
+                          >
+                            💬 WhatsApp
+                          </motion.button>
                         </div>
+
+                        {/* Admin Controls */}
+                        {user && user.role === "admin" && (
+                          <div className="admin-controls-service">
+                            <button 
+                              className="edit-btn"
+                              onClick={() => handleEdit(service)}
+                              title="Edit Service"
+                            >
+                              ✏️
+                            </button>
+                            <button 
+                              className="delete-btn"
+                              onClick={() => handleDelete(service)}
+                              title="Delete Service"
+                            >
+                              🗑️
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <h3>{service.title}</h3>
                       <p>{service.description}</p>
@@ -488,6 +944,33 @@ const Services = () => {
           service={selectedService}
           onClose={handleCloseQuoteForm}
           onSubmit={handleSubmitQuote}
+        />
+      )}
+
+      {/* Service Form Modal (Admin) */}
+      {showServiceForm && (
+        <ServiceForm 
+          isOpen={showServiceForm}
+          service={editingService}
+          onClose={() => {
+            setShowServiceForm(false);
+            setEditingService(null);
+          }}
+          onSave={handleServiceSave}
+        />
+      )}
+
+      {/* Delete Confirmation Dialog (Admin) */}
+      {showDeleteDialog && (
+        <ConfirmDialog
+          isOpen={showDeleteDialog}
+          title="Delete Service"
+          message={`Are you sure you want to delete "${serviceToDelete?.title}"? This action cannot be undone.`}
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+          confirmText="Delete"
+          cancelText="Cancel"
+          type="danger"
         />
       )}
     </>
