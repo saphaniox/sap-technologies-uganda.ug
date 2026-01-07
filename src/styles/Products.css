@@ -170,40 +170,109 @@
 
 .product-overlay {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: rgba(52, 152, 219, 0.9);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
     display: flex;
+    gap: 10px;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 15px;
+    opacity: 1;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .product-card:hover .product-overlay {
-    opacity: 1;
+    background: rgba(52, 152, 219, 0.95);
 }
 
-.inquiry-btn {
-    padding: 12px 30px;
+.inquiry-btn,
+.new-inquiry-btn {
+    padding: 10px 20px;
     background: #ffffff;
     color: #3498db;
     border: none;
-    border-radius: 30px;
+    border-radius: 25px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-transform: uppercase;
     letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.inquiry-btn:hover {
+.inquiry-btn:hover,
+.new-inquiry-btn:hover {
     background: #2c3e50;
     color: #ffffff;
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.whatsapp-btn {
+    padding: 10px 20px;
+    background: #25D366;
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.whatsapp-btn:hover {
+    background: #128C7E;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Admin Controls */
+.admin-controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 8px;
+    z-index: 3;
+}
+
+.admin-controls .edit-btn,
+.admin-controls .delete-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.admin-controls .edit-btn {
+    background: #3498db;
+    color: white;
+}
+
+.admin-controls .edit-btn:hover {
+    background: #2980b9;
+    transform: scale(1.1);
+}
+
+.admin-controls .delete-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.admin-controls .delete-btn:hover {
+    background: #c0392b;
+    transform: scale(1.1);
 }
 
 /* Product Content */
@@ -405,6 +474,25 @@
 
 .cta-btn:hover::before {
     left: 0;
+}
+
+.new-cta-btn {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #3498db, #9b59b6);
+    color: #ffffff;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1px;
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+}
+
+.new-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(52, 152, 219, 0.4);
 }
 
 /* Error Message */
