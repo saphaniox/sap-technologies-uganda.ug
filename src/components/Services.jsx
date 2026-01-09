@@ -433,15 +433,6 @@ const Services = () => {
                     borderRadius: "8px",
                     textAlign: "center"
                   }}>
-                    <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{defaultServices.length}</div>
-                    <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Default Services</div>
-                  </div>
-                  <div style={{
-                    background: "rgba(255,255,255,0.15)",
-                    padding: "15px",
-                    borderRadius: "8px",
-                    textAlign: "center"
-                  }}>
                     <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{apiServices.length}</div>
                     <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Custom Services</div>
                   </div>
@@ -560,10 +551,19 @@ const Services = () => {
                       </motion.button>
                     </div>
 
-                    {/* Admin Controls - Note: Default services can't be edited/deleted */}
+                    {/* Admin Controls */}
                     {user && user.role === "admin" && (
-                      <div className="admin-controls-service default-service-badge">
-                        <span className="default-badge" title="Default Service - Cannot be edited or deleted">📌 Default</span>
+                      <div className="admin-controls-service">
+                        <button 
+                          className="edit-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEdit({...service, isDefault: true, images: [service.image]});
+                          }}
+                          title="Edit Service"
+                        >
+                          ✏️
+                        </button>
                       </div>
                     )}
                   </div>
