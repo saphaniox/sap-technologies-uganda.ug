@@ -340,15 +340,6 @@ const Portfolio = () => {
                   borderRadius: "8px",
                   textAlign: "center"
                 }}>
-                  <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{defaultPortfolioItems.length}</div>
-                  <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Default Projects</div>
-                </div>
-                <div style={{
-                  background: "rgba(255,255,255,0.15)",
-                  padding: "15px",
-                  borderRadius: "8px",
-                  textAlign: "center"
-                }}>
                   <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{apiProjects.length}</div>
                   <div style={{ fontSize: "0.9rem", opacity: 0.9 }}>Custom Projects</div>
                 </div>
@@ -462,10 +453,19 @@ const Portfolio = () => {
                   </button>
                 </div>
 
-                {/* Admin Controls - Note: Default projects can't be edited/deleted */}
+                {/* Admin Controls */}
                 {user && user.role === "admin" && (
-                  <div className="admin-controls-portfolio default-project-badge">
-                    <span className="default-badge" title="Default Project - Cannot be edited or deleted">📌 Default</span>
+                  <div className="admin-controls-portfolio">
+                    <button 
+                      className="edit-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit({...item, isDefault: true, images: [item.image]});
+                      }}
+                      title="Edit Project"
+                    >
+                      ✏️
+                    </button>
                   </div>
                 )}
               </div>
