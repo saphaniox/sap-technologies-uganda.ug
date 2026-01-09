@@ -462,6 +462,8 @@
   .hero-buttons {
     gap: 1.25rem;
   }
+}
+
 @media (max-width: 768px) {
   .hero {
     padding-top: 180px !important;
@@ -502,14 +504,6 @@
     width: 100%;
     max-width: 250px;
     text-align: center;
-  } flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .hero-btn {
-    width: 100%;
-    max-width: 250px;
   }
   
   .particle {
