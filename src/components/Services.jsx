@@ -4,6 +4,7 @@ import Background3D from "./Background3D";
 import ServiceQuoteForm from "./ServiceQuoteForm";
 import ServiceForm from "./ServiceForm";
 import ConfirmDialog from "./ConfirmDialog";
+import ImageSlider from "./ImageSlider";
 import apiService from "../services/api";
 import { getImageUrl } from "../utils/imageUrl";
 import { fadeInUp, staggerContainer, cardHover, iconSpin } from "../utils/animations";
@@ -531,7 +532,14 @@ const Services = () => {
                     {service.icon}
                   </motion.div>
                   <div className="service-image">
-                    <img src={service.image} alt={service.title} className="service-img" />
+                    {service.images && Array.isArray(service.images) && service.images.length > 0 ? (
+                      <ImageSlider 
+                        images={service.images.map(img => getImageUrl(typeof img === 'string' ? img : img.url))} 
+                        alt={service.title} 
+                      />
+                    ) : (
+                      <img src={service.image} alt={service.title} className="service-img" />
+                    )}
                     <div className="service-overlay">
                       <motion.button 
                         className="learn-more-btn"
@@ -551,6 +559,13 @@ const Services = () => {
                         💬 WhatsApp
                       </motion.button>
                     </div>
+
+                    {/* Admin Controls - Note: Default services can't be edited/deleted */}
+                    {user && user.role === "admin" && (
+                      <div className="admin-controls-service default-service-badge">
+                        <span className="default-badge" title="Default Service - Cannot be edited or deleted">📌 Default</span>
+                      </div>
+                    )}
                   </div>
                   <h3>{service.title}</h3>
                   <p>{service.description}</p>
@@ -599,7 +614,14 @@ const Services = () => {
                         {service.icon}
                       </motion.div>
                       <div className="service-image">
-                        <img src={service.image} alt={service.title} className="service-img" />
+                        {service.images && Array.isArray(service.images) && service.images.length > 0 ? (
+                          <ImageSlider 
+                            images={service.images.map(img => getImageUrl(typeof img === 'string' ? img : img.url))} 
+                            alt={service.title} 
+                          />
+                        ) : (
+                          <img src={service.image} alt={service.title} className="service-img" />
+                        )}
                         <div className="service-overlay">
                           <motion.button 
                             className="learn-more-btn"
@@ -680,7 +702,14 @@ const Services = () => {
 
               <div className="modal-content">
                 <div className="modal-image">
-                  <img src={selectedService.image} alt={selectedService.title} />
+                  {selectedService.images && Array.isArray(selectedService.images) && selectedService.images.length > 0 ? (
+                    <ImageSlider 
+                      images={selectedService.images.map(img => getImageUrl(typeof img === 'string' ? img : img.url))} 
+                      alt={selectedService.title} 
+                    />
+                  ) : (
+                    <img src={selectedService.image} alt={selectedService.title} />
+                  )}
                 </div>
 
                 <div className="modal-details">

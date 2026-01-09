@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import Background3D from "./Background3D";
 import ProjectForm from "./ProjectForm";
 import ConfirmDialog from "./ConfirmDialog";
+import ImageSlider from "./ImageSlider";
 import apiService from "../services/api";
 import { getImageUrl } from "../utils/imageUrl";
 import { showAlert } from "../utils/alerts.jsx";
@@ -443,7 +444,14 @@ const Portfolio = () => {
             >
               {/* Project Image with gradient overlay */}
               <div className="portfolio-image">
-                <img src={item.image} alt={item.title} />
+                {item.images && Array.isArray(item.images) && item.images.length > 0 ? (
+                  <ImageSlider 
+                    images={item.images.map(img => getImageUrl(typeof img === 'string' ? img : img.url))} 
+                    alt={item.title} 
+                  />
+                ) : (
+                  <img src={item.image} alt={item.title} />
+                )}
                 <div className="image-overlay">
                   <button 
                     className="whatsapp-btn-portfolio"
@@ -453,6 +461,13 @@ const Portfolio = () => {
                     💬 WhatsApp Inquiry
                   </button>
                 </div>
+
+                {/* Admin Controls - Note: Default projects can't be edited/deleted */}
+                {user && user.role === "admin" && (
+                  <div className="admin-controls-portfolio default-project-badge">
+                    <span className="default-badge" title="Default Project - Cannot be edited or deleted">📌 Default</span>
+                  </div>
+                )}
               </div>
               
               {/* Project Details - Always visible */}
@@ -490,7 +505,14 @@ const Portfolio = () => {
                 >
                   {/* Project Image */}
                   <div className="portfolio-image">
-                    <img src={item.image} alt={item.title} />
+                    {item.images && Array.isArray(item.images) && item.images.length > 0 ? (
+                      <ImageSlider 
+                        images={item.images.map(img => getImageUrl(typeof img === 'string' ? img : img.url))} 
+                        alt={item.title} 
+                      />
+                    ) : (
+                      <img src={item.image} alt={item.title} />
+                    )}
                     <div className="image-overlay">
                       <button 
                         className="whatsapp-btn-portfolio"

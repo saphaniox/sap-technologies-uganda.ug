@@ -207,8 +207,79 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
-  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.portfolio-card:hover .image-overlay {
+  opacity: 1;
+}
+
+.whatsapp-btn-portfolio {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: all;
+}
+
+.whatsapp-btn-portfolio:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+  background: linear-gradient(135deg, #128C7E, #25D366);
+}
+
+.whatsapp-btn-portfolio:active {
+  transform: translateY(0);
+}
+
+/* Admin Controls for Portfolio */
+.admin-controls-portfolio {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.admin-controls-portfolio .edit-btn,
+.admin-controls-portfolio .delete-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.admin-controls-portfolio .edit-btn:hover {
+  background: #4CAF50;
+  transform: scale(1.1);
+}
+
+.admin-controls-portfolio .delete-btn:hover {
+  background: #f44336;
+  transform: scale(1.1);
 }
 
 .portfolio-content {

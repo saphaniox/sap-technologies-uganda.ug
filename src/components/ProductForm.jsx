@@ -24,11 +24,11 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
         tags: [""]
     });
 
-    const [image, setImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState("");
-    const [existingImage, setExistingImage] = useState(null);
-    const [deleteImage, setDeleteImage] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [imagePreviews, setImagePreviews] = useState([]);
+    const [existingImages, setExistingImages] = useState([]);
+    const [imagesToDelete, setImagesToDelete] = useState([]);
+    const [newImageFiles, setNewImageFiles] = useState([]);
 
     useEffect(() => {
         if (product) {
@@ -50,9 +50,30 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 features: product.features?.length > 0 ? product.features : [""],
                 tags: product.tags?.length > 0 ? product.tags : [""]
             });
-            setImagePreview(getImageUrl(product.image) || "");
-            setExistingImage(product.image || null);
-            setDeleteImage(false);
+            
+            // Handle images - support both single image (old) and array (new)
+            if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+                setExistingImages(product.images);
+                const imageUrls = product.images.map(img => ({
+                    url: getImageUrl(typeof img === 'string' ? img : img.url),
+                    path: typeof img === 'string' ? img : img.url,
+                    isExisting: true
+                }));
+                setImagePreviews(imageUrls);
+            } else if (product.image) {
+                // Legacy single image support
+                setExistingImages([product.image]);
+                setImagePreviews([{
+                    url: getImageUrl(product.image),
+                    path: product.image,
+                    isExisting: true
+                }]);
+            } else {
+                setExistingImages([]);
+                setImagePreviews([]);
+            }
+            setImagesToDelete([]);
+            setNewImageFiles([]);
         } else {
             // Reset form for new product
             setFormData({
@@ -73,11 +94,11 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 features: [""],
                 tags: [""]
             });
-            setImagePreview("");
-            setExistingImage(null);
-            setDeleteImage(false);
+            setImagePreviews([]);
+            setExistingImages([]);
+            setImagesToDelete([]);
+            setNewImageFiles([]);
         }
-        setImage(null);
     }, [product]);
 
     const handleInputChange = (e) => {
@@ -100,66 +121,104 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
     };
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            // Validate file size (10MB max)
-            const maxSize = 10 * 1024 * 1024; // 10MB in bytes
-            if (file.size > maxSize) {
-                showAlert.error(
-                    "File Too Large",
-                    "Image size must be less than 10MB. Please choose a smaller file.",
-                    {
-                        showConfirmButton: true,
-                        confirmButtonText: "OK"
-                    }
-                );
-                e.target.value = ''; // Clear the input
-                return;
-            }
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                showAlert.error(
-                    "Invalid File Type",
-                    "Please select an image file (JPG, PNG, GIF, etc.)",
-                    {
-                        showConfirmButton: true,
-                        confirmButtonText: "OK"
-                    }
-                );
-                e.target.value = ''; // Clear the input
-                return;
-            }
-
-            setImage(file);
-            setDeleteImage(false);
-            const reader = new FileReader();
-            reader.onload = (e) => setImagePreview(e.target.result);
-            reader.onerror = () => {
-                showAlert.error(
-                    "Error Reading File",
-                    "Failed to read the image file. Please try again.",
-                    {
-                        showConfirmButton: true,
-                        confirmButtonText: "OK"
-                    }
-                );
-            };
-            reader.readAsDataURL(file);
+        const files = Array.from(e.target.files);
+        const maxImages = 5;
+        
+        // Check if adding these files would exceed the limit
+        const totalImages = imagePreviews.length + files.length;
+        if (totalImages > maxImages) {
+            showAlert.error(
+                "Too Many Images",
+                `You can only upload up to ${maxImages} images. Currently you have ${imagePreviews.length} image(s).`,
+                {
+                    showConfirmButton: true,
+                    confirmButtonText: "OK"
+                }
+            );
+            e.target.value = '';
+            return;
         }
+
+        if (files.length > 0) {
+            // Validate each file
+            for (const file of files) {
+                // Validate file size (10MB max)
+                const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+                if (file.size > maxSize) {
+                    showAlert.error(
+                        "File Too Large",
+                        `Image "${file.name}" is too large. Maximum size is 10MB.`,
+                        {
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        }
+                    );
+                    e.target.value = '';
+                    return;
+                }
+
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    showAlert.error(
+                        "Invalid File Type",
+                        `"${file.name}" is not an image file. Please select only image files.`,
+                        {
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        }
+                    );
+                    e.target.value = '';
+                    return;
+                }
+            }
+
+            // Add new files to existing array
+            setNewImageFiles(prev => [...prev, ...files]);
+            
+            // Generate previews for new images
+            files.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    setImagePreviews(prev => [...prev, {
+                        url: e.target.result,
+                        file: file,
+                        isExisting: false
+                    }]);
+                };
+                reader.onerror = () => {
+                    showAlert.error(
+                        "Error Reading File",
+                        `Failed to read "${file.name}". Please try again.`,
+                        {
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        }
+                    );
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        // Reset file input
+        e.target.value = '';
     };
 
-    const handleRemoveImage = () => {
-        setImage(null);
-        setImagePreview("");
-        if (existingImage) {
-            setDeleteImage(true);
+    const handleRemoveImage = (index) => {
+        const imageToRemove = imagePreviews[index];
+        
+        if (imageToRemove.isExisting) {
+            // Mark existing image for deletion
+            setImagesToDelete(prev => [...prev, imageToRemove.path]);
+        } else {
+            // Remove from new files array
+            const fileIndex = newImageFiles.findIndex(f => f === imageToRemove.file);
+            if (fileIndex !== -1) {
+                setNewImageFiles(prev => prev.filter((_, i) => i !== fileIndex));
+            }
         }
-        // Reset file input
-        const fileInputs = document.querySelectorAll('input[type="file"]');
-        fileInputs.forEach(input => {
-            if (input.accept === 'image/*') input.value = '';
-        });
+        
+        // Remove from previews
+        setImagePreviews(prev => prev.filter((_, i) => i !== index));
     };
 
     const handleTechnicalSpecChange = (index, field, value) => {
@@ -233,14 +292,14 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 formData.tags.filter(tag => tag.trim())
             ));
 
-            // Add image if provided
-            if (image) {
-                submitData.append("images", image); // Changed from "productImage" to "images" to match server
-            }
+            // Add new image files
+            newImageFiles.forEach(file => {
+                submitData.append("images", file);
+            });
             
-            // Add deleteImage flag if user wants to remove existing image
-            if (deleteImage) {
-                submitData.append('deleteImage', 'true');
+            // Add images to delete
+            if (imagesToDelete.length > 0) {
+                submitData.append('imagesToDelete', JSON.stringify(imagesToDelete));
             }
 
             let response;
@@ -448,21 +507,30 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                                 onClick={() => document.getElementById('productImage').click()}
                                 className="btn-add-image"
                                 title="Add images"
-                                disabled={imagePreview && true}
+                                disabled={imagePreviews.length >= 5}
                             >
-                                <i className="fas fa-plus"></i> Add Images
+                                <i className="fas fa-plus"></i> Add Images ({imagePreviews.length}/5)
                             </button>
-                            {imagePreview && (
-                                <div className="image-preview">
-                                    <img src={imagePreview} alt="Preview" />
-                                    <button
-                                        type="button"
-                                        onClick={handleRemoveImage}
-                                        className="btn-remove-image"
-                                        title="Remove image"
-                                    >
-                                        <i className="fas fa-trash-alt"></i>
-                                    </button>
+                            
+                            {/* Image Previews Grid */}
+                            {imagePreviews.length > 0 && (
+                                <div className="image-previews-grid">
+                                    {imagePreviews.map((preview, index) => (
+                                        <div key={index} className="image-preview-item">
+                                            <img src={preview.url} alt={`Preview ${index + 1}`} />
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveImage(index)}
+                                                className="btn-remove-image"
+                                                title="Remove image"
+                                            >
+                                                <i className="fas fa-trash-alt"></i>
+                                            </button>
+                                            <div className="image-label">
+                                                {preview.isExisting ? 'Existing' : 'New'}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             )}
                         </div>

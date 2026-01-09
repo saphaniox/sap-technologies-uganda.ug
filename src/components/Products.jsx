@@ -3,6 +3,7 @@ import apiService from "../services/api";
 import ProductInquiryForm from "./ProductInquiryForm";
 import ProductForm from "./ProductForm";
 import ConfirmDialog from "./ConfirmDialog";
+import ImageSlider from "./ImageSlider";
 import { LoadingOverlay, showAlert } from "../utils/alerts.jsx";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/Products.css";
@@ -409,19 +410,30 @@ const Products = () => {
                             <p>No products available in this category.</p>
                         </div>
                     ) : (
-                        products.map((product) => (
+                        products.map((product) => {
+                            // Get product images - support both single image and multiple images
+                            const productImages = [];
+                            if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+                                // Multiple images
+                                product.images.forEach(img => {
+                                    const imageUrl = getImageUrl(typeof img === 'string' ? img : img.url);
+                                    if (imageUrl) productImages.push(imageUrl);
+                                });
+                            } else if (product.image) {
+                                // Single image (legacy)
+                                const imageUrl = getImageUrl(product.image);
+                                if (imageUrl) productImages.push(imageUrl);
+                            }
+                            
+                            // Fallback to placeholder if no images
+                            if (productImages.length === 0) {
+                                productImages.push(PLACEHOLDERS.product);
+                            }
+                            
+                            return (
                             <div key={product._id} className="product-card">
                                 <div className="product-image">
-                                    <img 
-                                        src={getImageUrl(product.image) || PLACEHOLDERS.product} 
-                                        alt={product.name}
-                                        onError={(e) => {
-                                            if (!e.target.dataset.errorHandled) {
-                                                e.target.dataset.errorHandled = 'true';
-                                                e.target.src = PLACEHOLDERS.error;
-                                            }
-                                        }}
-                                    />
+                                    <ImageSlider images={productImages} alt={product.name} />
                                     {product.isFeatured && (
                                         <div className="featured-badge">Featured</div>
                                     )}
@@ -546,7 +558,8 @@ const Products = () => {
                                     )}
                                 </div>
                             </div>
-                        ))
+                        );
+                        })
                     )}
                 </div>
 
