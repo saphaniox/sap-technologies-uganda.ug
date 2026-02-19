@@ -6,8 +6,9 @@ const SeasonalGreeting = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [currentMonth] = useState(new Date().getMonth()); // 0 = January, 11 = December
 
-  // Determine if it's December (show Christmas greeting) or other months (show product launches)
-  const isDecember = currentMonth === 11;
+  // Determine greeting type based on season
+  const isDecember = currentMonth === 11; // December - Christmas
+  const isRamadanLent = currentMonth >= 1 && currentMonth <= 3; // Feb-April - Ramadan & Lent season
 
   // Auto-hide after 15 seconds
   useEffect(() => {
@@ -52,6 +53,12 @@ const SeasonalGreeting = () => {
                     <span className="decoration">⭐</span>
                     <span className="decoration">🎁</span>
                   </>
+                ) : isRamadanLent ? (
+                  <>
+                    <span className="decoration">🌙</span>
+                    <span className="decoration">⭐</span>
+                    <span className="decoration">🕌</span>
+                  </>
                 ) : (
                   <>
                     <span className="decoration">💡</span>
@@ -82,6 +89,15 @@ const SeasonalGreeting = () => {
                       Wishing You Joy, Success, and Innovation in the Coming Year!
                     </p>
                   </>
+                ) : isRamadanLent ? (
+                  <>
+                    <h2 className="seasonal-title">
+                      🌙 Blessed Ramadan & Lent Season! ✨
+                    </h2>
+                    <p className="seasonal-subtitle">
+                      Wishing You Peace, Reflection, and Spiritual Growth During This Holy Season
+                    </p>
+                  </>
                 ) : (
                   <>
                     <h2 className="seasonal-title">
@@ -108,6 +124,13 @@ const SeasonalGreeting = () => {
                     Thank you for your continued trust and partnership throughout the year.
                     Here's to a bright and innovative New Year ahead!
                   </>
+                ) : isRamadanLent ? (
+                  <>
+                    During this sacred season of Ramadan and Lent, we wish you and your families peace, blessings, and spiritual fulfillment.
+                    May this time of reflection, prayer, and devotion bring you closer to your faith and strengthen your bonds with loved ones.
+                    We honor and respect all faiths and traditions, celebrating the unity and diversity that makes our community stronger.
+                    Ramadan Mubarak and a Blessed Lent to all observing these holy periods!
+                  </>
                 ) : (
                   <>
                     We're excited to announce the launch of our SAP Smart Home System and SAP Business Management Software!
@@ -124,6 +147,12 @@ const SeasonalGreeting = () => {
                     <span className="decoration">🎅</span>
                     <span className="decoration">🔔</span>
                     <span className="decoration">❄️</span>
+                  </>
+                ) : isRamadanLent ? (
+                  <>
+                    <span className="decoration">🕊️</span>
+                    <span className="decoration">🙏</span>
+                    <span className="decoration">✝️</span>
                   </>
                 ) : (
                   <>

@@ -94,7 +94,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
       
       <div className="footer-bottom">
         <div className="footer-legal">
-          <p>&copy; 2025 SAP Technologies Uganda-Africa. All rights reserved.</p>
+          <p>&copy; 2026 SAP Technologies Uganda-Africa. All rights reserved.</p>
           <div className="legal-links">
             <button 
               onClick={onPrivacyPolicyOpen}

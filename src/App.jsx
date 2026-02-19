@@ -18,7 +18,7 @@ import AuthModal from "./components/AuthModal";
 import ForgotPassword from "./components/ForgotPassword";
 import Account from "./components/Account";
 import AdminDashboard from "./components/AdminDashboard";
-import Awards from "./components/Awards";
+// import Awards from "./components/Awards"; // Deactivated until end of 2026
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
 import BackToTop from "./components/BackToTop";
@@ -202,10 +202,10 @@ function App() {
           {/* Certificate Verification Page - Public Route */}
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           
-          {/* Saphaniox Awards - Standalone Inspirational Page */}
-          <Route path="/awards" element={<Awards />} />
+          {/* Saphaniox Awards - Standalone Inspirational Page - Deactivated until end of 2026 */}
+          {/* <Route path="/awards" element={<Awards />} /> */}
           
-          {/* Main Application - Default Route */}
+          {/* Main Application - Default Route */
           <Route path="/*" element={
             <>
               <Header 
