@@ -23,6 +23,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
 import BackToTop from "./components/BackToTop";
 import apiService from "./services/api";
+import keepAliveService from "./services/keepAliveService";
 import { initializeAnimations } from "./utils/animations";
 import { microAnimationStyles } from "./utils/microAnimations.jsx";
 import { useVisitorTracking } from "./hooks/useVisitorTracking";
@@ -55,7 +56,10 @@ function App() {
   });
 
   useEffect(() => {
-    // Wake up the server immediately on site access
+    // Start keep-alive service to prevent server from sleeping
+    keepAliveService.start();
+    
+    // Also do an immediate wake-up call
     apiService.wakeUpServer();
     
     checkAuthStatus();
@@ -69,6 +73,8 @@ function App() {
 
     return () => {
       document.head.removeChild(styleElement);
+      // Stop keep-alive service when app unmounts
+      keepAliveService.stop();
     };
   }, []);
 
