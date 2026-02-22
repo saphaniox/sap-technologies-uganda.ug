@@ -25,7 +25,7 @@ const Companies = () => {
   const companies = [
     {
       title: "SAP Business Management Software",
-      image: "/images/sap-business-management.jpg",
+      image: "/images/sap-business-management.png",
       description: "Comprehensive business management solution designed for Ugandan enterprises. Streamline operations, manage inventory, track finances, and grow your business with our all-in-one platform.",
       comingSoon: false,
       link: "https://www.sapbusiness-managementsoftware.com"
