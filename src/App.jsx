@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import SeasonalGreeting from "./components/SeasonalGreeting";
 import CertificateVerify from "./pages/CertificateVerify";
 import SoftwarePage from "./pages/SoftwarePage";
+import IoTPage from "./pages/IoTPage";
 import Hero from "./components/Hero";
 import Slider from "./components/Slider";
 import About from "./components/About";
@@ -208,6 +209,7 @@ function App() {
         <Routes>
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           <Route path="/software" element={<SoftwarePage />} />
+          <Route path="/iot" element={<IoTPage />} />
           
           <Route path="/*" element={
             <>

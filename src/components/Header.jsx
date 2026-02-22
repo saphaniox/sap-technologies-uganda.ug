@@ -157,6 +157,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
             { id: "services", label: "Services" },
             { id: "portfolio", label: "Our Featured Projects" },
             { id: "software", label: "Software Apps" },
+            { id: "iot", label: "IoT Projects" },
             { id: "contact", label: "Contact" }
           ].map((link, index) => (
             <motion.li 
@@ -167,6 +168,18 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               {link.id === "software" ? (
                 // Software Apps - Navigate to dedicated page
                 <Link to="/software">
+                  <motion.span 
+                    className="link-text"
+                    variants={linkVariants}
+                    whileHover="hover"
+                    whileTap="tap"
+                  >
+                    {link.label}
+                  </motion.span>
+                </Link>
+              ) : link.id === "iot" ? (
+                // IoT Projects - Navigate to dedicated page
+                <Link to="/iot">
                   <motion.span 
                     className="link-text"
                     variants={linkVariants}
@@ -215,8 +228,8 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
             </motion.li>
           ))}
 
-          {/* Saphaniox Awards - Standalone Page Link */}
-          <motion.li 
+          {/* Saphaniox Awards - Standalone Page Link - Commented out until needed */}
+          {/* <motion.li 
             variants={linkVariants}
             custom={5}
           >
@@ -230,7 +243,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                 🏆 Saphaniox Awards 2025
               </motion.span>
             </Link>
-          </motion.li>
+          </motion.li> */}
 
           {/* Admin-specific navigation items */}
           {userRole === "admin" && (
