@@ -28,7 +28,7 @@ const SoftwarePage = () => {
     "provider": {
       "@type": "Organization",
       "name": "SAP Technologies Uganda",
-      "url": "https://www.sap-technologies-ug.com"
+      "url": "https://www.sap-technologies.com"
     },
     "description": "Collection of innovative software applications and web tools developed by SAP Technologies Uganda for enhanced productivity and business efficiency."
   };
