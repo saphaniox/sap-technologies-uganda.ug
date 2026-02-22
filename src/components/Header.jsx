@@ -156,6 +156,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
             { id: "about", label: "About" },
             { id: "services", label: "Services" },
             { id: "portfolio", label: "Our Featured Projects" },
+            { id: "software", label: "Software" },
             { id: "contact", label: "Contact" }
           ].map((link, index) => (
             <motion.li 

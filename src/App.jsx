@@ -12,6 +12,7 @@ import Portfolio from "./components/Portfolio";
 import Partners from "./components/Partners";
 import Companies from "./components/Companies";
 import Products from "./components/Products";
+import Softwares from "./components/Softwares";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AuthModal from "./components/AuthModal";
@@ -232,6 +233,7 @@ function App() {
                 <Partners />
                 <Companies />
                 <Products />
+                <Softwares />
                 <Contact />
               </main>
               
