@@ -94,7 +94,7 @@ const Softwares = () => {
     try {
       const response = await apiService.request(
         `/api/software/${softwareToDelete._id}`,
-        "DELETE"
+        { method: "DELETE" }
       );
       
       if (response.status === "success") {

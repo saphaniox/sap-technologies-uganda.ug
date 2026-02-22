@@ -95,7 +95,7 @@ const IoTProjects = () => {
     try {
       const response = await apiService.request(
         `/api/iot/${projectToDelete._id}`,
-        "DELETE"
+        { method: "DELETE" }
       );
       
       if (response.status === "success") {
