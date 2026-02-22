@@ -261,13 +261,12 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label>App URL (Web Link) *</label>
+              <label>App URL (Web Link)</label>
               <input
                 type="url"
                 name="url"
                 value={formData.url}
                 onChange={handleInputChange}
-                required
                 placeholder="https://your-app.com - Users will click to open this link"
               />
               <small className="form-hint">🌐 Enter the web address where your app is hosted. No files to upload - just the link!</small>

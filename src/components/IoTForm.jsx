@@ -253,12 +253,11 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label>Description *</label>
+              <label>Description</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                required
                 rows="5"
                 placeholder="Detailed description of your IoT project, what it does, and how it works..."
               />
