@@ -24,6 +24,13 @@ const Companies = () => {
    */
   const companies = [
     {
+      title: "SAP Business Management Software",
+      image: "/images/sap-business-management.jpg",
+      description: "Comprehensive business management solution designed for Ugandan enterprises. Streamline operations, manage inventory, track finances, and grow your business with our all-in-one platform.",
+      comingSoon: false,
+      link: "https://www.sapbusiness-managementsoftware.com"
+    },
+    {
       title: "SAP Engineering",
       image: "/images/SAP-ENGINEERING.jpg",
       description: "Specializing in electrical, civil, and mechanical engineering solutions for Uganda and beyond. We deliver innovative, safe, and efficient engineering projects for all sectors.",

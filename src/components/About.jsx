@@ -14,7 +14,7 @@ const About = () => {
   // Team member profiles with skills and bios
   const teamMembers = [
     {
-      name: "SAPHAN M PETRS",
+      name: "SAP M PETR'S",
       role: "Founder, CEO & full-stack Engineer",
       image: "/images/me.jpg",
       bio: "Full-stack engineer and entrepreneur with a passion for innovative technology solutions.",
