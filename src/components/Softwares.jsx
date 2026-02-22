@@ -152,7 +152,7 @@ const Softwares = () => {
     <section id="software" className="software">
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title">Our Software & Apps</h2>
+          <h2 className="section-title">Software Apps</h2>
           <p className="section-description">
             Explore our latest software applications and tools designed to solve real-world problems
           </p>
