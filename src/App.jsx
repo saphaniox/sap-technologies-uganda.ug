@@ -205,13 +205,8 @@ function App() {
     <ErrorBoundary>
       <div className="App">
         <Routes>
-          {/* Certificate Verification Page - Public Route */}
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           
-          {/* Saphaniox Awards - Standalone Inspirational Page - Deactivated until end of 2026 */}
-          {/* <Route path="/awards" element={<Awards />} /> */}
-          
-          {/* Main Application - Default Route */
           <Route path="/*" element={
             <>
               <Header 
@@ -243,7 +238,7 @@ function App() {
               <Footer 
                 onPrivacyPolicyOpen={handlePrivacyPolicyOpen}
                 onTermsOfServiceOpen={handleTermsOfServiceOpen}
-                onNavigate={null} // Main page handles navigation internally
+                onNavigate={null}
               />
               <BackToTop />
               
