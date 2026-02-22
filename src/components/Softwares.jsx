@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import apiService from "../services/api";
 import SoftwareForm from "./SoftwareForm";
 import ConfirmDialog from "./ConfirmDialog";
@@ -8,6 +9,7 @@ import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/Software.css";
 
 const Softwares = () => {
+  const navigate = useNavigate();
   const [software, setSoftware] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -152,6 +154,9 @@ const Softwares = () => {
     <section id="software" className="software">
       <div className="container">
         <div className="section-header">
+          <button onClick={() => navigate(-1)} className="back-button" aria-label="Go back">
+            <i className="fas fa-arrow-left"></i> Back
+          </button>
           <h2 className="section-title">Software Apps</h2>
           <p className="section-description">
             Explore our latest software applications and tools designed to solve real-world problems
