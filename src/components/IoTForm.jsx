@@ -196,7 +196,10 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
       const url = project ? `/api/iot/${project._id}` : "/api/iot";
       const method = project ? "PUT" : "POST";
       
-      const response = await apiService.request(url, method, submitData);
+      const response = await apiService.request(url, {
+        method: method,
+        body: submitData
+      });
       
       if (response.status === "success") {
         showAlert.success(

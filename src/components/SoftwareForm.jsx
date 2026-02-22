@@ -191,8 +191,9 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
         : "/api/software";
       const method = software ? "PUT" : "POST";
       
-      const response = await apiService.request(endpoint, method, submitData, {
-        headers: { "Content-Type": "multipart/form-data" }
+      const response = await apiService.request(endpoint, {
+        method: method,
+        body: submitData
       });
       
       if (response.status === "success") {
