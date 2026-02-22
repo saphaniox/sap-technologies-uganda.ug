@@ -94,6 +94,71 @@
   font-size: 0.95rem;
 }
 
+.form-hint {
+  display: block;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* Software Form Instructions */
+.software-form-instructions {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 20px;
+  margin: 20px 30px;
+  background: linear-gradient(135deg, rgba(20, 160, 133, 0.15), rgba(13, 115, 119, 0.15));
+  border-left: 4px solid var(--primary-color);
+  border-radius: 8px;
+  animation: slideInFromLeft 0.5s ease-out;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.instruction-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.instruction-content {
+  flex: 1;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.instruction-content strong {
+  display: block;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+}
+
+.instruction-content p {
+  margin: 0;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .form-group input,
 .form-group select,
 .form-group textarea {

@@ -1,3 +1,86 @@
+/* ===========================================
+   Software Apps Page Styles
+   =========================================== */
+
+/* Page Header Section */
+.software-page {
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+.software-page-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.software-page-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="100" fill="rgba(255,255,255,0.05)"/><circle cx="800" cy="300" r="150" fill="rgba(255,255,255,0.05)"/><circle cx="400" cy="700" r="80" fill="rgba(255,255,255,0.05)"/></svg>');
+  opacity: 0.3;
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.software-page-header .container {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.software-page-header h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  animation: slideInDown 0.6s ease-out;
+}
+
+.software-page-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.95;
+  line-height: 1.6;
+  animation: fadeIn 1s ease-out 0.3s both;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 0.95; }
+}
+
+/* SEO Content (hidden but crawlable) */
+.seo-content {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 /* Software Section */
 .software {
   padding: 80px 0;
@@ -391,6 +474,18 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .software-page-header {
+    padding: 3rem 1rem;
+  }
+
+  .software-page-header h1 {
+    font-size: 2rem;
+  }
+
+  .software-page-subtitle {
+    font-size: 1rem;
+  }
+
   .software {
     padding: 60px 0;
   }
@@ -425,6 +520,14 @@
 }
 
 @media (max-width: 480px) {
+  .software-page-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .software-page-subtitle {
+    font-size: 0.95rem;
+  }
+
   .software .section-title {
     font-size: 1.75rem;
   }

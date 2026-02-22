@@ -4,6 +4,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Header from "./components/Header";
 import SeasonalGreeting from "./components/SeasonalGreeting";
 import CertificateVerify from "./pages/CertificateVerify";
+import SoftwarePage from "./pages/SoftwarePage";
 import Hero from "./components/Hero";
 import Slider from "./components/Slider";
 import About from "./components/About";
@@ -12,7 +13,6 @@ import Portfolio from "./components/Portfolio";
 import Partners from "./components/Partners";
 import Companies from "./components/Companies";
 import Products from "./components/Products";
-import Softwares from "./components/Softwares";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AuthModal from "./components/AuthModal";
@@ -207,6 +207,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
+          <Route path="/software" element={<SoftwarePage />} />
           
           <Route path="/*" element={
             <>
@@ -233,7 +234,6 @@ function App() {
                 <Partners />
                 <Companies />
                 <Products />
-                <Softwares />
                 <Contact />
               </main>
               

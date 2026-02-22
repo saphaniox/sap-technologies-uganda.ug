@@ -164,7 +164,19 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               variants={linkVariants}
               custom={index}
             >
-              {isAwardsPage ? (
+              {link.id === "software" ? (
+                // Software Apps - Navigate to dedicated page
+                <Link to="/software">
+                  <motion.span 
+                    className="link-text"
+                    variants={linkVariants}
+                    whileHover="hover"
+                    whileTap="tap"
+                  >
+                    {link.label}
+                  </motion.span>
+                </Link>
+              ) : isAwardsPage ? (
                 // On Awards page, link back to homepage sections
                 <Link to={`/#${link.id}`}>
                   <motion.span 

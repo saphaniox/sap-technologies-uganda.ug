@@ -223,6 +223,15 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
           </button>
         </div>
         
+        {/* Instructions for adding software */}
+        <div className="software-form-instructions">
+          <div className="instruction-icon">💡</div>
+          <div className="instruction-content">
+            <strong>How to Add a Web App:</strong>
+            <p>Simply provide the web app's URL and optional logo/screenshot - no need to upload .exe files, SDK, or other software files. Users will launch your app directly through their browsers.</p>
+          </div>
+        </div>
+        
         <form onSubmit={handleSubmit} className="software-form">
           {/* Basic Information */}
           <div className="form-section">
@@ -252,15 +261,16 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label>App URL *</label>
+              <label>App URL (Web Link) *</label>
               <input
                 type="url"
                 name="url"
                 value={formData.url}
                 onChange={handleInputChange}
                 required
-                placeholder="https://example.com/app"
+                placeholder="https://your-app.com - Users will click to open this link"
               />
+              <small className="form-hint">🌐 Enter the web address where your app is hosted. No files to upload - just the link!</small>
             </div>
             
             <div className="form-row">
