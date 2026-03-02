@@ -6,9 +6,9 @@ import "../styles/IoT.css";
 const IoTPage = () => {
   // SEO data for better search engine visibility
   const seoData = {
-    title: "IoT Projects & Tech Innovations - SAP Technologies Uganda",
-    description: "Explore cutting-edge Internet of Things (IoT) projects and tech innovations by SAP Technologies Uganda. Discover our Arduino, Raspberry Pi, ESP32, and custom hardware solutions for smart systems, automation, and connected devices.",
-    keywords: "IoT projects Uganda, Internet of Things, SAP Technologies IoT, smart systems, Arduino projects, Raspberry Pi, ESP32, tech innovation Uganda, automation projects, embedded systems, hardware projects, smart home, industrial IoT, IoT solutions Africa, connected devices",
+    title: "IoT Projects & Tech Innovations - SapTech Uganda",
+    description: "Explore cutting-edge Internet of Things (IoT) projects and tech innovations by SapTech Uganda. Discover our Arduino, Raspberry Pi, ESP32, and custom hardware solutions for smart systems, automation, and connected devices.",
+    keywords: "IoT projects Uganda, Internet of Things, SapTech Uganda IoT, smart systems, Arduino projects, Raspberry Pi, ESP32, tech innovation Uganda, automation projects, embedded systems, hardware projects, smart home, industrial IoT, IoT solutions Africa, connected devices",
     ogType: "website",
     ogImage: "/images/iot-banner.jpg",
     canonicalUrl: "/iot",
@@ -18,10 +18,10 @@ const IoTPage = () => {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "IoT Projects & Tech Innovations",
-    "description": "Innovative Internet of Things projects and embedded systems developed by SAP Technologies Uganda",
+    "description": "Innovative Internet of Things projects and embedded systems developed by SapTech Uganda",
     "provider": {
       "@type": "Organization",
-      "name": "SAP Technologies Uganda",
+      "name": "SapTech Uganda",
       "url": "https://www.sap-technologies-ug.com"
     },
     "about": {
@@ -61,9 +61,9 @@ const IoTPage = () => {
 
         {/* Additional SEO Content (hidden but crawlable) */}
         <div className="seo-content" style={{ position: "absolute", left: "-9999px" }}>
-          <h2>SAP Technologies IoT Innovations</h2>
+          <h2>SapTech Uganda IoT Innovations</h2>
           <p>
-            SAP Technologies Uganda specializes in developing innovative Internet of Things (IoT) 
+            SapTech Uganda specializes in developing innovative Internet of Things (IoT) 
             solutions and embedded systems. Our projects leverage cutting-edge technologies including 
             Arduino, Raspberry Pi, ESP32, and custom hardware designs to create smart, connected devices 
             that solve real-world problems.
@@ -92,3 +92,4 @@ const IoTPage = () => {
 };
 
 export default IoTPage;
+

@@ -2,9 +2,9 @@
 import { useEffect } from 'react';
 
 const SEO = ({ 
-  title = "SAP Technologies Uganda | Professional IT Solutions & Digital Services",
-  description = "SAP Technologies Uganda offers professional IT solutions, web development, mobile apps, cloud services, cybersecurity, and digital transformation.",
-  keywords = "SAP Technologies, IT solutions Uganda, web development, mobile apps, cloud services",
+  title = "SapTech Uganda | Professional IT Solutions & Digital Services",
+  description = "SapTech Uganda offers professional IT solutions, web development, mobile apps, cloud services, cybersecurity, and digital transformation.",
+  keywords = "SapTech Uganda, IT solutions Uganda, web development, mobile apps, cloud services",
   ogImage = "/images/logo2.jpg",
   url = window.location.href
 }) => {
@@ -46,3 +46,4 @@ const updateMetaTag = (attribute, key, content) => {
 };
 
 export default SEO;
+

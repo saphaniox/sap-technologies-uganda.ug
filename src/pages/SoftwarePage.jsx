@@ -6,9 +6,9 @@ import "../styles/Software.css";
 const SoftwarePage = () => {
   // SEO data for better search engine visibility
   const seoData = {
-    title: "Software Apps - SAP Technologies Uganda",
-    description: "Explore innovative software applications and web tools developed by SAP Technologies Uganda. Access our portfolio of custom web apps, business solutions, and digital tools designed to enhance productivity and efficiency.",
-    keywords: "SAP Technologies software, SAP Technologies apps, SAP Technologies Uganda software, web applications Uganda, custom software solutions, business apps, digital tools, technology solutions Uganda, web apps, software portfolio, sap technologies applications",
+    title: "Software Apps - SapTech Uganda",
+    description: "Explore innovative software applications and web tools developed by SapTech Uganda. Access our portfolio of custom web apps, business solutions, and digital tools designed to enhance productivity and efficiency.",
+    keywords: "SapTech Uganda software, SapTech Uganda apps, SapTech Uganda software, web applications Uganda, custom software solutions, business apps, digital tools, technology solutions Uganda, web apps, software portfolio, SapTech Uganda applications",
     ogType: "website",
     ogImage: "/images/software-banner.jpg", // Optional: Add a banner image
     canonicalUrl: "/software",
@@ -27,10 +27,10 @@ const SoftwarePage = () => {
     },
     "provider": {
       "@type": "Organization",
-      "name": "SAP Technologies Uganda",
+      "name": "SapTech Uganda",
       "url": "https://www.sap-technologies.com"
     },
-    "description": "Collection of innovative software applications and web tools developed by SAP Technologies Uganda for enhanced productivity and business efficiency."
+    "description": "Collection of innovative software applications and web tools developed by SapTech Uganda for enhanced productivity and business efficiency."
   };
 
   return (
@@ -63,14 +63,14 @@ const SoftwarePage = () => {
 
         {/* Additional SEO Content (hidden but crawlable) */}
         <div className="seo-content" style={{ position: "absolute", left: "-9999px" }}>
-          <h2>SAP Technologies Uganda Software Solutions</h2>
+          <h2>SapTech Uganda Software Solutions</h2>
           <p>
-            SAP Technologies Uganda develops cutting-edge software applications and web-based tools
+            SapTech Uganda develops cutting-edge software applications and web-based tools
             to help businesses and individuals achieve their goals. Our software portfolio includes
             custom web applications, business management tools, productivity apps, and innovative
             digital solutions tailored to the Ugandan market and beyond.
           </p>
-          <h3>Why Choose SAP Technologies Software?</h3>
+          <h3>Why Choose SapTech Uganda software?</h3>
           <ul>
             <li>Web-based applications - access from anywhere</li>
             <li>No installation required - launch instantly</li>
@@ -85,3 +85,4 @@ const SoftwarePage = () => {
 };
 
 export default SoftwarePage;
+

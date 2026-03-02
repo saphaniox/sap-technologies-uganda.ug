@@ -163,14 +163,14 @@ const SeasonalGreeting = () => {
                 )}
               </div>
 
-              {/* From SAP Technologies */}
+              {/* From SapTech Uganda */}
               <motion.div
                 className="seasonal-from"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.8 }}
               >
-                <p>— From all of us at <strong>SAP Technologies & Engineering Uganda </strong> 💚</p>
+                <p>— From all of us at <strong>SapTech Uganda & Engineering </strong> 💚</p>
               </motion.div>
             </div>
           </div>
@@ -181,3 +181,4 @@ const SeasonalGreeting = () => {
 };
 
 export default SeasonalGreeting;
+

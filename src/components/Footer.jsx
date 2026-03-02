@@ -52,7 +52,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
       <div className="footer-content">
         <div className="footer-brand">
           <img src="/images/logo2.jpg" alt="SAP Logo" className="footer-logo" />
-          <span>SAP Technologies</span>
+          <span>SapTech Uganda</span>
           <p>Kampala Uganda</p>
         </div>
         
@@ -94,7 +94,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
       
       <div className="footer-bottom">
         <div className="footer-legal">
-          <p>&copy; 2026 SAP Technologies Uganda-Africa. All rights reserved.</p>
+          <p>&copy; 2026 SapTech Uganda-Africa. All rights reserved.</p>
           <div className="legal-links">
             <button 
               onClick={onPrivacyPolicyOpen}
@@ -133,3 +133,4 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
 };
 
 export default Footer;
+
