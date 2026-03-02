@@ -180,6 +180,11 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
         formData.technologies.filter(t => t.trim())
       ));
       
+      // For updates, keep existing images and append new ones
+      if (software) {
+        submitData.append("keepExistingImages", "true");
+      }
+      
       // Add new images
       newImageFiles.forEach(file => {
         submitData.append("images", file);

@@ -229,13 +229,13 @@ const Softwares = () => {
                 <div className="software-image">
                   {item.images && item.images.length > 1 ? (
                     <ImageSlider
-                      images={item.images}
+                      images={item.images.map(img => getImageUrl(typeof img === 'string' ? img : img.url))}
                       alt={item.name}
                       className="software-slider"
                     />
                   ) : (
                     <img
-                      src={getImageUrl(item.primaryImage || item.image, PLACEHOLDERS.software)}
+                      src={getImageUrl(item.primaryImage || item.image) || PLACEHOLDERS.software}
                       alt={item.name}
                       loading="lazy"
                     />
