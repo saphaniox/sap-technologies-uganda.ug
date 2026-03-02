@@ -65,9 +65,9 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
             <li><a href="#portfolio" onClick={(e) => { e.preventDefault(); scrollToSection("portfolio"); }}>Our Featured Projects</a></li>
             <li><a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection("contact"); }}>Contact</a></li>
             <li><a href="#companies" onClick={(e) => { e.preventDefault(); scrollToSection("companies"); }}>Our Platforms</a></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SapTech Engineering"); }}>SapTech Engineering</a></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SapTech Online Learning"); }}>SapTech Online Learning</a></li>
-            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SapTech E-Commerce"); }}>SapTech E-Commerce</a></li>
+            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SAP Engineering"); }}>SAP Engineering</a></li>
+            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SAP Online Learning"); }}>SAP Online Learning</a></li>
+            <li><a href="#" onClick={(e) => { e.preventDefault(); handlePlatformComingSoon("SAP E-Commerce"); }}>SAP E-Commerce</a></li>
           </ul>
         </div>
         
