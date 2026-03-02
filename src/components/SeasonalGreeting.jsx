@@ -170,7 +170,7 @@ const SeasonalGreeting = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.8 }}
               >
-                <p>— From all of us at <strong>SapTech Uganda & Engineering </strong> 💚</p>
+                <p>— From all of us at <strong>SapTech Uganda</strong> 💚</p>
               </motion.div>
             </div>
           </div>
