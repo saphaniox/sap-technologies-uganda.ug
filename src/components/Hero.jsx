@@ -150,7 +150,7 @@ const Hero = () => {
           className="welcome-badge"
           whileHover={{ scale: 1.1 }}
         >
-          <span>✨ Welcome to SAP-Technologies</span>
+          <span>✨ Welcome to SapTech Uganda</span>
         </motion.div>
 
         <motion.h1 className="hero-title">
@@ -169,7 +169,7 @@ const Hero = () => {
         </motion.h1>
 
         <motion.p className="hero-subtitle">
-          Transforming your imaginations to real life.
+          Transforming your ideas into reality.
         </motion.p>
 
         <motion.div className="hero-buttons">
