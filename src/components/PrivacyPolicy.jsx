@@ -21,7 +21,7 @@ const PrivacyPolicy = ({ onClose }) => {
         </div>
 
         <div className="legal-body">
-          <p className="last-updated">Last updated: {new Date().toLocaleDateString()}</p>
+          <p className="last-updated">Last updated: April 5, 2026</p>
 
           <section>
             <h2>1. Information We Collect</h2>
@@ -114,7 +114,7 @@ const PrivacyPolicy = ({ onClose }) => {
           </section>
 
           <section>
-            <h2>8. Children"s Privacy</h2>
+            <h2>8. Children's Privacy</h2>
             <p>
               Our services are not intended for individuals under 13 years of age. We do not 
               knowingly collect personal information from children under 13.

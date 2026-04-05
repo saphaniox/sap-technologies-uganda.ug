@@ -21,12 +21,12 @@ const TermsOfService = ({ onClose }) => {
         </div>
 
         <div className="legal-body">
-          <p className="last-updated">Last updated: {new Date().toLocaleDateString()}</p>
+          <p className="last-updated">Last updated: April 5, 2026</p>
 
           <section>
-            <h2>1. Acceptance of Terms at Sap technologies</h2>
+            <h2>1. Acceptance of Terms at SAP Technologies</h2>
             <p>
-              By accessing and using SAP Technologies" website and services, you accept and agree to be bound 
+              By accessing and using SAP Technologies' website and services, you accept and agree to be bound 
               by the terms and provision of this agreement. If you do not agree to abide by the above, 
               please do not use this service.
             </p>
@@ -116,7 +116,7 @@ const TermsOfService = ({ onClose }) => {
           <section>
             <h2>7. Limitation of Liability</h2>
             <p>
-              SAP Technologies" liability is limited to the amount paid for the specific service. 
+              SAP Technologies' liability is limited to the amount paid for the specific service. 
               We are not liable for indirect, incidental, or consequential damages, including 
               but not limited to loss of profits, data, or business opportunities.
             </p>
@@ -184,7 +184,7 @@ const TermsOfService = ({ onClose }) => {
               For questions about these Terms of Service, please contact us:
             </p>
             <div className="contact-info">
-              <p><strong>Email:</strong> legal@sap-technologies.com</p>
+              <p><strong>Email:</strong> saptechnologies256@gmail.com</p>
               <p><strong>Phone:</strong> +256 706 564 628</p>
               <p><strong>Address:</strong> Kampala, Uganda</p>
             </div>

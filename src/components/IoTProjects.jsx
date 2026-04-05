@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import apiService from "../services/api";
 import IoTForm from "./IoTForm";
 import ConfirmDialog from "./ConfirmDialog";
@@ -9,7 +8,6 @@ import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/IoT.css";
 
 const IoTProjects = () => {
-  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -141,7 +139,7 @@ const IoTProjects = () => {
   };
   
   if (loading) {
-    return <LoadingOverlay message="Loading IoT projects..." />;
+    return <LoadingOverlay message="Loading IoT projects, please wait..." />;
   }
   
   if (error) {
@@ -186,9 +184,6 @@ const IoTProjects = () => {
         
         {/* Section Header */}
         <div className="iot-header">
-          <button onClick={() => navigate(-1)} className="back-button" aria-label="Go back">
-            <i className="fas fa-arrow-left"></i> Back
-          </button>
           <div className="header-content">
             <h2 className="section-title">IoT Projects & Innovations</h2>
             <p className="section-description">

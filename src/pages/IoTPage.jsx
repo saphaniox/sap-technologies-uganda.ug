@@ -1,9 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import SEO from "../components/SEO";
 import IoTProjects from "../components/IoTProjects";
 import "../styles/IoT.css";
 
 const IoTPage = () => {
+  const navigate = useNavigate();
   // SEO data for better search engine visibility
   const seoData = {
     title: "IoT Projects & Tech Innovations - SapTech Uganda",
@@ -48,6 +50,9 @@ const IoTPage = () => {
         {/* Page Header */}
         <div className="iot-page-header">
           <div className="container">
+            <button onClick={() => navigate(-1)} className="back-button" aria-label="Go back">
+              <i className="fas fa-arrow-left"></i> Back
+            </button>
             <h1>🔌 IoT Projects & Tech Innovations</h1>
             <p className="iot-page-subtitle">
               Explore our innovative Internet of Things projects and embedded systems. 

@@ -226,7 +226,7 @@ const Services = () => {
       }
     } catch (error) {
       console.error("Error fetching services:", error);
-      setError("Failed to load custom services");
+      setError("Failed to load other services");
       setApiServices([]);
     } finally {
       setLoading(false);

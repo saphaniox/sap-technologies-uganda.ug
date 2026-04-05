@@ -1,9 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import SEO from "../components/SEO";
 import Softwares from "../components/Softwares";
 import "../styles/Software.css";
 
 const SoftwarePage = () => {
+  const navigate = useNavigate();
   // SEO data for better search engine visibility
   const seoData = {
     title: "Software Apps - SapTech Uganda",
@@ -50,6 +52,9 @@ const SoftwarePage = () => {
         {/* Page Header */}
         <div className="software-page-header">
           <div className="container">
+            <button onClick={() => navigate(-1)} className="back-button" aria-label="Go back">
+              <i className="fas fa-arrow-left"></i> Back
+            </button>
             <h1>Software Apps</h1>
             <p className="software-page-subtitle">
               Explore our portfolio of innovative web applications and digital tools. 

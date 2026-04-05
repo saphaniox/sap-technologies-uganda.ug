@@ -1,11 +1,15 @@
 /* Seasonal Greeting Wrapper */
 .seasonal-greeting-wrapper {
-  position: relative;
+  position: fixed;
+  top: clamp(64px, 8vw, 92px);
+  left: 0;
+  right: 0;
   width: 100%;
+  max-height: min(78vh, 760px);
+  overflow-y: auto;
   background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 50%, #1a472a 100%);
   padding: 2rem 1rem;
-  overflow: hidden;
-  z-index: 100;
+  z-index: 1200;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -216,6 +220,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .seasonal-greeting-wrapper {
+    top: 64px;
     padding: 1.5rem 0.5rem;
   }
 

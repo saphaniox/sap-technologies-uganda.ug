@@ -78,7 +78,7 @@ const Products = () => {
                 }
             } catch (error) {
                 console.error("Error fetching products:", error);
-                setError("Failed to load products. Please refresh the page.");
+                setError("experienced challenges in loading products. Please try refreshing the page.");
             } finally {
                 setLoading(false);
             }

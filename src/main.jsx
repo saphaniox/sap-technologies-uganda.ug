@@ -1,4 +1,3 @@
-import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter } from "react-router-dom"
 import { HelmetProvider } from "./utils/helmet.jsx"
@@ -10,13 +9,11 @@ import { ThemeProvider } from "./contexts/ThemeContext.jsx"
 // No need for frontend keep-alive
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter>
-      <HelmetProvider>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </HelmetProvider>
-    </BrowserRouter>
-  </StrictMode>,
+  <BrowserRouter>
+    <HelmetProvider>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </HelmetProvider>
+  </BrowserRouter>,
 )

@@ -8,7 +8,7 @@ const SeasonalGreeting = () => {
 
   // Determine greeting type based on season
   const isDecember = currentMonth === 11; // December - Christmas
-  const isRamadanLent = currentMonth >= 1 && currentMonth <= 3; // Feb-April - Ramadan & Lent season
+  const isEasterSeason = currentMonth >= 2 && currentMonth <= 3; // Mar-April - Easter season
 
   // Auto-hide after 15 seconds
   useEffect(() => {
@@ -53,11 +53,11 @@ const SeasonalGreeting = () => {
                     <span className="decoration">⭐</span>
                     <span className="decoration">🎁</span>
                   </>
-                ) : isRamadanLent ? (
+                ) : isEasterSeason ? (
                   <>
-                    <span className="decoration">🌙</span>
-                    <span className="decoration">⭐</span>
-                    <span className="decoration">🕌</span>
+                    <span className="decoration">🐣</span>
+                    <span className="decoration">🌸</span>
+                    <span className="decoration">✨</span>
                   </>
                 ) : (
                   <>
@@ -89,13 +89,13 @@ const SeasonalGreeting = () => {
                       Wishing You Joy, Success, and Innovation in the Coming Year!
                     </p>
                   </>
-                ) : isRamadanLent ? (
+                ) : isEasterSeason ? (
                   <>
                     <h2 className="seasonal-title">
-                      🌙 Blessed Ramadan & Lent Season! ✨
+                      ✝️ Happy Easter! 🐣
                     </h2>
                     <p className="seasonal-subtitle">
-                      Wishing You Peace, Reflection, and Spiritual Growth During This Holy Season
+                      Wishing Our People, Friends, and Family a Wonderful Easter Celebration
                     </p>
                   </>
                 ) : (
@@ -124,12 +124,11 @@ const SeasonalGreeting = () => {
                     Thank you for your continued trust and partnership throughout the year.
                     Here's to a bright and innovative New Year ahead!
                   </>
-                ) : isRamadanLent ? (
+                ) : isEasterSeason ? (
                   <>
-                    During this sacred season of Ramadan and Lent, we wish you and your families peace, blessings, and spiritual fulfillment.
-                    May this time of reflection, prayer, and devotion bring you closer to your faith and strengthen your bonds with loved ones.
-                    We honor and respect all faiths and traditions, celebrating the unity and diversity that makes our community stronger.
-                    Ramadan Mubarak and a Blessed Lent to all observing these holy periods!
+                    To all our people, friends, and family, we wish you a wonderful Easter filled with peace, joy, hope, and love.
+                    May this beautiful season renew your spirit, strengthen your faith, and bring you closer to everyone you cherish.
+                    Thank you for being part of our journey and community. Happy Easter from all of us at SapTech Uganda!
                   </>
                 ) : (
                   <>
@@ -148,9 +147,9 @@ const SeasonalGreeting = () => {
                     <span className="decoration">🔔</span>
                     <span className="decoration">❄️</span>
                   </>
-                ) : isRamadanLent ? (
+                ) : isEasterSeason ? (
                   <>
-                    <span className="decoration">🕊️</span>
+                    <span className="decoration">🐰</span>
                     <span className="decoration">🙏</span>
                     <span className="decoration">✝️</span>
                   </>
