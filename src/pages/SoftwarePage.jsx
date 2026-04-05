@@ -30,7 +30,7 @@ const SoftwarePage = () => {
     "provider": {
       "@type": "Organization",
       "name": "SapTech Uganda",
-      "url": "https://www.sap-technologies.com"
+      "url": "https://sap-technologies.ug"
     },
     "description": "Collection of innovative software applications and web tools developed by SapTech Uganda for enhanced productivity and business efficiency."
   };

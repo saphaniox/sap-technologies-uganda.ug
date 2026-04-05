@@ -2,31 +2,48 @@
 import { useEffect } from 'react';
 
 const SEO = ({ 
-  title = "SapTech Uganda | Professional IT Solutions & Digital Services",
-  description = "SapTech Uganda offers professional IT solutions, web development, mobile apps, cloud services, cybersecurity, and digital transformation.",
-  keywords = "SapTech Uganda, IT solutions Uganda, web development, mobile apps, cloud services",
+  title = "SAPTech Uganda | Let's Build the Future Together",
+  description = "SAPTech Uganda offers professional IT solutions, web development, mobile apps, cloud services, cybersecurity, and digital transformation.",
+  keywords = "SAPTech Uganda, IT solutions Uganda, web development, mobile apps, cloud services",
   ogImage = "/images/logo2.jpg",
-  url = window.location.href
+  url,
+  ogType = "website",
+  canonicalUrl,
+  robots = "index, follow",
+  structuredData = null
 }) => {
   useEffect(() => {
+    const resolvedUrl = url || window.location.href;
+    const resolvedCanonical = canonicalUrl
+      ? `${window.location.origin}${canonicalUrl}`
+      : resolvedUrl;
+
     // Update page title
     document.title = title;
 
     // Update meta description
     updateMetaTag('name', 'description', description);
     updateMetaTag('name', 'keywords', keywords);
+    updateMetaTag('name', 'robots', robots);
 
     // Update Open Graph tags
+    updateMetaTag('property', 'og:type', ogType);
     updateMetaTag('property', 'og:title', title);
     updateMetaTag('property', 'og:description', description);
-    updateMetaTag('property', 'og:url', url);
+    updateMetaTag('property', 'og:url', resolvedUrl);
     updateMetaTag('property', 'og:image', `${window.location.origin}${ogImage}`);
 
     // Update Twitter Card tags
     updateMetaTag('name', 'twitter:title', title);
     updateMetaTag('name', 'twitter:description', description);
     updateMetaTag('name', 'twitter:image', `${window.location.origin}${ogImage}`);
-  }, [title, description, keywords, ogImage, url]);
+
+    // Keep canonical URL aligned with route
+    updateLinkTag('canonical', resolvedCanonical);
+
+    // Inject route-level structured data if provided
+    updateStructuredData(structuredData);
+  }, [title, description, keywords, ogImage, url, ogType, canonicalUrl, robots, structuredData]);
 
   return null;
 };
@@ -42,6 +59,37 @@ const updateMetaTag = (attribute, key, content) => {
     element.setAttribute(attribute, key);
     element.setAttribute('content', content);
     document.head.appendChild(element);
+  }
+};
+
+const updateLinkTag = (rel, href) => {
+  let element = document.querySelector(`link[rel="${rel}"]`);
+
+  if (element) {
+    element.setAttribute('href', href);
+  } else {
+    element = document.createElement('link');
+    element.setAttribute('rel', rel);
+    element.setAttribute('href', href);
+    document.head.appendChild(element);
+  }
+};
+
+const updateStructuredData = (structuredData) => {
+  const existing = document.getElementById('dynamic-structured-data');
+
+  if (!structuredData) {
+    if (existing) existing.remove();
+    return;
+  }
+
+  const script = existing || document.createElement('script');
+  script.type = 'application/ld+json';
+  script.id = 'dynamic-structured-data';
+  script.text = JSON.stringify(structuredData);
+
+  if (!existing) {
+    document.head.appendChild(script);
   }
 };
 

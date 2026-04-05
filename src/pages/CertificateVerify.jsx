@@ -78,19 +78,19 @@ const CertificateVerify = () => {
     // Meta tags for social media and Google previews
     const metaTitle = certificate 
         ? `Certificate Verification - ${certificate.recipientName}` 
-        : 'Certificate Verification - SAP Technologies';
+        : 'Certificate Verification - SAPTech Uganda';
     
     const metaDescription = certificate 
         ? `${certificate.recipientName} - ${getTypeLabel(certificate.type)} Certificate for ${certificate.categoryName} (${certificate.awardYear})`
-        : 'Verify SAP Technologies certificate authenticity';
+        : 'Verify SAPTech Uganda certificate authenticity';
     
-    const metaUrl = `https://sap-technologies.com/verify/${certificateId}`;
+    const metaUrl = `https://sap-technologies.ug/verify/${certificateId}`;
 
     if (loading) {
         return (
             <div className="certificate-verify-container">
                 <Helmet>
-                    <title>Verifying Certificate... - SAP Technologies</title>
+                    <title>Verifying Certificate... - SAPTech Uganda</title>
                     <meta name="description" content="Verifying certificate authenticity" />
                 </Helmet>
                 <div className="verify-loading">
@@ -105,7 +105,7 @@ const CertificateVerify = () => {
         return (
             <div className="certificate-verify-container">
                 <Helmet>
-                    <title>Invalid Certificate - SAP Technologies</title>
+                    <title>Invalid Certificate - SAPTech Uganda</title>
                     <meta name="description" content="Certificate verification failed" />
                     <meta property="og:title" content="Invalid Certificate" />
                     <meta property="og:description" content="This certificate could not be verified" />
@@ -133,7 +133,7 @@ const CertificateVerify = () => {
                     </div>
                     <div className="contact-info">
                         <p>For assistance, please contact us at:</p>
-                        <a href="mailto:support@sap-technologies.com">support@sap-technologies.com</a>
+                        <a href="mailto:saptechnologies256@gmail.com">saptechnologies256@gmail.com</a>
                     </div>
                 </div>
             </div>
@@ -151,7 +151,7 @@ const CertificateVerify = () => {
                 <meta property="og:url" content={metaUrl} />
                 <meta property="og:title" content={metaTitle} />
                 <meta property="og:description" content={metaDescription} />
-                <meta property="og:site_name" content="SAP Technologies" />
+                <meta property="og:site_name" content="SAPTech Uganda" />
                 
                 {/* Twitter */}
                 <meta name="twitter:card" content="summary_large_image" />
@@ -241,7 +241,7 @@ const CertificateVerify = () => {
 
                 <div className="verification-footer">
                     <p className="footer-text">
-                        This certificate was issued by <strong>SAP Technologies</strong> and has been verified as authentic.
+                        This certificate was issued by <strong>SAPTech Uganda</strong> and has been verified as authentic.
                     </p>
                     <p className="footer-security">
                         🔒 Secured and verified through blockchain-backed authentication

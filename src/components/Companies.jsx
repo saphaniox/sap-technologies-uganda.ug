@@ -20,7 +20,7 @@ const Companies = () => {
 
   /**
    * Sister Companies and Platforms
-   * Array of related business platforms under SAP Technologies umbrella
+    * Array of related business platforms under SAPTech Uganda umbrella
    */
   const companies = [
     {

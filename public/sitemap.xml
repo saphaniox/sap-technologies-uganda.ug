@@ -4,74 +4,26 @@
   
   <!-- Homepage -->
   <url>
-    <loc>https://www.sap-technologies.com/</loc>
-    <lastmod>2025-10-14</lastmod>
+    <loc>https://sap-technologies.ug/</loc>
+    <lastmod>2026-04-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   
-  <!-- About Page -->
+  <!-- Software Page -->
   <url>
-    <loc>https://www.sap-technologies.com/#about</loc>
-    <lastmod>2025-10-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Services Page -->
-  <url>
-    <loc>https://www.sap-technologies.com/#services</loc>
-    <lastmod>2025-10-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Products Page -->
-  <url>
-    <loc>https://www.sap-technologies.com/#products</loc>
-    <lastmod>2025-10-14</lastmod>
+    <loc>https://sap-technologies.ug/software</loc>
+    <lastmod>2026-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  
-  <!-- Portfolio Page -->
+
+  <!-- IoT Page -->
   <url>
-    <loc>https://www.sap-technologies.com/#portfolio</loc>
-    <lastmod>2025-10-14</lastmod>
+    <loc>https://sap-technologies.ug/iot</loc>
+    <lastmod>2026-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  
-  <!-- Partners Page -->
-  <url>
-    <loc>https://www.sap-technologies.com/#partners</loc>
-    <lastmod>2025-10-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- Contact Page -->
-  <url>
-    <loc>https://www.sap-technologies.com/#contact</loc>
-    <lastmod>2025-10-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Awards Page -->
-  <url>
-    <loc>https://www.sap-technologies.com/awards</loc>
-    <lastmod>2025-10-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Certificate Verify Page -->
-  <url>
-    <loc>https://www.sap-technologies.com/certificate/verify</loc>
-    <lastmod>2025-10-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
   
 </urlset>
