@@ -7,7 +7,7 @@
   width: 100%;
   max-height: min(78vh, 760px);
   overflow-y: auto;
-  background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 50%, #1a472a 100%);
+  background: linear-gradient(135deg, #0f1f4d 0%, #1f3e8a 50%, #0f1f4d 100%);
   padding: 2rem 1rem;
   z-index: 1200;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -167,12 +167,47 @@
 }
 
 .seasonal-subtitle {
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: 600;
   margin: 0.5rem 0 0 0;
   color: #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   animation: glow 2s ease-in-out infinite;
+}
+
+/* Countdown */
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(90px, 130px));
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.25rem 0 1.75rem;
+}
+
+.countdown-item {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 12px;
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(3px);
+}
+
+.countdown-value {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #ffed4e;
+}
+
+.countdown-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.35rem;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 @keyframes glow {
@@ -229,7 +264,16 @@
   }
 
   .seasonal-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
+  }
+
+  .countdown-grid {
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .countdown-value {
+    font-size: 1.6rem;
   }
 
   .seasonal-message {
@@ -256,7 +300,15 @@
   }
 
   .seasonal-subtitle {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+
+  .countdown-item {
+    padding: 0.65rem 0.4rem;
+  }
+
+  .countdown-value {
+    font-size: 1.4rem;
   }
 
   .seasonal-message {
@@ -277,6 +329,6 @@
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   .seasonal-greeting-wrapper {
-    background: linear-gradient(135deg, #0d2818 0%, #1a472a 50%, #0d2818 100%);
+    background: linear-gradient(135deg, #0a1536 0%, #173371 50%, #0a1536 100%);
   }
 }

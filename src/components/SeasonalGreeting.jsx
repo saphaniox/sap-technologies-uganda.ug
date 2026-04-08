@@ -2,26 +2,47 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../styles/SeasonalGreeting.css";
 
+const getLaunchDate = () => {
+  const now = new Date();
+  const thisMonthLaunch = new Date(now.getFullYear(), now.getMonth(), 20, 10, 0, 0);
+  return thisMonthLaunch;
+};
+
+const getTimeLeft = (targetDate) => {
+  const now = new Date();
+  const diff = targetDate.getTime() - now.getTime();
+
+  if (diff <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, isLaunched: true };
+  }
+
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / (60 * 60 * 24));
+  const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+  const seconds = totalSeconds % 60;
+
+  return { days, hours, minutes, seconds, isLaunched: false };
+};
+
 const SeasonalGreeting = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const [currentMonth] = useState(new Date().getMonth()); // 0 = January, 11 = December
+  const [launchDate] = useState(getLaunchDate);
+  const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(getLaunchDate()));
 
-  // Determine greeting type based on season
-  const isDecember = currentMonth === 11; // December - Christmas
-  const isEasterSeason = currentMonth >= 2 && currentMonth <= 3; // Mar-April - Easter season
-
-  // Auto-hide after 15 seconds
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, 15000);
+    const timer = setInterval(() => {
+      setTimeLeft(getTimeLeft(launchDate));
+    }, 1000);
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => clearInterval(timer);
+  }, [launchDate]);
 
   const handleClose = () => {
     setIsVisible(false);
   };
+
+  const pad = (value) => String(value).padStart(2, "0");
 
   return (
     <AnimatePresence>
@@ -47,25 +68,11 @@ const SeasonalGreeting = () => {
             <div className="seasonal-content">
               {/* Decorative Elements */}
               <div className="seasonal-decorations">
-                {isDecember ? (
-                  <>
-                    <span className="decoration">🎄</span>
-                    <span className="decoration">⭐</span>
-                    <span className="decoration">🎁</span>
-                  </>
-                ) : isEasterSeason ? (
-                  <>
-                    <span className="decoration">🐣</span>
-                    <span className="decoration">🌸</span>
-                    <span className="decoration">✨</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="decoration">💡</span>
-                    <span className="decoration">🚀</span>
-                    <span className="decoration">📱</span>
-                  </>
-                )}
+                <>
+                  <span className="decoration">🚀</span>
+                  <span className="decoration">⏳</span>
+                  <span className="decoration">✨</span>
+                </>
               </div>
 
               {/* Greeting Text */}
@@ -80,35 +87,28 @@ const SeasonalGreeting = () => {
                   ease: "easeInOut",
                 }}
               >
-                {isDecember ? (
-                  <>
-                    <h2 className="seasonal-title">
-                      🎄 Merry Christmas & Happy New Year! 🎉
-                    </h2>
-                    <p className="seasonal-subtitle">
-                      Wishing You Joy, Success, and Innovation in the Coming Year!
-                    </p>
-                  </>
-                ) : isEasterSeason ? (
-                  <>
-                    <h2 className="seasonal-title">
-                      ✝️ Happy Easter! 🐣
-                    </h2>
-                    <p className="seasonal-subtitle">
-                      Wishing Our People, Friends, and Family a Wonderful Easter Celebration
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <h2 className="seasonal-title">
-                      🚀 Exciting New Launches! 🚀
-                    </h2>
-                    <p className="seasonal-subtitle">
-                      SAP Smart Home System & SAP Business Management Software
-                    </p>
-                  </>
-                )}
+                <h2 className="seasonal-title">A Big Launch Is Coming</h2>
+                <p className="seasonal-subtitle">April 20, 10:00 AM (EAT)</p>
               </motion.div>
+
+              <div className="countdown-grid" role="status" aria-live="polite">
+                <div className="countdown-item">
+                  <span className="countdown-value">{pad(timeLeft.days)}</span>
+                  <span className="countdown-label">Days</span>
+                </div>
+                <div className="countdown-item">
+                  <span className="countdown-value">{pad(timeLeft.hours)}</span>
+                  <span className="countdown-label">Hours</span>
+                </div>
+                <div className="countdown-item">
+                  <span className="countdown-value">{pad(timeLeft.minutes)}</span>
+                  <span className="countdown-label">Minutes</span>
+                </div>
+                <div className="countdown-item">
+                  <span className="countdown-value">{pad(timeLeft.seconds)}</span>
+                  <span className="countdown-label">Seconds</span>
+                </div>
+              </div>
 
               {/* Message */}
               <motion.p
@@ -117,59 +117,28 @@ const SeasonalGreeting = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 1 }}
               >
-                {isDecember ? (
-                  <>
-                    As we celebrate this wonderful season, we extend our warmest wishes to you and your loved ones.
-                    May this festive period bring you joy, prosperity, and success.
-                    Thank you for your continued trust and partnership throughout the year.
-                    Here's to a bright and innovative New Year ahead!
-                  </>
-                ) : isEasterSeason ? (
-                  <>
-                    To all our people, friends, and family, we wish you a wonderful Easter filled with peace, joy, hope, and love.
-                    May this beautiful season renew your spirit, strengthen your faith, and bring you closer to everyone you cherish.
-                    Thank you for being part of our journey and community. Happy Easter from all of us at SapTech Uganda!
-                  </>
-                ) : (
-                  <>
-                    We're excited to announce the launch of our SAP Smart Home System and SAP Business Management Software!
-                    These innovative solutions are designed to enhance your home automation and streamline your business operations.
-                    Stay tuned for more details and thank you for being part of our journey!
-                  </>
-                )}
+                {timeLeft.isLaunched
+                  ? "The wait is over. Our new system is now live. Explore what we have built for you."
+                  : "Something powerful is about to drop. We are preparing a brand new system to transform how you work and grow. Stay tuned and be among the first to discover it."}
               </motion.p>
 
               {/* Decorative Bottom */}
               <div className="seasonal-decorations bottom">
-                {isDecember ? (
-                  <>
-                    <span className="decoration">🎅</span>
-                    <span className="decoration">🔔</span>
-                    <span className="decoration">❄️</span>
-                  </>
-                ) : isEasterSeason ? (
-                  <>
-                    <span className="decoration">🐰</span>
-                    <span className="decoration">🙏</span>
-                    <span className="decoration">✝️</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="decoration">🏠</span>
-                    <span className="decoration">💼</span>
-                    <span className="decoration">📊</span>
-                  </>
-                )}
+                <>
+                  <span className="decoration">🔒</span>
+                  <span className="decoration">⚡</span>
+                  <span className="decoration">🎯</span>
+                </>
               </div>
 
-              {/* From SapTech Uganda */}
+              {/* From SAPTech Uganda */}
               <motion.div
                 className="seasonal-from"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.8 }}
               >
-                <p>— From all of us at <strong>SapTech Uganda</strong> 💚</p>
+                <p>- From all of us at <strong>SAPTech Uganda</strong></p>
               </motion.div>
             </div>
           </div>
