@@ -332,3 +332,7 @@
     background: linear-gradient(135deg, #0a1536 0%, #173371 50%, #0a1536 100%);
   }
 }
+
+[data-theme="dark"] .seasonal-greeting-wrapper {
+  background: linear-gradient(135deg, #0a1536 0%, #173371 50%, #0a1536 100%);
+}

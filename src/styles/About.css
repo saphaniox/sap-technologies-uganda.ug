@@ -978,6 +978,55 @@
     font-size: 0.875rem;
   }
 
+
+/* Dark mode support for Mission, Vision & Values */
+[data-theme="dark"] .mission-vision-section {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+
+[data-theme="dark"] .mvv-card {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .mvv-header {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(17, 24, 39, 0.98) 100%);
+  border-bottom: 2px solid rgba(51, 65, 85, 0.85);
+}
+
+[data-theme="dark"] .mvv-lead {
+  background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .mvv-description {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .value-item {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: rgba(71, 85, 105, 0.8);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+[data-theme="dark"] .value-item:hover {
+  background: linear-gradient(135deg, #1e293b 0%, #172554 100%);
+  border-color: rgba(129, 140, 248, 0.55);
+  box-shadow: 0 10px 24px rgba(30, 64, 175, 0.22);
+}
+
+[data-theme="dark"] .value-content h4 {
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .value-content p {
+  color: #94a3b8;
+}
   .team-grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: var(--space-7);

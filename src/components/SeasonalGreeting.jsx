@@ -4,7 +4,7 @@ import "../styles/SeasonalGreeting.css";
 
 const getLaunchDate = () => {
   const now = new Date();
-  const thisMonthLaunch = new Date(now.getFullYear(), now.getMonth(), 20, 10, 0, 0);
+  const thisMonthLaunch = new Date(now.getFullYear(), now.getMonth(), 25, 10, 0, 0);
   return thisMonthLaunch;
 };
 
@@ -37,6 +37,14 @@ const SeasonalGreeting = () => {
 
     return () => clearInterval(timer);
   }, [launchDate]);
+
+  useEffect(() => {
+    const autoDismissTimer = setTimeout(() => {
+      setIsVisible(false);
+    }, 30000);
+
+    return () => clearTimeout(autoDismissTimer);
+  }, []);
 
   const handleClose = () => {
     setIsVisible(false);
@@ -88,7 +96,7 @@ const SeasonalGreeting = () => {
                 }}
               >
                 <h2 className="seasonal-title">A Big Launch Is Coming</h2>
-                <p className="seasonal-subtitle">April 20, 10:00 AM (EAT)</p>
+                <p className="seasonal-subtitle">April 25, 10:00 AM (EAT)</p>
               </motion.div>
 
               <div className="countdown-grid" role="status" aria-live="polite">
