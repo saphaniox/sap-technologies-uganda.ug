@@ -27,15 +27,20 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          if (id.includes('react-dom') || id.includes('react/')) return 'vendor';
+          // Keep React + all its low-level deps together to prevent circular chunk loading
+          if (
+            id.includes('/react/') ||
+            id.includes('/react-dom/') ||
+            id.includes('/scheduler/') ||
+            id.includes('/react-is/')
+          ) return 'vendor';
           if (id.includes('framer-motion')) return 'motion';
           if (
-            id.includes('three') ||
-            id.includes('@react-three/fiber') ||
-            id.includes('@react-three/drei')
+            id.includes('/three/') ||
+            id.includes('/@react-three/')
           ) return 'three';
-          if (id.includes('sweetalert2')) return 'sweetalert';
-          return 'libs';
+          if (id.includes('/sweetalert2/')) return 'sweetalert';
+          // No catch-all — let Rollup auto-bundle the rest to avoid circular deps
         }
       }
     }
