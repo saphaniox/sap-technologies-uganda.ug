@@ -406,6 +406,12 @@ const AwardsAdmin = () => {
         confirmButtonText: 'OK',
         confirmButtonColor: '#3b82f6'
       });
+    } finally {
+      setLoading(prev => ({ ...prev, updating: false }));
+    }
+  };
+
+  // Category Management Functions
   const handleCreateCategory = async (categoryData) => {
     try {
       console.log("🔥 Creating category with data:", categoryData);
