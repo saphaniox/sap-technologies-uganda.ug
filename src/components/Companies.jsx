@@ -8,10 +8,10 @@ const Companies = () => {
    */
   const handleComingSoon = (platformName) => {
     showAlert.info(
-      `${platformName} - Coming Soon! 🚀`,
-      "This exciting platform is currently being programmed. Stay tuned for the launch!",
+      `${platformName} — Coming Soon! 🚀`,
+      "We're putting the finishing touches on this one. Check back soon!",
       {
-        confirmButtonText: "Can\"t Wait!",
+        confirmButtonText: "Can't Wait!",
         timer: 4000,
         timerProgressBar: true
       }

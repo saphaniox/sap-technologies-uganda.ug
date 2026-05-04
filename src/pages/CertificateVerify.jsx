@@ -28,13 +28,13 @@ const CertificateVerify = () => {
                 setIsValid(true);
                 console.log('✅ Certificate verified successfully');
             } else {
-                setError(response.message || 'Certificate not found or invalid');
+                setError(response.message || "We couldn't find a valid certificate with that ID");
                 setIsValid(false);
                 console.log('❌ Certificate invalid');
             }
         } catch (err) {
             console.error('❌ Verification error:', err);
-            setError(err.response?.data?.message || 'Failed to verify certificate. Please try again.');
+            setError(err.response?.data?.message || 'Something went wrong while verifying. Please try again.');
             setIsValid(false);
         } finally {
             setLoading(false);
@@ -105,23 +105,23 @@ const CertificateVerify = () => {
         return (
             <div className="certificate-verify-container">
                 <Helmet>
-                    <title>Invalid Certificate - SAPTech Uganda</title>
-                    <meta name="description" content="Certificate verification failed" />
-                    <meta property="og:title" content="Invalid Certificate" />
+                    <title>Certificate Not Found - SAPTech Uganda</title>
+                    <meta name="description" content="Certificate verification could not be completed" />
+                    <meta property="og:title" content="Certificate Not Found" />
                     <meta property="og:description" content="This certificate could not be verified" />
                     <meta property="og:url" content={metaUrl} />
                     <meta property="og:type" content="website" />
                     <meta name="twitter:card" content="summary" />
-                    <meta name="twitter:title" content="Invalid Certificate" />
+                    <meta name="twitter:title" content="Certificate Not Found" />
                     <meta name="twitter:description" content="This certificate could not be verified" />
                 </Helmet>
                 <div className="verify-error">
                     <div className="error-icon">✗</div>
-                    <h1>Invalid Certificate</h1>
+                    <h1>Certificate Not Found</h1>
                     <p className="error-message">{error}</p>
                     <div className="error-details">
                         <p><strong>Certificate ID:</strong> {certificateId}</p>
-                        <p>This certificate may have been revoked, expired, or does not exist.</p>
+                        <p>This certificate may have been revoked, or it might not exist. If you believe this is a mistake, please get in touch with us.</p>
                     </div>
                     <div className="error-actions">
                         <button onClick={verifyCertificate} className="btn-retry">

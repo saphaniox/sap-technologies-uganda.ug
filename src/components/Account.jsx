@@ -60,7 +60,7 @@ const Account = ({ onClose }) => {
         throw new Error("Invalid account data received");
       }
     } catch (error) {
-      setError("Failed to load account details");
+      setError("Couldn't load your account details. Please try refreshing.");
       console.error("Account fetch error:", error);
     } finally {
       setLoading(false);
@@ -93,10 +93,10 @@ const Account = ({ onClose }) => {
       await apiService.updateAccount({ name: formData.name });
       await fetchUserDetails();
       setIsEditing(false);
-      setMessage("Profile updated successfully!");
+      setMessage("Profile updated successfully! 🎉");
       setTimeout(() => setMessage(""), 4000);
     } catch (error) {
-      setMessage("Failed to update profile: " + error.message);
+      setMessage("Hmm, couldn't update your profile: " + error.message);
       setTimeout(() => setMessage(""), 5000);
     }
   };
@@ -108,10 +108,10 @@ const Account = ({ onClose }) => {
     try {
       await apiService.updateEmail(formData.email);
       await fetchUserDetails();
-      setMessage("Email updated successfully!");
+      setMessage("Email updated successfully! ✅");
       setTimeout(() => setMessage(""), 4000);
     } catch (error) {
-      setMessage("Failed to update email: " + error.message);
+      setMessage("Couldn't update your email: " + error.message);
       setTimeout(() => setMessage(""), 5000);
     }
   };
@@ -121,13 +121,13 @@ const Account = ({ onClose }) => {
     setMessage("");
     
     if (formData.newPassword !== formData.confirmPassword) {
-      setMessage("New passwords do not match");
+      setMessage("Those passwords don't match — please try again");
       setTimeout(() => setMessage(""), 5000);
       return;
     }
     
     if (formData.newPassword.length < 6) {
-      setMessage("New password must be at least 6 characters long");
+      setMessage("Your new password needs to be at least 6 characters");
       setTimeout(() => setMessage(""), 5000);
       return;
     }
@@ -143,10 +143,10 @@ const Account = ({ onClose }) => {
         newPassword: "",
         confirmPassword: ""
       });
-      setMessage("Password updated successfully!");
+      setMessage("Password updated successfully! 🔒");
       setTimeout(() => setMessage(""), 4000);
     } catch (error) {
-      setMessage("Failed to update password: " + error.message);
+      setMessage("Couldn't update your password: " + error.message);
       setTimeout(() => setMessage(""), 5000);
     }
   };
@@ -157,14 +157,14 @@ const Account = ({ onClose }) => {
 
     // Validate file type
     if (!file.type.startsWith("image/")) {
-      setMessage("Please select a valid image file");
+      setMessage("Please pick a valid image file (JPG, PNG, etc.)");
       setTimeout(() => setMessage(""), 5000);
       return;
     }
 
     // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
-      setMessage("File size must be less than 5MB");
+      setMessage("That image is a bit too large — please keep it under 5MB");
       setTimeout(() => setMessage(""), 5000);
       return;
     }
@@ -175,10 +175,10 @@ const Account = ({ onClose }) => {
     try {
       await apiService.uploadProfilePic(file);
       await fetchUserDetails();
-      setMessage("Profile picture updated successfully!");
+      setMessage("Profile picture updated! Looking good 😊");
       setTimeout(() => setMessage(""), 4000);
     } catch (error) {
-      setMessage("Failed to upload profile picture: " + error.message);
+      setMessage("Couldn't upload your picture: " + error.message);
       setTimeout(() => setMessage(""), 5000);
     } finally {
       setUploading(false);
@@ -186,23 +186,23 @@ const Account = ({ onClose }) => {
   };
 
   const handleDeleteAccount = async () => {
-    if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+    if (!window.confirm("Are you sure you want to delete your account? This cannot be undone — everything will be permanently removed.")) {
       return;
     }
 
-    if (!window.confirm("This will permanently delete all your data. Are you absolutely sure?")) {
+    if (!window.confirm("Last chance — this will wipe all your data for good. Are you absolutely certain?")) {
       return;
     }
 
     try {
       await apiService.deleteAccount();
-      setMessage("Account deleted successfully");
+      setMessage("Your account has been deleted. We're sorry to see you go.");
       setTimeout(() => {
         onClose();
         window.location.reload(); // Refresh to clear all state
       }, 1500);
     } catch (error) {
-      setMessage("Failed to delete account: " + error.message);
+      setMessage("Couldn't delete your account: " + error.message);
     }
   };
 

@@ -128,8 +128,8 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
         const totalImages = imagePreviews.length + files.length;
         if (totalImages > maxImages) {
             showAlert.error(
-                "Too Many Images",
-                `You can only upload up to ${maxImages} images. Currently you have ${imagePreviews.length} image(s).`,
+                "Too many images",
+                `You can upload up to ${maxImages} images. You currently have ${imagePreviews.length} — please remove some before adding more.`,
                 {
                     showConfirmButton: true,
                     confirmButtonText: "OK"
@@ -146,8 +146,8 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 const maxSize = 10 * 1024 * 1024; // 10MB in bytes
                 if (file.size > maxSize) {
                     showAlert.error(
-                        "File Too Large",
-                        `Image "${file.name}" is too large. Maximum size is 10MB.`,
+                        "Image too large",
+                        `"${file.name}" is over the 10MB limit. Please use a smaller image.`,
                         {
                             showConfirmButton: true,
                             confirmButtonText: "OK"
@@ -160,8 +160,8 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 // Validate file type
                 if (!file.type.startsWith('image/')) {
                     showAlert.error(
-                        "Invalid File Type",
-                        `"${file.name}" is not an image file. Please select only image files.`,
+                        "Wrong file type",
+                        `"${file.name}" isn't an image file. Please only upload image files.`,
                         {
                             showConfirmButton: true,
                             confirmButtonText: "OK"
@@ -187,8 +187,8 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 };
                 reader.onerror = () => {
                     showAlert.error(
-                        "Error Reading File",
-                        `Failed to read "${file.name}". Please try again.`,
+                        "Couldn't read that file",
+                        `We had trouble reading "${file.name}". Please try again.`,
                         {
                             showConfirmButton: true,
                             confirmButtonText: "OK"
@@ -313,12 +313,12 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
 
             if (response.status === "success") {
                 await showAlert.success(
-                    "Success!",
-                    product ? "Product updated successfully!" : "Product created successfully!",
+                    "Saved! 🎉",
+                    product ? "Product updated successfully." : "Product added successfully!",
                     { 
                         showConfirmButton: true,
                         confirmButtonText: "Great!",
-                        timer: 4000 // 4 seconds timer
+                        timer: 4000
                     }
                 );
                 if (onSuccess) onSuccess(submitData); // Pass data to parent if callback exists
@@ -330,7 +330,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
             console.error("❌ Error response errors array:", error.response?.data?.errors);
             
             // Handle validation errors with field details
-            let errorMessage = error.message || "Failed to save product. Please try again.";
+let errorMessage = error.message || "Something went wrong saving the product. Please try again.";
             
             if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
                 console.log("🔍 Processing errors:", JSON.stringify(error.response.data.errors, null, 2));
@@ -350,12 +350,12 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
             }
             
             await showAlert.error(
-                "Error",
+                "Couldn't save the product",
                 errorMessage,
                 {
                     showConfirmButton: true,
                     confirmButtonText: "OK",
-                    timer: null // Don't auto-close errors
+                    timer: null
                 }
             );
         } finally {

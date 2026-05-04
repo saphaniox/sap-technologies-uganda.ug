@@ -136,8 +136,8 @@ export const showAlert = {
       title,
       text,
       showCancelButton: true,
-      confirmButtonText: 'Yes, proceed',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Yes, go ahead',
+      cancelButtonText: 'Never mind',
       timer: null, // Don't auto-close confirmation dialogs
       showConfirmButton: true, // User must click to proceed
       ...swalConfig,
@@ -149,11 +149,11 @@ export const showAlert = {
   deleteConfirm: (itemName = 'item', options = {}) => {
     return Swal.fire({
       icon: 'warning',
-      title: 'Delete Confirmation',
-      text: `Are you sure you want to delete this ${itemName}? This action cannot be undone.`,
+      title: 'Just checking...',
+      text: `Are you sure you want to remove this ${itemName}? Once it's gone, it's gone for good.`,
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Yes, remove it',
+      cancelButtonText: 'Keep it',
       confirmButtonColor: '#ef4444',
       timer: null, // Don't auto-close delete confirmations
       showConfirmButton: true, // User must confirm
@@ -169,7 +169,7 @@ export const showAlert = {
       title,
       text,
       showConfirmButton: true, // User must acknowledge
-      confirmButtonText: 'I Understand',
+      confirmButtonText: 'Got it',
       timer: null, // Don't auto-close critical errors
       timerProgressBar: false, // No progress bar for critical errors
       ...swalConfig,
@@ -178,7 +178,7 @@ export const showAlert = {
   },
 
   // Loading Alert
-  loading: (title = 'Processing...', text = 'Please wait') => {
+  loading: (title = 'Hang tight...', text = 'Just a moment') => {
     return Swal.fire({
       title,
       text,
@@ -245,10 +245,10 @@ export const showAlert = {
       inputPlaceholder: placeholder,
       showCancelButton: true,
       confirmButtonText: 'Submit',
-      cancelButtonText: 'Cancel',
+      cancelButtonText: 'Never mind',
       inputValidator: (value) => {
         if (!value) {
-          return 'This field is required!';
+          return 'Please fill this in before continuing.';
         }
       },
       ...swalConfig,
@@ -410,11 +410,11 @@ export const LoadingButton = ({
 // Utility function for common loading patterns
 export const withLoading = async (asyncFunction, options = {}) => {
   const {
-    loadingTitle = 'Processing...',
-    loadingText = 'Please wait',
-    successTitle = 'Success!',
-    successText = 'Operation completed successfully',
-    errorTitle = 'Error',
+    loadingTitle = 'Hang tight...',
+    loadingText = 'Just a moment',
+    successTitle = 'All done!',
+    successText = 'Everything went through smoothly.',
+    errorTitle = 'Something went wrong',
     showSuccess = true,
     showError = true
   } = options;
@@ -436,7 +436,7 @@ export const withLoading = async (asyncFunction, options = {}) => {
     // Close loading and show error
     closeSwal();
     if (showError) {
-      showAlert.error(errorTitle, error.message || 'An unexpected error occurred');
+      showAlert.error(errorTitle, error.message || 'Something unexpected happened. Please try again.');
     }
     throw error;
   }

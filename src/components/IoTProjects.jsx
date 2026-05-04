@@ -45,7 +45,7 @@ const IoTProjects = () => {
       }
     } catch (error) {
       console.error("Error fetching IoT projects:", error);
-      setError("Failed to load IoT projects. Please refresh the page.");
+      setError("Couldn't load the IoT projects right now. Please refresh the page.");
     } finally {
       setLoading(false);
     }
@@ -99,14 +99,14 @@ const IoTProjects = () => {
       );
       
       if (response.status === "success") {
-        showAlert.success("Deleted!", "IoT project deleted successfully");
+        showAlert.success("Removed!", "IoT project deleted successfully.");
         fetchData();
         if (user?.role === "admin") {
           fetchAdminStats();
         }
       }
     } catch (error) {
-      showAlert.error("Error", error.message || "Failed to delete IoT project");
+      showAlert.error("Couldn't delete", error.message || "Something went wrong deleting that project. Please try again.");
     } finally {
       setShowDeleteDialog(false);
       setProjectToDelete(null);

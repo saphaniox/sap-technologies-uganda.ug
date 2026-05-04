@@ -107,7 +107,7 @@ const Awards = ({ onClose }) => {
       console.error("Failed to load categories:", error);
       // Only show error if it's not a network/timeout issue
       if (!error.message?.includes("Failed to fetch")) {
-        showAlert.error("Error", "Failed to load award categories");
+        showAlert.error("Couldn't load categories", "We had trouble fetching the award categories. Please refresh and try again.");
       }
     } finally {
       setLoading(prev => ({ ...prev, categories: false }));
@@ -135,7 +135,7 @@ const Awards = ({ onClose }) => {
       console.error("Failed to load nominations:", error);
       // Only show error alert if it's not a network/timeout issue
       if (!error.message?.includes("Failed to fetch") && !error.message?.includes("NetworkError")) {
-        showAlert.error("Error", "Failed to load nominations. Please try again.");
+        showAlert.error("Couldn't load nominations", "We hit a snag loading the nominations. Please try again.");
       }
     } finally {
       setLoading(prev => ({ ...prev, nominations: false }));
@@ -146,20 +146,14 @@ const Awards = ({ onClose }) => {
     e.preventDefault();
     
     if (!nominationForm.nomineePhoto) {
-      showAlert.error("Error", "Please upload a photo of the nominee");
+      showAlert.error("Photo required", "Please upload a photo of the nominee before submitting.");
       return;
     }
 
     // Validate required fields for self-nominations
     if (nominationForm.isSelfNomination) {
       if (!nominationForm.nominatorEmail) {
-        showAlert.error("Error", "Please provide your email address");
-        return;
-      }
-    } else {
-      // Validate required fields for other nominations
-      if (!nominationForm.nominatorName) {
-        showAlert.error("Error", "Please provide your full name");
+        showAlert.error("Email needed", "Please provide your email address so we can follow up.");
         return;
       }
       if (!nominationForm.nominatorEmail) {
@@ -196,8 +190,8 @@ const Awards = ({ onClose }) => {
       console.log("✅ API request successful:", response);
 
       await showAlert.success(
-        "🎉 Nomination Submitted!",
-        "Thank you for your nomination. It will be reviewed before being published.",
+        "Nomination submitted! 🎉",
+        "Thanks so much for your nomination! It'll be reviewed before being published.",
         { timer: 5000 }
       );
 
@@ -227,7 +221,7 @@ const Awards = ({ onClose }) => {
       console.error("📊 Error response:", error.response);
       
       // Extract detailed validation errors
-      let errorMessage = "Failed to submit nomination. Please try again.";
+      let errorMessage = "Couldn't submit your nomination. Please try again.";
       
       if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
         // Show specific validation errors
@@ -240,7 +234,7 @@ const Awards = ({ onClose }) => {
       }
       
       await showAlert.error(
-        "❌ Submission Failed", 
+        "Nomination didn't go through", 
         errorMessage,
         {
           position: 'center',
@@ -271,7 +265,7 @@ const Awards = ({ onClose }) => {
       showSuccess("🎉 Vote Submitted! Thank you for your support!");
       loadNominations(); // Refresh to show updated vote count
     } catch (error) {
-      showAlert.error("Vote Failed", error.message || "Failed to submit vote");
+      showAlert.error("Vote didn't go through", error.message || "Something went wrong submitting your vote. Please try again.");
     }
   };
 

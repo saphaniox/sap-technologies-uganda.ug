@@ -29,19 +29,19 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
 
     // Validation
     if (!formData.customerEmail) {
-      setError("Email is required");
+      setError("Please enter your email address");
       setLoading(false);
       return;
     }
 
     if (!/^\S+@\S+\.\S+$/.test(formData.customerEmail)) {
-      setError("Please enter a valid email address");
+      setError("That email address doesn't look right — please double-check it");
       setLoading(false);
       return;
     }
 
     if (formData.preferredContact === "phone" && !formData.customerPhone) {
-      setError("Phone number is required when selecting phone as preferred contact");
+      setError("Please provide a phone number if you'd like us to call you");
       setLoading(false);
       return;
     }
@@ -62,7 +62,7 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
       }, 3000);
     } catch (err) {
       console.error("📬 Inquiry form - submission error:", err);
-      const errorMessage = err.response?.data?.message || err.message || "Failed to submit inquiry. Please try again.";
+      const errorMessage = err.response?.data?.message || err.message || "Couldn't submit your inquiry. Please try again.";
       console.error("📬 Error message:", errorMessage);
       setError(errorMessage);
     } finally {
@@ -76,8 +76,8 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
         <div className="inquiry-modal success-modal" onClick={(e) => e.stopPropagation()}>
           <div className="success-content">
             <div className="success-icon">✅</div>
-            <h2>Thank You!</h2>
-            <p>Your inquiry has been submitted successfully.</p>
+            <h2>Thank You! 🙌</h2>
+            <p>Your inquiry has been received. We'll get back to you within 24–48 hours.</p>
             <p className="success-subtext">We'll get back to you within 24-48 hours.</p>
             <button className="close-btn" onClick={onClose}>
               Close

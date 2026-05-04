@@ -50,8 +50,8 @@ const Contact = () => {
       
       // Show success alert with SweetAlert2
       await showAlert.success(
-        "Message Sent Successfully!",
-        "Thank you for contacting us! We will get back to you soon.",
+        "Message received! 📩",
+        "Thanks for reaching out! We'll get back to you as soon as we can.",
         {
           confirmButtonText: "Great!",
           timer: 4000
@@ -64,13 +64,13 @@ const Contact = () => {
     } catch (error) {
       // Show error alert with SweetAlert2
       await showAlert.error(
-        "Failed to Send Message",
-        error.message || "There was an error sending your message. Please try again later.",
+        "Message didn't go through",
+        error.message || "Something went wrong while sending your message. Please try again or reach us directly.",
         {
           confirmButtonText: "Try Again"
         }
       );
-      setFormMessage(error.message || "There was an error. Please try again later.");
+      setFormMessage(error.message || "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

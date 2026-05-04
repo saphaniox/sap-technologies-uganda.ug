@@ -210,7 +210,7 @@ const Portfolio = () => {
     } catch (error) {
       // Log error for debugging and show user-friendly message
       console.error("Error fetching projects:", error);
-      setError("Failed to load other projects, try refreshing the page");
+      setError("Couldn't load the extra projects right now — try refreshing the page.");
       setApiProjects([]);
     } finally {
       // Always stop loading, whether successful or not

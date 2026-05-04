@@ -80,8 +80,8 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
     
     if (imagePreviews.length + files.length > maxImages) {
       showAlert.error(
-        "Too Many Images",
-        `You can only upload up to ${maxImages} images. Currently you have ${imagePreviews.length} image(s).`
+        "Too many images",
+        `You can upload up to ${maxImages} images. You currently have ${imagePreviews.length} — please remove some before adding more.`
       );
       e.target.value = "";
       return;
@@ -90,13 +90,13 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
     // Validate files
     for (const file of files) {
       if (file.size > 10 * 1024 * 1024) {
-        showAlert.error("File Too Large", `Image "${file.name}" is too large. Maximum size is 10MB.`);
+        showAlert.error("Image too large", `"${file.name}" is over the 10MB limit. Please use a smaller image.`);
         e.target.value = "";
         return;
       }
       
       if (!file.type.startsWith("image/")) {
-        showAlert.error("Invalid File Type", `"${file.name}" is not an image file.`);
+        showAlert.error("Wrong file type", `"${file.name}" isn't an image file. Please only upload images.`);
         e.target.value = "";
         return;
       }
@@ -203,15 +203,15 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
       
       if (response.status === "success") {
         showAlert.success(
-          "Success!",
-          software ? "Software updated successfully" : "Software created successfully"
+          "Saved! ✅",
+          software ? "Software updated successfully." : "Software added successfully!"
         );
         onSuccess();
         onClose();
       }
     } catch (error) {
       console.error("Error saving software:", error);
-      showAlert.error("Error", error.message || "Failed to save software");
+      showAlert.error("Couldn't save", error.message || "Something went wrong saving the software. Please try again.");
     } finally {
       setLoading(false);
     }

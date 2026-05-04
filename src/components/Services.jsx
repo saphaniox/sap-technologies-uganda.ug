@@ -226,7 +226,7 @@ const Services = () => {
       }
     } catch (error) {
       console.error("Error fetching services:", error);
-      setError("Failed to load other services");
+      setError("Couldn't load additional services right now.");
       setApiServices([]);
     } finally {
       setLoading(false);
@@ -333,12 +333,12 @@ const Services = () => {
       setApiServices(prev => prev.filter(s => s.id !== serviceToDelete.id));
       setShowDeleteDialog(false);
       setServiceToDelete(null);
-      await showAlert.success("Service Deleted", "The service has been successfully deleted.");
+      await showAlert.success("Service removed", "The service has been deleted successfully.");
       // Refresh in background to ensure data consistency
       fetchServices();
     } catch (error) {
       console.error("Error deleting service:", error);
-      await showAlert.error("Delete Failed", error.message || "Failed to delete service. Please try again.");
+      await showAlert.error("Couldn't delete", error.message || "Something went wrong deleting that service. Please try again.");
     }
   };
 

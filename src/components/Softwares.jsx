@@ -44,7 +44,7 @@ const Softwares = () => {
       }
     } catch (error) {
       console.error("Error fetching software:", error);
-      setError("Failed to load software. Please refresh the page.");
+      setError("Couldn't load the software list right now. Please refresh the page.");
     } finally {
       setLoading(false);
     }
@@ -98,13 +98,13 @@ const Softwares = () => {
       );
       
       if (response.status === "success") {
-        showAlert.success("Deleted!", "Software deleted successfully");
+        showAlert.success("Removed!", "That software has been deleted.");
         fetchData();
         fetchAdminStats();
       }
     } catch (error) {
       console.error("Error deleting software:", error);
-      showAlert.error("Error", "Failed to delete software");
+      showAlert.error("Something went wrong", "Couldn't delete that software. Please try again.");
     } finally {
       setShowDeleteDialog(false);
       setSoftwareToDelete(null);

@@ -69,7 +69,7 @@ const Partners = () => {
       setPartners(partners);
     } catch (error) {
       console.error("Error fetching partners:", error);
-      setError("failed to load partners, please refresh the page");
+      setError("Couldn't load our partners right now — try refreshing the page.");
     } finally {
       setLoading(false);
     }

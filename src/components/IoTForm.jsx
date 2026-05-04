@@ -90,8 +90,8 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
     
     if (imagePreviews.length + files.length > maxImages) {
       showAlert.error(
-        "Too Many Images",
-        `You can only upload up to ${maxImages} images. Currently you have ${imagePreviews.length} image(s).`
+        "Too many images",
+        `You can upload up to ${maxImages} images. You currently have ${imagePreviews.length} — please remove some before adding more.`
       );
       e.target.value = "";
       return;
@@ -100,13 +100,13 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
     // Validate files
     for (const file of files) {
       if (file.size > 20 * 1024 * 1024) {
-        showAlert.error("File Too Large", `Image "${file.name}" is too large. Maximum size is 20MB.`);
+        showAlert.error("Image too large", `"${file.name}" is over the 20MB limit. Please use a smaller image.`);
         e.target.value = "";
         return;
       }
       
       if (!file.type.startsWith("image/")) {
-        showAlert.error("Invalid File Type", `"${file.name}" is not an image file.`);
+        showAlert.error("Wrong file type", `"${file.name}" isn't an image file. Please only upload images.`);
         e.target.value = "";
         return;
       }
@@ -170,7 +170,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
     e.preventDefault();
     
     if (!formData.title.trim()) {
-      showAlert.error("Validation Error", "Please provide a project title");
+      showAlert.error("Missing title", "Please give your IoT project a title before saving.");
       return;
     }
     
@@ -203,15 +203,15 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
       
       if (response.status === "success") {
         showAlert.success(
-          "Success!",
-          project ? "IoT project updated successfully" : "IoT project created successfully"
+          "Saved! ✅",
+          project ? "Your IoT project has been updated." : "Your IoT project has been added successfully!"
         );
         onSuccess();
         onClose();
       }
     } catch (error) {
       console.error("Error saving IoT project:", error);
-      showAlert.error("Error", error.message || "Failed to save IoT project");
+      showAlert.error("Couldn't save", error.message || "Something went wrong saving your IoT project. Please try again.");
     } finally {
       setLoading(false);
     }

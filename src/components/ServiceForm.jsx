@@ -249,7 +249,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       } else {
         await apiService.createService(submitData);
       }
-      setAlert({ type: "success", message: service ? "Service updated successfully!" : "Service created successfully!" });
+      setAlert({ type: "success", message: service ? "Service updated! ✅" : "Service created successfully! 🎉" });
       
       // Wait 1.5 seconds to show success message, then close and refresh
       setTimeout(() => {
@@ -274,7 +274,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       } else {
         setAlert({ 
           type: "error", 
-          message: error.response?.data?.message || "Failed to save service" 
+          message: error.response?.data?.message || "Something went wrong saving the service. Please try again." 
         });
       }
     } finally {

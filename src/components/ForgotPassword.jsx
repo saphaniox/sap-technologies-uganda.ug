@@ -36,8 +36,8 @@ const ForgotPassword = ({ isOpen, onClose }) => {
       const response = await apiService.requestPasswordReset(email);
       
       await showAlert.success(
-        "Verification Code Sent!",
-        response.message || "Please check your email for the verification code.",
+        "Check your inbox! 📧",
+        response.message || "We've sent a verification code to your email. It should arrive any second.",
         {
           timer: 3000,
           confirmButtonText: "OK"
@@ -59,8 +59,8 @@ const ForgotPassword = ({ isOpen, onClose }) => {
       }, 1000);
     } catch (error) {
       await showAlert.error(
-        "Request Failed",
-        error.message || "Failed to send verification code. Please try again.",
+        "That didn't go through",
+        error.message || "We couldn't send the code right now. Please try again in a moment.",
         {
           confirmButtonText: "Try Again"
         }
@@ -77,8 +77,8 @@ const ForgotPassword = ({ isOpen, onClose }) => {
     // Validation
     if (!verificationCode || verificationCode.length !== 6) {
       await showAlert.warning(
-        "Invalid Code",
-        "Please enter the 6-digit verification code.",
+        "Code looks off",
+        "Please enter the full 6-digit code from your email.",
         { confirmButtonText: "OK" }
       );
       return;
@@ -86,8 +86,8 @@ const ForgotPassword = ({ isOpen, onClose }) => {
 
     if (newPassword.length < 6) {
       await showAlert.warning(
-        "Password Too Short",
-        "Password must be at least 6 characters long.",
+        "Password too short",
+        "Your new password needs to be at least 6 characters long.",
         { confirmButtonText: "OK" }
       );
       return;
@@ -95,8 +95,8 @@ const ForgotPassword = ({ isOpen, onClose }) => {
 
     if (newPassword !== confirmPassword) {
       await showAlert.warning(
-        "Passwords Don't Match",
-        "Please make sure both passwords match.",
+        "Passwords don't match",
+        "Make sure both password fields are identical before continuing.",
         { confirmButtonText: "OK" }
       );
       return;
@@ -112,8 +112,8 @@ const ForgotPassword = ({ isOpen, onClose }) => {
       });
 
       await showAlert.success(
-        "Password Reset Successful!",
-        response.message || "Your password has been reset. You can now log in with your new password.",
+        "Password updated! 🔓",
+        response.message || "You're all set. Go ahead and log in with your new password.",
         {
           timer: 3000,
           confirmButtonText: "Login Now"
@@ -123,8 +123,8 @@ const ForgotPassword = ({ isOpen, onClose }) => {
       handleClose();
     } catch (error) {
       await showAlert.error(
-        "Reset Failed",
-        error.message || "Failed to reset password. Please check your verification code and try again.",
+        "Reset didn't work",
+        error.message || "Something went wrong. Please double-check your verification code and try again.",
         {
           confirmButtonText: "Try Again"
         }
@@ -144,8 +144,8 @@ const ForgotPassword = ({ isOpen, onClose }) => {
       const response = await apiService.resendResetCode(email);
       
       await showAlert.success(
-        "Code Resent!",
-        response.message || "A new verification code has been sent to your email.",
+        "New code sent! 📨",
+        response.message || "A fresh verification code is on its way to your email.",
         {
           timer: 2000,
           confirmButtonText: "OK"
@@ -164,8 +164,8 @@ const ForgotPassword = ({ isOpen, onClose }) => {
       }, 1000);
     } catch (error) {
       await showAlert.error(
-        "Resend Failed",
-        error.message || "Failed to resend code. Please try again.",
+        "Couldn't resend",
+        error.message || "We had trouble sending a new code. Please try again.",
         { confirmButtonText: "OK" }
       );
     } finally {

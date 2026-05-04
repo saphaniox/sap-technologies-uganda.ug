@@ -94,7 +94,7 @@ const AwardsAdmin = () => {
       setStatusSummary(response.data.statusSummary || {});
     } catch (error) {
       console.error("Error loading nominations:", error);
-      showAlert.error("Error", "Failed to load nominations");
+      showAlert.error("Couldn't load nominations", "We had trouble fetching the nominations. Please try again.");
     } finally {
       setLoading(prev => ({ ...prev, nominations: false }));
     }
@@ -144,8 +144,8 @@ const AwardsAdmin = () => {
       
       // Show error to user
       await Swal.fire({
-        title: '❌ Failed to Load Statistics',
-        text: error.response?.data?.message || error.message || "Unable to fetch awards statistics",
+        title: 'Hmm, something went wrong',
+        text: error.response?.data?.message || error.message || "Couldn't fetch the awards statistics. Please try again.",
         icon: 'error',
         confirmButtonText: 'OK',
         confirmButtonColor: '#3b82f6'
@@ -165,7 +165,7 @@ const AwardsAdmin = () => {
       
       // Show success message
       await Swal.fire({
-        title: '✅ Status Updated!',
+        title: 'Status updated!',
         text: `Nomination ${status} successfully`,
         icon: 'success',
         timer: 3000,
@@ -180,8 +180,8 @@ const AwardsAdmin = () => {
       console.error("Error details:", error.response?.data);
       
       await Swal.fire({
-        title: '❌ Update Failed',
-        text: error.response?.data?.message || error.message || "Failed to update nomination status",
+        title: "Couldn't update status",
+        text: error.response?.data?.message || error.message || "Something went wrong updating the nomination status.",
         icon: 'error',
         confirmButtonText: 'OK',
         confirmButtonColor: '#3b82f6'
@@ -197,7 +197,7 @@ const AwardsAdmin = () => {
     // Check if eligible for certificate
     if (!['winner', 'finalist', 'approved'].includes(status)) {
       await Swal.fire({
-        title: 'Not Eligible',
+        title: 'Not yet eligible',
         html: `Certificates can only be generated for <strong>Winners</strong>, <strong>Finalists</strong>, or <strong>Approved</strong> nominations.<br><br>Current status: <strong>${status}</strong>`,
         icon: 'warning',
         confirmButtonText: 'OK',
@@ -243,8 +243,8 @@ const AwardsAdmin = () => {
     } catch (error) {
       console.error("Error generating certificate:", error);
       await Swal.fire({
-        title: 'Generation Failed',
-        text: error.message || 'Failed to generate certificate',
+        title: "Couldn't generate certificate",
+        text: error.message || 'Something went wrong generating the certificate. Please try again.',
         icon: 'error',
         confirmButtonText: 'OK',
         confirmButtonColor: '#ef4444'
@@ -268,9 +268,8 @@ const AwardsAdmin = () => {
       await new Promise(resolve => setTimeout(resolve, 50));
       
       const result = await Swal.fire({
-        title: 'Delete Nomination?',
-        html: `Are you sure you want to delete the nomination for <strong>"${nomineeName}"</strong>?<br><br>This action cannot be undone.`,
-        icon: 'warning',
+        title: 'Just checking...',
+        html: `Are you sure you want to delete the nomination for <strong>"${nomineeName}"</strong>?<br><br>This can't be undone.`,        icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel',
@@ -306,8 +305,8 @@ const AwardsAdmin = () => {
       setNominations(prev => prev.filter(nom => nom._id !== nominationId));
       
       await Swal.fire({
-        title: '🗑️ Deleted!',
-        text: `Nomination for "${nomineeName}" has been deleted successfully.`,
+        title: 'Removed!',
+        text: `Nomination for "${nomineeName}" has been deleted.`,
         icon: 'success',
         timer: 3000,
         showConfirmButton: false,
@@ -323,8 +322,8 @@ const AwardsAdmin = () => {
       console.error("Error details:", error.response?.data);
       
       await Swal.fire({
-        title: '❌ Delete Failed',
-        text: error.response?.data?.message || error.message || "Failed to delete nomination",
+        title: "Couldn't delete nomination",
+        text: error.response?.data?.message || error.message || "Something went wrong deleting this nomination.",
         icon: 'error',
         confirmButtonText: 'OK',
         confirmButtonColor: '#3b82f6'
@@ -384,7 +383,7 @@ const AwardsAdmin = () => {
       const response = await apiService.updateNomination(editingPhotoNomination._id, formData);
       
       await Swal.fire({
-        title: '✅ Photo Updated!',
+        title: 'Photo updated!',
         text: `Nominee photo has been updated successfully`,
         icon: 'success',
         timer: 3000,
@@ -401,18 +400,12 @@ const AwardsAdmin = () => {
       console.error("❌ Error updating photo:", error);
       
       await Swal.fire({
-        title: '❌ Update Failed',
-        text: error.response?.data?.message || error.message || "Failed to update photo",
+        title: "Couldn't update photo",
+        text: error.response?.data?.message || error.message || "Something went wrong updating the photo.",
         icon: 'error',
         confirmButtonText: 'OK',
         confirmButtonColor: '#3b82f6'
       });
-    } finally {
-      setLoading(prev => ({ ...prev, updating: false }));
-    }
-  };
-
-  // Category Management Functions
   const handleCreateCategory = async (categoryData) => {
     try {
       console.log("🔥 Creating category with data:", categoryData);
@@ -422,8 +415,8 @@ const AwardsAdmin = () => {
       console.log("✅ Category created successfully:", response);
       
       await showAlert.success(
-        "🎉 Category Created!",
-        `Category "${categoryData.name}" has been created successfully.`,
+        "Category created! 🎉",
+        `"${categoryData.name}" has been added successfully.`,
         { timer: 3000, showConfirmButton: false }
       );
       
@@ -435,8 +428,8 @@ const AwardsAdmin = () => {
       console.error("Error details:", error.response?.data || error.message);
       
       await showAlert.error(
-        "❌ Creation Failed",
-        error.response?.data?.message || error.message || "Failed to create category. Please try again.",
+        "Couldn't create category",
+        error.response?.data?.message || error.message || "Something went wrong creating the category. Please try again.",
         { timer: 5000, showConfirmButton: true }
       );
     } finally {
@@ -459,8 +452,8 @@ const AwardsAdmin = () => {
       console.log("✅ Category updated successfully:", response);
       
       await showAlert.success(
-        "✅ Category Updated!",
-        `Category "${categoryData.name}" has been updated successfully.`,
+        "Category updated! ✅",
+        `"${categoryData.name}" has been updated successfully.`,
         { timer: 3000, showConfirmButton: false }
       );
       
@@ -472,8 +465,8 @@ const AwardsAdmin = () => {
       console.error("Error response:", error.response);
       
       await showAlert.error(
-        "❌ Update Failed",
-        error.response?.data?.message || error.message || "Failed to update category. Please try again.",
+        "Couldn't update category",
+        error.response?.data?.message || error.message || "Something went wrong updating the category. Please try again.",
         { timer: 5000, showConfirmButton: true }
       );
     } finally {
@@ -500,9 +493,8 @@ const AwardsAdmin = () => {
       await new Promise(resolve => setTimeout(resolve, 50));
       
       const result = await Swal.fire({
-        title: 'Delete Category?',
-        html: `Are you sure you want to delete <strong>"${categoryName}"</strong>?<br><br>This action cannot be undone and may affect existing nominations.`,
-        icon: 'warning',
+        title: 'Just checking...',
+        html: `Are you sure you want to delete <strong>"${categoryName}"</strong>?<br><br>This can't be undone and may affect existing nominations.`,        icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel',
@@ -552,8 +544,8 @@ const AwardsAdmin = () => {
       
       // Show success message
       await Swal.fire({
-        title: '🗑️ Deleted!',
-        text: `Category "${categoryName}" has been deleted successfully.`,
+        title: 'Removed!',
+        text: `Category "${categoryName}" has been deleted.`,
         icon: 'success',
         timer: 3000,
         showConfirmButton: false,
@@ -569,8 +561,8 @@ const AwardsAdmin = () => {
       
       // Show error message
       await Swal.fire({
-        title: '❌ Delete Failed',
-        text: error.response?.data?.message || error.message || "Failed to delete category. It may have nominations assigned to it.",
+        title: "Couldn't delete category",
+        text: error.response?.data?.message || error.message || "Something went wrong. It may have nominations assigned to it.",
         icon: 'error',
         confirmButtonText: 'OK',
         confirmButtonColor: '#3b82f6'
@@ -1298,8 +1290,8 @@ const AwardsAdmin = () => {
                   
                   if (response.status === "success") {
                     await showAlert.success(
-                      "🎉 Nomination Created!",
-                      "The nomination has been successfully created."
+                      "Nomination created! 🎉",
+                      "The nomination has been successfully added."
                     );
                     setShowCreateForm(false);
                     loadNominations(); // Reload nominations list
@@ -1308,8 +1300,8 @@ const AwardsAdmin = () => {
                 } catch (error) {
                   console.error("Error creating nomination:", error);
                   await showAlert.error(
-                    "❌ Creation Failed",
-                    error.message || "Failed to create nomination. Please try again."
+                    "Couldn't create nomination",
+                    error.message || "Something went wrong creating the nomination. Please try again."
                   );
                 } finally {
                   setLoading(prev => ({ ...prev, nominations: false }));

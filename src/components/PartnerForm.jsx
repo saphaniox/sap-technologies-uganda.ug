@@ -70,7 +70,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
       if (!allowedTypes.includes(file.type)) {
         setErrors(prev => ({
           ...prev,
-          logo: "Please select a valid image file (JPEG, PNG, GIF, WebP, SVG)"
+          logo: "Please pick a valid image file (JPEG, PNG, GIF, WebP, or SVG)"
         }));
         return;
       }
@@ -79,7 +79,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
       if (file.size > 5 * 1024 * 1024) {
         setErrors(prev => ({
           ...prev,
-          logo: "Image size must be less than 5MB"
+          logo: "That image is a bit large — please keep it under 5MB"
         }));
         return;
       }
@@ -105,13 +105,13 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Partner name is required";
+      newErrors.name = "Please enter the partner's name";
     } else if (formData.name.length > CHAR_LIMITS.name) {
       newErrors.name = `Name must be less than ${CHAR_LIMITS.name} characters`;
     }
 
     if (!partner && !logoFile) {
-      newErrors.logo = "Partner logo is required";
+      newErrors.logo = "Please upload a partner logo";
     }
 
     if (formData.description && formData.description.length > CHAR_LIMITS.description) {
@@ -168,12 +168,12 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
         if (errorData.errors) {
           setErrors({ submit: errorData.errors.join(", ") });
         } else {
-          setErrors({ submit: errorData.message || "Failed to save partner" });
+          setErrors({ submit: errorData.message || "Couldn't save the partner. Please try again." });
         }
       }
     } catch (error) {
       console.error("Error saving partner:", error);
-      setErrors({ submit: "Network error. Please try again." });
+      setErrors({ submit: "A network error occurred — please check your connection and try again." });
     } finally {
       setLoading(false);
     }

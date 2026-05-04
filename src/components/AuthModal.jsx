@@ -49,11 +49,11 @@ const AuthModal = ({ isOpen, mode, onClose, onAuthSuccess, onModeSwitch }) => {
       if (mode === "login") {
         // Show success alert for login
         await showAlert.success(
-          "Login Successful!",
-          `Welcome back! You have been logged in successfully.`,
+          "You're in! 👋",
+          `Great to have you back! Taking you to your account now.`,
           {
             timer: 2000,
-            confirmButtonText: "Continue"
+            confirmButtonText: "Let's go"
           }
         );
         
@@ -63,8 +63,8 @@ const AuthModal = ({ isOpen, mode, onClose, onAuthSuccess, onModeSwitch }) => {
       } else {
         // Show success alert for signup
         await showAlert.success(
-          "Account Created!",
-          "Your account has been created successfully. Redirecting to login...",
+          "Welcome to SapTech! 🎉",
+          "Your account is all set. Heading to login now...",
           {
             timer: 2000,
             confirmButtonText: "Continue to Login"
@@ -84,13 +84,13 @@ const AuthModal = ({ isOpen, mode, onClose, onAuthSuccess, onModeSwitch }) => {
     } catch (error) {
       // Show error alert
       await showAlert.error(
-        mode === "login" ? "Login Failed" : "Signup Failed",
-        error.message || `Failed to ${mode}. Please check your information and try again.`,
+        mode === "login" ? "Hmm, that didn't work" : "Couldn't create your account",
+        error.message || `We hit a snag ${mode === "login" ? "signing you in" : "creating your account"}. Double-check your details and give it another go.`,
         {
           confirmButtonText: "Try Again"
         }
       );
-      setMessage(error.message || `${mode === "login" ? "Login" : "Signup"} failed.`);
+      setMessage(error.message || `${mode === "login" ? "Login" : "Sign up"} didn't work. Please try again.`);
       // Auto-dismiss error message after 5 seconds
       setTimeout(() => setMessage(""), 5000);
     } finally {

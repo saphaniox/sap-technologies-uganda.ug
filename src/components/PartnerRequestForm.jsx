@@ -57,12 +57,12 @@ const PartnerRequestForm = ({ isOpen, onClose }) => {
         }, 2000);
       } else {
         const errorData = await response.json();
-        setError(errorData.message || "Failed to submit partnership request");
+        setError(errorData.message || "We couldn't submit your partnership request. Please try again.");
         // Auto-dismiss error after 5 seconds
         setTimeout(() => setError(""), 5000);
       }
     } catch {
-      setError("Network error. Please try again.");
+      setError("A network error occurred. Please check your connection and try again.");
       // Auto-dismiss error after 5 seconds
       setTimeout(() => setError(""), 5000);
     } finally {

@@ -135,7 +135,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
       console.log("✅ Quote request submitted successfully:", response);
 
       // Show success alert notification
-      showAlert.success("Quote Request Sent!", "Thank you! We'll send you a detailed quote within 24-48 hours.");
+      showAlert.success("Quote request sent! 📨", "Thanks for reaching out! We'll put together a detailed quote and get it to you within 24–48 hours.");
 
       // Show success modal briefly then close
       setShowSuccess(true);
@@ -147,7 +147,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
       console.error("❌ Error submitting quote request:", error);
       
       // Show error alert notification
-      showAlert.error("Submission Failed", error.message || "Failed to submit quote request. Please try again.");
+      showAlert.error("Quote didn't go through", error.message || "Something went wrong submitting your request. Please try again.");
       
       setErrors({
         submit: error.message || "Failed to submit quote request. Please try again."
@@ -164,8 +164,8 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
       <div className="quote-modal-overlay success-notification bottom-aligned" onClick={onClose}>
         <div className="quote-modal success-modal" onClick={(e) => e.stopPropagation()}>
           <div className="success-icon">✓</div>
-          <h2>Quote Request Sent!</h2>
-          <p>Thank you for your interest! We'll review your request and send you a detailed quote within 24-48 hours.</p>
+          <h2>Quote Request Sent! 🎉</h2>
+          <p>Thanks so much! We'll look over your request and send you a detailed quote within 24–48 hours.</p>
           <button className="close-success-btn" onClick={onClose}>
             Close
           </button>

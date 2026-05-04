@@ -192,7 +192,7 @@ const AdminDashboard = ({ user, onClose }) => {
           if (onClose) onClose();
         }, 2000);
       } else {
-        setError(error.message || "Failed to load dashboard data");
+        setError(error.message || "Something went wrong loading the dashboard. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -213,7 +213,7 @@ const AdminDashboard = ({ user, onClose }) => {
           if (onClose) onClose();
         }, 2000);
       } else {
-        setError("Failed to load dashboard stats");
+        setError("Couldn't load the dashboard stats. Please try again.");
       }
     }
   };
@@ -491,7 +491,7 @@ const AdminDashboard = ({ user, onClose }) => {
       fetchUsers(usersPagination.currentPage);
       fetchDashboardStats(); // Refresh stats
     } catch (error) {
-      setAutoMessage("Failed to update user role: " + error.message);
+      setAutoMessage("Couldn't update user role: " + error.message);
     }
   };
 
@@ -504,12 +504,12 @@ const AdminDashboard = ({ user, onClose }) => {
       await apiService.deleteUserAdmin(userId);
       // Instantly remove from UI
       setUsers(prev => prev.filter(user => user._id !== userId));
-      setAutoMessage(`User "${userName}" deleted successfully`);
+      setAutoMessage(`User "${userName}" removed successfully`);
       // Refetch to ensure data consistency and update stats
       fetchUsers(usersPagination.currentPage);
       fetchDashboardStats();
     } catch (error) {
-      setAutoMessage("Failed to delete user: " + error.message);
+      setAutoMessage("Couldn't delete user: " + error.message);
     }
   };
 
@@ -519,7 +519,7 @@ const AdminDashboard = ({ user, onClose }) => {
       setAutoMessage(`Contact status updated to ${newStatus}`);
       fetchContacts(contactsPagination.currentPage);
     } catch (error) {
-      setAutoMessage("Failed to update contact status: " + error.message);
+      setAutoMessage("Couldn't update contact status: " + error.message);
     }
   };
 
@@ -532,12 +532,12 @@ const AdminDashboard = ({ user, onClose }) => {
       await apiService.deleteContactAdmin(contactId);
       // Instantly remove from UI
       setContacts(prev => prev.filter(contact => contact._id !== contactId));
-      setAutoMessage("Contact deleted successfully");
+      setAutoMessage("Contact removed successfully");
       // Refetch to ensure data consistency and update stats
       fetchContacts(contactsPagination.currentPage);
       fetchDashboardStats();
     } catch (error) {
-      setAutoMessage("Failed to delete contact: " + error.message);
+      setAutoMessage("Couldn't delete contact: " + error.message);
     }
   };
 
@@ -550,12 +550,12 @@ const AdminDashboard = ({ user, onClose }) => {
       await apiService.deleteNewsletterSubscriber(subscriberId);
       // Instantly remove from UI
       setNewsletters(prev => prev.filter(subscriber => subscriber._id !== subscriberId));
-      setAutoMessage("Newsletter subscriber removed successfully");
+      setAutoMessage("Subscriber removed successfully");
       // Refetch to ensure data consistency and update stats
       fetchNewsletters(newslettersPagination.currentPage);
       fetchDashboardStats();
     } catch (error) {
-      setAutoMessage("Failed to remove subscriber: " + error.message);
+      setAutoMessage("Couldn't remove subscriber: " + error.message);
     }
   };
 
@@ -583,11 +583,11 @@ const AdminDashboard = ({ user, onClose }) => {
 
     try {
       await apiService.deleteService(serviceId);
-      setAutoMessage("Service deleted successfully");
+      setAutoMessage("Service removed successfully");
       fetchServices(servicesPagination.currentPage);
       fetchDashboardStats();
     } catch (error) {
-      setAutoMessage("Failed to delete service: " + error.message);
+      setAutoMessage("Couldn't delete service: " + error.message);
     }
   };
 
@@ -597,7 +597,7 @@ const AdminDashboard = ({ user, onClose }) => {
       setAutoMessage("Service featured status updated");
       fetchServices(servicesPagination.currentPage);
     } catch (error) {
-      setAutoMessage("Failed to update featured status: " + error.message);
+      setAutoMessage("Couldn't update service featured status: " + error.message);
     }
   };
 
@@ -622,11 +622,11 @@ const AdminDashboard = ({ user, onClose }) => {
 
     try {
       await apiService.deleteProject(projectId);
-      setAutoMessage("Project deleted successfully");
+      setAutoMessage("Project removed successfully");
       fetchProjects(projectsPagination.currentPage);
       fetchDashboardStats();
     } catch (error) {
-      setAutoMessage("Failed to delete project: " + error.message);
+      setAutoMessage("Couldn't delete project: " + error.message);
     }
   };
 
@@ -636,17 +636,17 @@ const AdminDashboard = ({ user, onClose }) => {
       setAutoMessage("Project featured status updated");
       fetchProjects(projectsPagination.currentPage);
     } catch (error) {
-      setAutoMessage("Failed to update featured status: " + error.message);
+      setAutoMessage("Couldn't update project featured status: " + error.message);
     }
   };
 
   // Partner management functions
   const handlePartnerSave = async () => {
     try {
-      setAutoMessage("Partner saved successfully");
+      setAutoMessage("Partner saved! ✅");
       fetchPartners(partnersPagination.currentPage);
     } catch (error) {
-      setAutoMessage("Failed to save partner: " + error.message);
+      setAutoMessage("Couldn't save partner: " + error.message);
     }
   };
 
@@ -667,14 +667,14 @@ const AdminDashboard = ({ user, onClose }) => {
       });
 
       if (response.ok) {
-        setAutoMessage("Partner deleted successfully");
+        setAutoMessage("Partner removed successfully");
         fetchPartners(partnersPagination.currentPage);
       } else {
         const errorData = await response.json();
-        setAutoMessage("Failed to delete partner: " + (errorData.message || "Unknown error"));
+        setAutoMessage("Couldn't delete partner: " + (errorData.message || "Unknown error"));
       }
     } catch (error) {
-      setAutoMessage("Failed to delete partner: " + error.message);
+      setAutoMessage("Couldn't delete partner: " + error.message);
     }
   };
 
@@ -700,10 +700,10 @@ const AdminDashboard = ({ user, onClose }) => {
         fetchPartners(partnersPagination.currentPage);
       } else {
         const errorData = await response.json();
-        setAutoMessage("Failed to update partner status: " + (errorData.message || "Unknown error"));
+        setAutoMessage("Couldn't update partner status: " + (errorData.message || "Unknown error"));
       }
     } catch (error) {
-      setAutoMessage("Failed to update partner status: " + error.message);
+      setAutoMessage("Couldn't update partner status: " + error.message);
     }
   };
 
@@ -724,10 +724,10 @@ const AdminDashboard = ({ user, onClose }) => {
         fetchPartnershipRequests(partnershipRequestsPagination.currentPage);
       } else {
         const errorData = await response.json();
-        setAutoMessage("Failed to update partnership request status: " + (errorData.message || "Unknown error"), true);
+        setAutoMessage("Couldn't update partnership request status: " + (errorData.message || "Unknown error"), true);
       }
     } catch (error) {
-      setAutoMessage("Failed to update partnership request status: " + error.message, true);
+      setAutoMessage("Couldn't update partnership request status: " + error.message, true);
     }
   };
 
@@ -761,15 +761,15 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       if (response.ok) {
         // Instantly remove from UI
         setPartnershipRequests(prev => prev.filter(request => request._id !== requestId));
-        setAutoMessage("Partnership request deleted successfully");
+        setAutoMessage("Partnership request removed successfully");
         // Refetch to ensure data consistency
         fetchPartnershipRequests(partnershipRequestsPagination.currentPage);
       } else {
         const errorData = await response.json();
-        setAutoMessage("Failed to delete partnership request: " + (errorData.message || "Unknown error"), true);
+        setAutoMessage("Couldn't delete partnership request: " + (errorData.message || "Unknown error"), true);
       }
     } catch (error) {
-      setAutoMessage("Failed to delete partnership request: " + error.message, true);
+      setAutoMessage("Couldn't delete partnership request: " + error.message, true);
     }
   };
 
@@ -782,7 +782,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
         fetchProductInquiries(productInquiriesPagination.currentPage);
       }
     } catch (error) {
-      setAutoMessage("Failed to update inquiry status: " + error.message, true);
+      setAutoMessage("Couldn't update inquiry status: " + error.message, true);
     }
   };
 
@@ -799,14 +799,14 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       if (response) {
         // Instantly remove from UI
         setProductInquiries(prev => prev.filter(inquiry => inquiry._id !== inquiryId));
-        setAutoMessage("Product inquiry deleted successfully");
+        setAutoMessage("Product inquiry removed successfully");
         // Clear API cache and refetch to ensure data consistency
         try { apiService.clearCache(); } catch(e) { /* ignore */ }
         fetchProductInquiries(productInquiriesPagination.currentPage);
       }
     } catch (error) {
       console.error("❌ Delete inquiry error:", error);
-      setAutoMessage("Failed to delete inquiry: " + (error.response?.data?.message || error.message), true);
+      setAutoMessage("Couldn't delete inquiry: " + (error.response?.data?.message || error.message), true);
     }
   };
 
@@ -819,7 +819,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
         fetchServiceQuotes(serviceQuotesPagination.currentPage);
       }
     } catch (error) {
-      setAutoMessage("Failed to update quote status: " + error.message, true);
+      setAutoMessage("Couldn't update quote status: " + error.message, true);
     }
   };
 
@@ -834,12 +834,12 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       if (response) {
         // Instantly remove from UI
         setServiceQuotes(prev => prev.filter(quote => quote._id !== quoteId));
-        setAutoMessage("Service quote deleted successfully");
+        setAutoMessage("Service quote removed successfully");
         // Refetch to ensure data consistency
         fetchServiceQuotes(serviceQuotesPagination.currentPage);
       }
     } catch (error) {
-      setAutoMessage("Failed to delete quote: " + error.message, true);
+      setAutoMessage("Couldn't delete quote: " + error.message, true);
     }
   };
 
@@ -887,7 +887,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       }
     } catch (error) {
       console.error("Error fetching certificates:", error);
-      setAutoMessage("Failed to load certificates: " + error.message, true);
+      setAutoMessage("Couldn't load certificates: " + error.message, true);
     } finally {
       setUpdating(false);
     }
@@ -906,19 +906,19 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     const maxSize = 5 * 1024 * 1024; // 5MB
     
     if (signatureFile.size < minSize) {
-      setAutoMessage(`Signature file is too small (${signatureFile.size} bytes). Minimum size is 1KB. The file may be corrupted. Please select a valid signature image.`, true);
+      setAutoMessage(`Signature file seems too small (${signatureFile.size} bytes, min 1KB) — it may be corrupted. Please try a different image.`, true);
       return;
     }
     
     if (signatureFile.size > maxSize) {
-      setAutoMessage(`Signature file is too large (${(signatureFile.size / 1024 / 1024).toFixed(2)}MB). Maximum size is 5MB.`, true);
+      setAutoMessage(`That file is too large (${(signatureFile.size / 1024 / 1024).toFixed(2)}MB). Please keep it under 5MB.`, true);
       return;
     }
     
     // Validate file type
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
     if (!allowedTypes.includes(signatureFile.type)) {
-      setAutoMessage(`Invalid file type: ${signatureFile.type}. Only PNG and JPEG images are allowed.`, true);
+      setAutoMessage(`That file type (${signatureFile.type}) isn't supported. Please use a PNG or JPEG image.`, true);
       return;
     }
 
@@ -936,12 +936,12 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
 
       if (response) {
         const sizeKB = (signatureFile.size / 1024).toFixed(2);
-        setAutoMessage(`Signature uploaded successfully! (${sizeKB}KB) Certificates will now include this signature.`);
+        setAutoMessage(`Signature uploaded! (${sizeKB}KB) — Certificates will now include your signature.`);
         setSignatureFile(null);
         fetchCurrentSignature();
       }
     } catch (error) {
-      setAutoMessage("Failed to upload signature: " + error.message, true);
+      setAutoMessage("Couldn't upload signature: " + error.message, true);
     } finally {
       setUploadingSignature(false);
     }
@@ -956,10 +956,10 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       await apiService.request('/api/certificates/signature/current', {
         method: 'DELETE'
       });
-      setAutoMessage("Signature deleted successfully");
+      setAutoMessage("Signature removed successfully");
       setCurrentSignature(null);
     } catch (error) {
-      setAutoMessage("Failed to delete signature: " + error.message, true);
+      setAutoMessage("Couldn't delete signature: " + error.message, true);
     }
   };
 
@@ -2324,11 +2324,11 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                                     if (window.confirm(`Are you sure you want to delete "${product.name}"?`)) {
                                       try {
                                         await apiService.deleteProduct(product._id);
-                                        setAutoMessage(`Product "${product.name}" deleted successfully`);
+                                        setAutoMessage(`Product "${product.name}" removed successfully`);
                                         fetchProducts();
                                       } catch (error) {
                                         console.error('Delete product error:', error);
-                                        setAutoMessage('Failed to delete product', true);
+                                        setAutoMessage("Couldn't delete product", true);
                                       }
                                     }
                                   }}

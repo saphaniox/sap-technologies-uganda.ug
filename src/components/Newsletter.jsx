@@ -19,7 +19,7 @@ const Newsletter = () => {
     e.preventDefault();
     
     if (!email) {
-      setMessage("Please enter your email address");
+      setMessage("Please pop in your email address first");
       setMessageType("error");
       return;
     }
@@ -29,11 +29,11 @@ const Newsletter = () => {
 
     try {
       const response = await apiService.subscribeNewsletter(email);
-      setMessage(response.message || "Successfully subscribed to newsletter!");
+      setMessage(response.message || "You're subscribed! Welcome to the SapTech community 🎉");
       setMessageType("success");
       setEmail(""); // Clear form
     } catch (error) {
-      setMessage(error.message || "Failed to subscribe. Please try again.");
+      setMessage(error.message || "Hmm, something went wrong. Give it another try.");
       setMessageType("error");
     } finally {
       setLoading(false);

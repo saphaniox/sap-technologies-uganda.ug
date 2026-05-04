@@ -20,8 +20,8 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
       } else {
         // Fallback: show alert that user needs to navigate to main page
         showAlert.info(
-          `Navigate to ${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)} Section`,
-          "Please close this modal and navigate to the main page to access this section.",
+          `Hang on — head to the main page!`,
+          "Close this and go back to the main page to find that section.",
           {
             confirmButtonText: "Got it!",
             timer: 4000,
@@ -37,8 +37,8 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
    */
   const handlePlatformComingSoon = (platformName) => {
     showAlert.info(
-      `${platformName} - Coming Soon! 🚀`,
-      "This exciting platform is currently being programmed. Stay tuned for the launch!",
+      `${platformName} — Coming Soon! 🚀`,
+      "We're working hard on this one! Stay tuned for the big reveal.",
       {
         confirmButtonText: "Exciting!",
         timer: 4000,

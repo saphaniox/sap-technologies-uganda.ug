@@ -78,7 +78,7 @@ const Products = () => {
                 }
             } catch (error) {
                 console.error("Error fetching products:", error);
-                setError("experienced challenges in loading products. Please try refreshing the page.");
+                setError("We hit a snag loading the products — try refreshing the page.");
             } finally {
                 setLoading(false);
             }
@@ -142,7 +142,7 @@ const Products = () => {
             }
         } catch (error) {
             console.error("Error filtering products:", error);
-            setError("Failed to filter products. Please try again.");
+            setError("Couldn't filter products right now. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -196,7 +196,7 @@ const Products = () => {
             }
         } catch (error) {
             console.error("Error fetching products:", error);
-            setError("Failed to load products.");
+            setError("Couldn't load the products. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -224,12 +224,12 @@ const Products = () => {
             setProducts(prev => prev.filter(p => p._id !== productToDelete._id));
             setShowDeleteDialog(false);
             setProductToDelete(null);
-            await showAlert.success("Product Deleted", "The product has been successfully deleted.");
+            await showAlert.success("Product removed", "The product has been successfully deleted.");
             // Refresh in background to ensure data consistency
             fetchProducts();
         } catch (error) {
             console.error("Error deleting product:", error);
-            await showAlert.error("Delete Failed", error.message || "Failed to delete product. Please try again.");
+            await showAlert.error("Couldn't delete", error.message || "Something went wrong deleting that product. Please try again.");
         }
     };
 
