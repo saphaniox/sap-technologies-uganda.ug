@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
+import { useCart } from "../contexts/CartContext";
 import ProductInquiryForm from "./ProductInquiryForm";
 import ProductForm from "./ProductForm";
 import ConfirmDialog from "./ConfirmDialog";
@@ -47,6 +48,8 @@ const Products = () => {
     // Admin statistics
     const [adminStats, setAdminStats] = useState(null);
     const [loadingStats, setLoadingStats] = useState(false);
+
+    const { addToCart, isInCart, openCart } = useCart();
     
     /**
      * WhatsApp Support Number
@@ -561,10 +564,16 @@ const Products = () => {
                                     {product.availability !== "discontinued" && (
                                         <div className="product-cta-row">
                                             <button
-                                                className="card-inquire-btn"
-                                                onClick={() => handleInquiry(product)}
+                                                className={`card-inquire-btn${isInCart(product._id) ? " in-cart" : ""}`}
+                                                onClick={() => {
+                                                    if (isInCart(product._id)) {
+                                                        openCart();
+                                                    } else {
+                                                        addToCart(product);
+                                                    }
+                                                }}
                                             >
-                                                Request a Quote
+                                                {isInCart(product._id) ? "✓ View Cart" : "+ Add to Cart"}
                                             </button>
                                             <button
                                                 className="card-whatsapp-btn"

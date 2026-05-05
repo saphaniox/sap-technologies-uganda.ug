@@ -521,6 +521,10 @@
     transform: translateY(-2px);
 }
 
+.card-inquire-btn.in-cart {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
 .card-whatsapp-btn {
     width: 40px;
     height: 40px;

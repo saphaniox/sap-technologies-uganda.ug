@@ -27,6 +27,8 @@ import NotFound from "./components/NotFound";
 import Testimonials from "./components/Testimonials";
 import WhatsAppButton from "./components/WhatsAppButton";
 import CookieConsent from "./components/CookieConsent";
+import { CartProvider, useCart } from "./contexts/CartContext";
+import Cart from "./components/Cart";
 import apiService from "./services/api";
 import keepAliveService from "./services/keepAliveService";
 import { initializeAnimations } from "./utils/animations";
@@ -208,6 +210,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <CartProvider>
       <div className="App">
         <Routes>
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
@@ -248,6 +251,8 @@ function App() {
               <BackToTop />
               <WhatsAppButton />
               <CookieConsent />
+              <Cart />
+              <CartFloatButton />
               
               <AuthModal 
                 isOpen={authModal.isOpen}
@@ -291,7 +296,24 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      </CartProvider>
     </ErrorBoundary>
+  );
+}
+
+function CartFloatButton() {
+  const { cartCount, openCart } = useCart();
+  if (cartCount === 0) return null;
+  return (
+    <button
+      className="cart-float-btn"
+      onClick={openCart}
+      aria-label={`Open cart, ${cartCount} item${cartCount !== 1 ? "s" : ""}`}
+      title="View cart"
+    >
+      🛒
+      <span className="cart-float-badge">{cartCount}</span>
+    </button>
   );
 }
 

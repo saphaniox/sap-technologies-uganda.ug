@@ -723,6 +723,14 @@ class ApiService {
     });
   }
 
+  async submitCartInquiry(cartData) {
+    return this.request("/api/products/cart-inquiry", {
+      method: "POST",
+      body: JSON.stringify(cartData),
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
   async getProductInquiries(params = {}) {
     const queryString = new URLSearchParams(params).toString();
     return this.request(`/api/products/admin/inquiries?${queryString}`);
