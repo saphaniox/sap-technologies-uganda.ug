@@ -1,9 +1,54 @@
 import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
+import { VitePWA } from "vite-plugin-pwa"
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: "prompt",
+      includeAssets: ["robots.txt", "images/logo2.jpg", "pwa-192.png", "pwa-512.png"],
+      manifest: {
+        name: "SAPTech Uganda",
+        short_name: "SAPTech",
+        description: "Professional in Engineering & Technology solutions",
+        theme_color: "#1a237e",
+        background_color: "#0f172a",
+        display: "standalone",
+        scope: "/",
+        start_url: "/",
+        orientation: "portrait",
+        categories: ["business", "technology"],
+        icons: [
+          { src: "/pwa-192.png", sizes: "192x192", type: "image/png" },
+          { src: "/pwa-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }
+        ]
+      },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/sap-technologies-ug\.onrender\.com\/api\//,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "api-cache",
+              expiration: { maxEntries: 50, maxAgeSeconds: 300 },
+              networkTimeoutSeconds: 10
+            }
+          },
+          {
+            urlPattern: /^https:\/\/res\.cloudinary\.com\//,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "cloudinary-images",
+              expiration: { maxEntries: 100, maxAgeSeconds: 604800 }
+            }
+          }
+        ]
+      }
+    })
+  ],
   // Suppress esbuild warning about '//' in SVG data URIs inside CSS
   esbuild: {
     logOverride: { 'js-comment-in-css': 'silent' }

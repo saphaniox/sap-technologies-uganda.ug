@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Header from "./components/Header";
-import CertificateVerify from "./pages/CertificateVerify";
-import SoftwarePage from "./pages/SoftwarePage";
-import IoTPage from "./pages/IoTPage";
 import Hero from "./components/Hero";
 import Slider from "./components/Slider";
 import About from "./components/About";
@@ -16,12 +13,6 @@ import Products from "./components/Products";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AuthModal from "./components/AuthModal";
-import ForgotPassword from "./components/ForgotPassword";
-import Account from "./components/Account";
-import AdminDashboard from "./components/AdminDashboard";
-// import Awards from "./components/Awards"; // Deactivated until end of 2026
-import PrivacyPolicy from "./components/PrivacyPolicy";
-import TermsOfService from "./components/TermsOfService";
 import BackToTop from "./components/BackToTop";
 import NotFound from "./components/NotFound";
 import Testimonials from "./components/Testimonials";
@@ -36,6 +27,16 @@ import { microAnimationStyles } from "./utils/microAnimations.jsx";
 import { useVisitorTracking } from "./hooks/useVisitorTracking";
 import "./styles/App.css";
 import "./styles/ErrorBoundary.css";
+
+// Secondary pages and modals — lazy-loaded so they don't bloat the initial bundle
+const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
+const SoftwarePage = lazy(() => import("./pages/SoftwarePage"));
+const IoTPage = lazy(() => import("./pages/IoTPage"));
+const ForgotPassword = lazy(() => import("./components/ForgotPassword"));
+const Account = lazy(() => import("./components/Account"));
+const AdminDashboard = lazy(() => import("./components/AdminDashboard"));
+const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./components/TermsOfService"));
 
 function App() {
   // Enable visitor tracking
@@ -136,35 +137,26 @@ function App() {
     }
   };
 
+  const clearPanelState = () => {
+    setShowAccount(false);
+    setShowAdmin(false);
+    localStorage.removeItem("showAccount");
+    localStorage.removeItem("showAdmin");
+    localStorage.removeItem("showPrivacyPolicy");
+    localStorage.removeItem("showTermsOfService");
+  };
+
   const handleLogout = async () => {
     try {
       await apiService.logout();
-      // Clear API cache to ensure fresh auth state
       apiService.clearCache();
+    } catch {
+      apiService.clearCache();
+    } finally {
       setIsAuthenticated(false);
       setUserName("");
       setUserDetails(null);
-      setShowAccount(false); // Close account modal on logout
-      setShowAdmin(false); // Close admin modal on logout
-      // Clear localStorage
-      localStorage.removeItem("showAccount");
-      localStorage.removeItem("showAdmin");
-      localStorage.removeItem("showPrivacyPolicy");
-      localStorage.removeItem("showTermsOfService");
-    } catch (error) {
-      console.error("Logout error:", error);
-      // Force logout on client side even if server request fails
-      apiService.clearCache();
-      setIsAuthenticated(false);
-      setUserName("");
-      setUserDetails(null);
-      setShowAccount(false);
-      setShowAdmin(false);
-      // Clear localStorage
-      localStorage.removeItem("showAccount");
-      localStorage.removeItem("showAdmin");
-      localStorage.removeItem("showPrivacyPolicy");
-      localStorage.removeItem("showTermsOfService");
+      clearPanelState();
     }
   };
 
@@ -212,6 +204,7 @@ function App() {
     <ErrorBoundary>
       <CartProvider>
       <div className="App">
+        <Suspense fallback={null}>
         <Routes>
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           <Route path="/software" element={<SoftwarePage />} />
@@ -295,6 +288,7 @@ function App() {
           } />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
       </div>
       </CartProvider>
     </ErrorBoundary>

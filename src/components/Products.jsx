@@ -10,42 +10,18 @@ import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/Products.css";
 
 const Products = () => {
-    /**
-     * Product Data State
-     */
-    // Array of products fetched from API
     const [products, setProducts] = useState([]);
-    // Loading indicator for data fetching
     const [loading, setLoading] = useState(true);
-    // Error message if API fails
     const [error, setError] = useState("");
-    
-    /**
-     * Filter and Selection State
-     */
-    // Currently selected category filter ("all" or category ID)
     const [selectedCategory, setSelectedCategory] = useState("all");
-    // Product selected for inquiry form
     const [selectedProduct, setSelectedProduct] = useState(null);
-    // Controls inquiry form modal visibility
     const [showInquiryForm, setShowInquiryForm] = useState(false);
-    // Available product categories with counts
     const [categories, setCategories] = useState([]);
-    
-    /**
-     * Admin State Management
-     */
-    // Current user (to check admin role)
     const [user, setUser] = useState(null);
-    // Controls product form modal visibility (admin)
     const [showProductForm, setShowProductForm] = useState(false);
-    // Product being edited (admin)
     const [editingProduct, setEditingProduct] = useState(null);
-    // Controls delete confirmation dialog
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-    // Product selected for deletion
     const [productToDelete, setProductToDelete] = useState(null);
-    // Admin statistics
     const [adminStats, setAdminStats] = useState(null);
     const [loadingStats, setLoadingStats] = useState(false);
 
@@ -54,24 +30,17 @@ const Products = () => {
     // Cache of all products — never overwritten between category switches
     const allProductsRef = useRef([]);
     
-    /**
-     * WhatsApp Support Number
-     */
     const WHATSAPP_NUMBER = "+256706564628";
 
     /**
      * Load products and categories on component mount
      */
     useEffect(() => {
-        /**
-         * Fetch Products and Categories
-         * Loads all products and available categories from API
-         */
         const fetchData = async () => {
             try {
                 setLoading(true);
                 const [productsResponse, categoriesResponse] = await Promise.all([
-                    apiService.request("/api/products"),  // Get all products
+                    apiService.request("/api/products"),
                     apiService.request("/api/products/categories")
                 ]);
 
@@ -84,7 +53,6 @@ const Products = () => {
                     setCategories(categoriesResponse.data.categories);
                 }
             } catch (error) {
-                console.error("Error fetching products:", error);
                 setError("We hit a snag loading the products — try refreshing the page.");
             } finally {
                 setLoading(false);
@@ -102,7 +70,6 @@ const Products = () => {
         try {
             const currentUser = await apiService.getCurrentUser();
             setUser(currentUser);
-            // If admin, fetch statistics
             if (currentUser && currentUser.role === "admin") {
                 fetchAdminStats();
             }
@@ -112,9 +79,6 @@ const Products = () => {
         }
     };
 
-    /**
-     * Fetch Admin Statistics
-     */
     const fetchAdminStats = async () => {
         try {
             setLoadingStats(true);
@@ -129,9 +93,6 @@ const Products = () => {
         }
     };
 
-    /**
-     * Filter Products by Category — client-side only (no API round-trip)
-     */
     const handleCategoryFilter = (category) => {
         setSelectedCategory(category);
         if (category === "all") {
@@ -145,45 +106,26 @@ const Products = () => {
         }
     };
 
-    /**
-     * Open inquiry form for selected product
-     */
     const handleInquiry = (product) => {
         setSelectedProduct(product);
         setShowInquiryForm(true);
     };
 
-    /**
-     * Close inquiry form modal
-     */
     const handleCloseInquiryForm = () => {
         setShowInquiryForm(false);
         setSelectedProduct(null);
     };
 
-    /**
-     * Submit product inquiry to backend API
-     */
     const handleSubmitInquiry = async (inquiryData) => {
         try {
             const response = await apiService.submitProductInquiry(inquiryData);
-            console.log("✅ Inquiry submitted successfully", response);
             return response;
         } catch (error) {
-            console.error("❌ Error submitting inquiry:", error);
-            console.error("Error details:", {
-                message: error.message,
-                response: error.response,
-                stack: error.stack
-            });
+            console.error("Error submitting inquiry:", error);
             throw error;
         }
     };
 
-    /**
-     * Admin Functions
-     */
-    // Refresh products list
     const fetchProducts = async () => {
         try {
             setLoading(true);
@@ -249,9 +191,6 @@ const Products = () => {
         setEditingProduct(null);
     };
 
-    /**
-     * WhatsApp Contact Handler
-     */
     const handleWhatsAppContact = (product) => {
         const message = encodeURIComponent(`Hi, I'm interested in ${product.name}. Can you provide more information?`);
         const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER.replace(/[^0-9]/g, '')}?text=${message}`;
@@ -414,21 +353,17 @@ const Products = () => {
                         </div>
                     ) : (
                         products.map((product) => {
-                            // Get product images - support both single image and multiple images
                             const productImages = [];
                             if (product.images && Array.isArray(product.images) && product.images.length > 0) {
-                                // Multiple images
                                 product.images.forEach(img => {
                                     const imageUrl = getImageUrl(typeof img === 'string' ? img : img.url);
                                     if (imageUrl) productImages.push(imageUrl);
                                 });
                             } else if (product.image) {
-                                // Single image (legacy)
                                 const imageUrl = getImageUrl(product.image);
                                 if (imageUrl) productImages.push(imageUrl);
                             }
                             
-                            // Fallback to placeholder if no images
                             if (productImages.length === 0) {
                                 productImages.push(PLACEHOLDERS.product);
                             }
@@ -511,7 +446,6 @@ const Products = () => {
                                     <div className="product-footer">
                                         <div className="product-price">
                                             {(() => {
-                                                // Handle price display based on type
                                                 if (!product.price || product.price.type === "contact-for-price") {
                                                     return "Contact for Price";
                                                 }
@@ -520,10 +454,8 @@ const Products = () => {
                                                 const currency = product.price.currency;
                                                 const type = product.price.type;
                                                 
-                                                // Format the price with currency
                                                 let formattedPrice = "";
                                                 if (amount && currency) {
-                                                    // Format number with commas
                                                     const formattedAmount = parseFloat(amount).toLocaleString('en-US', {
                                                         minimumFractionDigits: 0,
                                                         maximumFractionDigits: 2
@@ -531,7 +463,6 @@ const Products = () => {
                                                     formattedPrice = `${currency} ${formattedAmount}`;
                                                 }
                                                 
-                                                // Add negotiable indicator
                                                 if (type === "negotiable") {
                                                     return formattedPrice ? `${formattedPrice} (Negotiable)` : "Negotiable";
                                                 }
