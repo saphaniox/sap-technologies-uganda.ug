@@ -14,33 +14,33 @@ const About = () => {
   // Team member profiles with skills and bios
   const teamMembers = [
     {
-      name: "SAP M PETR'S",
-      role: "Founder, CEO & full-stack Engineer",
+      name: "Saphan Muganza",
+      role: "Founder, CEO & Full-Stack Engineer",
       image: "/images/me.jpg",
-      bio: "Full-stack engineer and entrepreneur with a passion for innovative technology solutions.",
-      skills: ["Leadership", "Strategy","Electrical", "Automation", "Full-Stack Engineering"]
+      bio: "Full-stack engineer and entrepreneur with a passion for innovative technology solutions that transform African businesses.",
+      skills: ["Leadership", "Strategy", "Electrical", "Automation", "Full-Stack Engineering"]
     },
     {
-      name: "SANE NB CODER",
-      role: "UI, UX & Frontend Developer",
-      image: "/images/me2.jpg", 
-      bio: "Skilled developer specializing in modern web technologies and mobile applications.",
-      skills: ["React", "Node.js", "Mobile Apps","Electrical"]
+      name: "Samuel Nkunda",
+      role: "UI/UX & Frontend Developer",
+      image: "/images/me2.jpg",
+      bio: "Skilled developer specializing in modern web technologies and mobile applications with a focus on exceptional user experiences.",
+      skills: ["React", "Node.js", "Mobile Apps", "Electrical"]
     },
     {
-      name: "ROBERTO DL",
+      name: "Roberto Delgado",
       role: "Creative Designer",
       image: "/images/me3.jpg",
-      bio: "Creative professional focused on delivering exceptional user experiences and visual design.",
+      bio: "Creative professional focused on delivering exceptional user experiences and visual design that elevates brand identities.",
       skills: ["UI/UX", "Graphics", "Branding"]
     }
   ];
 
   // Company statistics to showcase our achievements and capabilities
   const stats = [
-    { number: "50+", label: "Projects Completed", icon: "📊" },
+    { number: "80+", label: "Projects Completed", icon: "📊" },
     { number: "100%", label: "Client Satisfaction", icon: "⭐" },
-    { number: "3+", label: "Years Experience", icon: "🚀" },
+    { number: "4+", label: "Years Experience", icon: "🚀" },
     { number: "24/7", label: "Support Available", icon: "💬" }
   ];
 
@@ -81,7 +81,7 @@ const About = () => {
                 We are driven by a passion to empower businesses, entrepreneurs and communities across Uganda and beyond. Every project is an opportunity to inspire, to solve real-world challenges and to elevate our clients to new heights. With a relentless commitment to quality, integrity and innovation, SAPTech Uganda is shaping the digital future of Africa—one idea, one solution, one success story at a time.
             </p>
             <p>
-              <em>Let's Build the Future Together.</em>
+              <em>Professional in Engineering &amp; Technology solutions.</em>
             </p>
 
           </motion.div>

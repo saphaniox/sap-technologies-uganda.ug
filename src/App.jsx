@@ -23,6 +23,10 @@ import AdminDashboard from "./components/AdminDashboard";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import TermsOfService from "./components/TermsOfService";
 import BackToTop from "./components/BackToTop";
+import NotFound from "./components/NotFound";
+import Testimonials from "./components/Testimonials";
+import WhatsAppButton from "./components/WhatsAppButton";
+import CookieConsent from "./components/CookieConsent";
 import apiService from "./services/api";
 import keepAliveService from "./services/keepAliveService";
 import { initializeAnimations } from "./utils/animations";
@@ -209,7 +213,6 @@ function App() {
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           <Route path="/software" element={<SoftwarePage />} />
           <Route path="/iot" element={<IoTPage />} />
-          
           <Route path="/*" element={
             <>
               <Header 
@@ -233,6 +236,7 @@ function App() {
                 <Partners />
                 <Companies />
                 <Products />
+                <Testimonials />
                 <Contact />
               </main>
               
@@ -242,6 +246,8 @@ function App() {
                 onNavigate={null}
               />
               <BackToTop />
+              <WhatsAppButton />
+              <CookieConsent />
               
               <AuthModal 
                 isOpen={authModal.isOpen}
@@ -282,6 +288,7 @@ function App() {
               )}
             </>
           } />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </ErrorBoundary>

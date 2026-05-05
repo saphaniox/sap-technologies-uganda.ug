@@ -13,6 +13,8 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
+    subject: "",
     message: ""
   });
   
@@ -59,7 +61,7 @@ const Contact = () => {
       );
       
       // Reset form
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
       setFormMessage("");
     } catch (error) {
       // Show error alert with SweetAlert2
@@ -190,6 +192,43 @@ const Contact = () => {
                 onBlur={() => setFocusedField(null)}
                 required
                 className={focusedField === "email" ? "focused" : ""}
+                whileFocus={{ scale: 1.02, borderColor: "#3b82f6" }}
+                transition={{ duration: 0.2 }}
+              />
+            </motion.div>
+
+            <motion.div
+              className="form-group"
+              variants={fadeInUp}
+            >
+              <motion.input
+                type="tel"
+                name="phone"
+                placeholder="Your Phone Number (optional)"
+                value={formData.phone}
+                onChange={handleChange}
+                onFocus={() => setFocusedField("phone")}
+                onBlur={() => setFocusedField(null)}
+                className={focusedField === "phone" ? "focused" : ""}
+                whileFocus={{ scale: 1.02, borderColor: "#3b82f6" }}
+                transition={{ duration: 0.2 }}
+              />
+            </motion.div>
+
+            <motion.div
+              className="form-group"
+              variants={fadeInUp}
+            >
+              <motion.input
+                type="text"
+                name="subject"
+                placeholder="Subject"
+                value={formData.subject}
+                onChange={handleChange}
+                onFocus={() => setFocusedField("subject")}
+                onBlur={() => setFocusedField(null)}
+                required
+                className={focusedField === "subject" ? "focused" : ""}
                 whileFocus={{ scale: 1.02, borderColor: "#3b82f6" }}
                 transition={{ duration: 0.2 }}
               />

@@ -50,33 +50,49 @@ const Companies = () => {
     }
   ];
 
+  const liveCompanies = companies.filter((c) => !c.comingSoon);
+  const comingSoonCompanies = companies.filter((c) => c.comingSoon);
+
   return (
     <section id="companies" className="companies">
       <div className="container">
         <h2>Our Other Platforms</h2>
+
+        {/* Live platforms — full cards */}
         <div className="companies-list">
-          {companies.map((company, index) => (
+          {liveCompanies.map((company, index) => (
             <div key={index} className="company-card">
               <img src={company.image} alt={company.title} className="company-img" />
               <div className="company-content">
                 <h3>{company.title}</h3>
                 <p>{company.description}</p>
-                {company.comingSoon ? (
-                  <button 
-                    onClick={() => handleComingSoon(company.title)} 
-                    className="company-link coming-soon-btn"
-                  >
-                    Coming Soon - {company.title}
-                  </button>
-                ) : (
-                  <a href={company.link} target="_blank" rel="noopener noreferrer" className="company-link">
-                    Visit {company.title}
-                  </a>
-                )}
+                <a href={company.link} target="_blank" rel="noopener noreferrer" className="company-link">
+                  Visit {company.title}
+                </a>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Coming-soon roadmap — subtle strip */}
+        {comingSoonCompanies.length > 0 && (
+          <div className="coming-soon-roadmap">
+            <p className="roadmap-label">More platforms on the way:</p>
+            <div className="roadmap-items">
+              {comingSoonCompanies.map((company, index) => (
+                <button
+                  key={index}
+                  className="roadmap-item"
+                  onClick={() => handleComingSoon(company.title)}
+                  title={company.description}
+                >
+                  {company.title}
+                  <span className="roadmap-badge">Coming Soon</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

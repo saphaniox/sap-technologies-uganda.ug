@@ -5,7 +5,16 @@ import "../styles/SeasonalGreeting.css";
 const getLaunchDate = () => {
   const now = new Date();
   const thisMonthLaunch = new Date(now.getFullYear(), now.getMonth(), 25, 10, 0, 0);
+  // If the 25th of this month has already passed, target next month's 25th
+  if (now > thisMonthLaunch) {
+    return new Date(now.getFullYear(), now.getMonth() + 1, 25, 10, 0, 0);
+  }
   return thisMonthLaunch;
+};
+
+const formatLaunchLabel = (date) => {
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${months[date.getMonth()]} ${date.getDate()}, 10:00 AM (EAT)`;
 };
 
 const getTimeLeft = (targetDate) => {
@@ -29,6 +38,7 @@ const SeasonalGreeting = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [launchDate] = useState(getLaunchDate);
   const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(getLaunchDate()));
+  const launchLabel = formatLaunchLabel(launchDate);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -96,7 +106,7 @@ const SeasonalGreeting = () => {
                 }}
               >
                 <h2 className="seasonal-title">A Big Launch Is Coming</h2>
-                <p className="seasonal-subtitle">April 25, 10:00 AM (EAT)</p>
+                <p className="seasonal-subtitle">{launchLabel}</p>
               </motion.div>
 
               <div className="countdown-grid" role="status" aria-live="polite">
