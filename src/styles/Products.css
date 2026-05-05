@@ -495,6 +495,52 @@
     box-shadow: 0 12px 30px rgba(52, 152, 219, 0.4);
 }
 
+/* Always-visible card CTA row */
+.product-cta-row {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.card-inquire-btn {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.card-inquire-btn:hover {
+    opacity: 0.88;
+    transform: translateY(-2px);
+}
+
+.card-whatsapp-btn {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    background: #25d366;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.card-whatsapp-btn:hover {
+    opacity: 0.88;
+    transform: translateY(-2px);
+}
+
 /* Error Message */
 .error-message {
     text-align: center;

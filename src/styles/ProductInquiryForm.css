@@ -105,6 +105,21 @@
   text-decoration: underline;
 }
 
+.product-modal-price {
+  margin: 6px 0 0 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  opacity: 1;
+  letter-spacing: 0.02em;
+}
+
+.negotiable-tag {
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+}
+
 .inquiry-form {
   padding: 30px;
 }

@@ -4,8 +4,10 @@ import "../styles/ProductInquiryForm.css";
 
 const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
+    customerName: "",
     customerEmail: "",
     customerPhone: "",
+    quantity: "1",
     preferredContact: "email",
     message: ""
   });
@@ -28,6 +30,12 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
     setLoading(true);
 
     // Validation
+    if (!formData.customerName.trim()) {
+      setError("Please enter your name");
+      setLoading(false);
+      return;
+    }
+
     if (!formData.customerEmail) {
       setError("Please enter your email address");
       setLoading(false);
@@ -77,8 +85,7 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
           <div className="success-content">
             <div className="success-icon">✅</div>
             <h2>Thank You! 🙌</h2>
-            <p>Your inquiry has been received. We'll get back to you within 24–48 hours.</p>
-            <p className="success-subtext">We'll get back to you within 24-48 hours.</p>
+            <p>Your inquiry has been received. We&apos;ll get back to you within 24&ndash;48 hours.</p>
             <button className="close-btn" onClick={onClose}>
               Close
             </button>
@@ -96,8 +103,14 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
         </button>
 
         <div className="modal-header">
-          <h2>Product Inquiry</h2>
-          <p className="product-name">Interested in: <strong>{product.name}</strong></p>
+          <h2>Request a Quote</h2>
+          <p className="product-name">Product: <strong>{product.name}</strong></p>
+          {product.price && product.price.type !== "contact-for-price" && product.price.amount && (
+            <p className="product-modal-price">
+              {product.price.currency} {parseFloat(product.price.amount).toLocaleString("en-US")}
+              {product.price.type === "negotiable" && <span className="negotiable-tag"> &middot; Negotiable</span>}
+            </p>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="inquiry-form">
@@ -107,6 +120,22 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
               {error}
             </div>
           )}
+
+          <div className="form-group">
+            <label htmlFor="customerName">
+              Your Name <span className="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="customerName"
+              name="customerName"
+              value={formData.customerName}
+              onChange={handleChange}
+              placeholder="e.g. John Kizito"
+              required
+              autoFocus
+            />
+          </div>
 
           <div className="form-group">
             <label htmlFor="customerEmail">
@@ -135,6 +164,21 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
               value={formData.customerPhone}
               onChange={handleChange}
               placeholder="+256 700 000 000"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="quantity">
+              Quantity / Units Needed
+            </label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              value={formData.quantity}
+              onChange={handleChange}
+              min="1"
+              placeholder="1"
             />
           </div>
 
@@ -202,7 +246,12 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
 ProductInquiryForm.propTypes = {
   product: PropTypes.shape({
     _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
+    price: PropTypes.shape({
+      amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      currency: PropTypes.string,
+      type: PropTypes.string
+    })
   }).isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired
