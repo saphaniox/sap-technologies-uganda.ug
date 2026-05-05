@@ -315,6 +315,17 @@ const IoTProjects = () => {
                         <i className="fab fa-github"></i> GitHub
                       </a>
                     )}
+
+                    {project.videoUrl && (
+                      <a
+                        href={project.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-video"
+                      >
+                        <i className="fab fa-youtube"></i> Watch Demo
+                      </a>
+                    )}
                     
                     <button 
                       onClick={() => handleLike(project._id)}
@@ -323,6 +334,21 @@ const IoTProjects = () => {
                       <i className="fas fa-heart"></i> {project.stats?.likes || 0}
                     </button>
                   </div>
+
+                  {/* Uploaded project videos */}
+                  {project.videos && project.videos.length > 0 && (
+                    <div className="iot-uploaded-videos">
+                      {project.videos.map((video, idx) => (
+                        <video
+                          key={idx}
+                          src={video.url}
+                          controls
+                          preload="metadata"
+                          className="iot-video"
+                        />
+                      ))}
+                    </div>
+                  )}
                   
                   {user?.role === "admin" && (
                     <div className="admin-actions">

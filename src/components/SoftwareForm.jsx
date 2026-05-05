@@ -8,7 +8,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    url: "",
+    links: { web: "", playstore: "", appstore: "", github: "", other: "" },
     category: "General",
     status: "active",
     isPublic: true,
@@ -26,7 +26,13 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
       setFormData({
         name: software.name || "",
         description: software.description || "",
-        url: software.url || "",
+        links: {
+          web:       software.links?.web       || software.url || "",
+          playstore: software.links?.playstore  || "",
+          appstore:  software.links?.appstore   || "",
+          github:    software.links?.github     || "",
+          other:     software.links?.other      || ""
+        },
         category: software.category || "General",
         status: software.status || "active",
         isPublic: software.isPublic !== undefined ? software.isPublic : true,
@@ -53,7 +59,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
       setFormData({
         name: "",
         description: "",
-        url: "",
+        links: { web: "", playstore: "", appstore: "", github: "", other: "" },
         category: "General",
         status: "active",
         isPublic: true,
@@ -166,7 +172,9 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
       // Add basic fields
       submitData.append("name", formData.name);
       submitData.append("description", formData.description);
-      submitData.append("url", formData.url);
+      // Send links as JSON; also send url (web link) for backward compat
+      submitData.append("links", JSON.stringify(formData.links));
+      submitData.append("url", formData.links.web || "");
       submitData.append("category", formData.category);
       submitData.append("status", formData.status);
       submitData.append("isPublic", formData.isPublic);
@@ -267,15 +275,31 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label>App URL (Web Link)</label>
-              <input
-                type="url"
-                name="url"
-                value={formData.url}
-                onChange={handleInputChange}
-                placeholder="https://your-app.com - Users will click to open this link"
-              />
-              <small className="form-hint">🌐 Enter the web address where your app is hosted. No files to upload - just the link!</small>
+              <label>Platform Links (Optional)</label>
+              <div className="platform-links-group">
+                {[
+                  { key: 'web',       icon: '🌐', label: 'Website',    placeholder: 'https://your-app.com' },
+                  { key: 'playstore', icon: '📱', label: 'Play Store',  placeholder: 'https://play.google.com/store/apps/...' },
+                  { key: 'appstore',  icon: '🍎', label: 'App Store',   placeholder: 'https://apps.apple.com/...' },
+                  { key: 'github',    icon: '🐙', label: 'GitHub',      placeholder: 'https://github.com/...' },
+                  { key: 'other',     icon: '🔗', label: 'Other',       placeholder: 'https://...' }
+                ].map(({ key, icon, label, placeholder }) => (
+                  <div key={key} className="platform-link-row">
+                    <span className="platform-icon">{icon}</span>
+                    <span className="platform-label">{label}</span>
+                    <input
+                      type="url"
+                      value={formData.links[key]}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        links: { ...prev.links, [key]: e.target.value }
+                      }))}
+                      placeholder={placeholder}
+                    />
+                  </div>
+                ))}
+              </div>
+              <small className="form-hint">Add links for each platform where your app is available. Leave unused ones blank.</small>
             </div>
             
             <div className="form-row">

@@ -278,15 +278,50 @@ const Softwares = () => {
                   
                   {/* Actions */}
                   <div className="software-actions">
-                    <button
-                      onClick={() => handleSoftwareClick(item)}
-                      className="btn-launch"
-                      disabled={item.status === "inactive" || item.status === "coming-soon"}
-                    >
-                      <i className="fas fa-external-link-alt"></i>
-                      {item.status === "coming-soon" ? "Coming Soon" : "Launch App"}
-                    </button>
-                    
+                    {/* Platform-specific launch buttons */}
+                    <div className="platform-link-buttons">
+                      {(item.links?.web || item.url) && item.status !== "inactive" && item.status !== "coming-soon" && (
+                        <a
+                          href={item.links?.web || item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="platform-btn btn-web"
+                          onClick={async () => { try { await apiService.request(`/api/software/${item._id}/click`, "POST"); } catch (e) {} }}
+                        >
+                          🌐 Web
+                        </a>
+                      )}
+                      {item.links?.playstore && (
+                        <a href={item.links.playstore} target="_blank" rel="noopener noreferrer" className="platform-btn btn-playstore">
+                          📱 Play Store
+                        </a>
+                      )}
+                      {item.links?.appstore && (
+                        <a href={item.links.appstore} target="_blank" rel="noopener noreferrer" className="platform-btn btn-appstore">
+                          🍎 App Store
+                        </a>
+                      )}
+                      {item.links?.github && (
+                        <a href={item.links.github} target="_blank" rel="noopener noreferrer" className="platform-btn btn-github">
+                          🐙 GitHub
+                        </a>
+                      )}
+                      {item.links?.other && (
+                        <a href={item.links.other} target="_blank" rel="noopener noreferrer" className="platform-btn btn-other">
+                          🔗 Other
+                        </a>
+                      )}
+                      {item.status === "coming-soon" && (
+                        <button className="btn-launch" disabled>Coming Soon</button>
+                      )}
+                      {item.status === "inactive" && (
+                        <button className="btn-launch" disabled>Inactive</button>
+                      )}
+                      {!item.links?.web && !item.url && !item.links?.playstore && !item.links?.appstore && !item.links?.github && !item.links?.other && item.status !== "coming-soon" && item.status !== "inactive" && (
+                        <button className="btn-launch" disabled>No Link</button>
+                      )}
+                    </div>
+
                     {user?.role === "admin" && (
                       <div className="admin-actions">
                         <button

@@ -25,6 +25,10 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [newImageFiles, setNewImageFiles] = useState([]);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
+  const [existingVideos, setExistingVideos] = useState([]);
+  const [newVideoFiles, setNewVideoFiles] = useState([]);
+  const [videosToDelete, setVideosToDelete] = useState([]);
   
   useEffect(() => {
     if (project) {
@@ -49,9 +53,17 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
       if (project.images && project.images.length > 0) {
         const imageUrls = project.images.map(img => ({
           url: getImageUrl(typeof img === "string" ? img : img.url),
+          originalUrl: typeof img === "string" ? img : img.url,
           isExisting: true
         }));
         setImagePreviews(imageUrls);
+      }
+
+      // Load existing videos
+      if (project.videos && project.videos.length > 0) {
+        setExistingVideos(project.videos);
+      } else {
+        setExistingVideos([]);
       }
     } else {
       // Reset for new project
@@ -73,6 +85,10 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
       });
       setImagePreviews([]);
       setNewImageFiles([]);
+      setImagesToDelete([]);
+      setExistingVideos([]);
+      setNewVideoFiles([]);
+      setVideosToDelete([]);
     }
   }, [project]);
   
@@ -133,15 +149,56 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
   
   const handleRemoveImage = (index) => {
     const imageToRemove = imagePreviews[index];
-    
-    if (!imageToRemove.isExisting) {
+
+    if (imageToRemove.isExisting) {
+      // Track the original URL for server-side deletion
+      if (imageToRemove.originalUrl) {
+        setImagesToDelete(prev => [...prev, imageToRemove.originalUrl]);
+      }
+    } else {
       const fileIndex = newImageFiles.findIndex(f => f === imageToRemove.file);
       if (fileIndex !== -1) {
         setNewImageFiles(prev => prev.filter((_, i) => i !== fileIndex));
       }
     }
-    
+
     setImagePreviews(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleVideoChange = (e) => {
+    const files = Array.from(e.target.files);
+    const maxVideos = 3;
+
+    if (newVideoFiles.length + files.length > maxVideos) {
+      showAlert.error("Too many videos", `You can upload up to ${maxVideos} videos. Please remove some first.`);
+      e.target.value = "";
+      return;
+    }
+
+    for (const file of files) {
+      if (file.size > 200 * 1024 * 1024) {
+        showAlert.error("Video too large", `"${file.name}" exceeds the 200MB limit. Please use a smaller video.`);
+        e.target.value = "";
+        return;
+      }
+      if (!file.type.startsWith("video/")) {
+        showAlert.error("Wrong file type", `"${file.name}" is not a video file. Please only upload videos.`);
+        e.target.value = "";
+        return;
+      }
+    }
+
+    setNewVideoFiles(prev => [...prev, ...files]);
+    e.target.value = "";
+  };
+
+  const handleRemoveNewVideo = (index) => {
+    setNewVideoFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleRemoveExistingVideo = (videoUrl) => {
+    setVideosToDelete(prev => [...prev, videoUrl]);
+    setExistingVideos(prev => prev.filter(v => v.url !== videoUrl));
   };
   
   const handleArrayFieldChange = (field, index, value) => {
@@ -192,6 +249,19 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
       newImageFiles.forEach(file => {
         submitData.append("images", file);
       });
+
+      // Add new video files
+      newVideoFiles.forEach(file => {
+        submitData.append("videos", file);
+      });
+
+      // Tell the server which existing images/videos to remove
+      if (imagesToDelete.length > 0) {
+        submitData.append("removeImages", JSON.stringify(imagesToDelete));
+      }
+      if (videosToDelete.length > 0) {
+        submitData.append("removeVideos", JSON.stringify(videosToDelete));
+      }
       
       const url = project ? `/api/iot/${project._id}` : "/api/iot";
       const method = project ? "PUT" : "POST";
@@ -484,6 +554,72 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             )}
           </div>
           
+          {/* Videos */}
+          <div className="form-section">
+            <h3>🎥 Project Videos (Optional)</h3>
+
+            <div className="form-group">
+              <label>Upload Videos (Max 3, up to 200MB each)</label>
+              <input
+                type="file"
+                accept="video/*"
+                multiple
+                onChange={handleVideoChange}
+                className="file-input"
+                disabled={newVideoFiles.length >= 3}
+              />
+              <small className="form-hint">🎬 Supported: MP4, WebM, MOV, AVI. Videos are compressed in the cloud for fast loading.</small>
+            </div>
+
+            {/* Existing uploaded videos */}
+            {existingVideos.length > 0 && (
+              <div className="video-list">
+                <p><strong>Existing videos:</strong></p>
+                {existingVideos.map((video, index) => (
+                  <div key={index} className="video-item">
+                    <video src={video.url} controls className="video-preview" preload="metadata" />
+                    <div className="video-info">
+                      {video.mimeType && <span>{video.mimeType.split('/')[1]?.toUpperCase()}</span>}
+                      {video.size > 0 && <span>{(video.size / (1024 * 1024)).toFixed(1)} MB</span>}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveExistingVideo(video.url)}
+                      className="btn-remove-image"
+                      title="Remove video"
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* New videos queued for upload */}
+            {newVideoFiles.length > 0 && (
+              <div className="video-list">
+                <p><strong>New videos to upload ({newVideoFiles.length}/3):</strong></p>
+                {newVideoFiles.map((file, index) => (
+                  <div key={index} className="video-item">
+                    <i className="fas fa-film fa-2x" style={{color: '#666', minWidth: '32px'}}></i>
+                    <div className="video-info">
+                      <span className="video-name">{file.name}</span>
+                      <span className="video-size">{(file.size / (1024 * 1024)).toFixed(1)} MB</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveNewVideo(index)}
+                      className="btn-remove-image"
+                      title="Remove video"
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Settings */}
           <div className="form-section">
             <h3>⚙️ Settings</h3>
