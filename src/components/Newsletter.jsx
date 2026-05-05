@@ -29,7 +29,7 @@ const Newsletter = () => {
 
     try {
       const response = await apiService.subscribeNewsletter(email);
-      setMessage(response.message || "You're subscribed! Welcome to the SapTech community 🎉");
+      setMessage(response.message || "You're subscribed! Welcome to the SAPTech community 🎉");
       setMessageType("success");
       setEmail(""); // Clear form
     } catch (error) {

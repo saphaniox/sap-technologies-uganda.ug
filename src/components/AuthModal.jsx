@@ -63,7 +63,7 @@ const AuthModal = ({ isOpen, mode, onClose, onAuthSuccess, onModeSwitch }) => {
       } else {
         // Show success alert for signup
         await showAlert.success(
-          "Welcome to SapTech! 🎉",
+          "Welcome to SAPTech! 🎉",
           "Your account is all set. Heading to login now...",
           {
             timer: 2000,

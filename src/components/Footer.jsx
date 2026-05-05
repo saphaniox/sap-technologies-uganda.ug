@@ -52,7 +52,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
       <div className="footer-content">
         <div className="footer-brand">
           <img src="/images/logo2.jpg" alt="SAP Logo" className="footer-logo" />
-          <span>SapTech Uganda</span>
+          <span>SAPTech Uganda</span>
           <p>Kampala Uganda</p>
         </div>
         
@@ -94,7 +94,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
       
       <div className="footer-bottom">
         <div className="footer-legal">
-          <p>&copy; 2026 SapTech Uganda-Africa. All rights reserved.</p>
+          <p>&copy; 2026 SAPTech Uganda-Africa. All rights reserved.</p>
           <div className="legal-links">
             <button 
               onClick={onPrivacyPolicyOpen}
@@ -124,7 +124,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
             rel="noopener noreferrer"
             className="credits-link"
           >
-            SapTech Uganda
+            SAPTech Uganda
           </a>
         </p>
       </div>
