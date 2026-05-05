@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 const SEO = ({ 
   title = "SAPTech Uganda | Professional in Engineering & Technology solutions",
   description = "SAPTech Uganda offers professional IT solutions in engineering & technology — web development, mobile apps, cloud services, cybersecurity, and digital transformation.",
-  keywords = "SAPTech Uganda, IT solutions Uganda, web development, mobile apps, cloud services",
+  keywords = "SAPTech Uganda, IT solutions Uganda, web development, mobile apps, Softwaredevelopment and cloud services",
   ogImage = "/images/logo2.jpg",
   url,
   ogType = "website",

@@ -11,7 +11,7 @@ const testimonials = [
     rating: 5,
     text: "SAPTech Uganda built our business management system from scratch. The quality exceeded our expectations and their support team is always available. Highly recommended!",
     avatar: "JK",
-    image: null
+    image: "/images/testimonial-jk.jpg"
   },
   {
     name: "Grace Nakibuule",
@@ -19,7 +19,7 @@ const testimonials = [
     rating: 5,
     text: "The website they designed for us is stunning and professional. Our online sales increased by over 60% within the first two months. Outstanding work!",
     avatar: "GN",
-    image: null
+    image: "/images/testimonial-gn.jpg"
   },
   {
     name: "David Ochieng",
@@ -27,7 +27,7 @@ const testimonials = [
     rating: 5,
     text: "Their electrical engineering team delivered our industrial automation project on time and within budget. Technical expertise at its finest.",
     avatar: "DO",
-    image: null
+    image: "/images/testimonial-do..jpg"
   },
   {
     name: "Fatuma Nantongo",
@@ -35,7 +35,7 @@ const testimonials = [
     rating: 5,
     text: "From branding to software development, SAPTech Uganda handled everything seamlessly. They truly understand what businesses in Uganda need.",
     avatar: "FN",
-    image: null
+    image: "/images/testimonial-fn.jpg"
   }
 ];
 
