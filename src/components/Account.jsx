@@ -60,7 +60,7 @@ const Account = ({ onClose }) => {
         throw new Error("Invalid account data received");
       }
     } catch (error) {
-      setError("Couldn't load your account details. Please try refreshing.");
+      setError("We're having trouble loading your account. Please refresh and try again.");
       console.error("Account fetch error:", error);
     } finally {
       setLoading(false);

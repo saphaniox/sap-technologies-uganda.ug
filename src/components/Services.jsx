@@ -226,7 +226,7 @@ const Services = () => {
       }
     } catch (error) {
       console.error("Error fetching services:", error);
-      setError("Couldn't load additional services right now.");
+      setError("We're having trouble loading services. Please try again.");
       setApiServices([]);
     } finally {
       setLoading(false);

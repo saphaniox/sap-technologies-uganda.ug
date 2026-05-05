@@ -7,6 +7,7 @@ import ConfirmDialog from "./ConfirmDialog";
 import ImageSlider from "./ImageSlider";
 import { LoadingOverlay, showAlert } from "../utils/alerts.jsx";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
+import { humanizeError } from "../utils/errorMessages";
 import "../styles/Products.css";
 
 const Products = () => {
@@ -53,7 +54,7 @@ const Products = () => {
                     setCategories(categoriesResponse.data.categories);
                 }
             } catch (error) {
-                setError("We hit a snag loading the products — try refreshing the page.");
+                setError("We're having trouble loading products right now. Please refresh the page and try again.");
             } finally {
                 setLoading(false);
             }
@@ -174,7 +175,8 @@ const Products = () => {
             fetchProducts();
         } catch (error) {
             console.error("Error deleting product:", error);
-            await showAlert.error("Couldn't delete", error.message || "Something went wrong deleting that product. Please try again.");
+            const msg = error.message?.includes('404') ? "That product doesn't exist anymore." : "We couldn't delete that. Please try again.";
+      await showAlert.error("Oops", msg);
         }
     };
 

@@ -45,7 +45,7 @@ const IoTProjects = () => {
       }
     } catch (error) {
       console.error("Error fetching IoT projects:", error);
-      setError("Couldn't load the IoT projects right now. Please refresh the page.");
+      setError("We're having trouble loading IoT projects. Please refresh and try again.");
     } finally {
       setLoading(false);
     }

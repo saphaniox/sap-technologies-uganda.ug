@@ -69,7 +69,7 @@ const Partners = () => {
       setPartners(partners);
     } catch (error) {
       console.error("Error fetching partners:", error);
-      setError("Couldn't load our partners right now — try refreshing the page.");
+      setError("We're having trouble loading our partners. Please refresh and try again.");
     } finally {
       setLoading(false);
     }
@@ -109,7 +109,7 @@ const Partners = () => {
       fetchPartners();
     } catch (error) {
       console.error("Error deleting partner:", error);
-      alert("Network error. Please try again.");
+      showAlert.error("Couldn't delete", "We're having network trouble. Please try again.");
     }
   };
 

@@ -1,3 +1,6 @@
+/* Import cross-browser compatibility layer first */
+@import './browser-compat.css';
+
 /* Import responsive design system */
 @import './responsive.css';
 

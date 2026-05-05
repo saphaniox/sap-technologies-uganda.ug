@@ -44,7 +44,7 @@ const Softwares = () => {
       }
     } catch (error) {
       console.error("Error fetching software:", error);
-      setError("Couldn't load the software list right now. Please refresh the page.");
+      setError("We're having trouble loading our software list. Please refresh the page.");
     } finally {
       setLoading(false);
     }
