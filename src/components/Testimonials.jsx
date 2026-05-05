@@ -10,28 +10,32 @@ const testimonials = [
     company: "Kizito Enterprises, Kampala",
     rating: 5,
     text: "SAPTech Uganda built our business management system from scratch. The quality exceeded our expectations and their support team is always available. Highly recommended!",
-    avatar: "JK"
+    avatar: "JK",
+    image: null
   },
   {
     name: "Grace Nakibuule",
     company: "GN Fashion House, Entebbe",
     rating: 5,
     text: "The website they designed for us is stunning and professional. Our online sales increased by over 60% within the first two months. Outstanding work!",
-    avatar: "GN"
+    avatar: "GN",
+    image: null
   },
   {
     name: "David Ochieng",
     company: "Ochieng Tech Solutions, Jinja",
     rating: 5,
     text: "Their electrical engineering team delivered our industrial automation project on time and within budget. Technical expertise at its finest.",
-    avatar: "DO"
+    avatar: "DO",
+    image: null
   },
   {
     name: "Fatuma Nantongo",
     company: "Nantongo Retail Group, Kampala",
     rating: 5,
     text: "From branding to software development, SAPTech Uganda handled everything seamlessly. They truly understand what businesses in Uganda need.",
-    avatar: "FN"
+    avatar: "FN",
+    image: null
   }
 ];
 
@@ -92,7 +96,13 @@ const Testimonials = () => {
             <p className="testimonial-text">{t.text}</p>
             <StarRating count={t.rating} />
             <div className="testimonial-author">
-              <div className="testimonial-avatar">{t.avatar}</div>
+              <div className="testimonial-avatar">
+                {t.image ? (
+                  <img src={t.image} alt={t.name} className="avatar-image" />
+                ) : (
+                  t.avatar
+                )}
+              </div>
               <div className="testimonial-meta">
                 <strong>{t.name}</strong>
                 <span>{t.company}</span>
