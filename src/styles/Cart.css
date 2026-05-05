@@ -317,6 +317,28 @@
   margin-top: 1rem;
 }
 
+/* ---------- Auth auto-fill badge ---------- */
+.cart-autofill-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  margin-bottom: 1rem;
+}
+
+.cart-field input.prefilled,
+.cart-field input.prefilled:focus {
+  background: rgba(16, 185, 129, 0.06);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: var(--text-secondary, #94a3b8);
+  cursor: default;
+}
+
 /* ---------- Empty & Success states ---------- */
 .cart-empty,
 .cart-success {

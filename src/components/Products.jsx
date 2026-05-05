@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import apiService from "../services/api";
 import { useCart } from "../contexts/CartContext";
 import ProductInquiryForm from "./ProductInquiryForm";
@@ -50,6 +50,9 @@ const Products = () => {
     const [loadingStats, setLoadingStats] = useState(false);
 
     const { addToCart, isInCart, openCart } = useCart();
+
+    // Cache of all products — never overwritten between category switches
+    const allProductsRef = useRef([]);
     
     /**
      * WhatsApp Support Number
@@ -73,6 +76,7 @@ const Products = () => {
                 ]);
 
                 if (productsResponse.status === "success") {
+                    allProductsRef.current = productsResponse.data.products;
                     setProducts(productsResponse.data.products);
                 }
 
@@ -126,28 +130,18 @@ const Products = () => {
     };
 
     /**
-     * Filter Products by Category
-     * Fetches products based on selected category or shows all
+     * Filter Products by Category — client-side only (no API round-trip)
      */
-    const handleCategoryFilter = async (category) => {
-        try {
-            setLoading(true);
-            setSelectedCategory(category);
-            
-            const endpoint = category === "all" 
-                ? "/api/products"  // Get all products, no limit
-                : `/api/products?category=${encodeURIComponent(category)}`;
-            
-            const response = await apiService.request(endpoint);
-            
-            if (response.status === "success") {
-                setProducts(response.data.products);
-            }
-        } catch (error) {
-            console.error("Error filtering products:", error);
-            setError("Couldn't filter products right now. Please try again.");
-        } finally {
-            setLoading(false);
+    const handleCategoryFilter = (category) => {
+        setSelectedCategory(category);
+        if (category === "all") {
+            setProducts(allProductsRef.current);
+        } else {
+            setProducts(
+                allProductsRef.current.filter(
+                    (p) => p.category === category
+                )
+            );
         }
     };
 
@@ -195,7 +189,13 @@ const Products = () => {
             setLoading(true);
             const response = await apiService.request("/api/products");
             if (response.status === "success") {
-                setProducts(response.data.products);
+                allProductsRef.current = response.data.products;
+                // Re-apply current category filter after refresh
+                if (selectedCategory === "all") {
+                    setProducts(response.data.products);
+                } else {
+                    setProducts(response.data.products.filter((p) => p.category === selectedCategory));
+                }
             }
         } catch (error) {
             console.error("Error fetching products:", error);

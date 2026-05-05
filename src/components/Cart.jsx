@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCart } from "../contexts/CartContext";
 import apiService from "../services/api";
 import "../styles/Cart.css";
@@ -19,9 +19,27 @@ const Cart = () => {
   const { cartItems, cartCount, isCartOpen, closeCart, removeFromCart, updateQuantity, clearCart } = useCart();
 
   const [form, setForm] = useState(EMPTY_FORM);
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+
+  // Fetch current user once on mount and pre-fill the form
+  useEffect(() => {
+    apiService.getCurrentUser()
+      .then((user) => {
+        if (user) {
+          setLoggedInUser(user);
+          setForm((prev) => ({
+            ...prev,
+            customerName: user.name || prev.customerName,
+            customerEmail: user.email || prev.customerEmail,
+            customerPhone: user.phone || prev.customerPhone,
+          }));
+        }
+      })
+      .catch(() => {/* not logged in — that's fine */});
+  }, []);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -212,6 +230,13 @@ const Cart = () => {
             <div className="cart-form">
               <h3 className="cart-form-title">Your Details</h3>
 
+              {loggedInUser && (
+                <div className="cart-autofill-badge">
+                  <span>✅</span>
+                  <span>Signed in as <strong>{loggedInUser.name}</strong> — details pre-filled</span>
+                </div>
+              )}
+
               {error && <div className="cart-error">{error}</div>}
 
               <div className="cart-field">
@@ -223,6 +248,8 @@ const Cart = () => {
                   value={form.customerName}
                   onChange={handleChange}
                   placeholder="e.g. John Kizito"
+                  readOnly={!!loggedInUser?.name}
+                  className={loggedInUser?.name ? "prefilled" : ""}
                 />
               </div>
 
@@ -235,6 +262,8 @@ const Cart = () => {
                   value={form.customerEmail}
                   onChange={handleChange}
                   placeholder="you@example.com"
+                  readOnly={!!loggedInUser?.email}
+                  className={loggedInUser?.email ? "prefilled" : ""}
                 />
               </div>
 

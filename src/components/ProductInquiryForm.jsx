@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import apiService from "../services/api";
 import "../styles/ProductInquiryForm.css";
 
 const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
@@ -11,9 +12,27 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
     preferredContact: "email",
     message: ""
   });
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  // Pre-fill from authenticated user
+  useEffect(() => {
+    apiService.getCurrentUser()
+      .then((user) => {
+        if (user) {
+          setLoggedInUser(user);
+          setFormData((prev) => ({
+            ...prev,
+            customerName: user.name || prev.customerName,
+            customerEmail: user.email || prev.customerEmail,
+            customerPhone: user.phone || prev.customerPhone,
+          }));
+        }
+      })
+      .catch(() => {/* not logged in */});
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -114,6 +133,13 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
         </div>
 
         <form onSubmit={handleSubmit} className="inquiry-form">
+          {loggedInUser && (
+            <div className="autofill-badge">
+              <span>✅</span>
+              <span>Signed in as <strong>{loggedInUser.name}</strong> — details pre-filled</span>
+            </div>
+          )}
+
           {error && (
             <div className="error-alert">
               <span className="error-icon">⚠️</span>
@@ -133,7 +159,9 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
               onChange={handleChange}
               placeholder="e.g. John Kizito"
               required
-              autoFocus
+              autoFocus={!loggedInUser}
+              readOnly={!!loggedInUser?.name}
+              className={loggedInUser?.name ? "prefilled" : ""}
             />
           </div>
 
@@ -149,7 +177,8 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
               onChange={handleChange}
               placeholder="saphaniox@example.com"
               required
-              autoFocus
+              readOnly={!!loggedInUser?.email}
+              className={loggedInUser?.email ? "prefilled" : ""}
             />
           </div>
 
