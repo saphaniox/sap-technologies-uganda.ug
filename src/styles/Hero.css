@@ -154,10 +154,10 @@
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(26, 35, 126, 0.10);
   color: #1a237e;
   border: 2px solid #1a237e;
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(26, 35, 126, 0.2);
 }
 
 .btn-secondary:hover {
