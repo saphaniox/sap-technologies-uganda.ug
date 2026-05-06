@@ -54,7 +54,7 @@ class ApiService {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
       
-      console.log('🔔 Waking up server...');
+      if (import.meta.env.DEV) console.log('🔔 Waking up server...');
       const response = await fetch(`${this.baseURL}/api/health`, {
         method: 'GET',
         signal: controller.signal,
@@ -65,11 +65,11 @@ class ApiService {
       clearTimeout(timeoutId);
       
       if (response.ok) {
-        console.log('✅ Server is awake');
+        if (import.meta.env.DEV) console.log('✅ Server is awake');
       }
     } catch (error) {
       // Silently fail - this is just a wake-up call
-      console.log('⏰ Server wake-up initiated (may take 30-60 seconds on first load)');
+      if (import.meta.env.DEV) console.log('⏰ Server wake-up initiated (may take 30-60 seconds on first load)');
     }
   }
 
@@ -93,7 +93,7 @@ class ApiService {
     if (useCache) {
       const cached = this.getCached(cacheKey);
       if (cached) {
-        console.log('📦 Serving from cache:', cacheKey);
+        if (import.meta.env.DEV) console.log('📦 Serving from cache:', cacheKey);
         // Return a deep clone to avoid same-reference state updates in React
         try {
           // Use structuredClone when available for performance

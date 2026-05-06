@@ -1,8 +1,9 @@
-﻿import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
-import Background3D from "./Background3D";
-import { withLoading } from "../utils/alerts.jsx";
 import "../styles/Hero.css";
+
+// Three.js is 854 kB — lazy-load so it never blocks the initial paint
+const Background3D = lazy(() => import("./Background3D"));
 
 const Hero = () => {
   /**
@@ -50,31 +51,10 @@ const Hero = () => {
    * Navigate to Services Section
    * Scrolls to services with loading animation for better UX
    */
-  const handleGetStarted = async () => {
-    try {
-      await withLoading(
-        async () => {
-          // Simulate brief loading for better UX
-          await new Promise(resolve => setTimeout(resolve, 1500));
-          
-          const servicesSection = document.getElementById("services");
-          if (servicesSection) {
-            servicesSection.scrollIntoView({ 
-              behavior: "smooth",
-              block: "start"
-            });
-          }
-        },
-        {
-          loadingTitle: "Getting Started! 🚀",
-          loadingText: "Preparing our services for you...",
-          successTitle: "Let\"s Get Started!",
-          successText: "Explore our services below to find the perfect solution for your needs.",
-          showSuccess: true
-        }
-      );
-    } catch (error) {
-      console.error("Error navigating to services:", error);
+  const handleGetStarted = () => {
+    const servicesSection = document.getElementById("services");
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
@@ -82,36 +62,10 @@ const Hero = () => {
    * Navigate to Portfolio Section
    * Scrolls to featured projects with loading animation
    */
-  const handleViewProjects = async () => {
-    try {
-      await withLoading(
-        async () => {
-          // Simulate brief loading for better UX
-          await new Promise(resolve => setTimeout(resolve, 1500));
-          
-          const portfolioSection = document.getElementById("portfolio");
-          if (portfolioSection) {
-            portfolioSection.scrollIntoView({ 
-              behavior: "smooth",
-              block: "start"
-            });
-          } else {
-            throw new Error("Portfolio section not found");
-          }
-        },
-        {
-          loadingTitle: "Loading Projects! 🎯",
-          loadingText: "Preparing our featured projects for you...",
-          successTitle: "Our Featured Projects",
-          successText: "Check out our amazing work and successful client projects below!",
-          showSuccess: true,
-          showError: true,
-          errorTitle: "Coming Soon! 🔥",
-          errorText: "Our featured projects showcase is being updated. Contact us to see our latest work!"
-        }
-      );
-    } catch (error) {
-      console.error("Error navigating to projects:", error);
+  const handleViewProjects = () => {
+    const portfolioSection = document.getElementById("portfolio");
+    if (portfolioSection) {
+      portfolioSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
@@ -122,7 +76,9 @@ const Hero = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <Background3D />
+      <Suspense fallback={null}>
+        <Background3D />
+      </Suspense>
       
       <div className="floating-particles">
         {[...Array(15)].map((_, i) => (

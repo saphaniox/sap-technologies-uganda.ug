@@ -5,17 +5,9 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Slider from "./components/Slider";
 import About from "./components/About";
-import Services from "./components/Services";
-import Portfolio from "./components/Portfolio";
-import Partners from "./components/Partners";
-import Companies from "./components/Companies";
-import Products from "./components/Products";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
 import AuthModal from "./components/AuthModal";
 import BackToTop from "./components/BackToTop";
 import NotFound from "./components/NotFound";
-import Testimonials from "./components/Testimonials";
 import WhatsAppButton from "./components/WhatsAppButton";
 import CookieConsent from "./components/CookieConsent";
 import { CartProvider, useCart } from "./contexts/CartContext";
@@ -23,6 +15,16 @@ import Cart from "./components/Cart";
 import apiService from "./services/api";
 import keepAliveService from "./services/keepAliveService";
 import { initializeAnimations } from "./utils/animations";
+
+// Below-fold sections — lazy-loaded so initial bundle stays lean
+const Services = lazy(() => import("./components/Services"));
+const Portfolio = lazy(() => import("./components/Portfolio"));
+const Partners = lazy(() => import("./components/Partners"));
+const Companies = lazy(() => import("./components/Companies"));
+const Products = lazy(() => import("./components/Products"));
+const Contact = lazy(() => import("./components/Contact"));
+const Footer = lazy(() => import("./components/Footer"));
+const Testimonials = lazy(() => import("./components/Testimonials"));
 import { microAnimationStyles } from "./utils/microAnimations.jsx";
 import { useVisitorTracking } from "./hooks/useVisitorTracking";
 import "./styles/App.css";
@@ -227,20 +229,24 @@ function App() {
                 <Hero />
                 <Slider />
                 <About />
-                <Services />
-                <Portfolio />
-                <Partners />
-                <Companies />
-                <Products />
-                <Testimonials />
-                <Contact />
+                <Suspense fallback={null}>
+                  <Services />
+                  <Portfolio />
+                  <Partners />
+                  <Companies />
+                  <Products />
+                  <Testimonials />
+                  <Contact />
+                </Suspense>
               </main>
               
-              <Footer 
-                onPrivacyPolicyOpen={handlePrivacyPolicyOpen}
-                onTermsOfServiceOpen={handleTermsOfServiceOpen}
-                onNavigate={null}
-              />
+              <Suspense fallback={null}>
+                <Footer 
+                  onPrivacyPolicyOpen={handlePrivacyPolicyOpen}
+                  onTermsOfServiceOpen={handleTermsOfServiceOpen}
+                  onNavigate={null}
+                />
+              </Suspense>
               <BackToTop />
               <WhatsAppButton />
               <CookieConsent onPrivacyPolicyOpen={handlePrivacyPolicyOpen} />

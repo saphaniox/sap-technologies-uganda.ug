@@ -33,8 +33,8 @@ export default defineConfig({
             handler: "NetworkFirst",
             options: {
               cacheName: "api-cache",
-              expiration: { maxEntries: 50, maxAgeSeconds: 300 },
-              networkTimeoutSeconds: 10
+              expiration: { maxEntries: 80, maxAgeSeconds: 600 },
+              networkTimeoutSeconds: 8
             }
           },
           {
@@ -42,7 +42,16 @@ export default defineConfig({
             handler: "CacheFirst",
             options: {
               cacheName: "cloudinary-images",
-              expiration: { maxEntries: 100, maxAgeSeconds: 604800 }
+              expiration: { maxEntries: 200, maxAgeSeconds: 2592000 } // 30 days
+            }
+          },
+          {
+            // Cache the API server health/wake-up endpoint with StaleWhileRevalidate
+            urlPattern: /^https:\/\/sap-technologies-ug\.onrender\.com\/api\/health/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "health-cache",
+              expiration: { maxEntries: 1, maxAgeSeconds: 60 }
             }
           }
         ]
@@ -67,7 +76,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    cssCodeSplit: true,        // Split CSS per-chunk so unused styles don't block paint
     chunkSizeWarningLimit: 1600,
+    target: 'es2020',          // Modern target = smaller output, no legacy polyfills
     rollupOptions: {
       output: {
         manualChunks(id) {
