@@ -39,7 +39,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 category: product.category || "Other",
                 price: {
                     amount: product.price?.amount || "",
-                    currency: product.price?.currency || "",
+                    currency: product.price?.currency || "UGX",
                     type: product.price?.type || "contact-for-price"
                 },
                 availability: product.availability || "custom-order",
