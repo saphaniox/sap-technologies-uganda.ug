@@ -43,7 +43,7 @@ const CertificateVerify = () => {
 
     const handleDownload = () => {
         if (certificate && certificate.filename) {
-            const downloadUrl = `${apiService.baseURL}/certificates/download/${certificate.filename}`;
+            const downloadUrl = `${apiService.baseURL}/api/certificates/download/${certificate.filename}`;
             window.open(downloadUrl, '_blank');
         }
     };
