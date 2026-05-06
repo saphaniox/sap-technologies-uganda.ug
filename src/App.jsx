@@ -243,7 +243,7 @@ function App() {
               />
               <BackToTop />
               <WhatsAppButton />
-              <CookieConsent />
+              <CookieConsent onPrivacyPolicyOpen={handlePrivacyPolicyOpen} />
               <Cart />
               <CartFloatButton />
               

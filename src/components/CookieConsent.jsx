@@ -3,7 +3,7 @@ import "../styles/CookieConsent.css";
 
 const STORAGE_KEY = "saptechug_cookie_consent";
 
-const CookieConsent = () => {
+const CookieConsent = ({ onPrivacyPolicyOpen }) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const CookieConsent = () => {
         <p className="cookie-text">
           🍪 We use cookies to improve your experience on our website. By continuing to browse,
           you agree to our use of cookies in accordance with our{" "}
-          <button className="cookie-policy-link" onClick={() => {}}>Privacy Policy</button>.
+          <button className="cookie-policy-link" onClick={() => onPrivacyPolicyOpen && onPrivacyPolicyOpen()}>Privacy Policy</button>.
         </p>
         <div className="cookie-actions">
           <button className="cookie-btn cookie-accept" onClick={accept}>
