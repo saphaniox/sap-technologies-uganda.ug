@@ -510,8 +510,6 @@ const Services = () => {
                 variants={cardHover}
                 initial="rest"
                 whileHover="hover"
-                data-aos="fade-up"
-                data-aos-delay={index * 200}
               >
                 <div className="service-content">
                   <motion.div 
@@ -601,8 +599,6 @@ const Services = () => {
                     variants={cardHover}
                     initial="rest"
                     whileHover="hover"
-                    data-aos="fade-up"
-                    data-aos-delay={index * 200}
                   >
                     <div className="service-content">
                       <motion.div 

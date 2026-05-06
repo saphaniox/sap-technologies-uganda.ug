@@ -111,6 +111,63 @@
     left: 0;
 }
 
+/* Products Search Bar */
+.products-search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto 24px;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 50px;
+    padding: 0 16px;
+    box-shadow: 0 4px 16px rgba(52, 152, 219, 0.08);
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.products-search-bar:focus-within {
+    border-color: #3498db;
+    box-shadow: 0 4px 20px rgba(52, 152, 219, 0.18);
+}
+
+.products-search-icon {
+    font-size: 1.1rem;
+    margin-right: 10px;
+    color: #888;
+}
+
+.products-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    padding: 14px 0;
+    background: transparent;
+    color: #2c3e50;
+}
+
+.products-search-input::placeholder {
+    color: #aaa;
+}
+
+.products-search-clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #999;
+    padding: 4px 6px;
+    border-radius: 50%;
+    line-height: 1;
+    transition: background 0.2s, color 0.2s;
+}
+
+.products-search-clear:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
 /* Products Grid */
 .products-grid {
     display: grid;
@@ -744,4 +801,23 @@
 
 [data-theme="dark"] .cta-btn:hover {
     box-shadow: 0 10px 30px rgba(93, 173, 226, 0.4);
+}
+
+/* Dark mode – Products search bar */
+[data-theme="dark"] .products-search-bar {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .products-search-input {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .products-search-input::placeholder {
+    color: var(--text-color-secondary);
+}
+
+[data-theme="dark"] .products-search-clear:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-color);
 }

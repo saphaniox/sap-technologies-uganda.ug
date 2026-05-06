@@ -430,8 +430,6 @@ const Portfolio = () => {
             <div 
               key={index} 
               className="portfolio-card" 
-              data-aos="fade-up" 
-              data-aos-delay={index * 200}
             >
               {/* Project Image with gradient overlay */}
               <div className="portfolio-image">
@@ -500,8 +498,6 @@ const Portfolio = () => {
                 <div 
                   key={index} 
                   className="portfolio-card" 
-                  data-aos="fade-up" 
-                  data-aos-delay={index * 200}
                 >
                   {/* Project Image */}
                   <div className="portfolio-image">

@@ -25,6 +25,7 @@ const Products = () => {
     const [productToDelete, setProductToDelete] = useState(null);
     const [adminStats, setAdminStats] = useState(null);
     const [loadingStats, setLoadingStats] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const { addToCart, isInCart, openCart } = useCart();
 
@@ -41,7 +42,7 @@ const Products = () => {
             try {
                 setLoading(true);
                 const [productsResponse, categoriesResponse] = await Promise.all([
-                    apiService.request("/api/products"),
+                    apiService.request("/api/products?limit=500"),
                     apiService.request("/api/products/categories")
                 ]);
 
@@ -94,17 +95,32 @@ const Products = () => {
         }
     };
 
-    const handleCategoryFilter = (category) => {
-        setSelectedCategory(category);
-        if (category === "all") {
-            setProducts(allProductsRef.current);
-        } else {
-            setProducts(
-                allProductsRef.current.filter(
-                    (p) => p.category === category
-                )
+    const applyFilters = (all, category, search) => {
+        let filtered = all;
+        if (category && category !== "all") {
+            filtered = filtered.filter((p) => p.category === category);
+        }
+        if (search && search.trim().length > 0) {
+            const q = search.trim().toLowerCase();
+            filtered = filtered.filter((p) =>
+                p.name?.toLowerCase().includes(q) ||
+                p.shortDescription?.toLowerCase().includes(q) ||
+                p.category?.toLowerCase().includes(q) ||
+                p.tags?.some((t) => t.toLowerCase().includes(q))
             );
         }
+        return filtered;
+    };
+
+    const handleCategoryFilter = (category) => {
+        setSelectedCategory(category);
+        setProducts(applyFilters(allProductsRef.current, category, searchTerm));
+    };
+
+    const handleSearch = (e) => {
+        const val = e.target.value;
+        setSearchTerm(val);
+        setProducts(applyFilters(allProductsRef.current, selectedCategory, val));
     };
 
     const handleInquiry = (product) => {
@@ -130,15 +146,10 @@ const Products = () => {
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const response = await apiService.request("/api/products");
+            const response = await apiService.request("/api/products?limit=500");
             if (response.status === "success") {
                 allProductsRef.current = response.data.products;
-                // Re-apply current category filter after refresh
-                if (selectedCategory === "all") {
-                    setProducts(response.data.products);
-                } else {
-                    setProducts(response.data.products.filter((p) => p.category === selectedCategory));
-                }
+                setProducts(applyFilters(response.data.products, selectedCategory, searchTerm));
             }
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -328,6 +339,27 @@ const Products = () => {
                     </p>
                 </div>
 
+                {/* Search Bar */}
+                <div className="products-search-bar">
+                    <span className="products-search-icon">🔍</span>
+                    <input
+                        type="text"
+                        className="products-search-input"
+                        placeholder="Search products by name, category, or keyword..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                    />
+                    {searchTerm && (
+                        <button
+                            className="products-search-clear"
+                            onClick={() => { setSearchTerm(""); setProducts(applyFilters(allProductsRef.current, selectedCategory, "")); }}
+                            aria-label="Clear search"
+                        >
+                            ✕
+                        </button>
+                    )}
+                </div>
+
                 {/* Category Filter */}
                 <div className="category-filter">
                     <button 
@@ -351,7 +383,11 @@ const Products = () => {
                 <div className="products-grid">
                     {products.length === 0 ? (
                         <div className="no-products">
-                            <p>No products available in this category.</p>
+                            {searchTerm ? (
+                                <p>No products found matching "<strong>{searchTerm}</strong>". Try a different keyword.</p>
+                            ) : (
+                                <p>No products available in this category.</p>
+                            )}
                         </div>
                     ) : (
                         products.map((product) => {

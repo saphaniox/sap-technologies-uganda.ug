@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import { getImageUrl } from "../utils/imageUrl";
+import apiService from "../services/api";
 import "../styles/Header.css";
 
 const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthModalOpen, onAccountOpen, onAdminOpen, onLogout }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState("home");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const searchTimerRef = useRef(null);
+  const searchInputRef = useRef(null);
   
   const location = useLocation();
   const isAwardsPage = location.pathname === "/awards";
@@ -31,6 +38,39 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const openSearch = () => {
+    setSearchOpen(true);
+    setTimeout(() => searchInputRef.current?.focus(), 100);
+  };
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+    setSearchQuery("");
+    setSearchResults(null);
+    clearTimeout(searchTimerRef.current);
+  };
+
+  const handleSearchInput = (e) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+    clearTimeout(searchTimerRef.current);
+    if (val.trim().length < 2) {
+      setSearchResults(null);
+      return;
+    }
+    searchTimerRef.current = setTimeout(async () => {
+      setSearchLoading(true);
+      try {
+        const res = await apiService.search(val.trim());
+        if (res.success) setSearchResults(res.results);
+      } catch {
+        setSearchResults(null);
+      } finally {
+        setSearchLoading(false);
+      }
+    }, 400);
+  };
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -392,6 +432,21 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           </AnimatePresence>
         </motion.ul>
         
+        {/* Search Button */}
+        <motion.button
+          className="nav-search-btn"
+          onClick={openSearch}
+          title="Search"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.4 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label="Open search"
+        >
+          🔍
+        </motion.button>
+
         {/* Theme Toggle */}
         <motion.div 
           className="nav-theme-toggle"
@@ -402,6 +457,111 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           <ThemeToggle />
         </motion.div>
       </motion.nav>
+
+      {/* Global Search Overlay */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            className="search-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={(e) => e.target === e.currentTarget && closeSearch()}
+          >
+            <motion.div
+              className="search-modal"
+              initial={{ y: -40, opacity: 0, scale: 0.97 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: -40, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+            >
+              <div className="search-modal-header">
+                <div className="search-input-wrap">
+                  <span className="search-modal-icon">🔍</span>
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchInput}
+                    placeholder="Search products, services, projects..."
+                    className="search-modal-input"
+                    onKeyDown={(e) => e.key === "Escape" && closeSearch()}
+                  />
+                  {searchQuery && (
+                    <button
+                      className="search-input-clear"
+                      onClick={() => { setSearchQuery(""); setSearchResults(null); }}
+                      aria-label="Clear search"
+                    >✕</button>
+                  )}
+                </div>
+                <button className="search-close-btn" onClick={closeSearch}>✕ Close</button>
+              </div>
+
+              <div className="search-modal-results">
+                {searchLoading && (
+                  <div className="search-loading">
+                    <span className="search-spinner" /> Searching...
+                  </div>
+                )}
+
+                {!searchLoading && searchResults && (() => {
+                  const hasProducts = searchResults.products?.length > 0;
+                  const hasServices = searchResults.services?.length > 0;
+                  const hasProjects = searchResults.projects?.length > 0;
+                  if (!hasProducts && !hasServices && !hasProjects) {
+                    return <div className="search-no-results">No results found for "<strong>{searchQuery}</strong>"</div>;
+                  }
+                  return (
+                    <>
+                      {hasProducts && (
+                        <div className="search-result-section">
+                          <h4 className="search-section-title">🛒 Products</h4>
+                          {searchResults.products.map((p) => (
+                            <a key={p._id} href="#products" className="search-result-item" onClick={closeSearch}>
+                              <span className="search-result-name">{p.name}</span>
+                              <span className="search-result-meta">{p.category}</span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                      {hasServices && (
+                        <div className="search-result-section">
+                          <h4 className="search-section-title">⚙️ Services</h4>
+                          {searchResults.services.map((s) => (
+                            <a key={s._id} href="#services" className="search-result-item" onClick={closeSearch}>
+                              <span className="search-result-name">{s.title || s.name}</span>
+                              <span className="search-result-meta">{s.category}</span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                      {hasProjects && (
+                        <div className="search-result-section">
+                          <h4 className="search-section-title">🗂 Projects</h4>
+                          {searchResults.projects.map((p) => (
+                            <a key={p._id} href="#portfolio" className="search-result-item" onClick={closeSearch}>
+                              <span className="search-result-name">{p.title || p.name}</span>
+                              <span className="search-result-meta">{p.category}</span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
+
+                {!searchLoading && !searchResults && (
+                  <div className="search-hint">
+                    Start typing to search across products, services and projects...
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };

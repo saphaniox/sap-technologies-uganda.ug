@@ -861,6 +861,12 @@ class ApiService {
       method: "GET"
     });
   }
+
+  // Global search across products, services, projects
+  async search(q, type = 'all', limit = 20) {
+    const params = new URLSearchParams({ q, type, limit: String(limit) });
+    return this.request(`/api/search?${params}`, { useCache: false });
+  }
 }
 
 // Create and export a single instance
