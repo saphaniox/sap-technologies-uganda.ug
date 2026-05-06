@@ -52,27 +52,31 @@
 /* Enhanced Input Field Styling */
 .auth-form input {
   width: 100%;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  border: 2px solid #d09494;
+  padding: 0.875rem 1rem;
+  margin-bottom: 1.2rem;
+  border: 1.5px solid #c5cae9;
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   box-sizing: border-box;
-  background: hsl(212, 19%, 86%);
-  color: #dae2e9;
+  background: #f8f9ff;
+  color: #1a237e;
+}
+
+.auth-form input::placeholder {
+  color: #9fa8c7;
 }
 
 .auth-form input:focus {
   outline: none;
   border-color: #3949ab;
-  box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.1);
-  background: hwb(225 51% 22%);
+  box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.12);
+  background: #fff;
 }
 
 .auth-form input:hover {
-  border-color: #b0b8e0;
+  border-color: #7986cb;
 }
 
 /* Enhanced Password Input Container */
@@ -83,27 +87,31 @@
 
 .password-input-container input {
   width: 100%;
-  padding: 1rem 2rem 1rem 1rem; /* Reduced right padding for smaller toggle button */
-  border: 2px solid #e18b8b;
+  padding: 0.875rem 3rem 0.875rem 1rem;
+  border: 1.5px solid #c5cae9;
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   box-sizing: border-box;
   margin-bottom: 0;
-  background: #5681ad;
-  color: #212529;
+  background: #f8f9ff;
+  color: #1a237e;
+}
+
+.password-input-container input::placeholder {
+  color: #9fa8c7;
 }
 
 .password-input-container input:focus {
   outline: none;
   border-color: #3949ab;
-  box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.1);
-  background: #fbfcff;
+  box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.12);
+  background: #fff;
 }
 
 .password-input-container input:hover {
-  border-color: #b0b8e0;
+  border-color: #7986cb;
 }
 
 /* Password visibility change animation */
@@ -117,55 +125,43 @@
   font-family: monospace;
 }
 
-/* Password and toggle as one unified element */
+/* Inline eye icon — no border, no background, floats inside the input */
 .password-toggle-btn {
   position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 45px;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   background: transparent;
   border: none;
-  border-left: 1px solid rgba(0, 0, 0, 0.1);
-  color: #6c757d;
+  color: #9fa8c7;
   cursor: pointer;
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  border-radius: 0 4px 4px 0;
+  transition: color 0.2s ease;
   z-index: 2;
+  line-height: 0;
 }
 
 .password-toggle-btn:hover {
-  background: rgba(0, 0, 0, 0.02);
   color: #3949ab;
-  border-left-color: rgba(57, 73, 171, 0.2);
 }
 
 .password-toggle-btn:focus {
   outline: none;
-  background: rgba(57, 73, 171, 0.05);
   color: #3949ab;
-  border-left-color: rgba(57, 73, 171, 0.3);
 }
 
 .password-toggle-btn:active {
-  background: rgba(57, 73, 171, 0.08);
-  color: #2c3e50;
+  color: #1a237e;
 }
 
 .password-toggle-btn svg {
   width: 18px;
   height: 18px;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
   stroke-width: 2;
-  opacity: 0.7;
-}
-
-.password-toggle-btn:hover svg {
-  opacity: 1;
-  transform: scale(1.05);
 }
 
 /* Enhanced Submit Button Styling */
