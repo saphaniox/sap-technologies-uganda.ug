@@ -15,6 +15,7 @@ import "../styles/AdminDashboard.css";
 const AdminDashboard = ({ user, onClose }) => {
   // Main navigation state - tracks which admin section is currently active
   const [activeTab, setActiveTab] = useState("overview");
+  const [sidebarOpen, setSidebarOpen] = useState(false); // sidebar collapsed by default on mobile
   
   // Data states - all the information we display in different admin sections
   const [dashboardStats, setDashboardStats] = useState(null); // Overview numbers and charts
@@ -1059,6 +1060,11 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     <div className="admin-modal">
       <div className="admin-content">
         <div className="admin-header">
+          <button className="hamburger-btn" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
           <h2>Admin-Dashboard - SAPTech Uganda</h2>
           <div className="admin-user-info">
             <span>Welcome, {user?.name}</span>
@@ -1073,94 +1079,82 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
           </div>
         )}
 
-        <div className="admin-tabs">
-          <button 
-            className={`tab-btn ${activeTab === "overview" ? "active" : ""}`}
-            onClick={() => setActiveTab("overview")}
-          >
-            📊 Overview
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "users" ? "active" : ""}`}
-            onClick={() => setActiveTab("users")}
-          >
-            👥 Users ({dashboardStats?.stats?.totalUsers || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "contacts" ? "active" : ""}`}
-            onClick={() => setActiveTab("contacts")}
-          >
-            📧 Contacts ({dashboardStats?.stats?.totalContacts || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "newsletters" ? "active" : ""}`}
-            onClick={() => setActiveTab("newsletters")}
-          >
-            📰 Newsletter ({dashboardStats?.stats?.totalNewsletterSubscribers || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "services" ? "active" : ""}`}
-            onClick={() => setActiveTab("services")}
-          >
-            🛠️ Services ({dashboardStats?.stats?.totalServices || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "projects" ? "active" : ""}`}
-            onClick={() => setActiveTab("projects")}
-          >
-            🚀 Projects ({dashboardStats?.stats?.totalProjects || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "partners" ? "active" : ""}`}
-            onClick={() => setActiveTab("partners")}
-          >
-            🤝 Partners ({partners.length || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "partnership-requests" ? "active" : ""}`}
-            onClick={() => setActiveTab("partnership-requests")}
-          >
-            📝 Partnership Requests ({partnershipRequests.length || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "products" ? "active" : ""}`}
-            onClick={() => setActiveTab("products")}
-          >
-            📦 Products ({products.length || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "product-inquiries" ? "active" : ""}`}
-            onClick={() => setActiveTab("product-inquiries")}
-          >
-            📨 Product Inquiries ({productInquiries.length || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "service-quotes" ? "active" : ""}`}
-            onClick={() => setActiveTab("service-quotes")}
-          >
-            💼 Service Quotes ({serviceQuotes.length || 0})
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "awards" ? "active" : ""}`}
-            onClick={() => setActiveTab("awards")}
-          >
-            🏆 Awards Management
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "analytics" ? "active" : ""}`}
-            onClick={() => setActiveTab("analytics")}
-          >
-            📊 Visitor Analytics
-          </button>
-          <button 
-            className={`tab-btn ${activeTab === "settings" ? "active" : ""}`}
-            onClick={() => setActiveTab("settings")}
-          >
-            ⚙️ Settings
-          </button>
-        </div>
-
         <div className="admin-main">
+          {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+          <aside className={`admin-sidebar ${sidebarOpen ? "open" : ""}`}>
+            <nav className="sidebar-nav">
+              <button className={`nav-btn ${activeTab === "overview" ? "active" : ""}`}
+                onClick={() => { setActiveTab("overview"); setSidebarOpen(false); }}>
+                <span className="nav-icon">📊</span>
+                <span>Overview</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "users" ? "active" : ""}`}
+                onClick={() => { setActiveTab("users"); setSidebarOpen(false); }}>
+                <span className="nav-icon">👥</span>
+                <span>Users ({dashboardStats?.stats?.totalUsers || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "contacts" ? "active" : ""}`}
+                onClick={() => { setActiveTab("contacts"); setSidebarOpen(false); }}>
+                <span className="nav-icon">📧</span>
+                <span>Contacts ({dashboardStats?.stats?.totalContacts || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "newsletters" ? "active" : ""}`}
+                onClick={() => { setActiveTab("newsletters"); setSidebarOpen(false); }}>
+                <span className="nav-icon">📰</span>
+                <span>Newsletter ({dashboardStats?.stats?.totalNewsletterSubscribers || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "services" ? "active" : ""}`}
+                onClick={() => { setActiveTab("services"); setSidebarOpen(false); }}>
+                <span className="nav-icon">🛠️</span>
+                <span>Services ({dashboardStats?.stats?.totalServices || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "projects" ? "active" : ""}`}
+                onClick={() => { setActiveTab("projects"); setSidebarOpen(false); }}>
+                <span className="nav-icon">🚀</span>
+                <span>Projects ({dashboardStats?.stats?.totalProjects || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "partners" ? "active" : ""}`}
+                onClick={() => { setActiveTab("partners"); setSidebarOpen(false); }}>
+                <span className="nav-icon">🤝</span>
+                <span>Partners ({partners.length || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "partnership-requests" ? "active" : ""}`}
+                onClick={() => { setActiveTab("partnership-requests"); setSidebarOpen(false); }}>
+                <span className="nav-icon">📝</span>
+                <span>Partnership Requests ({partnershipRequests.length || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "products" ? "active" : ""}`}
+                onClick={() => { setActiveTab("products"); setSidebarOpen(false); }}>
+                <span className="nav-icon">📦</span>
+                <span>Products ({products.length || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "product-inquiries" ? "active" : ""}`}
+                onClick={() => { setActiveTab("product-inquiries"); setSidebarOpen(false); }}>
+                <span className="nav-icon">📨</span>
+                <span>Product Inquiries ({productInquiries.length || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "service-quotes" ? "active" : ""}`}
+                onClick={() => { setActiveTab("service-quotes"); setSidebarOpen(false); }}>
+                <span className="nav-icon">💼</span>
+                <span>Service Quotes ({serviceQuotes.length || 0})</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "awards" ? "active" : ""}`}
+                onClick={() => { setActiveTab("awards"); setSidebarOpen(false); }}>
+                <span className="nav-icon">🏆</span>
+                <span>Awards Management</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "analytics" ? "active" : ""}`}
+                onClick={() => { setActiveTab("analytics"); setSidebarOpen(false); }}>
+                <span className="nav-icon">📊</span>
+                <span>Visitor Analytics</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "settings" ? "active" : ""}`}
+                onClick={() => { setActiveTab("settings"); setSidebarOpen(false); }}>
+                <span className="nav-icon">⚙️</span>
+                <span>Settings</span>
+              </button>
+            </nav>
+          </aside>
           <div className="tab-content">
             {activeTab === "overview" && (
               <div className="dashboard-overview">
