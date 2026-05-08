@@ -135,7 +135,8 @@ const Account = ({ onClose }) => {
     try {
       await apiService.updatePassword({
         currentPassword: formData.currentPassword,
-        newPassword: formData.newPassword
+        newPassword: formData.newPassword,
+        confirmPassword: formData.confirmPassword
       });
       setFormData({
         ...formData,
