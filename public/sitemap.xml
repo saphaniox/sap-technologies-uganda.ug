@@ -4,7 +4,7 @@
   
   <!-- Homepage -->
   <url>
-    <loc>https://sap-technologies.ug/</loc>
+    <loc>https://sap-technologies.com/</loc>
     <lastmod>2026-04-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -12,7 +12,7 @@
   
   <!-- Software Page -->
   <url>
-    <loc>https://sap-technologies.ug/software</loc>
+    <loc>https://sap-technologies.com/software</loc>
     <lastmod>2026-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -20,7 +20,7 @@
 
   <!-- IoT Page -->
   <url>
-    <loc>https://sap-technologies.ug/iot</loc>
+    <loc>https://sap-technologies.com/iot</loc>
     <lastmod>2026-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
