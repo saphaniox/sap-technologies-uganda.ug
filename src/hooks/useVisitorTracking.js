@@ -15,6 +15,7 @@ const getApiUrl = () => {
 };
 
 const API_BASE_URL = getApiUrl();
+const TRACKING_ENDPOINT = `${API_BASE_URL}/api/visitor/track`;
 
 // Generate a unique fingerprint for the visitor
 const generateFingerprint = () => {
@@ -68,6 +69,22 @@ const getSessionId = () => {
   return sessionId;
 };
 
+const sendTrackingPayload = async (payload, preferBeacon = false) => {
+  const body = new URLSearchParams();
+  body.set("payload", JSON.stringify(payload));
+
+  if (preferBeacon && navigator.sendBeacon) {
+    navigator.sendBeacon(TRACKING_ENDPOINT, body);
+    return;
+  }
+
+  await fetch(TRACKING_ENDPOINT, {
+    method: "POST",
+    body,
+    keepalive: true,
+  });
+};
+
 // Custom hook for visitor tracking
 export const useVisitorTracking = () => {
   const location = useLocation();
@@ -85,12 +102,6 @@ export const useVisitorTracking = () => {
     // We just need to send fingerprint for identification
     const sendPageView = async () => {
       try {
-        // Set headers for tracking
-        const headers = {
-          "X-Session-ID": sessionId.current,
-          "X-Fingerprint": fingerprint.current,
-        };
-
         // The backend middleware will automatically track the page view
         // We don't need to make an explicit API call for initial tracking
         
@@ -120,24 +131,16 @@ export const useVisitorTracking = () => {
       const timeOnPage = Math.floor((Date.now() - startTimeRef.current) / 1000);
       
       try {
-        await fetch(`${API_BASE_URL}/api/visitor/track`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Session-ID": sessionId.current,
-            "X-Fingerprint": fingerprint.current,
-          },
-          body: JSON.stringify({
-            sessionId: sessionId.current,
-            path: location.pathname,
-            title: document.title,
-            timeOnPage,
-            scrollDepth: maxScrollRef.current,
-            performance: {
-              loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
-              domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
-            }
-          }),
+        await sendTrackingPayload({
+          sessionId: sessionId.current,
+          path: location.pathname,
+          title: document.title,
+          timeOnPage,
+          scrollDepth: maxScrollRef.current,
+          performance: {
+            loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
+            domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
+          }
         });
       } catch (error) {
         console.error("Failed to update page view:", error);
@@ -146,7 +149,19 @@ export const useVisitorTracking = () => {
 
     // Send update before leaving page
     const handleBeforeUnload = () => {
-      sendPageViewUpdate();
+      const timeOnPage = Math.floor((Date.now() - startTimeRef.current) / 1000);
+
+      sendTrackingPayload({
+        sessionId: sessionId.current,
+        path: location.pathname,
+        title: document.title,
+        timeOnPage,
+        scrollDepth: maxScrollRef.current,
+        performance: {
+          loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
+          domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
+        }
+      }, true).catch(() => {});
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -174,22 +189,14 @@ export const trackEvent = async (eventName, eventValue = "") => {
     const sessionId = getSessionId();
     const fingerprint = generateFingerprint();
     
-    await fetch(`${API_BASE_URL}/api/visitor/track`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Session-ID": sessionId,
-        "X-Fingerprint": fingerprint,
+    await sendTrackingPayload({
+      sessionId,
+      path: window.location.pathname,
+      event: {
+        name: eventName,
+        value: eventValue,
+        timestamp: new Date(),
       },
-      body: JSON.stringify({
-        sessionId,
-        path: window.location.pathname,
-        event: {
-          name: eventName,
-          value: eventValue,
-          timestamp: new Date(),
-        },
-      }),
     });
   } catch (error) {
     console.error("Failed to track event:", error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import { showAlert } from "../utils/alerts.jsx";
 import { getImageUrl } from "../utils/imageUrl";
+import { compressImageFiles } from "../utils/mediaCompression";
 import "../styles/AdminForms.css";
 
 const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
@@ -85,7 +86,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
     }));
   };
   
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const files = Array.from(e.target.files);
     const maxImages = 5;
     
@@ -98,10 +99,10 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
       return;
     }
     
-    // Validate files
+    // Validate files before doing browser-side compression.
     for (const file of files) {
-      if (file.size > 10 * 1024 * 1024) {
-        showAlert.error("Image too large", `"${file.name}" is over the 10MB limit. Please use a smaller image.`);
+      if (file.size > 25 * 1024 * 1024) {
+        showAlert.error("Image too large", `"${file.name}" is over the 25MB browser optimization limit. Please use a smaller image.`);
         e.target.value = "";
         return;
       }
@@ -112,12 +113,33 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
         return;
       }
     }
+
+    let optimizedFiles;
+    try {
+      optimizedFiles = await compressImageFiles(files, {
+        maxWidth: 1600,
+        maxHeight: 1200,
+        quality: 0.8
+      });
+    } catch (error) {
+      showAlert.error("Couldn't prepare image", error.message || "Please try another image.");
+      e.target.value = "";
+      return;
+    }
+
+    for (const file of optimizedFiles) {
+      if (file.size > 10 * 1024 * 1024) {
+        showAlert.error("Image too large", `"${file.name}" is still over the 10MB upload limit after optimization.`);
+        e.target.value = "";
+        return;
+      }
+    }
     
     // Add files
-    setNewImageFiles(prev => [...prev, ...files]);
+    setNewImageFiles(prev => [...prev, ...optimizedFiles]);
     
     // Generate previews
-    files.forEach(file => {
+    optimizedFiles.forEach(file => {
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreviews(prev => [...prev, {

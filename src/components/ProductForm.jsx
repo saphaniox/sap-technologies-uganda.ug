@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import { showAlert } from "../utils/alerts.jsx";
 import { getImageUrl } from "../utils/imageUrl";
+import { compressImageFiles } from "../utils/mediaCompression";
 import "../styles/ProductForm.css";
 
 const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
@@ -120,7 +121,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
         }
     };
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         const files = Array.from(e.target.files);
         const maxImages = 5;
         
@@ -142,12 +143,12 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
         if (files.length > 0) {
             // Validate each file
             for (const file of files) {
-                // Validate file size (10MB max)
-                const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+                // Validate original file size before browser-side optimization
+                const maxSize = 25 * 1024 * 1024; // 25MB in bytes
                 if (file.size > maxSize) {
                     showAlert.error(
                         "Image too large",
-                        `"${file.name}" is over the 10MB limit. Please use a smaller image.`,
+                        `"${file.name}" is over the 25MB browser optimization limit. Please use a smaller image.`,
                         {
                             showConfirmButton: true,
                             confirmButtonText: "OK"
@@ -172,11 +173,46 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 }
             }
 
+            let optimizedFiles;
+            try {
+                optimizedFiles = await compressImageFiles(files, {
+                    maxWidth: 1400,
+                    maxHeight: 1400,
+                    quality: 0.82
+                });
+            } catch (error) {
+                showAlert.error(
+                    "Couldn't prepare image",
+                    error.message || "Please try another image.",
+                    {
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    }
+                );
+                e.target.value = '';
+                return;
+            }
+
+            for (const file of optimizedFiles) {
+                if (file.size > 10 * 1024 * 1024) {
+                    showAlert.error(
+                        "Image too large",
+                        `"${file.name}" is still over the 10MB upload limit after optimization.`,
+                        {
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        }
+                    );
+                    e.target.value = '';
+                    return;
+                }
+            }
+
             // Add new files to existing array
-            setNewImageFiles(prev => [...prev, ...files]);
+            setNewImageFiles(prev => [...prev, ...optimizedFiles]);
             
             // Generate previews for new images
-            files.forEach((file) => {
+            optimizedFiles.forEach((file) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     setImagePreviews(prev => [...prev, {
