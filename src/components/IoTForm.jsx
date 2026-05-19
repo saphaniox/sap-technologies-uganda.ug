@@ -176,8 +176,8 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
     }
 
     for (const file of files) {
-      if (file.size > 200 * 1024 * 1024) {
-        showAlert.error("Video too large", `"${file.name}" exceeds the 200MB limit. Please use a smaller video.`);
+      if (file.size > 50 * 1024 * 1024) {
+        showAlert.error("Video too large", `"${file.name}" exceeds the 50MB limit. Please use a smaller video.`);
         e.target.value = "";
         return;
       }

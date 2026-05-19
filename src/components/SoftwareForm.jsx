@@ -20,6 +20,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [newImageFiles, setNewImageFiles] = useState([]);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
   
   useEffect(() => {
     if (software) {
@@ -45,15 +46,18 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
       if (software.images && software.images.length > 0) {
         const imageUrls = software.images.map(img => ({
           url: getImageUrl(typeof img === "string" ? img : img.url),
+          originalUrl: typeof img === "string" ? img : img.url,
           isExisting: true
         }));
         setImagePreviews(imageUrls);
       } else if (software.image) {
         setImagePreviews([{
           url: getImageUrl(software.image),
+          originalUrl: software.image,
           isExisting: true
         }]);
       }
+      setImagesToDelete([]);
     } else {
       // Reset for new software
       setFormData({
@@ -69,6 +73,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
       });
       setImagePreviews([]);
       setNewImageFiles([]);
+      setImagesToDelete([]);
     }
   }, [software]);
   
@@ -130,7 +135,11 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
   const handleRemoveImage = (index) => {
     const imageToRemove = imagePreviews[index];
     
-    if (!imageToRemove.isExisting) {
+    if (imageToRemove.isExisting) {
+      if (imageToRemove.originalUrl) {
+        setImagesToDelete(prev => [...prev, imageToRemove.originalUrl]);
+      }
+    } else {
       const fileIndex = newImageFiles.findIndex(f => f === imageToRemove.file);
       if (fileIndex !== -1) {
         setNewImageFiles(prev => prev.filter((_, i) => i !== fileIndex));
@@ -191,6 +200,10 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
       // For updates, keep existing images and append new ones
       if (software) {
         submitData.append("keepExistingImages", "true");
+      }
+
+      if (imagesToDelete.length > 0) {
+        submitData.append("imagesToDelete", JSON.stringify(imagesToDelete));
       }
       
       // Add new images
