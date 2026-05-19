@@ -17,6 +17,7 @@ class ApiService {
     this.baseURL = API_BASE_URL;
     this.cache = new Map();
     this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+    this.authToken = this.getStoredAuthToken();
     
     if (import.meta.env.DEV) {
       console.log('API Configuration:', {
@@ -46,6 +47,28 @@ class ApiService {
       data,
       timestamp: Date.now()
     });
+  }
+
+  getStoredAuthToken() {
+    try {
+      return localStorage.getItem("sap_access_token") || "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  setAuthToken(token) {
+    this.authToken = token || "";
+
+    try {
+      if (this.authToken) {
+        localStorage.setItem("sap_access_token", this.authToken);
+      } else {
+        localStorage.removeItem("sap_access_token");
+      }
+    } catch (error) {
+      // localStorage can be unavailable in private contexts; cookies still work.
+    }
   }
 
   // Wake up the server (for free tier on Render)
@@ -123,6 +146,10 @@ class ApiService {
     if (fingerprint) {
       headers["X-Fingerprint"] = fingerprint;
     }
+
+    if (this.authToken) {
+      headers.Authorization = `Bearer ${this.authToken}`;
+    }
     
     // Merge headers properly, avoiding issues with undefined
     const mergedHeaders = {
@@ -175,6 +202,7 @@ class ApiService {
       if (!response.ok) {
         // Handle authentication errors more gracefully
         if (response.status === 401) {
+          this.setAuthToken("");
           throw new Error("Authentication required");
         }
         
@@ -222,10 +250,17 @@ class ApiService {
   
   async login(credentials) {
     // Send login request with email/password
-    return this.request("/api/login", {
+    const response = await this.request("/api/login", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
+
+    const token = response?.data?.accessToken;
+    if (token) {
+      this.setAuthToken(token);
+    }
+
+    return response;
   }
 
   async signup(userData) {
@@ -237,9 +272,13 @@ class ApiService {
   }
 
   async logout() {
-    return this.request("/api/logout", {
-      method: "POST",
-    });
+    try {
+      return await this.request("/api/logout", {
+        method: "POST",
+      });
+    } finally {
+      this.setAuthToken("");
+    }
   }
 
   // Password Reset Methods
