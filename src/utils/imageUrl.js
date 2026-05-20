@@ -1,10 +1,21 @@
 import apiService from '../services/api';
 
-export const getImageUrl = (imagePath) => {
+const normalizeImagePath = (imagePath) => {
   if (!imagePath) return null;
+
+  if (typeof imagePath === 'object') {
+    return imagePath.url || imagePath.secure_url || imagePath.src || imagePath.path || null;
+  }
+
+  return String(imagePath);
+};
+
+export const getImageUrl = (imagePath) => {
+  const normalizedPath = normalizeImagePath(imagePath);
+  if (!normalizedPath) return null;
   
-  // Ensure imagePath is a string
-  const pathStr = typeof imagePath === 'string' ? imagePath : String(imagePath);
+  const pathStr = normalizedPath.trim();
+  if (!pathStr) return null;
   
   // If it's already a full URL (Cloudinary, external), use it directly
   if (pathStr.startsWith('http://') || pathStr.startsWith('https://')) {
