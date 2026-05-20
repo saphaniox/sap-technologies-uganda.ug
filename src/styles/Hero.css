@@ -533,3 +533,28 @@
 .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
 .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
 .hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+
+/* FINAL MOBILE HEADER GAP FIX */
+@media (max-width: 768px) {
+  .hero {
+    min-height: auto !important;
+    padding-top: clamp(12px, 4vw, 24px) !important;
+    padding-bottom: clamp(24px, 6vw, 36px) !important;
+    justify-content: flex-start !important;
+  }
+
+  .hero-content {
+    margin: 0 auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding-top: 10px !important;
+  }
+
+  .hero-content {
+    padding-top: 1.15rem !important;
+    padding-bottom: 1.15rem !important;
+  }
+}

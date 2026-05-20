@@ -2269,3 +2269,229 @@
     max-height: calc(100dvh - 76px) !important;
   }
 }
+/* FINAL BRAND VISIBILITY FIX */
+.logo {
+  overflow: visible !important;
+}
+
+.logo span {
+  display: inline-block;
+  max-width: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  line-height: 1.08;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    grid-template-columns: minmax(150px, 1fr) 44px auto !important;
+    column-gap: 0.4rem !important;
+  }
+
+  .logo {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    font-size: clamp(0.92rem, 3.6vw, 1.12rem) !important;
+    gap: 0.38rem !important;
+  }
+
+  .logo span {
+    max-width: calc(100vw - 190px) !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .nav-search-btn {
+    width: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+  }
+
+  .nav-search-icon {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    font-size: 0 !important;
+    color: #1a237e;
+  }
+
+  .nav-search-icon::before {
+    content: "";
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: 11px;
+    height: 11px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+  }
+
+  .nav-search-icon::after {
+    content: "";
+    position: absolute;
+    right: 1px;
+    bottom: 2px;
+    width: 7px;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    transform: rotate(45deg);
+    transform-origin: center;
+  }
+
+  .nav-actions {
+    gap: 0.3rem !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav {
+    grid-template-columns: minmax(142px, 1fr) 40px auto !important;
+    padding-inline: 0.55rem !important;
+  }
+
+  .logo {
+    font-size: clamp(0.86rem, 3.7vw, 1rem) !important;
+    gap: 0.32rem !important;
+  }
+
+  .logo-img {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .logo span {
+    max-width: calc(100vw - 174px) !important;
+  }
+
+  .nav-search-btn {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .nav-menu-toggle {
+    width: 40px !important;
+    min-width: 40px !important;
+  }
+}
+
+@media (max-width: 340px) {
+  .nav {
+    grid-template-columns: minmax(132px, 1fr) 38px auto !important;
+    column-gap: 0.25rem !important;
+  }
+
+  .logo {
+    font-size: 0.82rem !important;
+  }
+
+  .logo-img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .logo span {
+    max-width: calc(100vw - 160px) !important;
+  }
+
+  .nav-search-btn,
+  .nav-menu-toggle {
+    width: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+}
+
+[data-theme="dark"] .nav-search-icon {
+  color: #bfdbfe;
+}
+/* FINAL HAMBURGER VISIBILITY FIX */
+.header,
+.header.mobile,
+.header.desktop,
+.nav,
+.nav:not(.nav-admin),
+.nav.nav-admin {
+  overflow: visible !important;
+}
+
+.nav:not(.nav-admin)::after {
+  display: none !important;
+}
+
+.nav-sidebar-backdrop {
+  z-index: 9998 !important;
+  pointer-events: auto !important;
+}
+
+.nav-sidebar {
+  z-index: 9999 !important;
+  display: flex !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.nav-sidebar-links {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.nav-sidebar-link,
+.nav-sidebar-action {
+  pointer-events: auto !important;
+}
+
+@media (max-width: 768px) {
+  .header.mobile {
+    z-index: 5000 !important;
+  }
+
+  .nav-sidebar {
+    top: calc(100% + 0.4rem) !important;
+    right: 0.55rem !important;
+    width: min(340px, calc(100vw - 1.1rem)) !important;
+    max-height: calc(100dvh - 78px) !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-sidebar {
+    top: calc(100% + 0.35rem) !important;
+    right: 0.45rem !important;
+    width: calc(100vw - 0.9rem) !important;
+  }
+}
+/* FINAL HAMBURGER ANCHOR CORRECTION */
+.nav-sidebar {
+  position: absolute !important;
+  top: calc(100% + 0.65rem) !important;
+  right: clamp(0.55rem, 2vw, 1rem) !important;
+  transform-origin: top right !important;
+}
+
+@media (max-width: 768px) {
+  .nav-sidebar {
+    position: absolute !important;
+    top: calc(100% + 0.45rem) !important;
+    right: 0.45rem !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-sidebar {
+    top: calc(100% + 0.35rem) !important;
+    right: 0.35rem !important;
+  }
+}

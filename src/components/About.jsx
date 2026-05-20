@@ -81,7 +81,7 @@ const About = () => {
                 We are driven by a passion to empower businesses, entrepreneurs and communities across Uganda and beyond. Every project is an opportunity to inspire, to solve real-world challenges and to elevate our clients to new heights. With a relentless commitment to quality, integrity and innovation, SAPTech Uganda is shaping the digital future of Africa - one idea, one solution, one success story at a time.
             </p>
             <p>
-              <em>Professional in Engineering &amp; Technology solutions.</em>
+              <em>lets build the future together.</em>
             </p>
 
           </motion.div>
