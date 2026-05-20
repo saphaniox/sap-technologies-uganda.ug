@@ -244,24 +244,53 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           </motion.span>
         </motion.div>
 
+        {/* Center Search */}
         <motion.button
           type="button"
-          className={`nav-menu-toggle ${menuOpen ? "open" : ""}`}
-          onClick={() => setMenuOpen(open => !open)}
-          variants={linkVariants}
-          whileHover="hover"
-          whileTap="tap"
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-          aria-expanded={menuOpen}
-          aria-controls="main-navigation-sidebar"
+          className="nav-search-btn"
+          onClick={openSearch}
+          title="Search products, services and projects"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.4 }}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          aria-label="Open search"
         >
-          <span className="menu-bars" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-          <span className="menu-toggle-text">Menu</span>
+          <span className="nav-search-icon" aria-hidden="true">Search</span>
+          <span className="nav-search-text">Products, services, projects</span>
         </motion.button>
+
+        <div className="nav-actions">
+          {/* Theme Toggle */}
+          <motion.div
+            className="nav-theme-toggle"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+          >
+            <ThemeToggle />
+          </motion.div>
+
+          <motion.button
+            type="button"
+            className={`nav-menu-toggle ${menuOpen ? "open" : ""}`}
+            onClick={() => setMenuOpen(open => !open)}
+            variants={linkVariants}
+            whileHover="hover"
+            whileTap="tap"
+            aria-label={menuOpen ? "Close pages menu" : "Open pages menu"}
+            aria-expanded={menuOpen}
+            aria-controls="main-navigation-sidebar"
+          >
+            <span className="menu-bars" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+            <span className="menu-toggle-text">Pages</span>
+          </motion.button>
+        </div>
 
         <AnimatePresence>
           {menuOpen && (
@@ -270,7 +299,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                 type="button"
                 className="nav-sidebar-backdrop"
                 onClick={closeMenu}
-                aria-label="Close navigation menu"
+                aria-label="Close pages menu"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -289,13 +318,14 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                     <img src="/images/logo.png" alt="SAPTech Uganda" />
                     <div>
                       <strong>SAPTech Uganda</strong>
-                      <span>Navigation</span>
+                      <span>Pages</span>
                     </div>
                   </div>
                   <button type="button" className="nav-sidebar-close" onClick={closeMenu} aria-label="Close menu">x</button>
                 </div>
 
-                <nav className="nav-sidebar-links" aria-label="Main navigation">
+                <nav className="nav-sidebar-links" aria-label="Site pages">
+                  <span className="nav-sidebar-label">Pages</span>
                   {NAV_ITEMS.map((link) => (
                     link.route ? (
                       <Link
@@ -368,29 +398,6 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
             </>
           )}
         </AnimatePresence>
-        {/* Search Button */}
-        <motion.button
-          className="nav-search-btn"
-          onClick={openSearch}
-          title="Search"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6, duration: 0.4 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          aria-label="Open search"
-        >
-          Search</motion.button>
-
-        {/* Theme Toggle */}
-        <motion.div 
-          className="nav-theme-toggle"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-        >
-          <ThemeToggle />
-        </motion.div>
       </motion.nav>
 
       {/* Global Search Overlay */}
