@@ -284,6 +284,13 @@
     gap: 7px;
 }
 
+.product-whatsapp-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: block;
+}
+
 .whatsapp-btn:hover {
     background: #128C7E;
     transform: translateY(-2px);
@@ -586,23 +593,30 @@
 }
 
 .card-whatsapp-btn {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     flex-shrink: 0;
     background: #25d366;
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.2s;
+    box-shadow: 0 8px 18px rgba(37, 211, 102, 0.28);
+    transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
 }
 
 .card-whatsapp-btn:hover {
-    opacity: 0.88;
+    background: #128c7e;
+    box-shadow: 0 10px 24px rgba(18, 140, 126, 0.34);
     transform: translateY(-2px);
+}
+
+.card-whatsapp-btn .product-whatsapp-icon {
+    width: 22px;
+    height: 22px;
 }
 
 /* Error Message */

@@ -3,7 +3,7 @@ import apiService from "../services/api";
 import SoftwareForm from "./SoftwareForm";
 import ConfirmDialog from "./ConfirmDialog";
 import ImageSlider from "./ImageSlider";
-import { LoadingOverlay, showAlert } from "../utils/alerts.jsx";
+import { showAlert } from "../utils/alerts.jsx";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/Software.css";
 
@@ -145,7 +145,17 @@ const Softwares = () => {
   };
   
   if (loading) {
-    return <LoadingOverlay message="Loading software, please wait..." />;
+    return (
+      <section id="software" className="software">
+        <div className="container">
+          <div className="software-loading-state" role="status" aria-live="polite">
+            <div className="software-loading-spinner" aria-hidden="true"></div>
+            <h2>Loading software apps</h2>
+            <p>Please wait while we fetch the latest software from the database.</p>
+          </div>
+        </div>
+      </section>
+    );
   }
   
   return (

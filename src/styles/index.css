@@ -24,6 +24,69 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Visible, touch-friendly checkboxes across admin forms */
+.checkbox-label input[type="checkbox"],
+.checkbox-group input[type="checkbox"],
+label input[type="checkbox"][name="isPublic"],
+label input[type="checkbox"][name="isActive"],
+label input[type="checkbox"][name="isFeatured"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  border: 2px solid var(--primary-color, #3498db) !important;
+  border-radius: 6px;
+  background: var(--bg-color, #ffffff) !important;
+  display: inline-grid !important;
+  place-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.08);
+  transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.checkbox-label input[type="checkbox"]::after,
+.checkbox-group input[type="checkbox"]::after,
+label input[type="checkbox"][name="isPublic"]::after,
+label input[type="checkbox"][name="isActive"]::after,
+label input[type="checkbox"][name="isFeatured"]::after {
+  content: "";
+  width: 6px;
+  height: 11px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transform-origin: center;
+  transition: transform 0.12s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked,
+.checkbox-group input[type="checkbox"]:checked,
+label input[type="checkbox"][name="isPublic"]:checked,
+label input[type="checkbox"][name="isActive"]:checked,
+label input[type="checkbox"][name="isFeatured"]:checked {
+  background: var(--primary-color, #3498db) !important;
+  border-color: var(--primary-color, #3498db) !important;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.14);
+}
+
+.checkbox-label input[type="checkbox"]:checked::after,
+.checkbox-group input[type="checkbox"]:checked::after,
+label input[type="checkbox"][name="isPublic"]:checked::after,
+label input[type="checkbox"][name="isActive"]:checked::after,
+label input[type="checkbox"][name="isFeatured"]:checked::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.checkbox-label input[type="checkbox"]:focus-visible,
+.checkbox-group input[type="checkbox"]:focus-visible,
+label input[type="checkbox"][name="isPublic"]:focus-visible,
+label input[type="checkbox"][name="isActive"]:focus-visible,
+label input[type="checkbox"][name="isFeatured"]:focus-visible {
+  outline: 3px solid rgba(52, 152, 219, 0.35);
+  outline-offset: 2px;
+}
+
 /* ===========================
    THEME SYSTEM - LIGHT MODE
    =========================== */

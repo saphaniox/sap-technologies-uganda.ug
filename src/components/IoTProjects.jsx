@@ -3,7 +3,7 @@ import apiService from "../services/api";
 import IoTForm from "./IoTForm";
 import ConfirmDialog from "./ConfirmDialog";
 import ImageSlider from "./ImageSlider";
-import { LoadingOverlay, showAlert } from "../utils/alerts.jsx";
+import { showAlert } from "../utils/alerts.jsx";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/IoT.css";
 
@@ -139,7 +139,17 @@ const IoTProjects = () => {
   };
   
   if (loading) {
-    return <LoadingOverlay message="Loading IoT projects, please wait..." />;
+    return (
+      <section className="iot-section" id="iot">
+        <div className="container">
+          <div className="iot-loading-state" role="status" aria-live="polite">
+            <div className="iot-loading-spinner" aria-hidden="true"></div>
+            <h2>Loading IoT projects</h2>
+            <p>Please wait while we fetch the latest IoT projects from the database.</p>
+          </div>
+        </div>
+      </section>
+    );
   }
   
   if (error) {
