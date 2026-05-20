@@ -37,7 +37,7 @@ const ImageSlider = ({ images, alt = "Image" }) => {
   if (validImages.length === 1) {
     return (
       <div className="image-slider single-image">
-        <img src={validImages[0]} alt={alt} />
+        <img src={validImages[0]} alt={alt} loading="lazy" decoding="async" />
       </div>
     );
   }
@@ -50,6 +50,8 @@ const ImageSlider = ({ images, alt = "Image" }) => {
           src={validImages[currentIndex]} 
           alt={`${alt} - ${currentIndex + 1}`}
           className="slider-image"
+          loading="lazy"
+          decoding="async"
         />
         
         {/* Navigation Arrows */}
@@ -83,7 +85,7 @@ const ImageSlider = ({ images, alt = "Image" }) => {
             onClick={() => goToSlide(index)}
             aria-label={`Go to image ${index + 1}`}
           >
-            <img src={image} alt={`Thumbnail ${index + 1}`} />
+            <img src={image} alt={`Thumbnail ${index + 1}`} loading="lazy" decoding="async" />
           </button>
         ))}
       </div>

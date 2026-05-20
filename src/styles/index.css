@@ -397,3 +397,41 @@ html {
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) var(--bg-secondary);
 }
+
+/* Professional light and dark theme polish */
+:root,
+[data-theme="light"] {
+  --surface-elevated: #ffffff;
+  --surface-subtle: #f8fafc;
+  --focus-ring: rgba(52, 152, 219, 0.28);
+}
+
+[data-theme="dark"] {
+  --surface-elevated: #111827;
+  --surface-subtle: #0f172a;
+  --focus-ring: rgba(93, 173, 226, 0.34);
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input,
+textarea,
+select {
+  color: var(--text-color);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+/* End professional light and dark theme polish */

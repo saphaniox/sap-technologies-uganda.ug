@@ -42,7 +42,7 @@ const Products = () => {
 
     const { addToCart, isInCart, openCart } = useCart();
 
-    // Cache of all products — never overwritten between category switches
+    // Cache of all products; never overwritten between category switches
     const allProductsRef = useRef([]);
     
     const WHATSAPP_NUMBER = "+256706564628";
@@ -254,7 +254,7 @@ const Products = () => {
                     }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "20px" }}>
                             <div>
-                                <h3 style={{ margin: "0 0 10px 0", fontSize: "1.5rem" }}>👨‍💼 Admin Mode Active</h3>
+                                <h3 style={{ margin: "0 0 10px 0", fontSize: "1.5rem" }}>Admin Mode Active</h3>
                                 <p style={{ margin: 0, opacity: 0.9 }}>Welcome back, {user.name}! You have full control over products.</p>
                             </div>
                             <button 
@@ -341,7 +341,7 @@ const Products = () => {
                         textAlign: "center",
                         boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
                     }}>
-                        <span style={{ fontSize: "1.1rem" }}>👋 Welcome back, <strong>{user.name}</strong>!</span>
+                        <span style={{ fontSize: "1.1rem" }}>Welcome back, <strong>{user.name}</strong>!</span>
                     </div>
                 )}
 
@@ -354,7 +354,7 @@ const Products = () => {
 
                 {/* Search Bar */}
                 <div className="products-search-bar">
-                    <span className="products-search-icon">🔍</span>
+                    <span className="products-search-icon" aria-hidden="true">Search</span>
                     <input
                         type="text"
                         className="products-search-input"
@@ -368,7 +368,7 @@ const Products = () => {
                             onClick={() => { setSearchTerm(""); setProducts(applyFilters(allProductsRef.current, selectedCategory, "")); }}
                             aria-label="Clear search"
                         >
-                            ✕
+                            x
                         </button>
                     )}
                 </div>
@@ -426,39 +426,22 @@ const Products = () => {
                                     {product.isFeatured && (
                                         <div className="featured-badge">Featured</div>
                                     )}
-                                    <div className="product-overlay">
-                                        <button 
-                                            className="new-inquiry-btn"
-                                            onClick={() => handleInquiry(product)}
-                                        >
-                                            📨 Inquire Now
-                                        </button>
-                                        <button 
-                                            className="whatsapp-btn"
-                                            onClick={() => handleWhatsAppContact(product)}
-                                            title="Contact us on WhatsApp"
-                                        >
-                                            <WhatsAppIcon />
-                                            WhatsApp
-                                        </button>
-                                    </div>
-                                    
-                                    {/* Admin Controls */}
+{/* Admin Controls */}
                                     {user && user.role === "admin" && (
                                         <div className="admin-controls">
-                                            <button 
+                                            <button
                                                 className="edit-btn"
                                                 onClick={() => handleEdit(product)}
                                                 title="Edit Product"
                                             >
-                                                ✏️
+                                                Edit
                                             </button>
-                                            <button 
+                                            <button
                                                 className="delete-btn"
                                                 onClick={() => handleDelete(product)}
                                                 title="Delete Product"
                                             >
-                                                🗑️
+                                                Del
                                             </button>
                                         </div>
                                     )}
@@ -524,10 +507,10 @@ const Products = () => {
                                         </div>
                                         <div className="product-availability">
                                             <span className={`availability-status ${product.availability}`}>
-                                                {product.availability === "in-stock" && "✅ In Stock"}
-                                                {product.availability === "pre-order" && "📋 Pre-Order"}
-                                                {product.availability === "custom-order" && "🔧 Custom Order"}
-                                                {product.availability === "discontinued" && "❌ Discontinued"}
+                                                {product.availability === "in-stock" && "In Stock"}
+                                                {product.availability === "pre-order" && "Pre-Order"}
+                                                {product.availability === "custom-order" && "Custom Order"}
+                                                {product.availability === "discontinued" && "Discontinued"}
                                             </span>
                                         </div>
                                     </div>
@@ -543,11 +526,17 @@ const Products = () => {
                                         </div>
                                     )}
 
-                                    {/* Visible CTA buttons — always accessible including mobile */}
+                                    {/* Visible CTA buttons  always accessible including mobile */}
                                     {product.availability !== "discontinued" && (
                                         <div className="product-cta-row">
                                             <button
-                                                className={`card-inquire-btn${isInCart(product._id) ? " in-cart" : ""}`}
+                                                className="card-order-btn"
+                                                onClick={() => handleInquiry(product)}
+                                            >
+                                                Send Order
+                                            </button>
+                                            <button
+                                                className={`card-cart-btn${isInCart(product._id) ? " in-cart" : ""}`}
                                                 onClick={() => {
                                                     if (isInCart(product._id)) {
                                                         openCart();
@@ -556,7 +545,7 @@ const Products = () => {
                                                     }
                                                 }}
                                             >
-                                                {isInCart(product._id) ? "✓ View Cart" : "+ Add to Cart"}
+                                                {isInCart(product._id) ? "View Cart" : "Add to Cart"}
                                             </button>
                                             <button
                                                 className="card-whatsapp-btn"
@@ -587,7 +576,7 @@ const Products = () => {
                             }
                         }}
                     >
-                        📞 Contact Us
+                        Contact Us
                     </button>
                 </div>
             </div>

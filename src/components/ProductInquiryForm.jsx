@@ -62,7 +62,7 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
     }
 
     if (!/^\S+@\S+\.\S+$/.test(formData.customerEmail)) {
-      setError("That email address doesn't look right — please double-check it");
+      setError("That email address doesn't look right. Please double-check it");
       setLoading(false);
       return;
     }
@@ -79,7 +79,7 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
         ...formData
       });
       
-      console.log("📬 Inquiry form - onSubmit result:", result);
+      console.log("Order form - onSubmit result:", result);
       
       setSuccess(true);
       
@@ -88,9 +88,9 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
         onClose();
       }, 3000);
     } catch (err) {
-      console.error("📬 Inquiry form - submission error:", err);
-      const errorMessage = err.response?.data?.message || err.message || "Couldn't submit your inquiry. Please try again.";
-      console.error("📬 Error message:", errorMessage);
+      console.error("Order form - submission error:", err);
+      const errorMessage = err.response?.data?.message || err.message || "Couldn't send your order. Please try again.";
+      console.error("Order form error message:", errorMessage);
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -102,9 +102,9 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
       <div className="inquiry-modal-overlay success-notification" onClick={onClose}>
         <div className="inquiry-modal success-modal" onClick={(e) => e.stopPropagation()}>
           <div className="success-content">
-            <div className="success-icon">✅</div>
-            <h2>Thank You! 🙌</h2>
-            <p>Your inquiry has been received. We&apos;ll get back to you within 24&ndash;48 hours.</p>
+            <div className="success-icon">OK</div>
+            <h2>Order Sent</h2>
+            <p>Your order request has been received. We&apos;ll get back to you within 24-48 hours.</p>
             <button className="close-btn" onClick={onClose}>
               Close
             </button>
@@ -117,12 +117,10 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
   return (
     <div className="inquiry-modal-overlay bottom-aligned" onClick={onClose}>
       <div className="inquiry-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Close">
-          ✕
-        </button>
+        <button className="modal-close" onClick={onClose} aria-label="Close">x</button>
 
         <div className="modal-header">
-          <h2>Request a Quote</h2>
+          <h2>Send Order</h2>
           <p className="product-name">Product: <strong>{product.name}</strong></p>
           {product.price && product.price.type !== "contact-for-price" && product.price.amount && (
             <p className="product-modal-price">
@@ -135,14 +133,14 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
         <form onSubmit={handleSubmit} className="inquiry-form">
           {loggedInUser && (
             <div className="autofill-badge">
-              <span>✅</span>
-              <span>Signed in as <strong>{loggedInUser.name}</strong> — details pre-filled</span>
+              <span>OK</span>
+              <span>Signed in as <strong>{loggedInUser.name}</strong> - details pre-filled</span>
             </div>
           )}
 
           {error && (
             <div className="error-alert">
-              <span className="error-icon">⚠️</span>
+              <span className="error-icon">!</span>
               {error}
             </div>
           )}
@@ -221,9 +219,9 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
               value={formData.preferredContact}
               onChange={handleChange}
             >
-              <option value="email">📧 Email</option>
-              <option value="phone">📞 Phone</option>
-              <option value="both">📱 Both</option>
+              <option value="email">Email</option>
+              <option value="phone">Phone</option>
+              <option value="both">Both</option>
             </select>
           </div>
 
@@ -251,20 +249,16 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
               {loading ? (
                 <>
                   <span className="spinner"></span>
-                  Submitting...
+                  Sending...
                 </>
               ) : (
-                <>
-                  📨 Submit Inquiry
-                </>
+                <>Send Order</>
               )}
             </button>
           </div>
 
           <div className="form-footer">
-            <p className="privacy-note">
-              🔒 Your information is secure and will only be used to respond to your inquiry.
-            </p>
+            <p className="privacy-note">Your information is secure and will only be used to respond to your order.</p>
           </div>
         </form>
       </div>

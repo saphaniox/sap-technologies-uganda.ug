@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../contexts/CartContext";
 import apiService from "../services/api";
+import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/Cart.css";
 
 const WHATSAPP_NUMBER = "256706564628";
@@ -14,6 +15,12 @@ const formatPrice = (price) => {
 };
 
 const EMPTY_FORM = { customerName: "", customerEmail: "", customerPhone: "", preferredContact: "email", message: "" };
+
+const getCartProductImage = (product) => {
+  const firstImage = Array.isArray(product?.images) ? product.images[0] : null;
+  const rawImage = typeof firstImage === "string" ? firstImage : firstImage?.url;
+  return getImageUrl(rawImage || product?.image) || PLACEHOLDERS.product;
+};
 
 const Cart = () => {
   const { cartItems, cartCount, isCartOpen, closeCart, removeFromCart, updateQuantity, clearCart } = useCart();
@@ -38,7 +45,7 @@ const Cart = () => {
           }));
         }
       })
-      .catch(() => {/* not logged in — that's fine */});
+      .catch(() => {/* not logged in; that is fine */});
   }, []);
 
   const handleChange = (e) => {
@@ -53,7 +60,7 @@ const Cart = () => {
     return null;
   };
 
-  /* ---------- 1. Submit to Database ---------- */
+  /* ---------- 1. Submit order to database ---------- */
   const handleSubmitDB = async () => {
     const err = validate();
     if (err) { setError(err); return; }
@@ -78,17 +85,17 @@ const Cart = () => {
     }
   };
 
-  /* ---------- 2. Send via WhatsApp ---------- */
+  /* ---------- 2. Send order via WhatsApp ---------- */
   const handleWhatsApp = () => {
     const err = validate();
     if (err) { setError(err); return; }
 
     const itemLines = cartItems
-      .map((i, idx) => `${idx + 1}. ${i.product.name} (Qty: ${i.quantity}) — ${formatPrice(i.product.price)}`)
+      .map((i, idx) => `${idx + 1}. ${i.product.name} (Qty: ${i.quantity}) - ${formatPrice(i.product.price)}`)
       .join("\n");
 
     const text = [
-      "Hello SAPTech Uganda! I'd like to inquire about the following products:",
+      "Hello SAPTech Uganda! I'd like to send an order request for the following products:",
       "",
       itemLines,
       "",
@@ -104,21 +111,21 @@ const Cart = () => {
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, "_blank");
   };
 
-  /* ---------- 3. Send via Email ---------- */
+  /* ---------- 3. Send order via Email ---------- */
   const handleEmail = () => {
     const err = validate();
     if (err) { setError(err); return; }
 
     const itemLines = cartItems
-      .map((i, idx) => `${idx + 1}. ${i.product.name} (Qty: ${i.quantity}) — ${formatPrice(i.product.price)}`)
+      .map((i, idx) => `${idx + 1}. ${i.product.name} (Qty: ${i.quantity}) - ${formatPrice(i.product.price)}`)
       .join("\n");
 
-    const subject = encodeURIComponent(`Product Enquiry from ${form.customerName}`);
+    const subject = encodeURIComponent(`Product Order from ${form.customerName}`);
     const body = encodeURIComponent(
       [
         `Hello SAPTech Uganda,`,
         ``,
-        `I am interested in the following products:`,
+        `I would like to order the following products:`,
         ``,
         itemLines,
         ``,
@@ -128,7 +135,7 @@ const Cart = () => {
         form.customerPhone ? `Phone: ${form.customerPhone}` : null,
         form.message ? `\nAdditional Message:\n${form.message}` : null,
         ``,
-        `Please get back to me at your earliest convenience.`,
+        `Please get back to me with availability and next steps.`,
         `Thank you!`,
       ]
         .filter((l) => l !== null)
@@ -150,19 +157,19 @@ const Cart = () => {
         {/* Header */}
         <div className="cart-header">
           <h2 className="cart-title">
-            <span className="cart-title-icon">🛒</span>
-            Your Enquiry Cart
+            <span className="cart-title-icon">Order</span>
+            Your Order Cart
             {cartCount > 0 && <span className="cart-header-count">{cartCount}</span>}
           </h2>
-          <button className="cart-close" onClick={closeCart} aria-label="Close cart">✕</button>
+          <button className="cart-close" onClick={closeCart} aria-label="Close cart">x</button>
         </div>
 
         {sent ? (
           /* ---- Success State ---- */
           <div className="cart-success">
-            <div className="cart-success-icon">✅</div>
-            <h3>Enquiry Sent!</h3>
-            <p>We&apos;ve received your enquiry and will get back to you within 24–48 hours.</p>
+            <div className="cart-success-icon">OK</div>
+            <h3>Order Sent!</h3>
+            <p>We&apos;ve received your order request and will get back to you within 24-48 hours.</p>
             <button
               className="cart-success-close"
               onClick={() => { setSent(false); setForm(EMPTY_FORM); closeCart(); }}
@@ -173,7 +180,7 @@ const Cart = () => {
         ) : cartItems.length === 0 ? (
           /* ---- Empty Cart ---- */
           <div className="cart-empty">
-            <div className="cart-empty-icon">🛍️</div>
+            <div className="cart-empty-icon">Cart</div>
             <p>Your cart is empty.</p>
             <p className="cart-empty-hint">Browse our products and click <strong>Add to Cart</strong> to get started.</p>
             <button className="cart-browse-btn" onClick={closeCart}>Browse Products</button>
@@ -186,9 +193,10 @@ const Cart = () => {
               {cartItems.map(({ product, quantity }) => (
                 <div key={product._id} className="cart-item">
                   <img
-                    src={product.images?.[0] || product.image || "/images/placeholder.jpg"}
+                    src={getCartProductImage(product)}
                     alt={product.name}
                     className="cart-item-img"
+                    onError={(e) => { e.currentTarget.src = PLACEHOLDERS.product; }}
                   />
                   <div className="cart-item-info">
                     <p className="cart-item-name">{product.name}</p>
@@ -198,7 +206,7 @@ const Cart = () => {
                         className="qty-btn"
                         onClick={() => updateQuantity(product._id, quantity - 1)}
                         aria-label="Decrease quantity"
-                      >−</button>
+                      >-</button>
                       <input
                         type="number"
                         min="1"
@@ -219,7 +227,7 @@ const Cart = () => {
                     onClick={() => removeFromCart(product._id)}
                     aria-label={`Remove ${product.name}`}
                     title="Remove"
-                  >🗑</button>
+                  >Remove</button>
                 </div>
               ))}
             </div>
@@ -232,8 +240,8 @@ const Cart = () => {
 
               {loggedInUser && (
                 <div className="cart-autofill-badge">
-                  <span>✅</span>
-                  <span>Signed in as <strong>{loggedInUser.name}</strong> — details pre-filled</span>
+                  <span>OK</span>
+                  <span>Signed in as <strong>{loggedInUser.name}</strong> - details pre-filled</span>
                 </div>
               )}
 
@@ -282,9 +290,9 @@ const Cart = () => {
               <div className="cart-field">
                 <label htmlFor="cart-contact">Preferred Contact</label>
                 <select id="cart-contact" name="preferredContact" value={form.preferredContact} onChange={handleChange}>
-                  <option value="email">📧 Email</option>
-                  <option value="phone">📞 Phone</option>
-                  <option value="both">📱 Both</option>
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                  <option value="both">Both</option>
                 </select>
               </div>
 
@@ -302,18 +310,18 @@ const Cart = () => {
               </div>
 
               {/* Send Options */}
-              <div className="cart-send-title">Send your enquiry via:</div>
+              <div className="cart-send-title">Send your order via:</div>
               <div className="cart-send-options">
                 <button
                   className="send-btn send-db"
                   onClick={handleSubmitDB}
                   disabled={sending}
-                  title="Save to our database — we'll contact you within 24-48 hrs"
+                  title="Save your order request; we will contact you within 24-48 hrs"
                 >
                   {sending ? (
-                    <><span className="cart-spinner" />Sending…</>
+                    <><span className="cart-spinner" />Sending...</>
                   ) : (
-                    <><span>📋</span> Submit Enquiry</>
+                    <>Send Order</>
                   )}
                 </button>
 
@@ -333,11 +341,11 @@ const Cart = () => {
                   onClick={handleEmail}
                   title="Open your email client with your order pre-filled"
                 >
-                  <span>✉️</span> Email Us
+                  Email Us
                 </button>
               </div>
 
-              <p className="cart-privacy">🔒 Your information is only used to respond to your enquiry.</p>
+              <p className="cart-privacy">Your information is only used to respond to your order.</p>
             </div>
           </div>
         )}
