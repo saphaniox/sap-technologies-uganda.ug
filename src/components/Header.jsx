@@ -223,7 +223,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           style={{ cursor: "pointer" }}
         >
           <motion.img 
-            src="/images/logo2.jpg" 
+            src="/images/logo.png" 
             alt="SAP Logo" 
             className="logo-img"
             animate={{
@@ -286,7 +286,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               >
                 <div className="nav-sidebar-header">
                   <div className="nav-sidebar-brand">
-                    <img src="/images/logo2.jpg" alt="SAPTech Uganda" />
+                    <img src="/images/logo.png" alt="SAPTech Uganda" />
                     <div>
                       <strong>SAPTech Uganda</strong>
                       <span>Navigation</span>

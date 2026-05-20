@@ -51,7 +51,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-brand">
-          <img src="/images/logo2.jpg" alt="SAP Logo" className="footer-logo" />
+          <img src="/images/logo.png" alt="SAP Logo" className="footer-logo" />
           <span>SAPTech Uganda</span>
           <p>Kampala Uganda</p>
         </div>

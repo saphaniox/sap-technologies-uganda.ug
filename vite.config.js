@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "prompt",
-      includeAssets: ["robots.txt", "images/logo2.jpg", "pwa-192.png", "pwa-512.png"],
+      includeAssets: ["robots.txt", "images/logo.png", "favicon-16x16.png", "favicon-32x32.png", "favicon-48x48.png", "apple-touch-icon.png", "mstile-150x150.png", "pwa-192.png", "pwa-512.png", "maskable-192.png", "maskable-512.png"],
       manifest: {
         name: "SAPTech Uganda",
         short_name: "SAPTech",
@@ -21,8 +21,10 @@ export default defineConfig({
         orientation: "portrait",
         categories: ["business", "technology"],
         icons: [
-          { src: "/pwa-192.png", sizes: "192x192", type: "image/png" },
-          { src: "/pwa-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }
+          { src: "/pwa-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+          { src: "/pwa-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+          { src: "/maskable-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
+          { src: "/maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" }
         ]
       },
       workbox: {
