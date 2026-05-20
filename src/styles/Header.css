@@ -2495,3 +2495,42 @@
     right: 0.35rem !important;
   }
 }
+/* FINAL SEARCH OVERLAY FIX */
+.search-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483000 !important;
+  pointer-events: auto !important;
+}
+
+.search-modal {
+  position: relative !important;
+  z-index: 2147483001 !important;
+  pointer-events: auto !important;
+}
+
+.search-modal-input,
+.search-input-clear,
+.search-close-btn,
+.search-result-item {
+  pointer-events: auto !important;
+}
+
+@media (max-width: 768px) {
+  .search-overlay {
+    padding: 72px 0.75rem 1rem !important;
+    align-items: flex-start !important;
+  }
+
+  .search-modal {
+    width: min(100%, 680px) !important;
+    max-height: calc(100dvh - 88px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .search-modal-results {
+    max-height: none !important;
+    flex: 1 1 auto !important;
+  }
+}

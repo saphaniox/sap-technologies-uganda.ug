@@ -252,3 +252,18 @@
   color: #94a3b8;
   border-color: rgba(148, 163, 184, 0.2);
 }
+
+/* FINAL COMPANY PHOTO POLISH */
+.company-card {
+  overflow: hidden !important;
+}
+
+.company-img {
+  display: block !important;
+  aspect-ratio: 16 / 9;
+  height: auto !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 12px 12px 0 0 !important;
+}

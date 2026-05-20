@@ -161,3 +161,11 @@
     padding: 1.75rem 1.25rem;
   }
 }
+
+/* FINAL TESTIMONIAL PHOTO POLISH */
+.avatar-image {
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 50% !important;
+}

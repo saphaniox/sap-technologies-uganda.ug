@@ -747,3 +747,25 @@
   margin-top: 2rem;
   opacity: 0.95;
 }
+/* FINAL PROJECT PHOTO POLISH */
+.portfolio-card {
+  overflow: hidden !important;
+}
+
+.portfolio-image {
+  aspect-ratio: 16 / 10;
+  height: auto !important;
+  overflow: hidden !important;
+  border-radius: 12px 12px 0 0 !important;
+  background: var(--bg-tertiary, #f1f5f9);
+}
+
+.portfolio-card img,
+.portfolio-image img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: inherit !important;
+}

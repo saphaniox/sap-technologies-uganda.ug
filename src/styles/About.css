@@ -1210,3 +1210,15 @@
 [data-theme="dark"] .skill-tag {
   border-color: rgba(255, 255, 255, 0.16);
 }
+/* FINAL ABOUT PHOTO POLISH */
+.member-image,
+.member-image img {
+  overflow: hidden !important;
+  border-radius: 16px !important;
+}
+
+.member-image img {
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}

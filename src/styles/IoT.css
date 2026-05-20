@@ -765,3 +765,27 @@
     width: 100%;
   }
 }
+
+/* FINAL IOT PHOTO POLISH */
+.iot-card {
+  overflow: hidden !important;
+}
+
+.iot-image-container {
+  aspect-ratio: 16 / 10;
+  height: auto !important;
+  overflow: hidden !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.iot-image,
+.iot-image-container img,
+.iot-image-container .slider-image,
+.iot-image-container .image-slider.single-image img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: inherit !important;
+}

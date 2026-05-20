@@ -747,3 +747,26 @@
     padding: 10px 20px;
   }
 }
+
+/* FINAL SOFTWARE PHOTO POLISH */
+.software .software-card {
+  overflow: hidden !important;
+}
+
+.software .software-image {
+  aspect-ratio: 16 / 10;
+  height: auto !important;
+  overflow: hidden !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.software .software-image img,
+.software .software-image .slider-image,
+.software .software-image .image-slider.single-image img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: inherit !important;
+}

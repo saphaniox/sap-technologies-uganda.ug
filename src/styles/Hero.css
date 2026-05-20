@@ -558,3 +558,69 @@
     padding-bottom: 1.15rem !important;
   }
 }
+/* FINAL HERO DARK MODE TEXT FIX */
+.hero-title .title-line {
+  display: block !important;
+  color: inherit !important;
+}
+
+.hero-title .highlight {
+  margin: 0.08em 0 !important;
+}
+
+.hero-title .typewriter-text {
+  display: inline-block !important;
+  min-height: 1.15em;
+}
+
+[data-theme="dark"] .hero-content {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border: 1px solid rgba(148, 163, 184, 0.22) !important;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+}
+
+[data-theme="dark"] .welcome-badge,
+[data-theme="dark"] .welcome-badge span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+[data-theme="dark"] .welcome-badge {
+  background: linear-gradient(135deg, #f97316, #db2777) !important;
+  box-shadow: 0 12px 28px rgba(249, 115, 22, 0.24) !important;
+}
+
+[data-theme="dark"] .hero-title,
+[data-theme="dark"] .hero-title .title-line {
+  color: #f8fafc !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+[data-theme="dark"] .hero-title .highlight,
+[data-theme="dark"] .hero-title .typewriter-text {
+  color: #93c5fd !important;
+  -webkit-text-fill-color: #93c5fd !important;
+  text-shadow: 0 0 20px rgba(147, 197, 253, 0.28) !important;
+}
+
+[data-theme="dark"] .hero-title .cursor {
+  color: #38bdf8 !important;
+  -webkit-text-fill-color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .hero-subtitle {
+  color: #dbeafe !important;
+  -webkit-text-fill-color: #dbeafe !important;
+}
+
+[data-theme="dark"] .hero-buttons .btn-secondary {
+  background: rgba(30, 41, 59, 0.72) !important;
+  border-color: rgba(147, 197, 253, 0.72) !important;
+  color: #e0f2fe !important;
+}
+
+@media (max-width: 480px) {
+  .hero-title .title-line {
+    line-height: 1.08 !important;
+  }
+}

@@ -1152,3 +1152,27 @@
   transform: scale(1.05);
 }
 
+
+/* FINAL SERVICE PHOTO POLISH */
+.service-image {
+  aspect-ratio: 16 / 10;
+  height: auto !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  background: var(--bg-tertiary, #f1f5f9);
+}
+
+.service-img,
+.modal-image img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: inherit !important;
+}
+
+.modal-image {
+  overflow: hidden !important;
+  border-radius: 16px !important;
+}

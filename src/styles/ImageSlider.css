@@ -180,3 +180,16 @@
     padding: 8px 0;
   }
 }
+
+/* FINAL SHARED IMAGE SLIDER POLISH */
+.image-slider,
+.image-slider.single-image,
+.slider-image-container {
+  overflow: hidden !important;
+}
+
+.image-slider.single-image img,
+.slider-image {
+  display: block !important;
+  object-position: center !important;
+}

@@ -614,3 +614,13 @@
   }
 }
 /* End cart order visibility and theme polish */
+
+/* FINAL CART IMAGE POLISH */
+.cart-item-img {
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  background: rgba(148, 163, 184, 0.12);
+}

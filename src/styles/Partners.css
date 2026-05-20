@@ -398,3 +398,15 @@
   color: #4a5568;
   font-weight: 500;
 }
+/* FINAL PARTNER LOGO POLISH */
+.partner-logo {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+.partner-logo img {
+  display: block !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  border-radius: 10px !important;
+}

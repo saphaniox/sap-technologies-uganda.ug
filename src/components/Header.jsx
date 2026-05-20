@@ -1,11 +1,73 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import { getImageUrl } from "../utils/imageUrl";
 import apiService from "../services/api";
 import "../styles/Header.css";
 
+
+const toArray = (value) => {
+  if (Array.isArray(value)) return value;
+  if (Array.isArray(value?.data)) return value.data;
+  return [];
+};
+
+const extractSearchResults = (response) => {
+  const result = response?.results || response?.data?.results || response?.data || response;
+  if (!result || typeof result !== "object") return null;
+
+  return {
+    products: toArray(result.products),
+    services: toArray(result.services),
+    projects: toArray(result.projects)
+  };
+};
+
+const getPublicList = (response, key) => {
+  if (Array.isArray(response)) return response;
+  if (Array.isArray(response?.data?.[key])) return response.data[key];
+  if (Array.isArray(response?.[key])) return response[key];
+  return [];
+};
+
+const searchText = (item, fields) => fields
+  .flatMap((field) => {
+    const value = item?.[field];
+    if (Array.isArray(value)) {
+      return value.map((entry) => typeof entry === "object" ? Object.values(entry).join(" ") : String(entry));
+    }
+    if (value && typeof value === "object") return Object.values(value).join(" ");
+    return value ? String(value) : "";
+  })
+  .join(" ")
+  .toLowerCase();
+
+const filterSearchItems = (items, query, fields) => {
+  const q = query.toLowerCase();
+  return items
+    .filter((item) => searchText(item, fields).includes(q))
+    .slice(0, 8);
+};
+
+const fallbackSearch = async (query) => {
+  const [productsResponse, servicesResponse, projectsResponse] = await Promise.allSettled([
+    apiService.getProducts({ limit: 500 }),
+    apiService.getPublicServices(),
+    apiService.getPublicProjects()
+  ]);
+
+  const products = productsResponse.status === "fulfilled" ? getPublicList(productsResponse.value, "products") : [];
+  const services = servicesResponse.status === "fulfilled" ? getPublicList(servicesResponse.value, "services") : [];
+  const projects = projectsResponse.status === "fulfilled" ? getPublicList(projectsResponse.value, "projects") : [];
+
+  return {
+    products: filterSearchItems(products, query, ["name", "shortDescription", "technicalDescription", "description", "category", "tags", "features"]),
+    services: filterSearchItems(services, query, ["title", "name", "description", "longDescription", "category", "features", "technologies"]),
+    projects: filterSearchItems(projects, query, ["title", "name", "description", "longDescription", "category", "technologies", "techStack"])
+  };
+};
 const NAV_ITEMS = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
@@ -28,6 +90,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const searchTimerRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -84,6 +147,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
     setSearchOpen(false);
     setSearchQuery("");
     setSearchResults(null);
+    setSearchError("");
     clearTimeout(searchTimerRef.current);
   };
 
@@ -137,6 +201,17 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
     }
 
     scrollToSection(sectionId);
+  };
+  const handleSearchResultNavigation = (event, sectionId) => {
+    event.preventDefault();
+    closeSearch();
+
+    if (location.pathname !== "/" || isAwardsPage) {
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+
+    window.setTimeout(() => scrollToSection(sectionId), 0);
   };
 
   const handleMenuAction = (callback) => {
@@ -403,7 +478,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
 
       {/* Global Search Overlay */}
       <AnimatePresence>
-        {searchOpen && (
+        {searchOpen && typeof document !== "undefined" && createPortal(
           <motion.div
             className="search-overlay"
             initial={{ opacity: 0 }}
@@ -434,7 +509,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                   {searchQuery && (
                     <button
                       className="search-input-clear"
-                      onClick={() => { setSearchQuery(""); setSearchResults(null); }}
+                      onClick={() => { setSearchQuery(""); setSearchResults(null); setSearchError(""); searchInputRef.current?.focus(); }}
                       aria-label="Clear search"
                     >
                       x
@@ -451,7 +526,11 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                   </div>
                 )}
 
-                {!searchLoading && searchResults && (() => {
+                {!searchLoading && searchError && (
+                  <div className="search-no-results">{searchError}</div>
+                )}
+
+                {!searchLoading && !searchError && searchResults && (() => {
                   const hasProducts = searchResults.products?.length > 0;
                   const hasServices = searchResults.services?.length > 0;
                   const hasProjects = searchResults.projects?.length > 0;
@@ -464,7 +543,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                         <div className="search-result-section">
                           <h4 className="search-section-title"> Products</h4>
                           {searchResults.products.map((p) => (
-                            <a key={p._id} href="#products" className="search-result-item" onClick={closeSearch}>
+                            <a key={p._id || p.id || p.name} href="/#products" className="search-result-item" onClick={(event) => handleSearchResultNavigation(event, "products")}>
                               <span className="search-result-name">{p.name}</span>
                               <span className="search-result-meta">{p.category}</span>
                             </a>
@@ -475,7 +554,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                         <div className="search-result-section">
                           <h4 className="search-section-title"> Services</h4>
                           {searchResults.services.map((s) => (
-                            <a key={s._id} href="#services" className="search-result-item" onClick={closeSearch}>
+                            <a key={s._id || s.id || s.title || s.name} href="/#services" className="search-result-item" onClick={(event) => handleSearchResultNavigation(event, "services")}>
                               <span className="search-result-name">{s.title || s.name}</span>
                               <span className="search-result-meta">{s.category}</span>
                             </a>
@@ -486,7 +565,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                         <div className="search-result-section">
                           <h4 className="search-section-title"> Projects</h4>
                           {searchResults.projects.map((p) => (
-                            <a key={p._id} href="#portfolio" className="search-result-item" onClick={closeSearch}>
+                            <a key={p._id || p.id || p.title || p.name} href="/#portfolio" className="search-result-item" onClick={(event) => handleSearchResultNavigation(event, "portfolio")}>
                               <span className="search-result-name">{p.title || p.name}</span>
                               <span className="search-result-meta">{p.category}</span>
                             </a>
@@ -505,7 +584,8 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               </div>
             </motion.div>
           </motion.div>
-        )}
+        , document.body)
+        }
       </AnimatePresence>
     </motion.header>
   );
