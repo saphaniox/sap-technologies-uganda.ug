@@ -454,3 +454,62 @@ html[data-theme] :is(
     padding-right: max(12px, env(safe-area-inset-right)) !important;
   }
 }
+/* ===========================
+   ONE BY ONE PAGE THEME COVERAGE
+   Extra selectors for sections that use custom class names outside generic cards.
+   =========================== */
+html[data-theme] :is(
+  .about-text,
+  .about-stats,
+  .mvv-card,
+  .mvv-header,
+  .value-item,
+  .team-member,
+  .member-bio,
+  .tech-category,
+  .project-info,
+  .service-details,
+  .service-modal,
+  .partner-request-form,
+  .product-form,
+  .project-form,
+  .service-form,
+  .software-form,
+  .iot-form
+) {
+  border-color: var(--theme-border) !important;
+}
+
+html[data-theme="dark"] :is(
+  .about-text,
+  .about-stats,
+  .mvv-card,
+  .value-item,
+  .team-member,
+  .member-bio,
+  .tech-category,
+  .project-info,
+  .service-details,
+  .service-modal,
+  .partner-request-form,
+  .product-form,
+  .project-form,
+  .service-form,
+  .software-form,
+  .iot-form
+) {
+  background-color: var(--surface-elevated) !important;
+  color: var(--text-normal) !important;
+}
+
+html[data-theme="dark"] :is(
+  .mvv-description,
+  .value-content p,
+  .member-bio p,
+  .project-description,
+  .service-description,
+  .partner-description,
+  .product-description
+) {
+  color: var(--text-soft) !important;
+}

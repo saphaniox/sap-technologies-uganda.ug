@@ -10,10 +10,14 @@ const NAV_ITEMS = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
   { id: "services", label: "Services" },
-  { id: "portfolio", label: "Our Featured Projects" },
+  { id: "portfolio", label: "Projects" },
   { id: "software", label: "Software Apps", route: "/software" },
-  { id: "iot", label: "IoT Projects", route: "/iot" },
-  { id: "contact", label: "Contact" }
+  { id: "iot", label: "IoT", route: "/iot" },
+  { id: "products", label: "Products" },
+  { id: "partners", label: "Partners" },
+  { id: "companies", label: "Companies" },
+  { id: "testimonials", label: "Testimonials" },
+  { id: "contact", label: "Contacts" }
 ];
 
 const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthModalOpen, onAccountOpen, onAdminOpen, onLogout }) => {
@@ -279,7 +283,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
             variants={linkVariants}
             whileHover="hover"
             whileTap="tap"
-            aria-label={menuOpen ? "Close pages menu" : "Open pages menu"}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             aria-controls="main-navigation-sidebar"
           >
@@ -288,7 +292,6 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               <span></span>
               <span></span>
             </span>
-            <span className="menu-toggle-text">Pages</span>
           </motion.button>
         </div>
 
@@ -299,7 +302,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                 type="button"
                 className="nav-sidebar-backdrop"
                 onClick={closeMenu}
-                aria-label="Close pages menu"
+                aria-label="Close menu"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -308,24 +311,22 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               <motion.aside
                 id="main-navigation-sidebar"
                 className={`nav-sidebar ${userRole === "admin" ? "nav-sidebar-admin" : ""}`}
-                initial={{ x: "100%", opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: "100%", opacity: 0 }}
-                transition={{ type: "spring", stiffness: 280, damping: 32 }}
+                initial={{ y: -12, opacity: 0, scale: 0.98 }}
+                animate={{ y: 0, opacity: 1, scale: 1 }}
+                exit={{ y: -12, opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
               >
                 <div className="nav-sidebar-header">
                   <div className="nav-sidebar-brand">
                     <img src="/images/logo.png" alt="SAPTech Uganda" />
                     <div>
                       <strong>SAPTech Uganda</strong>
-                      <span>Pages</span>
                     </div>
                   </div>
                   <button type="button" className="nav-sidebar-close" onClick={closeMenu} aria-label="Close menu">x</button>
                 </div>
 
-                <nav className="nav-sidebar-links" aria-label="Site pages">
-                  <span className="nav-sidebar-label">Pages</span>
+                <nav className="nav-sidebar-links" aria-label="Main menu">
                   {NAV_ITEMS.map((link) => (
                     link.route ? (
                       <Link

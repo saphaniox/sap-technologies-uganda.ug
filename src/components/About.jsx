@@ -38,10 +38,10 @@ const About = () => {
 
   // Company statistics to showcase our achievements and capabilities
   const stats = [
-    { number: "80+", label: "Projects Completed", icon: "📊" },
-    { number: "100%", label: "Client Satisfaction", icon: "⭐" },
-    { number: "4+", label: "Years Experience", icon: "🚀" },
-    { number: "24/7", label: "Support Available", icon: "💬" }
+    { number: "80+", label: "Projects Completed", icon: "80+" },
+    { number: "100%", label: "Client Satisfaction", icon: "100" },
+    { number: "4+", label: "Years Experience", icon: "4+" },
+    { number: "24/7", label: "Support Available", icon: "24" }
   ];
 
   return (
@@ -69,7 +69,7 @@ const About = () => {
           >
             <h3><strong>Empowering Uganda, Inspiring Africa By </strong>Transforming your imaginations to real life</h3>
             <p>
-                At SAPTech Uganda, we believe technology is the catalyst for progress and transformation. Founded in the heart of Kampala, we are more than just a tech company—we are visionaries, innovators and partners in your success. Our multidisciplinary team blends creativity, engineering excellence and deep industry expertise to deliver world-class solutions in web design, branding, electrical engineering, electronic circuits and custom software.
+                At SAPTech Uganda, we believe technology is the catalyst for progress and transformation. Founded in the heart of Kampala, we are more than just a tech company - we are visionaries, innovators and partners in your success. Our multidisciplinary team blends creativity, engineering excellence and deep industry expertise to deliver world-class solutions in web design, branding, electrical engineering, electronic circuits and custom software.
             </p>
                         <p>
               Our team of experienced professionals combines creativity with technical 
@@ -78,7 +78,7 @@ const About = () => {
               and improve lives.
             </p>
             <p>
-                We are driven by a passion to empower businesses, entrepreneurs and communities across Uganda and beyond. Every project is an opportunity to inspire, to solve real-world challenges and to elevate our clients to new heights. With a relentless commitment to quality, integrity and innovation, SAPTech Uganda is shaping the digital future of Africa—one idea, one solution, one success story at a time.
+                We are driven by a passion to empower businesses, entrepreneurs and communities across Uganda and beyond. Every project is an opportunity to inspire, to solve real-world challenges and to elevate our clients to new heights. With a relentless commitment to quality, integrity and innovation, SAPTech Uganda is shaping the digital future of Africa - one idea, one solution, one success story at a time.
             </p>
             <p>
               <em>Professional in Engineering &amp; Technology solutions.</em>
@@ -131,7 +131,7 @@ const About = () => {
             >
               <div className="mvv-header">
                 <div className="mvv-icon-wrapper mission-icon">
-                  <span className="mvv-icon">🎯</span>
+                  <span className="mvv-icon">M</span>
                 </div>
                 <h3>Our Mission</h3>
               </div>
@@ -165,7 +165,7 @@ const About = () => {
             >
               <div className="mvv-header">
                 <div className="mvv-icon-wrapper vision-icon">
-                  <span className="mvv-icon">🔭</span>
+                  <span className="mvv-icon">V</span>
                 </div>
                 <h3>Our Vision</h3>
               </div>
@@ -174,15 +174,10 @@ const About = () => {
                   Africa's Premier Technology Innovation Partner
                 </p>
                 <p className="mvv-description">
-                  We aspire to be the foremost technology partner across Africa, distinguished by our unwavering 
-                  commitment to innovation, creative excellence, and technical mastery. Our vision extends beyond 
-                  mere service delivery—we seek to fundamentally transform how businesses operate in the digital era.
+                  We aspire to be the foremost technology partner across Africa, distinguished by our unwavering commitment to innovation, creative excellence, and technical mastery. Our vision extends beyond mere service delivery - we seek to fundamentally transform how businesses operate in the digital era.
                 </p>
                 <p className="mvv-description">
-                  We envision an inclusive technological landscape where every enterprise—from ambitious startups 
-                  to established industry leaders—has seamless access to sophisticated, cutting-edge solutions that 
-                  empower them to compete on the global stage, drive meaningful impact, and flourish in an 
-                  increasingly interconnected world.
+                  We envision an inclusive technological landscape where every enterprise - from ambitious startups to established industry leaders - has seamless access to sophisticated, cutting-edge solutions that empower them to compete on the global stage, drive meaningful impact, and flourish in an increasingly interconnected world.
                 </p>
               </div>
             </motion.div>
@@ -199,7 +194,7 @@ const About = () => {
             >
               <div className="mvv-header">
                 <div className="mvv-icon-wrapper values-icon">
-                  <span className="mvv-icon">⭐</span>
+                  <span className="mvv-icon">CV</span>
                 </div>
                 <h3>Core Values</h3>
               </div>
@@ -213,7 +208,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle innovation-circle">
-                      <span className="value-emoji">💡</span>
+                      <span className="value-emoji">IN</span>
                     </div>
                     <div className="value-content">
                       <h4>Innovation</h4>
@@ -225,7 +220,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle excellence-circle">
-                      <span className="value-emoji">🏆</span>
+                      <span className="value-emoji">EX</span>
                     </div>
                     <div className="value-content">
                       <h4>Excellence</h4>
@@ -237,7 +232,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle integrity-circle">
-                      <span className="value-emoji">🤝</span>
+                      <span className="value-emoji">TR</span>
                     </div>
                     <div className="value-content">
                       <h4>Integrity</h4>
@@ -249,7 +244,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle impact-circle">
-                      <span className="value-emoji">🌍</span>
+                      <span className="value-emoji">IM</span>
                     </div>
                     <div className="value-content">
                       <h4>Impact</h4>
@@ -261,7 +256,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle collaboration-circle">
-                      <span className="value-emoji">👥</span>
+                      <span className="value-emoji">CO</span>
                     </div>
                     <div className="value-content">
                       <h4>Collaboration</h4>
@@ -273,7 +268,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle customer-circle">
-                      <span className="value-emoji">🎯</span>
+                      <span className="value-emoji">CU</span>
                     </div>
                     <div className="value-content">
                       <h4>Customer-Centricity</h4>

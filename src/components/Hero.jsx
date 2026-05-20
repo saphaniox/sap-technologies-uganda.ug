@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import "../styles/Hero.css";
 
@@ -71,6 +71,7 @@ const Hero = () => {
 
   return (
     <motion.section 
+      id="home"
       className="hero"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

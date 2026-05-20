@@ -123,7 +123,7 @@ const Partners = () => {
 
   if (loading) {
     return (
-      <section className="partners">
+      <section id="partners" className="partners">
         <div className="container">
           <div className="loading-state">
             <div className="loading-spinner"></div>
@@ -136,7 +136,7 @@ const Partners = () => {
 
   if (error) {
     return (
-      <section className="partners">
+      <section id="partners" className="partners">
         <div className="container">
           <div className="error-state">
             <p>{error}</p>
@@ -148,7 +148,7 @@ const Partners = () => {
 
   if (partners.length === 0 && !loading && !error) {
     return (
-      <section className="partners">
+      <section id="partners" className="partners">
         <div className="container">
           <div className="partners-header">
             <h2>Trusted Partners</h2>
@@ -211,7 +211,7 @@ const Partners = () => {
   }
 
   return (
-    <section className="partners">
+    <section id="partners" className="partners">
       <div className="container">
           <div className="partners-header">
             <h2>Trusted Partners</h2>
