@@ -81,7 +81,7 @@ class ApiService {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
       
-      if (import.meta.env.DEV) console.log('🔔 Waking up server...');
+      if (import.meta.env.DEV) console.log('Waking up server...');
       const response = await fetch(`${this.baseURL}/api/health`, {
         method: 'GET',
         signal: controller.signal,
@@ -92,11 +92,11 @@ class ApiService {
       clearTimeout(timeoutId);
       
       if (response.ok) {
-        if (import.meta.env.DEV) console.log('✅ Server is awake');
+        if (import.meta.env.DEV) console.log('Server is awake');
       }
     } catch (error) {
       // Silently fail - this is just a wake-up call
-      if (import.meta.env.DEV) console.log('⏰ Server wake-up initiated (may take 30-60 seconds on first load)');
+      if (import.meta.env.DEV) console.log('Server wake-up initiated (may take 30-60 seconds on first load)');
     }
   }
 
@@ -153,7 +153,7 @@ class ApiService {
     if (useCache) {
       const cached = this.getCached(cacheKey);
       if (cached) {
-        if (import.meta.env.DEV) console.log('📦 Serving from cache:', cacheKey);
+        if (import.meta.env.DEV) console.log('Serving from cache:', cacheKey);
         // Return a deep clone to avoid same-reference state updates in React
         try {
           // Use structuredClone when available for performance
@@ -264,7 +264,7 @@ class ApiService {
       if (method !== 'GET' && response.ok) {
         try {
           this.clearCache();
-          if (import.meta.env.DEV) console.log('🧹 API cache cleared after mutation:', method, url);
+          if (import.meta.env.DEV) console.log('API cache cleared after mutation:', method, url);
         } catch (e) {
           // Non-fatal - log in development
           if (import.meta.env.DEV) console.warn('Failed to clear API cache after mutation', e);
@@ -301,11 +301,29 @@ class ApiService {
   }
 
   async signup(userData) {
-    // Create new user account with name, email, password
-    return this.request("/api/signup", {
+    // Create new user account with name, email, password, and optional phone
+    const payload = {
+      name: userData.name?.trim(),
+      email: userData.email?.trim(),
+      password: userData.password
+    };
+
+    const phone = userData.phone?.trim();
+    if (phone) {
+      payload.phone = phone;
+    }
+
+    const response = await this.request("/api/signup", {
       method: "POST",
-      body: JSON.stringify(userData),
+      body: JSON.stringify(payload),
     });
+
+    const token = response?.data?.accessToken;
+    if (token) {
+      this.setAuthToken(token);
+    }
+
+    return response;
   }
 
   async logout() {

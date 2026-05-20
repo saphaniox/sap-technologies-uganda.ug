@@ -50,10 +50,10 @@ const IoTPage = () => {
         {/* Page Header */}
         <div className="iot-page-header">
           <div className="container">
-            <button onClick={() => navigate(-1)} className="back-button" aria-label="Go back">
+            <button onClick={() => navigate("/")} className="back-button" aria-label="Back to homepage">
               <i className="fas fa-arrow-left"></i> Back
             </button>
-            <h1>🔌 IoT Projects & Tech Innovations</h1>
+            <h1>IoT Projects & Tech Innovations</h1>
             <p className="iot-page-subtitle">
               Explore our innovative Internet of Things projects and embedded systems. 
               From smart home automation to industrial solutions, we build connected devices that make life easier.

@@ -12,6 +12,9 @@ import AwardsAdmin from "./AwardsAdmin";
 import VisitorAnalytics from "./VisitorAnalytics";
 import "../styles/AdminDashboard.css";
 
+const getPartnerDisplayName = (partner) => partner?.name?.trim() || "Logo-only partner";
+const getPartnerInitial = (partner) => getPartnerDisplayName(partner).charAt(0).toUpperCase();
+
 const AdminDashboard = ({ user, onClose }) => {
   // Main navigation state - tracks which admin section is currently active
   const [activeTab, setActiveTab] = useState("overview");
@@ -283,7 +286,7 @@ const AdminDashboard = ({ user, onClose }) => {
 
   const fetchServices = async (page = 1) => {
     try {
-      console.log("🛠️ Fetching services... Page:", page);
+      console.log(" Fetching services... Page:", page);
       const params = {
         page,
         limit: 50, // Increased from 10 to show more services per page
@@ -291,14 +294,14 @@ const AdminDashboard = ({ user, onClose }) => {
         category: servicesCategoryFilter,
         status: servicesStatusFilter
       };
-      console.log("🛠️ Request params:", params);
+      console.log(" Request params:", params);
       const response = await apiService.getAllServices(params);
-      console.log("🛠️ Services response:", response);
-      console.log("✅ Services loaded:", response.data.services?.length || 0);
+      console.log(" Services response:", response);
+      console.log(" Services loaded:", response.data.services?.length || 0);
       setServices(response.data.services);
       setServicesPagination(response.data.pagination);
     } catch (error) {
-      console.error("❌ Services fetch error:", error);
+      console.error(" Services fetch error:", error);
       console.error("Error details:", error.message, error.response);
     }
   };
@@ -322,7 +325,7 @@ const AdminDashboard = ({ user, onClose }) => {
 
   const fetchProducts = async (page = 1) => {
     try {
-      console.log("📦 Fetching products... Page:", page);
+      console.log(" Fetching products... Page:", page);
       const params = {
         page,
         limit: 10,
@@ -331,20 +334,20 @@ const AdminDashboard = ({ user, onClose }) => {
         status: productsStatusFilter === "all" ? "" : productsStatusFilter
       };
       
-      console.log("📦 Request params:", params);
+      console.log(" Request params:", params);
       const response = await apiService.getProductsAdmin(params);
-      console.log("📦 Products response:", response);
+      console.log(" Products response:", response);
       
       if (response && response.data) {
-        console.log("✅ Products loaded:", response.data.products?.length || 0);
+        console.log(" Products loaded:", response.data.products?.length || 0);
         setProducts(response.data.products || []);
         setProductsPagination(response.data.pagination || { currentPage: 1, totalPages: 1 });
       } else {
-        console.warn("⚠️ No data in response");
+        console.warn(" No data in response");
         setProducts([]);
       }
     } catch (error) {
-      console.error("❌ Products fetch error:", error);
+      console.error(" Products fetch error:", error);
       console.error("Error details:", error.message, error.response);
       setProducts([]);
     }
@@ -352,7 +355,7 @@ const AdminDashboard = ({ user, onClose }) => {
 
   const fetchProductInquiries = async (page = 1) => {
     try {
-      console.log("📨 Fetching product inquiries... Page:", page);
+      console.log(" Fetching product inquiries... Page:", page);
       const params = {
         page,
         limit: 10,
@@ -360,12 +363,12 @@ const AdminDashboard = ({ user, onClose }) => {
         status: productInquiriesStatusFilter === "all" ? "" : productInquiriesStatusFilter
       };
       
-      console.log("📨 Request params:", params);
+      console.log(" Request params:", params);
       const response = await apiService.getProductInquiries(params);
-      console.log("📨 Product inquiries response:", response);
+      console.log(" Product inquiries response:", response);
       
       if (response && response.data) {
-        console.log("✅ Product inquiries loaded:", response.data.inquiries?.length || 0);
+        console.log(" Product inquiries loaded:", response.data.inquiries?.length || 0);
         setProductInquiries(response.data.inquiries || []);
         // Backend returns: totalPages, currentPage, total (not wrapped in pagination object)
         setProductInquiriesPagination({
@@ -376,11 +379,11 @@ const AdminDashboard = ({ user, onClose }) => {
           hasNext: parseInt(response.data.currentPage) < parseInt(response.data.totalPages)
         });
       } else {
-        console.warn("⚠️ No data in response");
+        console.warn(" No data in response");
         setProductInquiries([]);
       }
     } catch (error) {
-      console.error("❌ Product inquiries fetch error:", error);
+      console.error(" Product inquiries fetch error:", error);
       console.error("Error details:", error.message, error.response);
       setProductInquiries([]);
     }
@@ -388,7 +391,7 @@ const AdminDashboard = ({ user, onClose }) => {
 
   const fetchServiceQuotes = async (page = 1) => {
     try {
-      console.log("💼 Fetching service quotes... Page:", page);
+      console.log(" Fetching service quotes... Page:", page);
       const params = {
         page,
         limit: 10,
@@ -396,12 +399,12 @@ const AdminDashboard = ({ user, onClose }) => {
         status: serviceQuotesStatusFilter === "all" ? "" : serviceQuotesStatusFilter
       };
       
-      console.log("💼 Request params:", params);
+      console.log(" Request params:", params);
       const response = await apiService.getServiceQuotes(params);
-      console.log("💼 Service quotes response:", response);
+      console.log(" Service quotes response:", response);
       
       if (response && response.data) {
-        console.log("✅ Service quotes loaded:", response.data.quotes?.length || 0);
+        console.log(" Service quotes loaded:", response.data.quotes?.length || 0);
         setServiceQuotes(response.data.quotes || []);
         // Backend returns: pagination: { page, limit, total, pages }
         const pagination = response.data.pagination || {};
@@ -413,11 +416,11 @@ const AdminDashboard = ({ user, onClose }) => {
           hasNext: parseInt(pagination.page) < parseInt(pagination.pages)
         });
       } else {
-        console.warn("⚠️ No data in response");
+        console.warn(" No data in response");
         setServiceQuotes([]);
       }
     } catch (error) {
-      console.error("❌ Service quotes fetch error:", error);
+      console.error(" Service quotes fetch error:", error);
       console.error("Error details:", error.message, error.response);
       setServiceQuotes([]);
     }
@@ -569,12 +572,12 @@ const AdminDashboard = ({ user, onClose }) => {
   };
 
   const handleServiceEdit = (service) => {
-    console.log("🖊️ Edit button clicked for service:", service);
+    console.log(" Edit button clicked for service:", service);
     console.log("Service ID:", service._id);
     console.log("Service Title:", service.title);
     setEditingService(service);
     setShowServiceForm(true);
-    console.log("✅ showServiceForm set to true");
+    console.log(" showServiceForm set to true");
   };
 
   const handleServiceDelete = async (serviceId, serviceName) => {
@@ -644,7 +647,7 @@ const AdminDashboard = ({ user, onClose }) => {
   // Partner management functions
   const handlePartnerSave = async () => {
     try {
-      setAutoMessage("Partner saved! ✅");
+      setAutoMessage("Partner saved! ");
       fetchPartners(partnersPagination.currentPage);
     } catch (error) {
       setAutoMessage("Couldn't save partner: " + error.message);
@@ -657,7 +660,7 @@ const AdminDashboard = ({ user, onClose }) => {
   };
 
   const handlePartnerDelete = async (partnerId, partnerName) => {
-    if (!window.confirm(`Are you sure you want to delete partner "${partnerName}"?`)) {
+    if (!window.confirm(`Are you sure you want to delete partner "${partnerName || "Logo-only partner"}"?`)) {
       return;
     }
 
@@ -691,7 +694,6 @@ const AdminDashboard = ({ user, onClose }) => {
         },
         credentials: "include",
         body: JSON.stringify({
-          name: partner.name,
           isActive: !partner.isActive
         })
       });
@@ -793,9 +795,9 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     }
 
     try {
-      console.log("🗑️ Attempting to delete inquiry:", inquiryId);
+      console.log(" Attempting to delete inquiry:", inquiryId);
       const response = await apiService.deleteInquiry(inquiryId);
-      console.log("✅ Delete response:", response);
+      console.log(" Delete response:", response);
       
       if (response) {
         // Instantly remove from UI
@@ -806,7 +808,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
         fetchProductInquiries(productInquiriesPagination.currentPage);
       }
     } catch (error) {
-      console.error("❌ Delete inquiry error:", error);
+      console.error(" Delete inquiry error:", error);
       setAutoMessage("Couldn't delete inquiry: " + (error.response?.data?.message || error.message), true);
     }
   };
@@ -856,14 +858,14 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       
       // Check if signature exists and is not corrupted
       if (signatureData && signatureData.isCorrupted) {
-        console.warn('⚠️ Signature file is corrupted:', signatureData.actualSize, 'bytes');
+        console.warn(' Signature file is corrupted:', signatureData.actualSize, 'bytes');
         setCurrentSignature(null);
       } else {
         setCurrentSignature(signatureData);
       }
     } catch (error) {
       // No signature configured yet or error loading
-      console.log('ℹ️ No signature configured or error loading:', error.message);
+      console.log(' No signature configured or error loading:', error.message);
       setCurrentSignature(null);
     }
   };
@@ -907,7 +909,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     const maxSize = 5 * 1024 * 1024; // 5MB
     
     if (signatureFile.size < minSize) {
-      setAutoMessage(`Signature file seems too small (${signatureFile.size} bytes, min 1KB) — it may be corrupted. Please try a different image.`, true);
+      setAutoMessage(`Signature file seems too small (${signatureFile.size} bytes, min 1KB)  it may be corrupted. Please try a different image.`, true);
       return;
     }
     
@@ -937,7 +939,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
 
       if (response) {
         const sizeKB = (signatureFile.size / 1024).toFixed(2);
-        setAutoMessage(`Signature uploaded! (${sizeKB}KB) — Certificates will now include your signature.`);
+        setAutoMessage(`Signature uploaded! (${sizeKB}KB)  Certificates will now include your signature.`);
         setSignatureFile(null);
         fetchCurrentSignature();
       }
@@ -970,7 +972,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
       html: `
         <p>Are you sure you want to delete the certificate for <strong>${nomineeName}</strong>?</p>
         <p style="color: #dc2626; margin-top: 1rem;">
-          ⚠️ This action cannot be undone. The certificate file will be permanently deleted from storage.
+           This action cannot be undone. The certificate file will be permanently deleted from storage.
         </p>
       `,
       icon: 'warning',
@@ -997,9 +999,9 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
           html: `
             <p>The certificate for <strong>${nomineeName}</strong> has been successfully deleted.</p>
             <p style="margin-top: 1rem; color: #059669;">
-              ✓ Certificate file removed from storage<br>
-              ✓ Database records cleared<br>
-              ✓ Cloud storage cleaned (if applicable)
+               Certificate file removed from storage<br>
+               Database records cleared<br>
+               Cloud storage cleaned (if applicable)
             </p>
           `,
           confirmButtonColor: '#667eea'
@@ -1085,72 +1087,72 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
             <nav className="sidebar-nav">
               <button className={`nav-btn ${activeTab === "overview" ? "active" : ""}`}
                 onClick={() => { setActiveTab("overview"); setSidebarOpen(false); }}>
-                <span className="nav-icon">📊</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Overview</span>
               </button>
               <button className={`nav-btn ${activeTab === "users" ? "active" : ""}`}
                 onClick={() => { setActiveTab("users"); setSidebarOpen(false); }}>
-                <span className="nav-icon">👥</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Users ({dashboardStats?.stats?.totalUsers || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "contacts" ? "active" : ""}`}
                 onClick={() => { setActiveTab("contacts"); setSidebarOpen(false); }}>
-                <span className="nav-icon">📧</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Contacts ({dashboardStats?.stats?.totalContacts || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "newsletters" ? "active" : ""}`}
                 onClick={() => { setActiveTab("newsletters"); setSidebarOpen(false); }}>
-                <span className="nav-icon">📰</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Newsletter ({dashboardStats?.stats?.totalNewsletterSubscribers || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "services" ? "active" : ""}`}
                 onClick={() => { setActiveTab("services"); setSidebarOpen(false); }}>
-                <span className="nav-icon">🛠️</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Services ({dashboardStats?.stats?.totalServices || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "projects" ? "active" : ""}`}
                 onClick={() => { setActiveTab("projects"); setSidebarOpen(false); }}>
-                <span className="nav-icon">🚀</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Projects ({dashboardStats?.stats?.totalProjects || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "partners" ? "active" : ""}`}
                 onClick={() => { setActiveTab("partners"); setSidebarOpen(false); }}>
-                <span className="nav-icon">🤝</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Partners ({partners.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "partnership-requests" ? "active" : ""}`}
                 onClick={() => { setActiveTab("partnership-requests"); setSidebarOpen(false); }}>
-                <span className="nav-icon">📝</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Partnership Requests ({partnershipRequests.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "products" ? "active" : ""}`}
                 onClick={() => { setActiveTab("products"); setSidebarOpen(false); }}>
-                <span className="nav-icon">📦</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Products ({products.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "product-inquiries" ? "active" : ""}`}
                 onClick={() => { setActiveTab("product-inquiries"); setSidebarOpen(false); }}>
-                <span className="nav-icon">📨</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Product Inquiries ({productInquiries.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "service-quotes" ? "active" : ""}`}
                 onClick={() => { setActiveTab("service-quotes"); setSidebarOpen(false); }}>
-                <span className="nav-icon">💼</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Service Quotes ({serviceQuotes.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "awards" ? "active" : ""}`}
                 onClick={() => { setActiveTab("awards"); setSidebarOpen(false); }}>
-                <span className="nav-icon">🏆</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Awards Management</span>
               </button>
               <button className={`nav-btn ${activeTab === "analytics" ? "active" : ""}`}
                 onClick={() => { setActiveTab("analytics"); setSidebarOpen(false); }}>
-                <span className="nav-icon">📊</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Visitor Analytics</span>
               </button>
               <button className={`nav-btn ${activeTab === "settings" ? "active" : ""}`}
                 onClick={() => { setActiveTab("settings"); setSidebarOpen(false); }}>
-                <span className="nav-icon">⚙️</span>
+                <span className="nav-icon" aria-hidden="true">-</span>
                 <span>Settings</span>
               </button>
             </nav>
@@ -1160,7 +1162,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
               <div className="dashboard-overview">
                 <div className="stats-grid">
                 <div className="stat-card">
-                  <div className="stat-icon">👥</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalUsers || 0}</h3>
                     <p>Total Users</p>
@@ -1168,14 +1170,14 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">👑</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalAdmins || 0}</h3>
                     <p>Administrators</p>
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">📧</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalContacts || 0}</h3>
                     <p>Contact Messages</p>
@@ -1183,14 +1185,14 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">📰</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalNewsletterSubscribers || 0}</h3>
                     <p>Newsletter Subscribers</p>
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">🛠️</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalServices || 0}</h3>
                     <p>Services</p>
@@ -1198,7 +1200,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">�</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalServiceQuotes || 0}</h3>
                     <p>Service Quotes</p>
@@ -1206,7 +1208,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">�🚀</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalProjects || 0}</h3>
                     <p>Projects</p>
@@ -1214,7 +1216,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">🤝</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalPartners || 0}</h3>
                     <p>Partners</p>
@@ -1222,7 +1224,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">🔔</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalPartnershipRequests || 0}</h3>
                     <p>Partnership Requests</p>
@@ -1230,7 +1232,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">📦</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalProducts || 0}</h3>
                     <p>Products</p>
@@ -1238,7 +1240,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">📋</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalProductInquiries || 0}</h3>
                     <p>Product Inquiries</p>
@@ -1246,7 +1248,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">🏆</div>
+                  <div className="stat-icon">#</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalAwards || 0}</h3>
                     <p>Award Nominations</p>
@@ -1332,7 +1334,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                 </div>
                 <div className="action-buttons">
                   <button onClick={() => fetchUsers(1)} className="btn-refresh">
-                    🔄 Refresh
+                     Refresh
                   </button>
                 </div>
               </div>
@@ -1435,7 +1437,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </select>
                 </div>
                 <button onClick={() => fetchContacts(1)} className="btn-refresh">
-                  🔄 Refresh
+                   Refresh
                 </button>
               </div>
 
@@ -1529,7 +1531,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   />
                 </div>
                 <button onClick={() => fetchNewsletters(1)} className="btn-refresh">
-                  🔄 Refresh
+                   Refresh
                 </button>
               </div>
 
@@ -1622,10 +1624,10 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                     onClick={() => setShowServiceForm(true)} 
                     className="btn-primary"
                   >
-                    ➕ Add Service
+                     Add Service
                   </button>
                   <button onClick={() => fetchServices(1)} className="btn-refresh">
-                    🔄 Refresh
+                     Refresh
                   </button>
                 </div>
               </div>
@@ -1658,7 +1660,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                             onClick={() => handleServiceToggleFeatured(service._id)}
                             className={`btn-small ${service.featured ? "btn-warning" : "btn-secondary"}`}
                           >
-                            {service.featured ? "⭐" : "☆"}
+                            {service.featured ? "Yes" : "No"}
                           </button>
                         </td>
                         <td>
@@ -1675,10 +1677,10 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                console.log("✏️ Edit Service clicked:", service.title);
+                                console.log(" Edit Service clicked:", service.title);
                                 console.log("Service ID:", service._id);
                                 handleServiceEdit(service);
-                                console.log("✅ Service form should open now");
+                                console.log(" Service form should open now");
                               }}
                               title="Edit Service"
                               style={{ cursor: "pointer", pointerEvents: "auto" }}
@@ -1690,7 +1692,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                console.log("🗑️ Delete Service clicked:", service.title);
+                                console.log(" Delete Service clicked:", service.title);
                                 handleServiceDelete(service._id, service.title);
                               }}
                               title="Delete Service"
@@ -1770,10 +1772,10 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                     onClick={() => setShowProjectForm(true)} 
                     className="btn-primary"
                   >
-                    ➕ Add Project
+                     Add Project
                   </button>
                   <button onClick={() => fetchProjects(1)} className="btn-refresh">
-                    🔄 Refresh
+                     Refresh
                   </button>
                 </div>
               </div>
@@ -1807,7 +1809,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                             onClick={() => handleProjectToggleFeatured(project._id)}
                             className={`btn-small ${project.featured ? "btn-warning" : "btn-secondary"}`}
                           >
-                            {project.featured ? "⭐" : "☆"}
+                            {project.featured ? "Yes" : "No"}
                           </button>
                         </td>
                         <td>{project.client?.name || "Internal"}</td>
@@ -1916,17 +1918,17 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                             {partner.logo ? (
                               <img 
                                 src={getImageUrl(partner.logo)} 
-                                alt={`${partner.name} logo`}
+                                alt={`${getPartnerDisplayName(partner)} logo`}
                                 className="partner-logo-thumbnail"
                               />
                             ) : (
                               <div className="logo-placeholder">
-                                {partner.name.charAt(0).toUpperCase()}
+                                {getPartnerInitial(partner)}
                               </div>
                             )}
                           </div>
                         </td>
-                        <td>{partner.name}</td>
+                        <td>{partner.name?.trim() || <span className="no-description">Logo only</span>}</td>
                         <td>
                           {partner.website ? (
                             <a 
@@ -1972,7 +1974,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                             Edit
                           </button>
                           <button
-                            onClick={() => handlePartnerDelete(partner._id, partner.name)}
+                            onClick={() => handlePartnerDelete(partner._id, getPartnerDisplayName(partner))}
                             className="btn-danger btn-small"
                           >
                             Delete
@@ -2285,7 +2287,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                             </td>
                             <td>
                               <span className={`featured-badge ${product.isFeatured ? 'featured' : ''}`}>
-                                {product.isFeatured ? '⭐ Featured' : '-'}
+                                {product.isFeatured ? 'Featured' : '-'}
                               </span>
                             </td>
                             <td>{product.formattedPrice || 'Contact for Price'}</td>
@@ -2298,11 +2300,11 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                                   onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    console.log("✏️ Edit Product clicked:", product.name);
+                                    console.log(" Edit Product clicked:", product.name);
                                     console.log("Product ID:", product._id);
                                     setEditingProduct(product);
                                     setShowProductForm(true);
-                                    console.log("✅ Product form should open now");
+                                    console.log(" Product form should open now");
                                   }}
                                   title="Edit Product"
                                   style={{ cursor: "pointer", pointerEvents: "auto" }}
@@ -2314,7 +2316,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                                   onClick={async (e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    console.log("🗑️ Delete Product clicked:", product.name);
+                                    console.log(" Delete Product clicked:", product.name);
                                     if (window.confirm(`Are you sure you want to delete "${product.name}"?`)) {
                                       try {
                                         await apiService.deleteProduct(product._id);
@@ -2348,7 +2350,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                       onClick={() => fetchProducts(productsPagination.currentPage - 1)}
                       disabled={!productsPagination.hasPrev}
                     >
-                      ← Previous
+                       Previous
                     </button>
                     <span className="page-info">
                       Page {productsPagination.currentPage} of {productsPagination.totalPages}
@@ -2359,7 +2361,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                       onClick={() => fetchProducts(productsPagination.currentPage + 1)}
                       disabled={!productsPagination.hasNext}
                     >
-                      Next →
+                      Next 
                     </button>
                   </div>
                 )}
@@ -2391,10 +2393,10 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                     className="filter-select"
                   >
                     <option value="">All Status</option>
-                    <option value="new">🆕 New</option>
-                    <option value="contacted">📞 Contacted</option>
-                    <option value="resolved">✅ Resolved</option>
-                    <option value="closed">❌ Closed</option>
+                    <option value="new"> New</option>
+                    <option value="contacted"> Contacted</option>
+                    <option value="resolved"> Resolved</option>
+                    <option value="closed"> Closed</option>
                   </select>
                 </div>
               </div>
@@ -2454,10 +2456,10 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                                 onChange={(e) => handleUpdateInquiryStatus(inquiry._id, e.target.value)}
                                 className={`status-select status-${inquiry.status || 'new'}`}
                               >
-                                <option value="new">🆕 New</option>
-                                <option value="contacted">📞 Contacted</option>
-                                <option value="resolved">✅ Resolved</option>
-                                <option value="closed">❌ Closed</option>
+                                <option value="new"> New</option>
+                                <option value="contacted"> Contacted</option>
+                                <option value="resolved"> Resolved</option>
+                                <option value="closed"> Closed</option>
                               </select>
                             </td>
                             <td>{new Date(inquiry.createdAt).toLocaleDateString()}</td>
@@ -2504,7 +2506,7 @@ IP: ${inquiry.metadata?.ipAddress || 'N/A'}
                       onClick={() => fetchProductInquiries(productInquiriesPagination.currentPage - 1)}
                       disabled={!productInquiriesPagination.hasPrev}
                     >
-                      ← Previous
+                       Previous
                     </button>
                     <span className="page-info">
                       Page {productInquiriesPagination.currentPage} of {productInquiriesPagination.totalPages}
@@ -2515,7 +2517,7 @@ IP: ${inquiry.metadata?.ipAddress || 'N/A'}
                       onClick={() => fetchProductInquiries(productInquiriesPagination.currentPage + 1)}
                       disabled={!productInquiriesPagination.hasNext}
                     >
-                      Next →
+                      Next 
                     </button>
                   </div>
                 )}
@@ -2547,12 +2549,12 @@ IP: ${inquiry.metadata?.ipAddress || 'N/A'}
                     className="filter-select"
                   >
                     <option value="">All Status</option>
-                    <option value="new">🆕 New</option>
-                    <option value="contacted">📞 Contacted</option>
-                    <option value="quoted">💰 Quoted</option>
-                    <option value="accepted">✅ Accepted</option>
-                    <option value="rejected">❌ Rejected</option>
-                    <option value="expired">⏰ Expired</option>
+                    <option value="new"> New</option>
+                    <option value="contacted"> Contacted</option>
+                    <option value="quoted"> Quoted</option>
+                    <option value="accepted"> Accepted</option>
+                    <option value="rejected"> Rejected</option>
+                    <option value="expired"> Expired</option>
                   </select>
                 </div>
               </div>
@@ -2620,12 +2622,12 @@ IP: ${inquiry.metadata?.ipAddress || 'N/A'}
                                 onChange={(e) => handleUpdateQuoteStatus(quote._id, e.target.value)}
                                 className={`status-select status-${quote.status || 'new'}`}
                               >
-                                <option value="new">🆕 New</option>
-                                <option value="contacted">📞 Contacted</option>
-                                <option value="quoted">💰 Quoted</option>
-                                <option value="accepted">✅ Accepted</option>
-                                <option value="rejected">❌ Rejected</option>
-                                <option value="expired">⏰ Expired</option>
+                                <option value="new"> New</option>
+                                <option value="contacted"> Contacted</option>
+                                <option value="quoted"> Quoted</option>
+                                <option value="accepted"> Accepted</option>
+                                <option value="rejected"> Rejected</option>
+                                <option value="expired"> Expired</option>
                               </select>
                             </td>
                             <td>{new Date(quote.createdAt).toLocaleDateString()}</td>
@@ -2676,7 +2678,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                       onClick={() => fetchServiceQuotes(serviceQuotesPagination.currentPage - 1)}
                       disabled={!serviceQuotesPagination.hasPrev}
                     >
-                      ← Previous
+                       Previous
                     </button>
                     <span className="page-info">
                       Page {serviceQuotesPagination.currentPage} of {serviceQuotesPagination.totalPages}
@@ -2687,7 +2689,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                       onClick={() => fetchServiceQuotes(serviceQuotesPagination.currentPage + 1)}
                       disabled={!serviceQuotesPagination.hasNext}
                     >
-                      Next →
+                      Next 
                     </button>
                   </div>
                 )}
@@ -2698,7 +2700,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
           {/* Awards Tab */}
           {activeTab === "awards" && (
             <div className="tab-panel">
-              {console.log("🏆 Rendering Awards Tab!")}
+              {console.log(" Rendering Awards Tab!")}
               <AwardsAdmin />
             </div>
           )}
@@ -2714,7 +2716,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
           {activeTab === "settings" && (
             <div className="tab-panel">
               <div className="section-header">
-                <h2>⚙️ Certificate Settings</h2>
+                <h2> Certificate Settings</h2>
               </div>
 
               {/* Settings Subtabs */}
@@ -2723,13 +2725,13 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                   className={`subtab-btn ${settingsSubTab === "signature" ? "active" : ""}`}
                   onClick={() => setSettingsSubTab("signature")}
                 >
-                  ✍️ Signature
+                   Signature
                 </button>
                 <button 
                   className={`subtab-btn ${settingsSubTab === "certificates" ? "active" : ""}`}
                   onClick={() => setSettingsSubTab("certificates")}
                 >
-                  📜 All Certificates
+                   All Certificates
                 </button>
               </div>
 
@@ -2754,7 +2756,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                         className="btn-delete"
                         onClick={handleDeleteSignature}
                       >
-                        🗑️ Delete Current Signature
+                         Delete Current Signature
                       </button>
                     </div>
                   )}
@@ -2853,9 +2855,9 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                                 <td>{cert.categoryName || "N/A"}</td>
                                 <td>
                                   <span className={`badge badge-${cert.status}`}>
-                                    {cert.status === "winner" ? "🏆 Winner" : 
-                                     cert.status === "finalist" ? "🥈 Finalist" : 
-                                     "📜 Participation"}
+                                    {cert.status === "winner" ? " Winner" : 
+                                     cert.status === "finalist" ? " Finalist" : 
+                                     " Participation"}
                                   </span>
                                 </td>
                                 <td>
@@ -2864,7 +2866,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                                 <td>{new Date(cert.generatedAt).toLocaleDateString()}</td>
                                 <td>
                                   <span className={`badge badge-${cert.storage}`}>
-                                    {cert.storage === "cloudinary" ? "☁️ Cloud" : "💾 Local"}
+                                    {cert.storage === "cloudinary" ? " Cloud" : " Local"}
                                   </span>
                                 </td>
                                 <td className="actions-cell">
@@ -2875,7 +2877,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                                     className="action-btn download-btn"
                                     title="Download Certificate"
                                   >
-                                    ⬇️ Download
+                                     Download
                                   </a>
                                   <a 
                                     href={cert.verificationUrl}
@@ -2884,7 +2886,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                                     className="action-btn verify-btn"
                                     title="View Verification Page"
                                   >
-                                    ✅ Verify
+                                     Verify
                                   </a>
                                   <button
                                     onClick={() => handleDeleteCertificate(cert._id, cert.nomineeName)}
@@ -2892,7 +2894,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                                     title="Delete Certificate"
                                     disabled={updating}
                                   >
-                                    🗑️ Delete
+                                     Delete
                                   </button>
                                 </td>
                               </tr>
@@ -2909,7 +2911,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                             onClick={() => fetchAllCertificates(certificatesPagination.currentPage - 1)}
                             disabled={!certificatesPagination.hasPrevPage}
                           >
-                            ← Previous
+                             Previous
                           </button>
                           <span className="page-info">
                             Page {certificatesPagination.currentPage} of {certificatesPagination.totalPages}
@@ -2920,7 +2922,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                             onClick={() => fetchAllCertificates(certificatesPagination.currentPage + 1)}
                             disabled={!certificatesPagination.hasNextPage}
                           >
-                            Next →
+                            Next 
                           </button>
                         </div>
                       )}
@@ -2937,11 +2939,11 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
       {/* Service Form Modal */}
       {showServiceForm && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10001 }}>
-          {console.log("🎯 Rendering ServiceForm with:", { editingService, showServiceForm })}
+          {console.log(" Rendering ServiceForm with:", { editingService, showServiceForm })}
           <ServiceForm 
             service={editingService}
             onClose={() => {
-              console.log("❌ Closing ServiceForm");
+              console.log(" Closing ServiceForm");
               setShowServiceForm(false);
               setEditingService(null);
             }}

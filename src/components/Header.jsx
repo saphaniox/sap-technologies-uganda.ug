@@ -6,6 +6,16 @@ import { getImageUrl } from "../utils/imageUrl";
 import apiService from "../services/api";
 import "../styles/Header.css";
 
+const NAV_ITEMS = [
+  { id: "home", label: "Home" },
+  { id: "about", label: "About" },
+  { id: "services", label: "Services" },
+  { id: "portfolio", label: "Our Featured Projects" },
+  { id: "software", label: "Software Apps", route: "/software" },
+  { id: "iot", label: "IoT Projects", route: "/iot" },
+  { id: "contact", label: "Contact" }
+];
+
 const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthModalOpen, onAccountOpen, onAdminOpen, onLogout }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,6 +24,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const searchTimerRef = useRef(null);
   const searchInputRef = useRef(null);
   
@@ -38,6 +49,27 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen]);
 
   const openSearch = () => {
     setSearchOpen(true);
@@ -78,6 +110,34 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
       element.scrollIntoView({ behavior: "smooth" });
       setActiveLink(sectionId);
     }
+  };
+
+  const closeMenu = () => setMenuOpen(false);
+
+  const handleHomeNavigation = () => {
+    closeMenu();
+    if (location.pathname !== "/" || isAwardsPage) {
+      window.location.href = "/";
+      return;
+    }
+    scrollToSection("home");
+  };
+
+  const handleSectionNavigation = (event, sectionId) => {
+    event.preventDefault();
+    closeMenu();
+
+    if (location.pathname !== "/" || isAwardsPage) {
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+
+    scrollToSection(sectionId);
+  };
+
+  const handleMenuAction = (callback) => {
+    closeMenu();
+    callback?.();
   };
 
   const navVariants = {
@@ -159,13 +219,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           variants={logoVariants}
           whileHover="hover"
           whileTap={{ scale: 0.9 }}
-          onClick={() => {
-            if (isAwardsPage) {
-              window.location.href = "/";
-            } else {
-              scrollToSection("home");
-            }
-          }}
+          onClick={handleHomeNavigation}
           style={{ cursor: "pointer" }}
         >
           <motion.img 
@@ -190,248 +244,130 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           </motion.span>
         </motion.div>
 
-        <motion.ul className="nav-links">
-          {[
-            { id: "home", label: "Home" },
-            { id: "about", label: "About" },
-            { id: "services", label: "Services" },
-            { id: "portfolio", label: "Our Featured Projects" },
-            { id: "software", label: "Software Apps" },
-            { id: "iot", label: "IoT Projects" },
-            { id: "contact", label: "Contact" }
-          ].map((link, index) => (
-            <motion.li 
-              key={link.id}
-              variants={linkVariants}
-              custom={index}
-            >
-              {link.id === "software" ? (
-                // Software Apps - Navigate to dedicated page
-                <Link to="/software">
-                  <motion.span 
-                    className="link-text"
-                    variants={linkVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                  >
-                    {link.label}
-                  </motion.span>
-                </Link>
-              ) : link.id === "iot" ? (
-                // IoT Projects - Navigate to dedicated page
-                <Link to="/iot">
-                  <motion.span 
-                    className="link-text"
-                    variants={linkVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                  >
-                    {link.label}
-                  </motion.span>
-                </Link>
-              ) : isAwardsPage ? (
-                // On Awards page, link back to homepage sections
-                <Link to={`/#${link.id}`}>
-                  <motion.span 
-                    className="link-text"
-                    variants={linkVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                  >
-                    {link.label}
-                  </motion.span>
-                </Link>
-              ) : (
-                // On homepage, scroll to sections
-                <motion.a
-                  href={`#${link.id}`}
-                  onClick={(e) => { 
-                    e.preventDefault(); 
-                    scrollToSection(link.id);
-                  }}
-                  variants={linkVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  className={activeLink === link.id ? "active" : ""}
-                >
-                  <motion.span className="link-text">
-                    {link.label}
-                  </motion.span>
-                  <motion.div 
-                    className="link-underline"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </motion.a>
-              )}
-            </motion.li>
-          ))}
+        <motion.button
+          type="button"
+          className={`nav-menu-toggle ${menuOpen ? "open" : ""}`}
+          onClick={() => setMenuOpen(open => !open)}
+          variants={linkVariants}
+          whileHover="hover"
+          whileTap="tap"
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={menuOpen}
+          aria-controls="main-navigation-sidebar"
+        >
+          <span className="menu-bars" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span className="menu-toggle-text">Menu</span>
+        </motion.button>
 
-          {/* Saphaniox Awards - Standalone Page Link - Commented out until needed */}
-          {/* <motion.li 
-            variants={linkVariants}
-            custom={5}
-          >
-            <Link to="/awards">
-              <motion.span
-                className="link-text awards-link"
-                variants={linkVariants}
-                whileHover="hover"
-                whileTap="tap"
-              >
-                🏆 Saphaniox Awards 2025
-              </motion.span>
-            </Link>
-          </motion.li> */}
-
-          {/* Admin-specific navigation items */}
-          {userRole === "admin" && (
+        <AnimatePresence>
+          {menuOpen && (
             <>
-              <motion.li variants={linkVariants}>
-                <motion.a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); onAdminOpen(); }}
-                  variants={linkVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  className="admin-nav-item"
-                >
-                  <motion.span className="link-text">
-                    📊 Dashboard
-                  </motion.span>
-                  <motion.div 
-                    className="link-underline"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </motion.a>
-              </motion.li>
-              
-              <motion.li variants={linkVariants}>
-                <motion.a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); onAdminOpen(); }}
-                  variants={linkVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  className="admin-nav-item"
-                >
-                  <motion.span className="link-text">
-                    👥 Users
-                  </motion.span>
-                  <motion.div 
-                    className="link-underline"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </motion.a>
-              </motion.li>
+              <motion.button
+                type="button"
+                className="nav-sidebar-backdrop"
+                onClick={closeMenu}
+                aria-label="Close navigation menu"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              />
+              <motion.aside
+                id="main-navigation-sidebar"
+                className={`nav-sidebar ${userRole === "admin" ? "nav-sidebar-admin" : ""}`}
+                initial={{ x: "100%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "100%", opacity: 0 }}
+                transition={{ type: "spring", stiffness: 280, damping: 32 }}
+              >
+                <div className="nav-sidebar-header">
+                  <div className="nav-sidebar-brand">
+                    <img src="/images/logo2.jpg" alt="SAPTech Uganda" />
+                    <div>
+                      <strong>SAPTech Uganda</strong>
+                      <span>Navigation</span>
+                    </div>
+                  </div>
+                  <button type="button" className="nav-sidebar-close" onClick={closeMenu} aria-label="Close menu">x</button>
+                </div>
+
+                <nav className="nav-sidebar-links" aria-label="Main navigation">
+                  {NAV_ITEMS.map((link) => (
+                    link.route ? (
+                      <Link
+                        key={link.id}
+                        to={link.route}
+                        onClick={closeMenu}
+                        className={`nav-sidebar-link ${location.pathname === link.route ? "active" : ""}`}
+                      >
+                        <span>{link.label}</span>
+                      </Link>
+                    ) : (
+                      <a
+                        key={link.id}
+                        href={`#${link.id}`}
+                        onClick={(event) => handleSectionNavigation(event, link.id)}
+                        className={`nav-sidebar-link ${activeLink === link.id ? "active" : ""}`}
+                      >
+                        <span>{link.label}</span>
+                      </a>
+                    )
+                  ))}
+
+                  {userRole === "admin" && (
+                    <div className="nav-sidebar-group">
+                      <span className="nav-sidebar-label">Admin</span>
+                      <button type="button" className="nav-sidebar-link nav-sidebar-button" onClick={() => handleMenuAction(onAdminOpen)}>
+                        <span>Dashboard</span>
+                      </button>
+                      <button type="button" className="nav-sidebar-link nav-sidebar-button" onClick={() => handleMenuAction(onAdminOpen)}>
+                        <span>Users</span>
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="nav-sidebar-auth">
+                    {!isAuthenticated ? (
+                      <>
+                        <button type="button" className="nav-sidebar-action login-action" onClick={() => handleMenuAction(() => onAuthModalOpen("login"))}>
+                          Login
+                        </button>
+                        <button type="button" className="nav-sidebar-action signup-action" onClick={() => handleMenuAction(() => onAuthModalOpen("signup"))}>
+                          Sign Up
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button type="button" className="nav-sidebar-action account-action" onClick={() => handleMenuAction(onAccountOpen)}>
+                          <span className="account-profile">
+                            {userProfilePic ? (
+                              <img src={getImageUrl(userProfilePic)} alt={userName || "Profile"} className="profile-pic-small" />
+                            ) : (
+                              <span className="profile-icon">U</span>
+                            )}
+                            <span className="profile-name">{userName || "My Account"}</span>
+                          </span>
+                        </button>
+                        {userRole === "admin" && (
+                          <button type="button" className="nav-sidebar-action admin-action" onClick={() => handleMenuAction(onAdminOpen)}>
+                            Admin
+                          </button>
+                        )}
+                        <button type="button" className="nav-sidebar-action logout-action" onClick={() => handleMenuAction(onLogout)}>
+                          Logout
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </nav>
+              </motion.aside>
             </>
           )}
-          
-          <AnimatePresence mode="wait">
-            {!isAuthenticated ? (
-              <motion.div 
-                key="auth-links"
-                className="auth-links"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.5 }}
-              >
-                <motion.li variants={linkVariants}>
-                  <motion.a
-                    href="#"
-                    onClick={(e) => { e.preventDefault(); onAuthModalOpen("login"); }}
-                    variants={linkVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                    className="login-btn"
-                  >
-                    <motion.span>Login</motion.span>
-                  </motion.a>
-                </motion.li>
-                <motion.li variants={linkVariants}>
-                  <motion.a
-                    href="#"
-                    onClick={(e) => { e.preventDefault(); onAuthModalOpen("signup"); }}
-                    variants={linkVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                    className="signup-btn"
-                  >
-                    <motion.span>Sign Up</motion.span>
-                  </motion.a>
-                </motion.li>
-              </motion.div>
-            ) : (
-              <motion.div 
-                key="user-links"
-                className="user-links"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.5 }}
-              >
-                <motion.li variants={linkVariants}>
-                  <motion.a
-                    href="#"
-                    onClick={(e) => { e.preventDefault(); onAccountOpen(); }}
-                    variants={linkVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                    className="account-btn"
-                  >
-                    <motion.div className="account-profile">
-                      {userProfilePic ? (
-                        <img 
-                          src={getImageUrl(userProfilePic)} 
-                          alt={userName || "Profile"}
-                          className="profile-pic-small"
-                        />
-                      ) : (
-                        <span className="profile-icon">👤</span>
-                      )}
-                      <span className="profile-name">{userName || "My Account"}</span>
-                    </motion.div>
-                  </motion.a>
-                </motion.li>
-                
-                {userRole === "admin" && (
-                  <motion.li variants={linkVariants}>
-                    <motion.a
-                      href="#"
-                      onClick={(e) => { e.preventDefault(); onAdminOpen(); }}
-                      variants={linkVariants}
-                      whileHover="hover"
-                      whileTap="tap"
-                      className="admin-btn"
-                    >
-                      <motion.span>Admin</motion.span>
-                    </motion.a>
-                  </motion.li>
-                )}
-                
-                <motion.li variants={linkVariants}>
-                  <motion.a
-                    href="#"
-                    onClick={(e) => { e.preventDefault(); onLogout(); }}
-                    variants={linkVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                    className="logout-btn"
-                  >
-                    <motion.span>Logout</motion.span>
-                  </motion.a>
-                </motion.li>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.ul>
-        
+        </AnimatePresence>
         {/* Search Button */}
         <motion.button
           className="nav-search-btn"
@@ -444,8 +380,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           whileTap={{ scale: 0.9 }}
           aria-label="Open search"
         >
-          🔍
-        </motion.button>
+          Search</motion.button>
 
         {/* Theme Toggle */}
         <motion.div 
@@ -478,7 +413,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
             >
               <div className="search-modal-header">
                 <div className="search-input-wrap">
-                  <span className="search-modal-icon">🔍</span>
+                  <span className="search-modal-icon">Search</span>
                   <input
                     ref={searchInputRef}
                     type="text"
@@ -493,10 +428,12 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                       className="search-input-clear"
                       onClick={() => { setSearchQuery(""); setSearchResults(null); }}
                       aria-label="Clear search"
-                    >✕</button>
+                    >
+                      x
+                    </button>
                   )}
                 </div>
-                <button className="search-close-btn" onClick={closeSearch}>✕ Close</button>
+                <button className="search-close-btn" onClick={closeSearch}>Close</button>
               </div>
 
               <div className="search-modal-results">
@@ -517,7 +454,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                     <>
                       {hasProducts && (
                         <div className="search-result-section">
-                          <h4 className="search-section-title">🛒 Products</h4>
+                          <h4 className="search-section-title"> Products</h4>
                           {searchResults.products.map((p) => (
                             <a key={p._id} href="#products" className="search-result-item" onClick={closeSearch}>
                               <span className="search-result-name">{p.name}</span>
@@ -528,7 +465,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                       )}
                       {hasServices && (
                         <div className="search-result-section">
-                          <h4 className="search-section-title">⚙️ Services</h4>
+                          <h4 className="search-section-title"> Services</h4>
                           {searchResults.services.map((s) => (
                             <a key={s._id} href="#services" className="search-result-item" onClick={closeSearch}>
                               <span className="search-result-name">{s.title || s.name}</span>
@@ -539,7 +476,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                       )}
                       {hasProjects && (
                         <div className="search-result-section">
-                          <h4 className="search-section-title">🗂 Projects</h4>
+                          <h4 className="search-section-title"> Projects</h4>
                           {searchResults.projects.map((p) => (
                             <a key={p._id} href="#portfolio" className="search-result-item" onClick={closeSearch}>
                               <span className="search-result-name">{p.title || p.name}</span>

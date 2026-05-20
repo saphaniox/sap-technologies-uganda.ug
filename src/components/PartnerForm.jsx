@@ -104,9 +104,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Please enter the partner's name";
-    } else if (formData.name.length > CHAR_LIMITS.name) {
+    if (formData.name && formData.name.length > CHAR_LIMITS.name) {
       newErrors.name = `Name must be less than ${CHAR_LIMITS.name} characters`;
     }
 
@@ -205,7 +203,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
         <form onSubmit={handleSubmit} className="partner-form">
           <div className="form-group">
             <label htmlFor="name">
-              Partner Name <span className="required">*</span>
+              Partner Name
             </label>
             <input
               type="text"
@@ -213,9 +211,9 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
               name="name"
               value={formData.name}
               onChange={handleInputChange}
+              placeholder="Optional partner name"
               className={errors.name ? "error" : ""}
               maxLength={CHAR_LIMITS.name}
-              required
             />
             <div className="char-count">
               {getCharacterCount("name").current}/{CHAR_LIMITS.name} characters

@@ -52,7 +52,7 @@ const SoftwarePage = () => {
         {/* Page Header */}
         <div className="software-page-header">
           <div className="container">
-            <button onClick={() => navigate(-1)} className="back-button" aria-label="Go back">
+            <button onClick={() => navigate("/")} className="back-button" aria-label="Back to homepage">
               <i className="fas fa-arrow-left"></i> Back
             </button>
             <h1>Software Apps</h1>

@@ -6,6 +6,9 @@ import { apiService } from "../services/api";
 import { getImageUrl } from "../utils/imageUrl";
 import "../styles/Partners.css";
 
+const getPartnerDisplayName = (partner) => partner?.name?.trim() || "Partner";
+const getPartnerInitial = (partner) => getPartnerDisplayName(partner).charAt(0).toUpperCase();
+
 const Partners = () => {
   /**
    * Data State
@@ -267,19 +270,19 @@ const Partners = () => {
               <div className="partner-logo">
                 <img 
                   src={getImageUrl(partner.logo)} 
-                  alt={`${partner.name} logo`}
+                  alt={`${getPartnerDisplayName(partner)} logo`}
                   onError={(e) => {
                     e.target.style.display = "none";
                     e.target.nextElementSibling.style.display = "flex";
                   }}
                 />
                 <div className="logo-fallback" style={{ display: "none" }}>
-                  <span>{partner.name.charAt(0).toUpperCase()}</span>
+                  <span>{getPartnerInitial(partner)}</span>
                 </div>
               </div>
               
               <div className="partner-info">
-                <h3 className="partner-name">{partner.name}</h3>
+                {partner.name?.trim() && <h3 className="partner-name">{partner.name}</h3>}
                 
                 {partner.description && (
                   <p className="partner-description">{partner.description}</p>
@@ -348,7 +351,7 @@ const Partners = () => {
         <ConfirmDialog
           isOpen={showDeleteDialog}
           title="Delete Partner"
-          message={`Are you sure you want to delete "${partnerToDelete.name}"? This action cannot be undone.`}
+          message={`Are you sure you want to delete "${getPartnerDisplayName(partnerToDelete)}"? This action cannot be undone.`}
           onConfirm={confirmDelete}
           onCancel={cancelDelete}
           confirmText="Delete"

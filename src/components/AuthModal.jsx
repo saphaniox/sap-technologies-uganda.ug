@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import apiService from "../services/api";
 import { showAlert, LoadingButton, Spinners } from "../utils/alerts.jsx";
 import "../styles/AuthModal.css";
@@ -44,13 +44,24 @@ const AuthModal = ({ isOpen, mode, onClose, onAuthSuccess, onModeSwitch }) => {
           password: formData.password
         });
       } else {
-        result = await apiService.signup(formData);
+        const signupData = {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        };
+
+        const phone = formData.phone.trim();
+        if (phone) {
+          signupData.phone = phone;
+        }
+
+        result = await apiService.signup(signupData);
       }
 
       if (mode === "login") {
         // Show success alert for login
         await showAlert.success(
-          "You're in! ðŸ‘‹",
+          "You're in!",
           `Great to have you back! Taking you to your account now.`,
           {
             timer: 2000,
@@ -62,25 +73,19 @@ const AuthModal = ({ isOpen, mode, onClose, onAuthSuccess, onModeSwitch }) => {
         onClose();
         setFormData({ name: "", email: "", password: "", phone: "" });
       } else {
-        // Show success alert for signup
+        // Show success alert for signup and continue straight into the account
         await showAlert.success(
-          "Welcome to SAPTech! ðŸŽ‰",
-          "Your account is all set. Heading to login now...",
+          "Welcome to SAPTech!",
+          "Your account is ready. Taking you to your account now.",
           {
             timer: 2000,
-            confirmButtonText: "Continue to Login"
+            confirmButtonText: "Continue"
           }
         );
         
-        // Clear form and switch to login mode
+        onAuthSuccess(result);
+        onClose();
         setFormData({ name: "", email: "", password: "", phone: "" });
-        
-        // Redirect to login after a brief delay
-        setTimeout(() => {
-          if (onModeSwitch) {
-            onModeSwitch("login");
-          }
-        }, 2000);
       }
     } catch (error) {
       // Show error alert
@@ -228,7 +233,7 @@ const AuthModal = ({ isOpen, mode, onClose, onAuthSuccess, onModeSwitch }) => {
           
           <p>
             <a href="#" className="shortcut-home" onClick={(e) => { e.preventDefault(); onClose(); }}>
-              â† Back to Home
+              Back to Home
             </a>
           </p>
         </form>

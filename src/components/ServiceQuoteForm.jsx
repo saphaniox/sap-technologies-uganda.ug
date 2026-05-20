@@ -20,7 +20,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
   // Update form data when service prop changes
   useEffect(() => {
     if (service && (service.id || service._id)) {
-      console.log("🔍 ServiceQuoteForm - Updating form with service:", {
+      console.log(" ServiceQuoteForm - Updating form with service:", {
         serviceId: service.id || service._id,
         serviceName: service.title
       });
@@ -112,7 +112,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
     setIsSubmitting(true);
 
     try {
-      console.log("� ServiceQuoteForm - Form data before submission:", {
+      console.log("ServiceQuoteForm - Form data before submission:", {
         serviceId: formData.serviceId,
         serviceName: formData.serviceName,
         customerEmail: formData.customerEmail
@@ -132,10 +132,10 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
       };
 
       const response = await onSubmit(quoteData);
-      console.log("✅ Quote request submitted successfully:", response);
+      console.log(" Quote request submitted successfully:", response);
 
       // Show success alert notification
-      showAlert.success("Quote request sent! 📨", "Thanks for reaching out! We'll put together a detailed quote and get it to you within 24–48 hours.");
+      showAlert.success("Quote request sent! ", "Thanks for reaching out! We'll put together a detailed quote and get it to you within 24-48 hours.");
 
       // Show success modal briefly then close
       setShowSuccess(true);
@@ -144,7 +144,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
         onClose();
       }, 2500);
     } catch (error) {
-      console.error("❌ Error submitting quote request:", error);
+      console.error(" Error submitting quote request:", error);
       
       // Show error alert notification
       showAlert.error("Quote didn't go through", error.message || "Something went wrong submitting your request. Please try again.");
@@ -163,9 +163,9 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
     return (
       <div className="quote-modal-overlay success-notification bottom-aligned" onClick={onClose}>
         <div className="quote-modal success-modal" onClick={(e) => e.stopPropagation()}>
-          <div className="success-icon">✓</div>
-          <h2>Quote Request Sent! 🎉</h2>
-          <p>Thanks so much! We'll look over your request and send you a detailed quote within 24–48 hours.</p>
+          <div className="success-icon">OK</div>
+          <h2>Quote Request Sent! </h2>
+          <p>Thanks so much! We'll look over your request and send you a detailed quote within 24-48 hours.</p>
           <button className="close-success-btn" onClick={onClose}>
             Close
           </button>
@@ -177,9 +177,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
   return (
     <div className="quote-modal-overlay bottom-aligned" onClick={onClose}>
       <div className="quote-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="close-modal-btn" onClick={onClose} aria-label="Close">
-          ×
-        </button>
+        <button className="close-modal-btn" onClick={onClose} aria-label="Close">x</button>
 
         <div className="quote-modal-header">
           <h2>Request a Quote</h2>
