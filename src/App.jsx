@@ -29,6 +29,7 @@ import { microAnimationStyles } from "./utils/microAnimations.jsx";
 import { useVisitorTracking } from "./hooks/useVisitorTracking";
 import "./styles/App.css";
 import "./styles/ErrorBoundary.css";
+import "./styles/theme-complete.css";
 
 // Secondary pages and modals — lazy-loaded so they don't bloat the initial bundle
 const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));

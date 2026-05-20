@@ -40,11 +40,19 @@ export const ThemeProvider = ({ children }) => {
   // Effect to apply theme to document and save to localStorage
   useEffect(() => {
     try {
-      // Apply theme to document root
-      document.documentElement.setAttribute("data-theme", theme);
+      // Apply theme to document root. Some older component styles still use
+      // .dark-mode/.light-mode, so keep those classes in sync with data-theme.
+      const root = document.documentElement;
+      root.setAttribute("data-theme", theme);
+      root.classList.toggle("dark-mode", theme === "dark");
+      root.classList.toggle("light-mode", theme === "light");
       
-      // Update the CSS color-scheme property
-      document.documentElement.style.colorScheme = theme;
+      // Update the CSS color-scheme property and browser chrome color.
+      root.style.colorScheme = theme;
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute("content", theme === "dark" ? "#0f172a" : "#ffffff");
+      }
       
       // Save to localStorage
       localStorage.setItem("sap-technologies-theme", theme);
