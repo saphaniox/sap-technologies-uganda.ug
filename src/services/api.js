@@ -18,6 +18,9 @@ class ApiService {
     this.cache = new Map();
     this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
     this.authToken = this.getStoredAuthToken();
+    this.authStatusPromise = null;
+    this.authStatusCache = null;
+    this.authStatusCacheTimeout = 60 * 1000; // Avoid repeated anonymous /account checks
     
     if (import.meta.env.DEV) {
       console.log('API Configuration:', {
@@ -59,6 +62,7 @@ class ApiService {
 
   setAuthToken(token) {
     this.authToken = token || "";
+    this.clearAuthStatusCache();
 
     try {
       if (this.authToken) {
@@ -103,6 +107,39 @@ class ApiService {
       this.cache.clear();
     }
   }
+
+  clearAuthStatusCache() {
+    this.authStatusPromise = null;
+    this.authStatusCache = null;
+  }
+
+  getCachedAuthStatus() {
+    if (!this.authStatusCache) return null;
+
+    const now = Date.now();
+    const maxAge = this.authStatusCache.isAuthenticated
+      ? this.cacheTimeout
+      : this.authStatusCacheTimeout;
+
+    if (now - this.authStatusCache.timestamp > maxAge) {
+      this.authStatusCache = null;
+      return null;
+    }
+
+    return {
+      isAuthenticated: this.authStatusCache.isAuthenticated,
+      user: this.authStatusCache.user
+    };
+  }
+
+  setAuthStatusCache(status) {
+    this.authStatusCache = {
+      isAuthenticated: Boolean(status?.isAuthenticated),
+      user: status?.user || null,
+      timestamp: Date.now()
+    };
+  }
+
   async request(endpoint, options = {}) {
     // Ensure endpoint starts with /api unless it already does
     const apiEndpoint = endpoint.startsWith('/api') ? endpoint : `/api${endpoint}`;
@@ -311,17 +348,36 @@ class ApiService {
   }
 
   // Check authentication status without throwing errors for unauthenticated users
-  async checkAuthStatus() {
-    try {
-      const response = await this.request("/api/account");
-      return { isAuthenticated: true, user: response?.data?.user };
-    } catch (error) {
-      if (error.message.includes("Authentication required")) {
-        return { isAuthenticated: false, user: null };
+  async checkAuthStatus(options = {}) {
+    const force = Boolean(options.force);
+    if (!force) {
+      const cached = this.getCachedAuthStatus();
+      if (cached) return cached;
+
+      if (this.authStatusPromise) {
+        return this.authStatusPromise;
       }
-      // Re-throw other errors
-      throw error;
     }
+
+    this.authStatusPromise = (async () => {
+      try {
+        const response = await this.request("/api/account", { useCache: false });
+        const status = { isAuthenticated: true, user: response?.data?.user };
+        this.setAuthStatusCache(status);
+        return status;
+      } catch (error) {
+        if (error.message.includes("Authentication required")) {
+          const status = { isAuthenticated: false, user: null };
+          this.setAuthStatusCache(status);
+          return status;
+        }
+        throw error;
+      } finally {
+        this.authStatusPromise = null;
+      }
+    })();
+
+    return this.authStatusPromise;
   }
 
   async updateAccount(userData) {
@@ -827,8 +883,8 @@ class ApiService {
 
   // User methods
   async getCurrentUser() {
-    const response = await this.request("/api/account");
-    return response.data?.user;
+    const authStatus = await this.checkAuthStatus();
+    return authStatus.user || null;
   }
 
   // Check if current user is admin
