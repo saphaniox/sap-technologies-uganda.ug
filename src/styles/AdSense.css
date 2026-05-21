@@ -1,0 +1,57 @@
+.adsense-placement {
+  width: min(100% - 32px, 1120px);
+  margin: 12px auto 28px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.03);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.adsense-placement-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-color-muted, #94a3b8);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.adsense-placement .adsbygoogle {
+  width: 100%;
+}
+
+.adsense-placement--home {
+  margin-top: 0;
+}
+
+.adsense-placement--marketplace {
+  margin-bottom: 18px;
+}
+
+.adsense-placement--home-middle,
+.adsense-placement--contextual {
+  margin-top: 18px;
+}
+
+.adsense-placement--page-top {
+  margin-top: 18px;
+}
+
+.adsense-placement--page-bottom {
+  margin-top: 28px;
+}
+
+[data-theme="dark"] .adsense-placement {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(148, 163, 184, 0.16);
+}
+
+@media (max-width: 640px) {
+  .adsense-placement {
+    width: calc(100% - 20px);
+    margin-bottom: 22px;
+    padding: 8px;
+  }
+}
