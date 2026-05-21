@@ -38,10 +38,10 @@ const About = () => {
 
   // Company statistics to showcase our achievements and capabilities
   const stats = [
-    { number: "80+", label: "Projects Completed", icon: "80+" },
-    { number: "100%", label: "Client Satisfaction", icon: "100" },
-    { number: "4+", label: "Years Experience", icon: "4+" },
-    { number: "24/7", label: "Support Available", icon: "24" }
+    { number: "80+", label: "Projects Completed" },
+    { number: "100%", label: "Client Satisfaction" },
+    { number: "4+", label: "Years Experience" },
+    { number: "24/7", label: "Support Available" }
   ];
 
   return (
@@ -101,7 +101,6 @@ const About = () => {
                   variants={scaleHover}
                   whileHover="hover"
                 >
-                  <div className="stat-icon">{stat.icon}</div>
                   <div className="stat-number">{stat.number}</div>
                   <div className="stat-label">{stat.label}</div>
                 </motion.div>
@@ -131,7 +130,7 @@ const About = () => {
             >
               <div className="mvv-header">
                 <div className="mvv-icon-wrapper mission-icon">
-                  <span className="mvv-icon">M</span>
+                  <span className="mvv-icon">{"\uD83C\uDFAF"}</span>
                 </div>
                 <h3>Our Mission</h3>
               </div>
@@ -165,7 +164,7 @@ const About = () => {
             >
               <div className="mvv-header">
                 <div className="mvv-icon-wrapper vision-icon">
-                  <span className="mvv-icon">V</span>
+                  <span className="mvv-icon">{"\uD83D\uDD2D"}</span>
                 </div>
                 <h3>Our Vision</h3>
               </div>
@@ -194,7 +193,7 @@ const About = () => {
             >
               <div className="mvv-header">
                 <div className="mvv-icon-wrapper values-icon">
-                  <span className="mvv-icon">CV</span>
+                  <span className="mvv-icon">{"\u2B50"}</span>
                 </div>
                 <h3>Core Values</h3>
               </div>
@@ -208,7 +207,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle innovation-circle">
-                      <span className="value-emoji">IN</span>
+                      <span className="value-emoji">{"\uD83D\uDCA1"}</span>
                     </div>
                     <div className="value-content">
                       <h4>Innovation</h4>
@@ -220,7 +219,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle excellence-circle">
-                      <span className="value-emoji">EX</span>
+                      <span className="value-emoji">{"\uD83C\uDFC6"}</span>
                     </div>
                     <div className="value-content">
                       <h4>Excellence</h4>
@@ -232,7 +231,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle integrity-circle">
-                      <span className="value-emoji">TR</span>
+                      <span className="value-emoji">{"\uD83E\uDD1D"}</span>
                     </div>
                     <div className="value-content">
                       <h4>Integrity</h4>
@@ -244,7 +243,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle impact-circle">
-                      <span className="value-emoji">IM</span>
+                      <span className="value-emoji">{"\uD83C\uDF0D"}</span>
                     </div>
                     <div className="value-content">
                       <h4>Impact</h4>
@@ -256,7 +255,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle collaboration-circle">
-                      <span className="value-emoji">CO</span>
+                      <span className="value-emoji">{"\uD83D\uDC65"}</span>
                     </div>
                     <div className="value-content">
                       <h4>Collaboration</h4>
@@ -268,7 +267,7 @@ const About = () => {
                     whileHover={{ x: 8, transition: { duration: 0.2 } }}
                   >
                     <div className="value-icon-circle customer-circle">
-                      <span className="value-emoji">CU</span>
+                      <span className="value-emoji">{"\uD83C\uDFAF"}</span>
                     </div>
                     <div className="value-content">
                       <h4>Customer-Centricity</h4>

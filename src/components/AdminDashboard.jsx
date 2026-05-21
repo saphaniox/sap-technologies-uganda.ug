@@ -1097,72 +1097,72 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
             <nav className="sidebar-nav">
               <button className={`nav-btn ${activeTab === "overview" ? "active" : ""}`}
                 onClick={() => { setActiveTab("overview"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDCCA"}</span>
                 <span>Overview</span>
               </button>
               <button className={`nav-btn ${activeTab === "users" ? "active" : ""}`}
                 onClick={() => { setActiveTab("users"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDC65"}</span>
                 <span>Users ({dashboardStats?.stats?.totalUsers || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "contacts" ? "active" : ""}`}
                 onClick={() => { setActiveTab("contacts"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDCE7"}</span>
                 <span>Contacts ({dashboardStats?.stats?.totalContacts || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "newsletters" ? "active" : ""}`}
                 onClick={() => { setActiveTab("newsletters"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDCF0"}</span>
                 <span>Newsletter ({dashboardStats?.stats?.totalNewsletterSubscribers || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "services" ? "active" : ""}`}
                 onClick={() => { setActiveTab("services"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDEE0\uFE0F"}</span>
                 <span>Services ({dashboardStats?.stats?.totalServices || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "projects" ? "active" : ""}`}
                 onClick={() => { setActiveTab("projects"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDE80"}</span>
                 <span>Projects ({dashboardStats?.stats?.totalProjects || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "partners" ? "active" : ""}`}
                 onClick={() => { setActiveTab("partners"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83E\uDD1D"}</span>
                 <span>Partners ({partners.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "partnership-requests" ? "active" : ""}`}
                 onClick={() => { setActiveTab("partnership-requests"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDCDD"}</span>
                 <span>Partnership Requests ({partnershipRequests.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "products" ? "active" : ""}`}
                 onClick={() => { setActiveTab("products"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDCE6"}</span>
                 <span>Products ({products.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "product-inquiries" ? "active" : ""}`}
                 onClick={() => { setActiveTab("product-inquiries"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDCE8"}</span>
                 <span>Product Inquiries ({productInquiries.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "service-quotes" ? "active" : ""}`}
                 onClick={() => { setActiveTab("service-quotes"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDCBC"}</span>
                 <span>Service Quotes ({serviceQuotes.length || 0})</span>
               </button>
               <button className={`nav-btn ${activeTab === "awards" ? "active" : ""}`}
                 onClick={() => { setActiveTab("awards"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83C\uDFC6"}</span>
                 <span>Awards Management</span>
               </button>
               <button className={`nav-btn ${activeTab === "analytics" ? "active" : ""}`}
                 onClick={() => { setActiveTab("analytics"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDCCA"}</span>
                 <span>Visitor Analytics</span>
               </button>
               <button className={`nav-btn ${activeTab === "settings" ? "active" : ""}`}
                 onClick={() => { setActiveTab("settings"); setSidebarOpen(false); }}>
-                <span className="nav-icon" aria-hidden="true">-</span>
+                <span className="nav-icon" aria-hidden="true">{"\u2699\uFE0F"}</span>
                 <span>Settings</span>
               </button>
             </nav>
@@ -1172,7 +1172,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
               <div className="dashboard-overview">
                 <div className="stats-grid">
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDC65"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalUsers || 0}</h3>
                     <p>Total Users</p>
@@ -1180,14 +1180,14 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDC51"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalAdmins || 0}</h3>
                     <p>Administrators</p>
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDCE7"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalContacts || 0}</h3>
                     <p>Contact Messages</p>
@@ -1195,14 +1195,14 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDCF0"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalNewsletterSubscribers || 0}</h3>
                     <p>Newsletter Subscribers</p>
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDEE0\uFE0F"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalServices || 0}</h3>
                     <p>Services</p>
@@ -1210,7 +1210,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDCAC"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalServiceQuotes || 0}</h3>
                     <p>Service Quotes</p>
@@ -1218,7 +1218,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDE80"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalProjects || 0}</h3>
                     <p>Projects</p>
@@ -1226,7 +1226,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83E\uDD1D"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalPartners || 0}</h3>
                     <p>Partners</p>
@@ -1234,7 +1234,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDD14"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalPartnershipRequests || 0}</h3>
                     <p>Partnership Requests</p>
@@ -1242,7 +1242,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDCE6"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalProducts || 0}</h3>
                     <p>Products</p>
@@ -1250,7 +1250,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83D\uDCCB"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalProductInquiries || 0}</h3>
                     <p>Product Inquiries</p>
@@ -1258,7 +1258,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                   </div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">#</div>
+                  <div className="stat-icon">{"\uD83C\uDFC6"}</div>
                   <div className="stat-info">
                     <h3>{dashboardStats?.stats?.totalAwards || 0}</h3>
                     <p>Award Nominations</p>
