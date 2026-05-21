@@ -4,6 +4,7 @@ import PartnerRequestForm from "./PartnerRequestForm";
 import ConfirmDialog from "./ConfirmDialog";
 import { apiService } from "../services/api";
 import { getImageUrl } from "../utils/imageUrl";
+import { showAlert } from "../utils/alerts.jsx";
 import "../styles/Partners.css";
 
 const getPartnerDisplayName = (partner) => partner?.name?.trim() || "Partner";
@@ -57,10 +58,6 @@ const Partners = () => {
       console.log("User not authenticated");
     }
   };
-
-  useEffect(() => {
-    fetchPartners();
-  }, []);
 
   /**
    * Fetch Partners from API
