@@ -1,5 +1,5 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useState, useEffect, lazy, Suspense, useCallback } from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -43,6 +43,9 @@ const PrivacyPolicy = lazy(() => import("./components/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./components/TermsOfService"));
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // Enable visitor tracking
   useVisitorTracking();
   
@@ -205,11 +208,52 @@ function App() {
     localStorage.removeItem("showTermsOfService");
   };
 
-  const handleSiteNavigation = () => {
+  const scrollToMainSection = useCallback((sectionId, attempt = 0) => {
+    if (!sectionId || sectionId === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (attempt < 18) {
+      window.setTimeout(() => scrollToMainSection(sectionId, attempt + 1), 120);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname !== "/" || !location.hash) return;
+
+    const sectionId = decodeURIComponent(location.hash.replace("#", ""));
+    window.setTimeout(() => scrollToMainSection(sectionId), 140);
+  }, [location.hash, location.pathname, scrollToMainSection]);
+
+  const handleSiteNavigation = (sectionId) => {
     setShowPrivacyPolicy(false);
     setShowTermsOfService(false);
     localStorage.removeItem("showPrivacyPolicy");
     localStorage.removeItem("showTermsOfService");
+
+    if (!sectionId) return;
+
+    if (sectionId === "home") {
+      if (location.pathname !== "/") {
+        navigate("/");
+      }
+      window.setTimeout(() => scrollToMainSection("home"), 120);
+      return;
+    }
+
+    if (location.pathname !== "/") {
+      navigate({ pathname: "/", hash: `#${sectionId}` });
+    } else {
+      navigate({ pathname: "/", hash: `#${sectionId}` });
+      window.setTimeout(() => scrollToMainSection(sectionId), 80);
+    }
   };
 
   return (
@@ -256,7 +300,7 @@ function App() {
                 <Footer 
                   onPrivacyPolicyOpen={handlePrivacyPolicyOpen}
                   onTermsOfServiceOpen={handleTermsOfServiceOpen}
-                  onNavigate={null}
+                  onNavigate={handleSiteNavigation}
                 />
               </Suspense>
               <BackToTop />
@@ -295,12 +339,16 @@ function App() {
               {showPrivacyPolicy && (
                 <PrivacyPolicy 
                   onClose={handlePrivacyPolicyClose}
+                  onNavigate={handleSiteNavigation}
+                  onTermsOfServiceOpen={handleTermsOfServiceOpen}
                 />
               )}
 
               {showTermsOfService && (
                 <TermsOfService 
                   onClose={handleTermsOfServiceClose}
+                  onNavigate={handleSiteNavigation}
+                  onPrivacyPolicyOpen={handlePrivacyPolicyOpen}
                 />
               )}
             </>

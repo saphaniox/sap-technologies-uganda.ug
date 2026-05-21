@@ -3,12 +3,9 @@ import { showAlert } from "../utils/alerts.jsx";
 import "../styles/Companies.css";
 
 const Companies = () => {
-  /**
-   * Show coming soon alert for platforms in development
-   */
   const handleComingSoon = (platformName) => {
     showAlert.info(
-      `${platformName} — Coming Soon! 🚀`,
+      `${platformName} - Coming Soon!`,
       "We're putting the finishing touches on this one. Check back soon!",
       {
         confirmButtonText: "Can't Wait!",
@@ -18,18 +15,7 @@ const Companies = () => {
     );
   };
 
-  /**
-   * Sister Companies and Platforms
-    * Array of related business platforms under SAPTech Uganda umbrella
-   */
   const companies = [
-    {
-      title: "SAP Business Management Software",
-      image: "/images/sap-business-management.png",
-      description: "Comprehensive business management solution for small businesses to enterprises worldwide. Streamline operations, manage inventory, track finances, and grow your business with our all-in-one platform.",
-      comingSoon: false,
-      link: "https://www.sapbusiness-managementsoftware.com"
-    },
     {
       title: "SAP Engineering",
       image: "/images/SAP-ENGINEERING.jpg",
@@ -50,31 +36,13 @@ const Companies = () => {
     }
   ];
 
-  const liveCompanies = companies.filter((c) => !c.comingSoon);
-  const comingSoonCompanies = companies.filter((c) => c.comingSoon);
+  const comingSoonCompanies = companies.filter((company) => company.comingSoon);
 
   return (
     <section id="companies" className="companies">
       <div className="container">
         <h2>Our Other Platforms</h2>
 
-        {/* Live platforms — full cards */}
-        <div className="companies-list">
-          {liveCompanies.map((company, index) => (
-            <div key={index} className="company-card">
-              <img src={company.image} alt={company.title} className="company-img" />
-              <div className="company-content">
-                <h3>{company.title}</h3>
-                <p>{company.description}</p>
-                <a href={company.link} target="_blank" rel="noopener noreferrer" className="company-link">
-                  Visit {company.title}
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Coming-soon roadmap — subtle strip */}
         {comingSoonCompanies.length > 0 && (
           <div className="coming-soon-roadmap">
             <p className="roadmap-label">More platforms on the way:</p>

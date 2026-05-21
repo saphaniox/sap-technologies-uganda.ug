@@ -102,12 +102,8 @@ const PhotoLightbox = () => {
       <div className="photo-lightbox-panel">
         <div className="photo-lightbox-frame">
           <img src={photo.src} alt={photo.alt} className="photo-lightbox-image" />
-          <img src="/images/logo-watermark.png" alt="" className="photo-lightbox-watermark" aria-hidden="true" />
         </div>
         <div className="photo-lightbox-actions">
-          <a href={photo.src} target="_blank" rel="noreferrer" className="photo-lightbox-link">
-            Open original
-          </a>
           <button type="button" className="photo-lightbox-close" onClick={() => setPhoto(null)}>
             Close
           </button>

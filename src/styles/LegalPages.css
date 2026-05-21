@@ -11,7 +11,7 @@
   align-items: flex-start;
   z-index: 4000;
   overflow-y: auto;
-  padding: clamp(76px, 8vw, 96px) 20px 20px;
+  padding: clamp(110px, 10vw, 132px) 20px 24px;
   box-sizing: border-box;
 }
 
@@ -152,10 +152,54 @@
   font-weight: 500;
 }
 
+.legal-page-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(5, 9, 20, 0.35);
+  padding: 22px 28px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legal-footer-nav,
+.legal-footer-contact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.legal-footer-nav button,
+.legal-footer-contact a {
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(78, 205, 196, 0.26);
+  background: rgba(78, 205, 196, 0.08);
+  color: #d9fffb;
+  padding: 0 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.legal-footer-nav button:hover,
+.legal-footer-contact a:hover {
+  background: rgba(78, 205, 196, 0.18);
+  border-color: rgba(78, 205, 196, 0.5);
+  transform: translateY(-1px);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .legal-modal {
-    padding: 74px 10px 10px;
+    padding: 124px 10px 12px;
   }
   
   .legal-content {
@@ -181,6 +225,17 @@
     padding: 25px;
     font-size: 15px;
   }
+
+  .legal-page-footer {
+    padding: 20px 18px 24px;
+    align-items: stretch;
+  }
+
+  .legal-footer-nav,
+  .legal-footer-contact {
+    width: 100%;
+    justify-content: center;
+  }
   
   .legal-body ul {
     padding-left: 20px;
@@ -189,7 +244,7 @@
 
 @media (max-width: 480px) {
   .legal-modal {
-    padding: 68px 6px 6px;
+    padding: 136px 6px 10px;
   }
   
   .legal-header {
@@ -209,6 +264,12 @@
     min-width: 38px;
     min-height: 38px;
     font-size: 20px;
+  }
+
+  .legal-footer-nav button,
+  .legal-footer-contact a {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 120px;
   }
 }
 

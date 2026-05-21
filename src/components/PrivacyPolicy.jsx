@@ -3,7 +3,14 @@ import { motion } from "framer-motion";
 import BackToTop from "./BackToTop";
 import "../styles/LegalPages.css";
 
-const PrivacyPolicy = ({ onClose }) => {
+const LEGAL_FOOTER_LINKS = [
+  { id: "home", label: "Home" },
+  { id: "services", label: "Services" },
+  { id: "products", label: "Products" },
+  { id: "contact", label: "Contact" }
+];
+
+const PrivacyPolicy = ({ onClose, onNavigate, onTermsOfServiceOpen }) => {
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
     const handleKeyDown = (event) => {
@@ -156,6 +163,34 @@ const PrivacyPolicy = ({ onClose }) => {
               <p><strong>Address:</strong> Kampala, Uganda</p>
             </div>
           </section>
+        </div>
+
+        <div className="legal-page-footer" aria-label="Privacy Policy footer links">
+          <div className="legal-footer-nav">
+            {LEGAL_FOOTER_LINKS.map((link) => (
+              <button
+                key={link.id}
+                type="button"
+                onClick={() => onNavigate?.(link.id)}
+              >
+                {link.label}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                onTermsOfServiceOpen?.();
+                onClose?.();
+              }}
+            >
+              Terms
+            </button>
+          </div>
+          <div className="legal-footer-contact">
+            <a href="mailto:saptechnologies256@gmail.com">Email</a>
+            <a href="tel:+256706564628">Call</a>
+            <a href="https://wa.me/256706564628" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          </div>
         </div>
 
         <BackToTop />

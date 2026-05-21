@@ -1,0 +1,125 @@
+/* Site-wide professional motion layer */
+
+:root {
+  --sap-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --sap-motion-fast: 220ms;
+  --sap-motion-medium: 620ms;
+  --sap-motion-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
+  --sap-motion-shadow-dark: 0 18px 42px rgba(0, 0, 0, 0.36);
+}
+
+.sap-motion-ready .sap-reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0) scale(0.985);
+  filter: blur(4px);
+  transition:
+    opacity var(--sap-motion-medium) var(--sap-motion-ease),
+    transform var(--sap-motion-medium) var(--sap-motion-ease),
+    filter var(--sap-motion-medium) var(--sap-motion-ease);
+  transition-delay: var(--sap-reveal-delay, 0ms);
+  will-change: opacity, transform, filter;
+}
+
+.sap-motion-ready .sap-reveal.sap-in-view {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+.sap-motion-card {
+  transition:
+    transform 280ms var(--sap-motion-ease),
+    box-shadow 280ms var(--sap-motion-ease),
+    border-color 280ms var(--sap-motion-ease),
+    background-color 280ms var(--sap-motion-ease);
+  will-change: transform;
+}
+
+.sap-motion-media {
+  overflow: hidden;
+}
+
+.sap-motion-media img,
+.sap-motion-media picture,
+.sap-motion-media .slider-image {
+  transition: transform 700ms var(--sap-motion-ease), filter 700ms var(--sap-motion-ease);
+  will-change: transform;
+}
+
+.sap-motion-action {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--sap-motion-fast) var(--sap-motion-ease),
+    box-shadow var(--sap-motion-fast) var(--sap-motion-ease),
+    border-color var(--sap-motion-fast) var(--sap-motion-ease),
+    background-color var(--sap-motion-fast) var(--sap-motion-ease);
+}
+
+.sap-motion-action::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, transparent 15%, rgba(255, 255, 255, 0.35), transparent 85%);
+  transform: translateX(-120%);
+  transition: transform 650ms var(--sap-motion-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sap-motion-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sap-motion-shadow);
+  }
+
+  [data-theme="dark"] .sap-motion-card:hover {
+    box-shadow: var(--sap-motion-shadow-dark);
+  }
+
+  .sap-motion-card:hover .sap-motion-media img,
+  .sap-motion-media:hover img,
+  .sap-motion-media:hover .slider-image {
+    transform: scale(1.045);
+    filter: saturate(1.05) contrast(1.03);
+  }
+
+  .sap-motion-action:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+
+  .sap-motion-action:hover::after {
+    transform: translateX(120%);
+  }
+}
+
+.sap-motion-action:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+}
+
+.sap-motion-action:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.35);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767.98px) {
+  .sap-motion-ready .sap-reveal {
+    transform: translate3d(0, 18px, 0);
+    filter: blur(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sap-motion-ready .sap-reveal,
+  .sap-motion-card,
+  .sap-motion-media img,
+  .sap-motion-media picture,
+  .sap-motion-media .slider-image,
+  .sap-motion-action,
+  .sap-motion-action::after {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

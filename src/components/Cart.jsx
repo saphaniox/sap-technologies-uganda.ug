@@ -161,7 +161,15 @@ const Cart = () => {
             Your Order Cart
             {cartCount > 0 && <span className="cart-header-count">{cartCount}</span>}
           </h2>
-          <button className="cart-close" onClick={closeCart} aria-label="Close cart">x</button>
+          <button
+            type="button"
+            className="cart-close"
+            onClick={closeCart}
+            aria-label="Close cart and return to products"
+            title="Close cart"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
 
         {sent ? (

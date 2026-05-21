@@ -16,12 +16,44 @@ import {
   SyncLoader 
 } from 'react-spinners';
 
-// SweetAlert2 Configuration - separate configs for regular alerts and toasts
+const CENTERED_ALERT_OPTIONS = {
+  position: 'center',
+  toast: false
+};
+
+const withCenteredAlert = (options = {}) => ({
+  ...options,
+  ...CENTERED_ALERT_OPTIONS
+});
+
+const originalSwalFire = Swal.__sapOriginalFire || Swal.fire.bind(Swal);
+
+if (!Swal.__sapOriginalFire) {
+  Object.defineProperty(Swal, '__sapOriginalFire', {
+    value: originalSwalFire,
+    configurable: true
+  });
+}
+
+Swal.fire = (configOrTitle, text, icon) => {
+  if (configOrTitle && typeof configOrTitle === 'object') {
+    return originalSwalFire(withCenteredAlert(configOrTitle));
+  }
+
+  return originalSwalFire(withCenteredAlert({
+    title: configOrTitle,
+    text,
+    icon
+  }));
+};
+
+// SweetAlert2 Configuration - separate configs for regular alerts and short alerts
 const baseConfig = {
   confirmButtonColor: '#3b82f6',
   cancelButtonColor: '#ef4444',
   background: '#ffffff',
-  color: '#1f2937'
+  color: '#1f2937',
+  ...CENTERED_ALERT_OPTIONS
 };
 
 // Configuration for regular alerts (not toast)
@@ -35,16 +67,14 @@ const swalConfig = {
   width: '350px'
 };
 
-// Configuration for toast notifications
+// Configuration for short notifications. The old API name is kept, but these
+// now render in the center for clearer visibility.
 const toastConfig = {
   ...baseConfig,
-  toast: true,
-  position: 'bottom-end',
   timer: 5000,
   timerProgressBar: true,
   showConfirmButton: false,
   width: '350px'
-  // Note: allowOutsideClick and allowEscapeKey are not compatible with toast mode
 };
 
 // Custom SweetAlert2 Functions
@@ -59,7 +89,8 @@ export const showAlert = {
       confirmButtonColor: '#3b82f6',
       background: '#ffffff',
       color: '#1f2937',
-      ...options // Allow options to override everything
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     };
     
     return Swal.fire(finalOptions);
@@ -77,7 +108,8 @@ export const showAlert = {
       color: '#1f2937',
       showConfirmButton: true, // Always show confirm for errors
       confirmButtonText: 'OK',
-      ...options
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     };
     
     return Swal.fire(finalOptions);
@@ -90,7 +122,8 @@ export const showAlert = {
       timerProgressBar: true, // Show progress bar
       showConfirmButton: false, // Remove button for auto-close
       ...swalConfig,
-      ...options
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     };
     
     // If timer exists and showConfirmButton isn't explicitly true, hide button for auto-close
@@ -113,7 +146,8 @@ export const showAlert = {
       timerProgressBar: true, // Show progress bar
       showConfirmButton: false, // Remove button for auto-close
       ...swalConfig,
-      ...options
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     };
     
     // If timer exists and showConfirmButton isn't explicitly true, hide button for auto-close
@@ -141,7 +175,8 @@ export const showAlert = {
       timer: null, // Don't auto-close confirmation dialogs
       showConfirmButton: true, // User must click to proceed
       ...swalConfig,
-      ...options
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     });
   },
 
@@ -158,7 +193,8 @@ export const showAlert = {
       timer: null, // Don't auto-close delete confirmations
       showConfirmButton: true, // User must confirm
       ...swalConfig,
-      ...options
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     });
   },
 
@@ -173,7 +209,8 @@ export const showAlert = {
       timer: null, // Don't auto-close critical errors
       timerProgressBar: false, // No progress bar for critical errors
       ...swalConfig,
-      ...options
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     });
   },
 
@@ -188,7 +225,8 @@ export const showAlert = {
       didOpen: () => {
         Swal.showLoading();
       },
-      ...swalConfig
+      ...swalConfig,
+      ...CENTERED_ALERT_OPTIONS
     });
   },
 
@@ -199,7 +237,8 @@ export const showAlert = {
       timerProgressBar: true, // Show progress bar
       showConfirmButton: false, // No button by default for auto-close
       ...swalConfig,
-      ...options
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     };
     
     // If timer exists and showConfirmButton isn't explicitly true, hide button for auto-close
@@ -222,12 +261,12 @@ export const showAlert = {
     });
   },
 
-  // Toast Notification
+  // Short notification, shown centered for clear visibility
   toast: (message, type = 'success', options = {}) => {
     const finalOptions = {
       ...toastConfig,
-      position: options.position || 'top-end', // Allow position override
-      ...options
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     };
     
     return Swal.fire({
@@ -252,7 +291,8 @@ export const showAlert = {
         }
       },
       ...swalConfig,
-      ...options
+      ...options,
+      ...CENTERED_ALERT_OPTIONS
     });
   }
 };

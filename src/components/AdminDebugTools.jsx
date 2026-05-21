@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { showAlert } from '../utils/alerts.jsx';
+import { showAlert, Swal } from '../utils/alerts.jsx';
 import apiService from '../services/api';
-import Swal from 'sweetalert2'; // Direct import for testing
 
 const AdminDebugTools = () => {
     const [loading, setLoading] = useState(false);

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import apiService from "../services/api";
-import { showAlert } from "../utils/alerts";
+import { showAlert, Swal } from "../utils/alerts";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
-import Swal from "sweetalert2";
 import { Icon } from "./IconLibrary";
 import "../styles/AwardsAdmin.css";
 import "../styles/IconLibrary.css";
