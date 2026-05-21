@@ -40,13 +40,22 @@ const Products = () => {
     const [loadingStats, setLoadingStats] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
-    const { addToCart, isInCart, openCart } = useCart();
+    const { addToCart, isInCart } = useCart();
 
     // Cache of all products; never overwritten between category switches
     const allProductsRef = useRef([]);
     const productSearchInputRef = useRef(null);
     
     const WHATSAPP_NUMBER = "+256706564628";
+
+    const handleAddToCart = (product) => {
+        const alreadyInCart = isInCart(product._id);
+        addToCart(product);
+        showAlert.toast(
+            alreadyInCart ? "Cart quantity updated" : "Added to cart",
+            "success"
+        );
+    };
 
     /**
      * Load products and categories on component mount
@@ -542,15 +551,10 @@ const Products = () => {
                                             </button>
                                             <button
                                                 className={`card-cart-btn${isInCart(product._id) ? " in-cart" : ""}`}
-                                                onClick={() => {
-                                                    if (isInCart(product._id)) {
-                                                        openCart();
-                                                    } else {
-                                                        addToCart(product);
-                                                    }
-                                                }}
+                                                onClick={() => handleAddToCart(product)}
+                                                title="Use the cart icon to checkout"
                                             >
-                                                {isInCart(product._id) ? "View Cart" : "Add to Cart"}
+                                                {isInCart(product._id) ? "Add More" : "Add to Cart"}
                                             </button>
                                             <button
                                                 className="card-whatsapp-btn"

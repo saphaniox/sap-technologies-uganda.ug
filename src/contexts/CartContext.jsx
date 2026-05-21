@@ -18,7 +18,6 @@ export const CartProvider = ({ children }) => {
       }
       return [...prev, { product, quantity: 1 }];
     });
-    setIsCartOpen(true);
   }, []);
 
   const removeFromCart = useCallback((productId) => {
