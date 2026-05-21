@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
-import { LoadingButton } from "../utils/alerts.jsx";
+import { LoadingButton, showAlert } from "../utils/alerts.jsx";
 import { getImageUrl } from "../utils/imageUrl";
 import "../styles/AdminForms.css";
 
@@ -148,6 +148,32 @@ const ServiceForm = ({ service, onClose, onSave }) => {
 
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
+    const maxImages = 5;
+    const maxImageSize = 10 * 1024 * 1024;
+
+    if (imagePreviews.length + files.length > maxImages) {
+      showAlert.error(
+        "Too many images",
+        `You can upload up to ${maxImages} images. Remove some before adding more.`
+      );
+      e.target.value = '';
+      return;
+    }
+
+    for (const file of files) {
+      if (!file.type?.startsWith("image/")) {
+        showAlert.error("Wrong file type", `"${file.name}" is not an image file.`);
+        e.target.value = '';
+        return;
+      }
+
+      if (file.size > maxImageSize) {
+        showAlert.error("Image too large", `"${file.name}" is over the 10MB upload limit.`);
+        e.target.value = '';
+        return;
+      }
+    }
+
     if (files.length > 0) {
       // Add new files to existing array
       setNewImageFiles(prev => [...prev, ...files]);
@@ -197,7 +223,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       console.log("📋 Form data to submit:", formData);
       
       // Add deleteImage flag if user wants to remove existing image
-      if (deleteImage) {
+      if (formData.deleteImage) {
         submitData.append('deleteImage', 'true');
         console.log("  🗑️ Marking existing image for deletion");
       }
@@ -249,33 +275,33 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       } else {
         await apiService.createService(submitData);
       }
-      setAlert({ type: "success", message: service ? "Service updated! ✅" : "Service created successfully! 🎉" });
-      
-      // Wait 1.5 seconds to show success message, then close and refresh
-      setTimeout(() => {
-        setAlert({ type: "", message: "" });
-        if (onSave) onSave(submitData); // Pass data to parent if callback exists
-        onClose(); // Close the form
-        window.location.reload(); // Refresh to show updated data and prevent duplicates
-      }, 1500);
+      const successMessage = service ? "Service updated successfully." : "Service created successfully.";
+      setAlert({ type: "success", message: successMessage });
+      await showAlert.success(service ? "Service updated" : "Service created", successMessage);
+      setAlert({ type: "", message: "" });
+      if (onSave) onSave(submitData);
+      onClose();
+      window.location.reload();
       
     } catch (error) {
       console.error("❌ Service form error:", error);
       
       // Handle authentication errors
       if (error.message === "Authentication required") {
+        const message = "Your session has expired. Please log in again.";
         setAlert({ 
           type: "error", 
-          message: "Your session has expired. Please log in again." 
+          message
         });
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 2000);
+        await showAlert.error("Session expired", message);
+        window.location.href = "/login";
       } else {
+        const message = error.response?.data?.message || "Something went wrong saving the service. Please try again.";
         setAlert({ 
           type: "error", 
-          message: error.response?.data?.message || "Something went wrong saving the service. Please try again." 
+          message
         });
+        await showAlert.error("Couldn't save service", message);
       }
     } finally {
       setLoading(false);

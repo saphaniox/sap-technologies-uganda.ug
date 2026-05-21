@@ -82,7 +82,7 @@ const NAV_ITEMS = [
   { id: "contact", label: "Contacts" }
 ];
 
-const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthModalOpen, onAccountOpen, onAdminOpen, onLogout }) => {
+const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthModalOpen, onAccountOpen, onAdminOpen, onLogout, onNavigate, legalOpen = false }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState("home");
@@ -139,8 +139,8 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
   }, [menuOpen]);
 
   const openSearch = () => {
+    setMenuOpen(false);
     setSearchOpen(true);
-    setTimeout(() => searchInputRef.current?.focus(), 100);
   };
 
   const closeSearch = () => {
@@ -151,9 +151,27 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
     clearTimeout(searchTimerRef.current);
   };
 
+  useEffect(() => {
+    if (!searchOpen) return undefined;
+
+    const focusInput = () => {
+      searchInputRef.current?.focus({ preventScroll: true });
+    };
+
+    focusInput();
+    const frame = window.requestAnimationFrame(focusInput);
+    const timer = window.setTimeout(focusInput, 80);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
+  }, [searchOpen]);
+
   const handleSearchInput = (e) => {
     const val = e.target.value;
     setSearchQuery(val);
+    setSearchError("");
     clearTimeout(searchTimerRef.current);
     if (val.trim().length < 2) {
       setSearchResults(null);
@@ -163,9 +181,25 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
       setSearchLoading(true);
       try {
         const res = await apiService.search(val.trim());
-        if (res.success) setSearchResults(res.results);
+        const results = extractSearchResults(res);
+        if (results) {
+          setSearchResults(results);
+          setSearchError("");
+          return;
+        }
+
+        const fallbackResults = await fallbackSearch(val.trim());
+        setSearchResults(fallbackResults);
+        setSearchError("");
       } catch {
-        setSearchResults(null);
+        try {
+          const fallbackResults = await fallbackSearch(val.trim());
+          setSearchResults(fallbackResults);
+          setSearchError("");
+        } catch {
+          setSearchResults(null);
+          setSearchError("Search is not available right now. Please try again.");
+        }
       } finally {
         setSearchLoading(false);
       }
@@ -182,29 +216,35 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
 
   const closeMenu = () => setMenuOpen(false);
 
-  const handleHomeNavigation = () => {
+  const prepareNavigation = () => {
     closeMenu();
+    onNavigate?.();
+  };
+
+  const handleHomeNavigation = () => {
+    prepareNavigation();
     if (location.pathname !== "/" || isAwardsPage) {
       window.location.href = "/";
       return;
     }
-    scrollToSection("home");
+    window.setTimeout(() => scrollToSection("home"), 0);
   };
 
   const handleSectionNavigation = (event, sectionId) => {
     event.preventDefault();
-    closeMenu();
+    prepareNavigation();
 
     if (location.pathname !== "/" || isAwardsPage) {
       window.location.href = `/#${sectionId}`;
       return;
     }
 
-    scrollToSection(sectionId);
+    window.setTimeout(() => scrollToSection(sectionId), 0);
   };
   const handleSearchResultNavigation = (event, sectionId) => {
     event.preventDefault();
     closeSearch();
+    onNavigate?.();
 
     if (location.pathname !== "/" || isAwardsPage) {
       window.location.href = `/#${sectionId}`;
@@ -215,7 +255,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
   };
 
   const handleMenuAction = (callback) => {
-    closeMenu();
+    prepareNavigation();
     callback?.();
   };
 
@@ -281,7 +321,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
 
   return (
     <motion.header 
-      className={`header ${isMobile ? "mobile" : "desktop"} ${isScrolled ? "scrolled" : ""}`}
+      className={`header ${isMobile ? "mobile" : "desktop"} ${isScrolled ? "scrolled" : ""} ${legalOpen ? "legal-open" : ""}`}
       initial="hidden"
       animate="visible"
       variants={navVariants}
@@ -407,7 +447,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                       <Link
                         key={link.id}
                         to={link.route}
-                        onClick={closeMenu}
+                        onClick={prepareNavigation}
                         className={`nav-sidebar-link ${location.pathname === link.route ? "active" : ""}`}
                       >
                         <span>{link.label}</span>
@@ -495,16 +535,21 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               transition={{ duration: 0.25 }}
             >
               <div className="search-modal-header">
-                <div className="search-input-wrap">
+                <div
+                  className="search-input-wrap"
+                  onClick={() => searchInputRef.current?.focus({ preventScroll: true })}
+                >
                   <span className="search-modal-icon">Search</span>
                   <input
                     ref={searchInputRef}
                     type="text"
+                    autoFocus
                     value={searchQuery}
                     onChange={handleSearchInput}
                     placeholder="Search products, services, projects..."
                     className="search-modal-input"
                     onKeyDown={(e) => e.key === "Escape" && closeSearch()}
+                    onClick={(e) => e.stopPropagation()}
                   />
                   {searchQuery && (
                     <button

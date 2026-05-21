@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import BackToTop from "./BackToTop";
+import { showAlert } from "../utils/alerts.jsx";
 import { getImageUrl } from "../utils/imageUrl";
 import "../styles/Account.css";
 
@@ -157,15 +158,21 @@ const Account = ({ onClose }) => {
     if (!file) return;
 
     // Validate file type
-    if (!file.type.startsWith("image/")) {
-      setMessage("Please pick a valid image file (JPG, PNG, etc.)");
+    if (!file.type?.startsWith("image/")) {
+      const message = "Please pick a valid image file.";
+      setMessage(message);
+      showAlert.error("Wrong file type", message);
+      e.target.value = "";
       setTimeout(() => setMessage(""), 5000);
       return;
     }
 
     // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
-      setMessage("That image is a bit too large — please keep it under 5MB");
+      const message = "That image is a bit too large. Please keep it under 5MB.";
+      setMessage(message);
+      showAlert.error("Image too large", message);
+      e.target.value = "";
       setTimeout(() => setMessage(""), 5000);
       return;
     }
@@ -176,13 +183,17 @@ const Account = ({ onClose }) => {
     try {
       await apiService.uploadProfilePic(file);
       await fetchUserDetails();
-      setMessage("Profile picture updated! Looking good 😊");
+      setMessage("Profile picture updated!");
+      await showAlert.success("Photo uploaded", "Your profile picture has been updated.");
       setTimeout(() => setMessage(""), 4000);
     } catch (error) {
-      setMessage("Couldn't upload your picture: " + error.message);
+      const message = "Couldn't upload your picture: " + error.message;
+      setMessage(message);
+      await showAlert.error("Upload failed", error.message || "Please try again.");
       setTimeout(() => setMessage(""), 5000);
     } finally {
       setUploading(false);
+      e.target.value = "";
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
-import { LoadingButton } from "../utils/alerts.jsx";
+import { LoadingButton, showAlert } from "../utils/alerts.jsx";
 import { getImageUrl } from "../utils/imageUrl";
 import "../styles/AdminForms.css";
 
@@ -126,6 +126,32 @@ const ProjectForm = ({ project, onClose, onSave }) => {
 
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
+    const maxImages = 5;
+    const maxImageSize = 20 * 1024 * 1024;
+
+    if (imagePreviews.length + files.length > maxImages) {
+      showAlert.error(
+        "Too many images",
+        `You can upload up to ${maxImages} images. Remove some before adding more.`
+      );
+      e.target.value = '';
+      return;
+    }
+
+    for (const file of files) {
+      if (!file.type?.startsWith("image/")) {
+        showAlert.error("Wrong file type", `"${file.name}" is not an image file.`);
+        e.target.value = '';
+        return;
+      }
+
+      if (file.size > maxImageSize) {
+        showAlert.error("Image too large", `"${file.name}" is over the 20MB upload limit.`);
+        e.target.value = '';
+        return;
+      }
+    }
+
     if (files.length > 0) {
       // Add new files to existing array
       setNewImageFiles(prev => [...prev, ...files]);
@@ -204,25 +230,25 @@ const ProjectForm = ({ project, onClose, onSave }) => {
         await apiService.createProject(submitData);
       }
 
+      const successMessage = project ? "Project updated successfully." : "Project created successfully.";
       setAlert({ 
         type: "success", 
-        message: project ? "Project updated successfully!" : "Project created successfully!" 
+        message: successMessage
       });
-      
-      // Wait 1.5 seconds to show success message, then close and refresh
-      setTimeout(() => {
-        setAlert({ type: "", message: "" });
-        if (onSave) onSave(submitData); // Pass data to parent if callback exists
-        onClose(); // Close the form
-        window.location.reload(); // Refresh to show updated data and prevent duplicates
-      }, 1500);
+      await showAlert.success(project ? "Project updated" : "Project created", successMessage);
+      setAlert({ type: "", message: "" });
+      if (onSave) onSave(submitData);
+      onClose();
+      window.location.reload();
       
     } catch (error) {
-      console.error("❌ Project form error:", error);
+      console.error("Project form error:", error);
+      const message = error.response?.data?.message || error.message || "Failed to save project";
       setAlert({ 
         type: "error", 
-        message: error.response?.data?.message || error.message || "Failed to save project" 
+        message
       });
+      await showAlert.error("Couldn't save project", message);
     } finally {
       setLoading(false);
     }

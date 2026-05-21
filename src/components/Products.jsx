@@ -44,6 +44,7 @@ const Products = () => {
 
     // Cache of all products; never overwritten between category switches
     const allProductsRef = useRef([]);
+    const productSearchInputRef = useRef(null);
     
     const WHATSAPP_NUMBER = "+256706564628";
 
@@ -353,9 +354,13 @@ const Products = () => {
                 </div>
 
                 {/* Search Bar */}
-                <div className="products-search-bar">
+                <div
+                    className="products-search-bar"
+                    onClick={() => productSearchInputRef.current?.focus({ preventScroll: true })}
+                >
                     <span className="products-search-icon" aria-hidden="true">Search</span>
                     <input
+                        ref={productSearchInputRef}
                         type="text"
                         className="products-search-input"
                         placeholder="Search products by name, category, or keyword..."

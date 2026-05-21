@@ -9,9 +9,10 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  z-index: 1000;
+  z-index: 4000;
   overflow-y: auto;
-  padding: 20px;
+  padding: clamp(76px, 8vw, 96px) 20px 20px;
+  box-sizing: border-box;
 }
 
 .legal-content {
@@ -29,10 +30,16 @@
 .legal-header {
   background: linear-gradient(135deg, #0d7377 0%, #14a085 100%);
   color: white;
-  padding: 30px;
+  padding: 26px 84px 26px 30px;
   border-radius: 15px 15px 0 0;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 5;
   text-align: center;
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .legal-header h1 {
@@ -42,16 +49,20 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.close-btn {
+.legal-close-btn {
   position: absolute;
-  top: 20px;
+  top: 50%;
   right: 20px;
+  transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
   font-size: 30px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -59,11 +70,12 @@
   justify-content: center;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  z-index: 6;
 }
 
-.close-btn:hover {
+.legal-close-btn:hover {
   background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.1);
+  transform: translateY(-50%) scale(1.08);
 }
 
 .legal-body {
@@ -143,7 +155,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .legal-modal {
-    padding: 10px;
+    padding: 74px 10px 10px;
   }
   
   .legal-content {
@@ -152,14 +164,16 @@
   }
   
   .legal-header {
-    padding: 20px;
+    min-height: 76px;
+    padding: 18px 64px 18px 18px;
   }
   
-  .close-btn {
-    top: 15px;
-    right: 15px;
-    width: 35px;
-    height: 35px;
+  .legal-close-btn {
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
     font-size: 24px;
   }
   
@@ -175,11 +189,12 @@
 
 @media (max-width: 480px) {
   .legal-modal {
-    padding: 5px;
+    padding: 68px 6px 6px;
   }
   
   .legal-header {
-    padding: 15px;
+    min-height: 70px;
+    padding: 14px 56px 14px 14px;
   }
   
   .legal-body {
@@ -187,9 +202,12 @@
     font-size: 14px;
   }
   
-  .close-btn {
-    width: 30px;
-    height: 30px;
+  .legal-close-btn {
+    right: 10px;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
     font-size: 20px;
   }
 }
@@ -229,7 +247,7 @@
 }
 
 /* Focus States for Accessibility */
-.close-btn:focus {
+.legal-close-btn:focus {
   outline: 2px solid #4ecdc4;
   outline-offset: 2px;
 }
@@ -255,7 +273,7 @@
     print-color-adjust: exact;
   }
   
-  .close-btn {
+  .legal-close-btn {
     display: none;
   }
   

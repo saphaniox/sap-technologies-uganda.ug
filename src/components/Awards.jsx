@@ -271,6 +271,21 @@ const Awards = ({ onClose }) => {
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
+    if (files) {
+      const file = files[0];
+      if (file && !file.type?.startsWith("image/")) {
+        showAlert.error("Wrong file type", "Please upload an image file.");
+        e.target.value = "";
+        return;
+      }
+
+      if (file && file.size > 5 * 1024 * 1024) {
+        showAlert.error("Image too large", "Please keep the nominee photo under 5MB.");
+        e.target.value = "";
+        return;
+      }
+    }
+
     setNominationForm(prev => ({
       ...prev,
       [name]: files ? files[0] : value

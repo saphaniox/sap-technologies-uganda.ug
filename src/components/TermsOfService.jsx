@@ -1,21 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import BackToTop from "./BackToTop";
 import "../styles/LegalPages.css";
 
 const TermsOfService = ({ onClose }) => {
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose?.();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
   return (
-    <div className="legal-modal">
+    <div className="legal-modal" role="dialog" aria-modal="true" aria-labelledby="terms-of-service-title" onClick={onClose}>
       <motion.div 
         className="legal-content"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 50 }}
         transition={{ duration: 0.3 }}
+        onClick={(event) => event.stopPropagation()}
       >
         <div className="legal-header">
-          <h1>Terms of Service</h1>
-          <button className="close-btn" onClick={onClose} aria-label="Close Terms of Service">
+          <h1 id="terms-of-service-title">Terms of Service</h1>
+          <button type="button" className="legal-close-btn" onClick={onClose} aria-label="Close Terms of Service">
             &times;
           </button>
         </div>

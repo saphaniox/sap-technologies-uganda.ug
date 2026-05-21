@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import apiService from "../services/api";
+import { showAlert } from "../utils/alerts.jsx";
 import { getImageUrl } from "../utils/imageUrl";
 import "../styles/PartnerForm.css";
 
@@ -65,22 +66,26 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validate file type
-      const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
-      if (!allowedTypes.includes(file.type)) {
+      if (!file.type?.startsWith("image/")) {
+        const message = "Please pick a valid image file.";
         setErrors(prev => ({
           ...prev,
-          logo: "Please pick a valid image file (JPEG, PNG, GIF, WebP, or SVG)"
+          logo: message
         }));
+        showAlert.error("Wrong file type", message);
+        e.target.value = "";
         return;
       }
 
       // Validate file size (5MB limit)
       if (file.size > 5 * 1024 * 1024) {
+        const message = "That image is a bit large. Please keep it under 5MB.";
         setErrors(prev => ({
           ...prev,
-          logo: "That image is a bit large — please keep it under 5MB"
+          logo: message
         }));
+        showAlert.error("Image too large", message);
+        e.target.value = "";
         return;
       }
 
@@ -121,7 +126,11 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const isValid = Object.keys(newErrors).length === 0;
+    if (!isValid) {
+      showAlert.error("Please check the form", Object.values(newErrors)[0] || "Fix the highlighted fields and try again.");
+    }
+    return isValid;
   };
 
   const handleSubmit = async (e) => {
@@ -159,19 +168,29 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
 
       if (response.ok) {
         const savedPartner = await response.json();
+        await showAlert.success(
+          partner ? "Partner updated" : "Partner added",
+          logoFile ? "The image uploaded successfully." : "The partner was saved successfully."
+        );
         onSave(savedPartner);
         onClose();
       } else {
         const errorData = await response.json();
+        const message = errorData.errors
+          ? errorData.errors.join(", ")
+          : errorData.message || "Couldn't save the partner. Please try again.";
         if (errorData.errors) {
-          setErrors({ submit: errorData.errors.join(", ") });
+          setErrors({ submit: message });
         } else {
-          setErrors({ submit: errorData.message || "Couldn't save the partner. Please try again." });
+          setErrors({ submit: message });
         }
+        await showAlert.error("Couldn't save partner", message);
       }
     } catch (error) {
       console.error("Error saving partner:", error);
-      setErrors({ submit: "A network error occurred — please check your connection and try again." });
+      const message = "A network error occurred. Please check your connection and try again.";
+      setErrors({ submit: message });
+      await showAlert.error("Upload failed", message);
     } finally {
       setLoading(false);
     }
@@ -238,7 +257,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
               </div>
             )}
             <small className="help-text">
-              Supported formats: JPEG, PNG, GIF, WebP, SVG (Max 5MB)
+              Supported formats: any image format (Max 5MB)
             </small>
             {errors.logo && <span className="error-message">{errors.logo}</span>}
           </div>

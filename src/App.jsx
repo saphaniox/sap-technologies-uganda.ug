@@ -10,6 +10,7 @@ import BackToTop from "./components/BackToTop";
 import NotFound from "./components/NotFound";
 import WhatsAppButton from "./components/WhatsAppButton";
 import CookieConsent from "./components/CookieConsent";
+import PhotoLightbox from "./components/PhotoLightbox";
 import { CartProvider, useCart } from "./contexts/CartContext";
 import Cart from "./components/Cart";
 import apiService from "./services/api";
@@ -65,6 +66,7 @@ function App() {
   const [showTermsOfService, setShowTermsOfService] = useState(() => {
     return localStorage.getItem("showTermsOfService") === "true";
   });
+  const legalPageOpen = showPrivacyPolicy || showTermsOfService;
 
   useEffect(() => {
     // Start keep-alive service to prevent server from sleeping
@@ -203,6 +205,13 @@ function App() {
     localStorage.removeItem("showTermsOfService");
   };
 
+  const handleSiteNavigation = () => {
+    setShowPrivacyPolicy(false);
+    setShowTermsOfService(false);
+    localStorage.removeItem("showPrivacyPolicy");
+    localStorage.removeItem("showTermsOfService");
+  };
+
   return (
     <ErrorBoundary>
       <CartProvider>
@@ -224,6 +233,8 @@ function App() {
                 onAccountOpen={handleAccountOpen}
                 onAdminOpen={handleAdminOpen}
                 onLogout={handleLogout}
+                onNavigate={handleSiteNavigation}
+                legalOpen={legalPageOpen}
               />
               
               <main>
@@ -251,6 +262,7 @@ function App() {
               <BackToTop />
               <WhatsAppButton />
               <CookieConsent onPrivacyPolicyOpen={handlePrivacyPolicyOpen} />
+              <PhotoLightbox />
               <Cart />
               <CartFloatButton />
               

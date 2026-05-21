@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
-import { LoadingOverlay, LoadingButton } from "../utils/alerts.jsx";
+import { LoadingOverlay, LoadingButton, showAlert, Swal } from "../utils/alerts.jsx";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import BackToTop from "./BackToTop";
 import ServiceForm from "./ServiceForm";
@@ -900,7 +900,9 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     e.preventDefault();
     
     if (!signatureFile) {
-      setAutoMessage("Please select a signature image first", true);
+      const message = "Please select a signature image first.";
+      setAutoMessage(message, true);
+      showAlert.error("No image selected", message);
       return;
     }
 
@@ -909,19 +911,23 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
     const maxSize = 5 * 1024 * 1024; // 5MB
     
     if (signatureFile.size < minSize) {
-      setAutoMessage(`Signature file seems too small (${signatureFile.size} bytes, min 1KB)  it may be corrupted. Please try a different image.`, true);
+      const message = `Signature file seems too small (${signatureFile.size} bytes, min 1KB). It may be corrupted. Please try a different image.`;
+      setAutoMessage(message, true);
+      showAlert.error("Image too small", message);
       return;
     }
     
     if (signatureFile.size > maxSize) {
-      setAutoMessage(`That file is too large (${(signatureFile.size / 1024 / 1024).toFixed(2)}MB). Please keep it under 5MB.`, true);
+      const message = `That file is too large (${(signatureFile.size / 1024 / 1024).toFixed(2)}MB). Please keep it under 5MB.`;
+      setAutoMessage(message, true);
+      showAlert.error("Image too large", message);
       return;
     }
     
-    // Validate file type
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-    if (!allowedTypes.includes(signatureFile.type)) {
-      setAutoMessage(`That file type (${signatureFile.type}) isn't supported. Please use a PNG or JPEG image.`, true);
+    if (!signatureFile.type?.startsWith("image/")) {
+      const message = `That file type (${signatureFile.type || "unknown"}) is not an image.`;
+      setAutoMessage(message, true);
+      showAlert.error("Wrong file type", message);
       return;
     }
 
@@ -939,12 +945,16 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
 
       if (response) {
         const sizeKB = (signatureFile.size / 1024).toFixed(2);
-        setAutoMessage(`Signature uploaded! (${sizeKB}KB)  Certificates will now include your signature.`);
+        const message = `Signature uploaded! (${sizeKB}KB). Certificates will now include your signature.`;
+        setAutoMessage(message);
+        await showAlert.success("Signature uploaded", message);
         setSignatureFile(null);
         fetchCurrentSignature();
       }
     } catch (error) {
-      setAutoMessage("Couldn't upload signature: " + error.message, true);
+      const message = "Couldn't upload signature: " + error.message;
+      setAutoMessage(message, true);
+      await showAlert.error("Upload failed", error.message || "Please try again.");
     } finally {
       setUploadingSignature(false);
     }
@@ -2769,7 +2779,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                       <input
                         type="file"
                         id="signatureFile"
-                        accept="image/png,image/jpeg,image/jpg"
+                        accept="image/*"
                         onChange={(e) => setSignatureFile(e.target.files[0])}
                         disabled={uploadingSignature}
                       />
@@ -2778,7 +2788,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                           Selected: {signatureFile.name} ({(signatureFile.size / 1024).toFixed(2)} KB)
                         </p>
                       )}
-                      <small>Accepted formats: PNG, JPG, JPEG (Max 5MB)</small>
+                      <small>Accepted formats: any image format (Max 5MB)</small>
                     </div>
 
                     <button 

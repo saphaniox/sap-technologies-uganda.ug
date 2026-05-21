@@ -124,6 +124,7 @@
     padding: 0 16px;
     box-shadow: 0 4px 16px rgba(52, 152, 219, 0.08);
     transition: border-color 0.25s, box-shadow 0.25s;
+    cursor: text;
 }
 
 .products-search-bar:focus-within {
@@ -139,12 +140,17 @@
 
 .products-search-input {
     flex: 1;
+    min-width: 0;
     border: none;
     outline: none;
     font-size: 1rem;
     padding: 14px 0;
     background: transparent;
     color: #2c3e50;
+    pointer-events: auto;
+    user-select: text;
+    -webkit-user-select: text;
+    touch-action: manipulation;
 }
 
 .products-search-input::placeholder {

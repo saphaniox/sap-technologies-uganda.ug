@@ -1,21 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import BackToTop from "./BackToTop";
 import "../styles/LegalPages.css";
 
 const PrivacyPolicy = ({ onClose }) => {
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose?.();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
   return (
-    <div className="legal-modal">
+    <div className="legal-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-policy-title" onClick={onClose}>
       <motion.div 
         className="legal-content"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 50 }}
         transition={{ duration: 0.3 }}
+        onClick={(event) => event.stopPropagation()}
       >
         <div className="legal-header">
-          <h1>Privacy Policy</h1>
-          <button className="close-btn" onClick={onClose} aria-label="Close Privacy Policy">
+          <h1 id="privacy-policy-title">Privacy Policy</h1>
+          <button type="button" className="legal-close-btn" onClick={onClose} aria-label="Close Privacy Policy">
             &times;
           </button>
         </div>
