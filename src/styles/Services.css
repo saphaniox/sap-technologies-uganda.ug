@@ -1170,6 +1170,11 @@
   object-fit: cover !important;
   object-position: center !important;
   border-radius: inherit !important;
+  cursor: default !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+  -webkit-touch-callout: none !important;
 }
 
 .modal-image {

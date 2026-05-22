@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Slider.css";
 
+const preventImageActions = (event) => {
+  event.preventDefault();
+};
+
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -70,8 +74,9 @@ const Slider = () => {
           <div
             key={index}
             className={`slider-slide ${index === currentSlide ? "active" : ""}`}
+            onContextMenu={preventImageActions}
           >
-            <img src={slide.image} alt={slide.title} />
+            <img src={slide.image} alt={slide.title} draggable="false" />
             <div className="slider-caption slider-caption-overlay">
               <h2>{slide.title}</h2>
               <p>{slide.description}</p>

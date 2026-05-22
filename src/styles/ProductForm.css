@@ -171,6 +171,17 @@
     opacity: 0.6;
 }
 
+.image-upload-help {
+    margin: 0;
+    padding: 10px 12px;
+    color: #5f6f7c;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    background: rgba(52, 152, 219, 0.08);
+    border: 1px solid rgba(52, 152, 219, 0.16);
+    border-radius: 8px;
+}
+
 .image-previews-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));

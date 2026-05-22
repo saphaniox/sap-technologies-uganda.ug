@@ -1457,6 +1457,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                     <tr>
                       <th>Name</th>
                       <th>Email</th>
+                      <th>Phone</th>
                       <th>Subject</th>
                       <th>Message</th>
                       <th>Date</th>
@@ -1469,7 +1470,8 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                       <tr key={contact._id}>
                         <td>{contact.name}</td>
                         <td>{contact.email}</td>
-                        <td>{contact.subject}</td>
+                        <td>{contact.phone || "N/A"}</td>
+                        <td>{contact.subject || "General Inquiry"}</td>
                         <td className="message-cell">
                           {contact.message.length > 50 
                             ? `${contact.message.substring(0, 50)}...`

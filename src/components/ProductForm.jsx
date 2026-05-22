@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import apiService from "../services/api";
 import { showAlert } from "../utils/alerts.jsx";
 import { getImageUrl } from "../utils/imageUrl";
-import { compressImageFiles } from "../utils/mediaCompression";
+import { compressImageFiles, removeConnectedBackgroundToWhite } from "../utils/mediaCompression";
 import "../styles/ProductForm.css";
 
 const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
@@ -30,6 +30,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
     const [existingImages, setExistingImages] = useState([]);
     const [imagesToDelete, setImagesToDelete] = useState([]);
     const [newImageFiles, setNewImageFiles] = useState([]);
+    const [imageProcessing, setImageProcessing] = useState(false);
 
     useEffect(() => {
         if (product) {
@@ -141,6 +142,8 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
         }
 
         if (files.length > 0) {
+            setImageProcessing(true);
+
             // Validate each file
             for (const file of files) {
                 // Validate original file size before browser-side optimization
@@ -155,6 +158,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                         }
                     );
                     e.target.value = '';
+                    setImageProcessing(false);
                     return;
                 }
 
@@ -169,13 +173,18 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                         }
                     );
                     e.target.value = '';
+                    setImageProcessing(false);
                     return;
                 }
             }
 
             let optimizedFiles;
             try {
-                optimizedFiles = await compressImageFiles(files, {
+                const whiteBackgroundFiles = await Promise.all(
+                    files.map((file) => removeConnectedBackgroundToWhite(file))
+                );
+
+                optimizedFiles = await compressImageFiles(whiteBackgroundFiles, {
                     maxWidth: 1400,
                     maxHeight: 1400,
                     quality: 0.82
@@ -190,6 +199,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                     }
                 );
                 e.target.value = '';
+                setImageProcessing(false);
                 return;
             }
 
@@ -204,6 +214,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                         }
                     );
                     e.target.value = '';
+                    setImageProcessing(false);
                     return;
                 }
             }
@@ -237,6 +248,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
         
         // Reset file input
         e.target.value = '';
+        setImageProcessing(false);
     };
 
     const handleRemoveImage = (index) => {
@@ -537,16 +549,20 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
                                 className="image-input"
                                 id="productImage"
                                 style={{ display: 'none' }}
+                                disabled={imageProcessing}
                             />
                             <button
                                 type="button"
                                 onClick={() => document.getElementById('productImage').click()}
                                 className="btn-add-image"
                                 title="Add images"
-                                disabled={imagePreviews.length >= 5}
+                                disabled={imagePreviews.length >= 5 || imageProcessing}
                             >
-                                <i className="fas fa-plus"></i> Add Images ({imagePreviews.length}/5)
+                                <i className="fas fa-plus"></i> {imageProcessing ? "Preparing Images..." : `Add Images (${imagePreviews.length}/5)`}
                             </button>
+                            <p className="image-upload-help">
+                                Product images are automatically cleaned onto a white background before upload.
+                            </p>
                             
                             {/* Image Previews Grid */}
                             {imagePreviews.length > 0 && (
@@ -765,8 +781,8 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
                         <button type="button" onClick={onClose} className="btn btn-secondary">
                             Cancel
                         </button>
-                        <button type="submit" disabled={loading} className="btn btn-primary">
-                            {loading ? "Saving..." : (product ? "Update Product" : "Create Product")}
+                        <button type="submit" disabled={loading || imageProcessing} className="btn btn-primary">
+                            {imageProcessing ? "Preparing Images..." : loading ? "Saving..." : (product ? "Update Product" : "Create Product")}
                         </button>
                     </div>
                 </form>

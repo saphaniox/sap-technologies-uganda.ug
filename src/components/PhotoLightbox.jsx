@@ -4,19 +4,7 @@ import "../styles/PhotoLightbox.css";
 
 const CONTROL_SELECTOR = "button, a, label, input, textarea, select";
 const IGNORED_AREA_SELECTOR = ".header, footer, .footer, .nav-sidebar, .slider-thumbnails, .photo-lightbox";
-const PHOTO_CONTAINER_SELECTOR = [
-  ".image-slider",
-  ".product-image",
-  ".service-image",
-  ".portfolio-image",
-  ".iot-image-container",
-  ".software-image",
-  ".nominee-photo",
-  ".modal-image",
-  ".photo-preview-section",
-  ".image-preview-item",
-  ".profile-pic-container"
-].join(", ");
+const PHOTO_CONTAINER_SELECTOR = ".product-image";
 
 const isLogoOrUtilityImage = (image) => {
   const src = image.currentSrc || image.src || "";
@@ -39,9 +27,11 @@ const getPhotoFromEvent = (event) => {
   if (!(target instanceof Element)) return null;
   if (target.closest(CONTROL_SELECTOR) || target.closest(IGNORED_AREA_SELECTOR)) return null;
 
+  const container = target.closest(PHOTO_CONTAINER_SELECTOR);
+  if (!container) return null;
+
   const directImage = target instanceof HTMLImageElement ? target : null;
-  const container = directImage ? null : target.closest(PHOTO_CONTAINER_SELECTOR);
-  const image = directImage || Array.from(container?.querySelectorAll("img") || [])
+  const image = directImage || Array.from(container.querySelectorAll("img"))
     .find((candidate) => !candidate.closest(".slider-thumbnails"));
 
   if (!image || isLogoOrUtilityImage(image)) return null;

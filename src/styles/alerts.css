@@ -2,6 +2,11 @@
 /* Enhances the default styling to match your application theme */
 
 /* SweetAlert2 Custom Styles */
+.swal2-container,
+.swal-container-product-form {
+  z-index: 99999 !important;
+}
+
 .swal2-popup {
   border-radius: 12px !important;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
