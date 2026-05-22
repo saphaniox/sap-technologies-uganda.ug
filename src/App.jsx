@@ -11,13 +11,12 @@ import NotFound from "./components/NotFound";
 import WhatsAppButton from "./components/WhatsAppButton";
 import CookieConsent from "./components/CookieConsent";
 import PhotoLightbox from "./components/PhotoLightbox";
-import GoogleAdSense, { AdSenseSlot } from "./components/GoogleAdSense";
+import GoogleAdSense from "./components/GoogleAdSense";
 import { CartProvider, useCart } from "./contexts/CartContext";
 import Cart from "./components/Cart";
 import apiService from "./services/api";
 import keepAliveService from "./services/keepAliveService";
 import { initializeAnimations } from "./utils/animations";
-import { ADSENSE_SLOTS } from "./config/adsense";
 
 // Below-fold sections — lazy-loaded so initial bundle stays lean
 const Services = lazy(() => import("./components/Services"));
@@ -265,21 +264,9 @@ function App() {
         <GoogleAdSense />
         <Suspense fallback={null}>
         <Routes>
-          <Route path="/verify/:certificateId" element={
-            <AdSupportedPage>
-              <CertificateVerify />
-            </AdSupportedPage>
-          } />
-          <Route path="/software" element={
-            <AdSupportedPage contextualSlot={ADSENSE_SLOTS.software}>
-              <SoftwarePage />
-            </AdSupportedPage>
-          } />
-          <Route path="/iot" element={
-            <AdSupportedPage contextualSlot={ADSENSE_SLOTS.iot}>
-              <IoTPage />
-            </AdSupportedPage>
-          } />
+          <Route path="/verify/:certificateId" element={<CertificateVerify />} />
+          <Route path="/software" element={<SoftwarePage />} />
+          <Route path="/iot" element={<IoTPage />} />
           <Route path="/*" element={
             <>
               <Header 
@@ -297,22 +284,17 @@ function App() {
               />
               
               <main>
-                <AdSenseSlot slot={ADSENSE_SLOTS.pageTop} className="adsense-placement--page-top" />
                 <Hero />
                 <Slider />
-                <AdSenseSlot slot={ADSENSE_SLOTS.homeTop} className="adsense-placement--home" />
                 <About />
                 <Suspense fallback={null}>
                   <Services />
-                  <AdSenseSlot slot={ADSENSE_SLOTS.homeMiddle} className="adsense-placement--home-middle" />
                   <Portfolio />
                   <Partners />
                   <Companies />
-                  <AdSenseSlot slot={ADSENSE_SLOTS.marketplace} className="adsense-placement--marketplace" />
                   <Products />
                   <Testimonials />
                   <Contact />
-                  <AdSenseSlot slot={ADSENSE_SLOTS.pageBottom} className="adsense-placement--page-bottom" />
                 </Suspense>
               </main>
               
@@ -373,29 +355,12 @@ function App() {
               )}
             </>
           } />
-          <Route path="*" element={
-            <AdSupportedPage>
-              <NotFound />
-            </AdSupportedPage>
-          } />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         </Suspense>
       </div>
       </CartProvider>
     </ErrorBoundary>
-  );
-}
-
-function AdSupportedPage({ children, contextualSlot }) {
-  return (
-    <>
-      <AdSenseSlot slot={ADSENSE_SLOTS.pageTop} className="adsense-placement--page-top" />
-      {contextualSlot && (
-        <AdSenseSlot slot={contextualSlot} className="adsense-placement--contextual" />
-      )}
-      {children}
-      <AdSenseSlot slot={ADSENSE_SLOTS.pageBottom} className="adsense-placement--page-bottom" />
-    </>
   );
 }
 
