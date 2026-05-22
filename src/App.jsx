@@ -297,22 +297,22 @@ function App() {
               />
               
               <main>
-                <AdSenseSlot slot={ADSENSE_SLOTS.pageTop} className="adsense-placement--page-top" minHeight={100} />
+                <AdSenseSlot slot={ADSENSE_SLOTS.pageTop} className="adsense-placement--page-top" />
                 <Hero />
                 <Slider />
-                <AdSenseSlot slot={ADSENSE_SLOTS.homeTop} className="adsense-placement--home" minHeight={100} />
+                <AdSenseSlot slot={ADSENSE_SLOTS.homeTop} className="adsense-placement--home" />
                 <About />
                 <Suspense fallback={null}>
                   <Services />
-                  <AdSenseSlot slot={ADSENSE_SLOTS.homeMiddle} className="adsense-placement--home-middle" minHeight={120} />
+                  <AdSenseSlot slot={ADSENSE_SLOTS.homeMiddle} className="adsense-placement--home-middle" />
                   <Portfolio />
                   <Partners />
                   <Companies />
-                  <AdSenseSlot slot={ADSENSE_SLOTS.marketplace} className="adsense-placement--marketplace" minHeight={120} />
+                  <AdSenseSlot slot={ADSENSE_SLOTS.marketplace} className="adsense-placement--marketplace" />
                   <Products />
                   <Testimonials />
                   <Contact />
-                  <AdSenseSlot slot={ADSENSE_SLOTS.pageBottom} className="adsense-placement--page-bottom" minHeight={100} />
+                  <AdSenseSlot slot={ADSENSE_SLOTS.pageBottom} className="adsense-placement--page-bottom" />
                 </Suspense>
               </main>
               
@@ -389,12 +389,12 @@ function App() {
 function AdSupportedPage({ children, contextualSlot }) {
   return (
     <>
-      <AdSenseSlot slot={ADSENSE_SLOTS.pageTop} className="adsense-placement--page-top" minHeight={100} />
+      <AdSenseSlot slot={ADSENSE_SLOTS.pageTop} className="adsense-placement--page-top" />
       {contextualSlot && (
-        <AdSenseSlot slot={contextualSlot} className="adsense-placement--contextual" minHeight={120} />
+        <AdSenseSlot slot={contextualSlot} className="adsense-placement--contextual" />
       )}
       {children}
-      <AdSenseSlot slot={ADSENSE_SLOTS.pageBottom} className="adsense-placement--page-bottom" minHeight={100} />
+      <AdSenseSlot slot={ADSENSE_SLOTS.pageBottom} className="adsense-placement--page-bottom" />
     </>
   );
 }

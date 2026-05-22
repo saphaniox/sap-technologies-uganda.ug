@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ADSENSE_AUTO_ADS, ADSENSE_CLIENT, ADSENSE_ENABLED } from "../config/adsense";
 import "../styles/AdSense.css";
 
@@ -56,11 +56,11 @@ export const AdSenseSlot = ({
   slot,
   className = "",
   format = "auto",
-  fullWidthResponsive = true,
-  minHeight = 120,
-  label = "Advertisement"
+  fullWidthResponsive = true
 }) => {
   const initializedRef = useRef(false);
+  const placementRef = useRef(null);
+  const [hasRenderedAd, setHasRenderedAd] = useState(false);
 
   useEffect(() => {
     if (!ADSENSE_ENABLED || !slot || initializedRef.current) return undefined;
@@ -76,13 +76,50 @@ export const AdSenseSlot = ({
     return () => window.clearTimeout(timer);
   }, [slot]);
 
+  useEffect(() => {
+    if (!ADSENSE_ENABLED || !slot || typeof window === "undefined") return undefined;
+
+    setHasRenderedAd(false);
+
+    const placement = placementRef.current;
+    if (!placement) return undefined;
+
+    const updateAdState = () => {
+      const adElement = placement.querySelector(".adsbygoogle");
+      const adStatus = adElement?.getAttribute("data-ad-status");
+      const hasInjectedFrame = Boolean(adElement?.querySelector("iframe"));
+      const hasVisibleSize = Boolean(adElement && adElement.offsetHeight > 0);
+
+      setHasRenderedAd(
+        adStatus !== "unfilled" && (adStatus === "filled" || hasInjectedFrame || hasVisibleSize)
+      );
+    };
+
+    const mutationObserver = new MutationObserver(updateAdState);
+    mutationObserver.observe(placement, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      attributeFilter: ["class", "data-ad-status", "style"]
+    });
+
+    const resizeObserver = "ResizeObserver" in window ? new ResizeObserver(updateAdState) : null;
+    resizeObserver?.observe(placement);
+
+    updateAdState();
+
+    return () => {
+      mutationObserver.disconnect();
+      resizeObserver?.disconnect();
+    };
+  }, [slot]);
+
   if (!ADSENSE_ENABLED || !slot) return null;
 
   const adProps = {
     className: "adsbygoogle",
     style: {
-      display: "block",
-      minHeight: `${minHeight}px`
+      display: "block"
     },
     "data-ad-client": ADSENSE_CLIENT,
     "data-ad-slot": slot,
@@ -90,9 +127,19 @@ export const AdSenseSlot = ({
     "data-full-width-responsive": fullWidthResponsive ? "true" : "false"
   };
 
+  const placementClassName = [
+    "adsense-placement",
+    hasRenderedAd ? "adsense-placement--ready" : "",
+    className
+  ].filter(Boolean).join(" ");
+
   return (
-    <aside className={`adsense-placement ${className}`.trim()} aria-label={label}>
-      <span className="adsense-placement-label">{label}</span>
+    <aside
+      ref={placementRef}
+      className={placementClassName}
+      aria-hidden={hasRenderedAd ? undefined : "true"}
+      aria-label={hasRenderedAd ? "Sponsored" : undefined}
+    >
       <ins {...adProps} />
     </aside>
   );
