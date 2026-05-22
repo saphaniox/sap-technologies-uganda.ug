@@ -111,6 +111,14 @@
     letter-spacing: 0.5px;
 }
 
+.product-form .optional {
+    color: #64748b;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
 .form-group input,
 .form-group select,
 .form-group textarea {

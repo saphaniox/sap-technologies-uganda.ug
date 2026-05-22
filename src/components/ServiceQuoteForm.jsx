@@ -221,7 +221,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="customerPhone">Phone Number</label>
+              <label htmlFor="customerPhone">Phone Number <span className="optional">(optional)</span></label>
               <input
                 type="tel"
                 id="customerPhone"
@@ -235,7 +235,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="companyName">Company Name</label>
+              <label htmlFor="companyName">Company Name <span className="optional">(optional)</span></label>
               <input
                 type="text"
                 id="companyName"
@@ -248,7 +248,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
           </div>
 
           <div className="form-group">
-            <label>Preferred Contact Method</label>
+            <label>Preferred Contact Method <span className="optional">(optional)</span></label>
             <div className="radio-group">
               <label className="radio-label">
                 <input
@@ -285,7 +285,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="budget">Budget Range</label>
+              <label htmlFor="budget">Budget Range <span className="optional">(optional)</span></label>
               <select
                 id="budget"
                 name="budget"
@@ -301,7 +301,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="timeline">Project Timeline</label>
+              <label htmlFor="timeline">Project Timeline <span className="optional">(optional)</span></label>
               <select
                 id="timeline"
                 name="timeline"
@@ -319,7 +319,7 @@ const ServiceQuoteForm = ({ service, onClose, onSubmit }) => {
 
           <div className="form-group">
             <label htmlFor="projectDetails">
-              Project Details
+              Project Details <span className="optional">(optional)</span>
               <span className="char-counter">
                 {remainingChars} characters remaining
               </span>

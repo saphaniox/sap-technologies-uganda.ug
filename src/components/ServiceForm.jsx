@@ -25,7 +25,6 @@ const ServiceForm = ({ service, onClose, onSave }) => {
   });
   const [loading, setLoading] = useState(false);
   const [imagePreviews, setImagePreviews] = useState([]);
-  const [existingImages, setExistingImages] = useState([]);
   const [imagesToDelete, setImagesToDelete] = useState([]);
   const [newImageFiles, setNewImageFiles] = useState([]);
   const [alert, setAlert] = useState({ type: "", message: "" });
@@ -83,7 +82,6 @@ const ServiceForm = ({ service, onClose, onSave }) => {
       // Handle images - support both single image (old) and array (new)
       const images = service.images || (service.image ? [service.image] : []);
       if (images.length > 0) {
-        setExistingImages(images);
         const imageUrls = images.map(img => ({
           url: getImageUrl(img),
           path: img,
@@ -91,7 +89,6 @@ const ServiceForm = ({ service, onClose, onSave }) => {
         }));
         setImagePreviews(imageUrls);
       } else {
-        setExistingImages([]);
         setImagePreviews([]);
       }
       setImagesToDelete([]);
@@ -435,7 +432,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label>Features</label>
+            <label>Features <span className="form-optional">(optional)</span></label>
             {formData.features.map((feature, index) => (
               <div key={index} className="array-input">
                 <input
@@ -464,7 +461,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label>Technologies</label>
+            <label>Technologies <span className="form-optional">(optional)</span></label>
             {formData.technologies.map((tech, index) => (
               <div key={index} className="array-input">
                 <input
@@ -494,7 +491,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="price.startingPrice">Starting Price</label>
+              <label htmlFor="price.startingPrice">Starting Price <span className="form-optional">(optional)</span></label>
               <input
                 type="number"
                 id="price.startingPrice"
@@ -507,7 +504,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="price.currency">Currency</label>
+              <label htmlFor="price.currency">Currency <span className="form-optional">(optional)</span></label>
               <select
                 id="price.currency"
                 name="price.currency"
@@ -524,7 +521,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="price.priceType">Price Type</label>
+              <label htmlFor="price.priceType">Price Type <span className="form-optional">(optional)</span></label>
               <select
                 id="price.priceType"
                 name="price.priceType"
@@ -541,7 +538,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="status">Status</label>
+              <label htmlFor="status">Status <span className="form-optional">(optional)</span></label>
               <select
                 id="status"
                 name="status"
@@ -568,7 +565,7 @@ const ServiceForm = ({ service, onClose, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="images">Service Images (Max 5)</label>
+            <label htmlFor="images">Service Images (Max 5) <span className="form-optional">(optional)</span></label>
             <div className="image-upload-controls">
               <input
                 type="file"

@@ -27,6 +27,13 @@
   color: #e74c3c;
 }
 
+.partner-request-form .optional {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-left: 0.35rem;
+}
+
 .form-group input,
 .form-group textarea {
   padding: 12px;

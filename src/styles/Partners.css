@@ -24,7 +24,7 @@
 
 .partners-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   position: relative;
 }
 
@@ -88,16 +88,17 @@
 
 .partners-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 210px));
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
 }
 
 .partner-card {
   background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
@@ -169,19 +170,19 @@
 }
 
 .partner-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.13);
 }
 
 .partner-logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100px;
-  margin-bottom: 1.5rem;
+  height: 78px;
+  margin-bottom: 0.75rem;
   background: #f8f9fa;
-  border-radius: 12px;
-  padding: 1rem;
+  border-radius: 10px;
+  padding: 0.65rem;
   position: relative;
   overflow: hidden;
 }
@@ -201,8 +202,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 52px;
+  height: 52px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50%;
   color: white;
@@ -215,18 +216,18 @@
 }
 
 .partner-name {
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #2d3748;
-  margin-bottom: 0.75rem;
-  line-height: 1.4;
+  margin-bottom: 0.45rem;
+  line-height: 1.3;
 }
 
 .partner-description {
   color: #4a5568;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 1.25rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin-bottom: 0.8rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
@@ -241,9 +242,9 @@
   color: #667eea;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.78rem;
   transition: all 0.3s ease;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.7rem;
   border: 1px solid #667eea;
   border-radius: 25px;
   background: transparent;
@@ -265,7 +266,7 @@
 }
 
 .partner-contact {
-  margin-top: 1rem;
+  margin-top: 0.6rem;
 }
 
 .partner-info-text {
@@ -339,17 +340,17 @@
   }
   
   .partners-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    gap: 0.75rem;
   }
   
   .partner-card {
-    padding: 1.5rem;
+    padding: 0.9rem;
   }
   
   .partner-logo {
-    height: 80px;
-    margin-bottom: 1rem;
+    height: 72px;
+    margin-bottom: 0.65rem;
   }
   
   .add-partner-btn {
@@ -373,7 +374,7 @@
   }
   
   .partner-card {
-    padding: 1.25rem;
+    padding: 0.85rem;
   }
 }
 
@@ -400,7 +401,7 @@
 }
 /* FINAL PARTNER LOGO POLISH */
 .partner-logo {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   overflow: hidden !important;
 }
 

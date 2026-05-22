@@ -296,7 +296,7 @@ const Cart = () => {
               </div>
 
               <div className="cart-field">
-                <label htmlFor="cart-contact">Preferred Contact</label>
+                <label htmlFor="cart-contact">Preferred Contact <span className="opt">(optional)</span></label>
                 <select id="cart-contact" name="preferredContact" value={form.preferredContact} onChange={handleChange}>
                   <option value="email">Email</option>
                   <option value="phone">Phone</option>

@@ -235,7 +235,9 @@ const Partners = () => {
                 </button>
               )}
             </div>
-          </div>        <div className="partners-grid">
+          </div>
+
+          <div className="partners-grid">
           {partners.map((partner) => (
             <div key={partner._id} className="partner-card">
               {user && user.role === "admin" && (

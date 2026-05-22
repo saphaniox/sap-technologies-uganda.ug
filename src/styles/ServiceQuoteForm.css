@@ -117,6 +117,17 @@
   margin-left: 4px;
 }
 
+.quote-form .optional {
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.quote-form .form-group label .optional {
+  margin-right: auto;
+}
+
 .char-counter {
   font-size: 12px;
   font-weight: 400;

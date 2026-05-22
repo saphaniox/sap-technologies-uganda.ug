@@ -27,7 +27,6 @@ const ProjectForm = ({ project, onClose, onSave }) => {
   });
   const [loading, setLoading] = useState(false);
   const [imagePreviews, setImagePreviews] = useState([]);
-  const [existingImages, setExistingImages] = useState([]);
   const [imagesToDelete, setImagesToDelete] = useState([]);
   const [newImageFiles, setNewImageFiles] = useState([]);
   const [alert, setAlert] = useState({ type: "", message: "" });
@@ -66,7 +65,6 @@ const ProjectForm = ({ project, onClose, onSave }) => {
       });
       if (project.images && project.images.length > 0) {
         // Store original image paths
-        setExistingImages(project.images);
         // Convert relative paths to full URLs for existing images
         const imageUrls = project.images.map(img => ({
           url: getImageUrl(img),
@@ -75,7 +73,6 @@ const ProjectForm = ({ project, onClose, onSave }) => {
         }));
         setImagePreviews(imageUrls);
       } else {
-        setExistingImages([]);
         setImagePreviews([]);
       }
       setImagesToDelete([]);
@@ -492,7 +489,7 @@ const ProjectForm = ({ project, onClose, onSave }) => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="status">Status</label>
+              <label htmlFor="status">Status <span className="form-optional">(optional)</span></label>
               <select
                 id="status"
                 name="status"
@@ -521,7 +518,7 @@ const ProjectForm = ({ project, onClose, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="images">Project Images (Max 5)</label>
+            <label htmlFor="images">Project Images (Max 5) <span className="form-optional">(optional)</span></label>
             <div className="image-upload-controls">
               <input
                 type="file"

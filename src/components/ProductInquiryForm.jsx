@@ -196,7 +196,7 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
 
           <div className="form-group">
             <label htmlFor="quantity">
-              Quantity / Units Needed
+              Quantity / Units Needed <span className="optional">(Optional)</span>
             </label>
             <input
               type="number"
@@ -211,7 +211,7 @@ const ProductInquiryForm = ({ product, onClose, onSubmit }) => {
 
           <div className="form-group">
             <label htmlFor="preferredContact">
-              Preferred Contact Method
+              Preferred Contact Method <span className="optional">(Optional)</span>
             </label>
             <select
               id="preferredContact"

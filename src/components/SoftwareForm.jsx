@@ -299,7 +299,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label>Description</label>
+              <label>Description <span className="form-optional">(optional)</span></label>
               <textarea
                 name="description"
                 value={formData.description}
@@ -310,7 +310,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label>Platform Links (Optional)</label>
+              <label>Platform Links <span className="form-optional">(optional)</span></label>
               <div className="platform-links-group">
                 {[
                   { key: 'web',       icon: '🌐', label: 'Website',    placeholder: 'https://your-app.com' },
@@ -339,7 +339,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
             
             <div className="form-row">
               <div className="form-group">
-                <label>Category</label>
+                <label>Category <span className="form-optional">(optional)</span></label>
                 <input
                   type="text"
                   name="category"
@@ -350,7 +350,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
               </div>
               
               <div className="form-group">
-                <label>Status</label>
+                <label>Status <span className="form-optional">(optional)</span></label>
                 <select name="status" value={formData.status} onChange={handleInputChange}>
                   <option value="active">Active</option>
                   <option value="beta">Beta</option>
@@ -362,7 +362,7 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
             
             <div className="form-row">
               <div className="form-group">
-                <label>Display Order</label>
+                <label>Display Order <span className="form-optional">(optional)</span></label>
                 <input
                   type="number"
                   name="order"
@@ -388,10 +388,10 @@ const SoftwareForm = ({ isOpen, onClose, software, onSuccess }) => {
           
           {/* Images */}
           <div className="form-section">
-            <h3>Images (Optional)</h3>
+            <h3>Images <span className="form-optional">(optional)</span></h3>
             
             <div className="form-group">
-              <label>Upload Images (Max 5)</label>
+              <label>Upload Images (Max 5) <span className="form-optional">(optional)</span></label>
               <input
                 type="file"
                 accept="image/*"

@@ -138,7 +138,7 @@ const PartnerRequestForm = ({ isOpen, onClose }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="website">Company Website</label>
+              <label htmlFor="website">Company Website <span className="optional">(optional)</span></label>
               <input
                 type="url"
                 id="website"

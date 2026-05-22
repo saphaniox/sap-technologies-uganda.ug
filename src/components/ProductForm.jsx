@@ -27,7 +27,6 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
 
     const [loading, setLoading] = useState(false);
     const [imagePreviews, setImagePreviews] = useState([]);
-    const [existingImages, setExistingImages] = useState([]);
     const [imagesToDelete, setImagesToDelete] = useState([]);
     const [newImageFiles, setNewImageFiles] = useState([]);
     const [imageProcessing, setImageProcessing] = useState(false);
@@ -55,7 +54,6 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
             
             // Handle images - support both single image (old) and array (new)
             if (product.images && Array.isArray(product.images) && product.images.length > 0) {
-                setExistingImages(product.images);
                 const imageUrls = product.images.map(img => ({
                     url: getImageUrl(typeof img === 'string' ? img : img.url),
                     path: typeof img === 'string' ? img : img.url,
@@ -64,14 +62,12 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 setImagePreviews(imageUrls);
             } else if (product.image) {
                 // Legacy single image support
-                setExistingImages([product.image]);
                 setImagePreviews([{
                     url: getImageUrl(product.image),
                     path: product.image,
                     isExisting: true
                 }]);
             } else {
-                setExistingImages([]);
                 setImagePreviews([]);
             }
             setImagesToDelete([]);
@@ -97,7 +93,6 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
                 tags: [""]
             });
             setImagePreviews([]);
-            setExistingImages([]);
             setImagesToDelete([]);
             setNewImageFiles([]);
         }
@@ -521,7 +516,7 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="availability">Availability</label>
+                                <label htmlFor="availability">Availability <span className="optional">(optional)</span></label>
                                 <select
                                     id="availability"
                                     name="availability"
@@ -539,7 +534,7 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
 
                     {/* Image Upload */}
                     <div className="form-section">
-                        <h3>Product Images (Max 5)</h3>
+                        <h3>Product Images (Max 5) <span className="optional">(optional)</span></h3>
                         <div className="image-upload-section">
                             <input
                                 type="file"
@@ -612,7 +607,7 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
                             <div className="form-row">
                                 <div className="form-group">
                                     <label htmlFor="price.amount">
-                                        {formData.price.type === "fixed" ? "Price Amount *" : "Starting Price"}
+                                        {formData.price.type === "fixed" ? "Price Amount *" : <>Starting Price <span className="optional">(optional)</span></>}
                                     </label>
                                     <input
                                         type="number"
@@ -680,7 +675,7 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
 
                     {/* Technical Specifications */}
                     <div className="form-section">
-                        <h3>Technical Specifications</h3>
+                        <h3>Technical Specifications <span className="optional">(optional)</span></h3>
                         {formData.technicalSpecs.map((spec, index) => (
                             <div key={index} className="spec-row">
                                 <input
@@ -712,7 +707,7 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
 
                     {/* Features */}
                     <div className="form-section">
-                        <h3>Features</h3>
+                        <h3>Features <span className="optional">(optional)</span></h3>
                         {formData.features.map((feature, index) => (
                             <div key={index} className="array-row">
                                 <input
@@ -742,7 +737,7 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
                         
                         <div className="form-row">
                             <div className="form-group">
-                                <label htmlFor="displayOrder">Display Order</label>
+                                <label htmlFor="displayOrder">Display Order <span className="optional">(optional)</span></label>
                                 <input
                                     type="number"
                                     id="displayOrder"

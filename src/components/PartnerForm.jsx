@@ -222,7 +222,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
         <form onSubmit={handleSubmit} className="partner-form">
           <div className="form-group">
             <label htmlFor="name">
-              Partner Name
+              Partner Name <span className="optional-field">(optional)</span>
             </label>
             <input
               type="text"
@@ -242,7 +242,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
 
           <div className="form-group">
             <label htmlFor="logo">
-              Partner Logo {!partner && <span className="required">*</span>}
+              Partner Logo {!partner ? <span className="required">*</span> : <span className="optional-field">(optional)</span>}
             </label>
             <input
               type="file"
@@ -263,7 +263,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="website">Website</label>
+            <label htmlFor="website">Website <span className="optional-field">(optional)</span></label>
             <input
               type="text"
               id="website"
@@ -280,7 +280,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">Description <span className="optional-field">(optional)</span></label>
             <textarea
               id="description"
               name="description"
@@ -299,7 +299,7 @@ const PartnerForm = ({ isOpen, onClose, partner, onSave }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="order">Display Order</label>
+            <label htmlFor="order">Display Order <span className="optional-field">(optional)</span></label>
             <input
               type="number"
               id="order"
