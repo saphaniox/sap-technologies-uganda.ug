@@ -17,7 +17,7 @@ const Hero = () => {
   /**
    * Service texts that rotate in typing animation
    */
-  const texts = ["Web Design", "Graphics Design", "Electrical & Electronics Engineering", "Software Engineering"];
+  const texts = ["Web Design", "Electrical & Electronics", " Engineering & Technology" ,"Batteries (Lithium-ion) & Power Solutions", "IoT & System Design Integration",  "Graphics Design"];
 
   /**
    * Typing Animation Effect
@@ -111,7 +111,7 @@ const Hero = () => {
         </motion.div>
 
         <motion.h1 className="hero-title">
-          <span className="title-line">Professional</span>
+          <span className="title-line">Professional in </span>
           <span className="title-line highlight">
             <span className="typewriter-text">{currentText}</span>
             <motion.span
@@ -124,10 +124,6 @@ const Hero = () => {
           </span>
           <span className="title-line">Solutions</span>
         </motion.h1>
-
-        <motion.p className="hero-subtitle">
-          Professional in Engineering &amp; Technology solutions
-        </motion.p>
 
         <motion.div className="hero-buttons">
           <motion.button
