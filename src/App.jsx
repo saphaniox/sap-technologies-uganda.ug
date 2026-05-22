@@ -12,6 +12,7 @@ import WhatsAppButton from "./components/WhatsAppButton";
 import CookieConsent from "./components/CookieConsent";
 import PhotoLightbox from "./components/PhotoLightbox";
 import GoogleAdSense from "./components/GoogleAdSense";
+import SEO from "./components/SEO";
 import { CartProvider, useCart } from "./contexts/CartContext";
 import Cart from "./components/Cart";
 import apiService from "./services/api";
@@ -32,6 +33,84 @@ import { useVisitorTracking } from "./hooks/useVisitorTracking";
 import "./styles/App.css";
 import "./styles/ErrorBoundary.css";
 import "./styles/theme-complete.css";
+
+const SITE_URL = "https://www.sap-technologies.com";
+
+const SECTION_ROUTE_MAP = {
+  "/": "home",
+  "/about": "about",
+  "/services": "services",
+  "/portfolio": "portfolio",
+  "/products": "products",
+  "/partners": "partners",
+  "/companies": "companies",
+  "/testimonials": "testimonials",
+  "/contact": "contact"
+};
+
+const SECTION_SEO = {
+  home: {
+    path: "/",
+    title: "SAPTech Uganda | Engineering & Technology Solutions",
+    description: "SAPTech Uganda provides web development, software, IoT, engineering, cloud, cybersecurity, and digital transformation services in Uganda.",
+    keywords: "SAPTech Uganda, technology company Uganda, web development Uganda, software development Uganda, IoT projects Uganda"
+  },
+  about: {
+    path: "/about",
+    title: "About SAPTech Uganda | Engineering & Technology Team",
+    description: "Learn about SAPTech Uganda, a Kampala technology team building practical engineering, software, and digital solutions for businesses and communities.",
+    keywords: "about SAPTech Uganda, technology team Uganda, engineering company Kampala"
+  },
+  services: {
+    path: "/services",
+    title: "Services | SAPTech Uganda",
+    description: "Explore SAPTech Uganda services including web development, mobile apps, custom software, cloud services, cybersecurity, IoT, and engineering support.",
+    keywords: "IT services Uganda, web development services Uganda, mobile app development Uganda, cybersecurity Uganda, IoT services Uganda"
+  },
+  portfolio: {
+    path: "/portfolio",
+    title: "Projects & Portfolio | SAPTech Uganda",
+    description: "View SAPTech Uganda projects across web platforms, business systems, software products, engineering, IoT, and digital transformation.",
+    keywords: "SAPTech Uganda projects, technology portfolio Uganda, software projects Kampala"
+  },
+  products: {
+    path: "/products",
+    title: "Products | SAPTech Uganda",
+    description: "Browse technology products, software tools, and digital solutions available from SAPTech Uganda.",
+    keywords: "SAPTech Uganda products, technology products Uganda, software products Uganda"
+  },
+  partners: {
+    path: "/partners",
+    title: "Partners | SAPTech Uganda",
+    description: "Meet SAPTech Uganda partners and collaborators supporting technology, engineering, software, and digital growth.",
+    keywords: "SAPTech Uganda partners, technology partners Uganda, business partners Kampala"
+  },
+  companies: {
+    path: "/companies",
+    title: "Platforms & Companies | SAPTech Uganda",
+    description: "Explore SAPTech Uganda platforms, companies, and connected initiatives in engineering and technology.",
+    keywords: "SAPTech Uganda platforms, SAPTech companies, Uganda technology platforms"
+  },
+  testimonials: {
+    path: "/testimonials",
+    title: "Testimonials | SAPTech Uganda",
+    description: "Read client feedback and testimonials from people and organizations working with SAPTech Uganda.",
+    keywords: "SAPTech Uganda testimonials, SAPTech reviews, technology company reviews Uganda"
+  },
+  contact: {
+    path: "/contact",
+    title: "Contact SAPTech Uganda",
+    description: "Contact SAPTech Uganda for software development, web design, engineering, IoT, cloud, cybersecurity, and digital transformation projects.",
+    keywords: "contact SAPTech Uganda, SAPTech Kampala, software developer Uganda contact"
+  }
+};
+
+const normalizePath = (pathname) => {
+  const cleanPath = pathname.replace(/\/+$/, "");
+  return cleanPath || "/";
+};
+
+const getSectionIdFromPath = (pathname) => SECTION_ROUTE_MAP[normalizePath(pathname)];
 
 // Secondary pages and modals — lazy-loaded so they don't bloat the initial bundle
 const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
@@ -71,6 +150,9 @@ function App() {
     return localStorage.getItem("showTermsOfService") === "true";
   });
   const legalPageOpen = showPrivacyPolicy || showTermsOfService;
+  const currentSectionId = getSectionIdFromPath(location.pathname);
+  const currentSectionSeo = SECTION_SEO[currentSectionId] || SECTION_SEO.home;
+  const currentSectionUrl = `${SITE_URL}${currentSectionSeo.path === "/" ? "/" : currentSectionSeo.path}`;
 
   useEffect(() => {
     // Start keep-alive service to prevent server from sleeping
@@ -227,10 +309,15 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (location.pathname !== "/" || !location.hash) return;
+    const hashSectionId = location.hash
+      ? decodeURIComponent(location.hash.replace("#", ""))
+      : "";
+    const routeSectionId = getSectionIdFromPath(location.pathname);
+    const targetSectionId = hashSectionId || routeSectionId;
 
-    const sectionId = decodeURIComponent(location.hash.replace("#", ""));
-    window.setTimeout(() => scrollToMainSection(sectionId), 140);
+    if (!targetSectionId) return;
+
+    window.setTimeout(() => scrollToMainSection(targetSectionId), 140);
   }, [location.hash, location.pathname, scrollToMainSection]);
 
   const handleSiteNavigation = (sectionId) => {
@@ -269,6 +356,14 @@ function App() {
           <Route path="/iot" element={<IoTPage />} />
           <Route path="/*" element={
             <>
+              <SEO
+                title={currentSectionSeo.title}
+                description={currentSectionSeo.description}
+                keywords={currentSectionSeo.keywords}
+                canonicalUrl={currentSectionUrl}
+                url={currentSectionUrl}
+                ogImage="/images/logo.png"
+              />
               <Header 
                 key={`header-${isAuthenticated ? 'auth' : 'guest'}`}
                 isAuthenticated={isAuthenticated}

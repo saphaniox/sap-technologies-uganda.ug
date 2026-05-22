@@ -84,7 +84,7 @@ const CertificateVerify = () => {
         ? `${certificate.recipientName} - ${getTypeLabel(certificate.type)} Certificate for ${certificate.categoryName} (${certificate.awardYear})`
         : 'Verify SAPTech Uganda certificate authenticity';
     
-    const metaUrl = `https://sap-technologies.ug/verify/${certificateId}`;
+    const metaUrl = `https://www.sap-technologies.com/verify/${certificateId}`;
 
     if (loading) {
         return (

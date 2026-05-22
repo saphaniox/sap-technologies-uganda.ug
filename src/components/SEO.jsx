@@ -1,6 +1,13 @@
 // SEO Component for dynamic meta tags
 import { useEffect } from 'react';
 
+const toAbsoluteUrl = (value) => {
+  if (!value) return "";
+  if (/^https?:\/\//i.test(value)) return value;
+  const path = value.startsWith("/") ? value : `/${value}`;
+  return `${window.location.origin}${path}`;
+};
+
 const SEO = ({ 
   title = "SAPTech Uganda | Professional in Engineering & Technology solutions",
   description = "SAPTech Uganda offers professional IT solutions in engineering & technology — web development, mobile apps, cloud services, cybersecurity, and digital transformation.",
@@ -13,10 +20,9 @@ const SEO = ({
   structuredData = null
 }) => {
   useEffect(() => {
-    const resolvedUrl = url || window.location.href;
-    const resolvedCanonical = canonicalUrl
-      ? `${window.location.origin}${canonicalUrl}`
-      : resolvedUrl;
+    const resolvedUrl = toAbsoluteUrl(url) || window.location.href;
+    const resolvedCanonical = toAbsoluteUrl(canonicalUrl) || resolvedUrl;
+    const resolvedOgImage = toAbsoluteUrl(ogImage);
 
     // Update page title
     document.title = title;
@@ -31,12 +37,12 @@ const SEO = ({
     updateMetaTag('property', 'og:title', title);
     updateMetaTag('property', 'og:description', description);
     updateMetaTag('property', 'og:url', resolvedUrl);
-    updateMetaTag('property', 'og:image', `${window.location.origin}${ogImage}`);
+    updateMetaTag('property', 'og:image', resolvedOgImage);
 
     // Update Twitter Card tags
     updateMetaTag('name', 'twitter:title', title);
     updateMetaTag('name', 'twitter:description', description);
-    updateMetaTag('name', 'twitter:image', `${window.location.origin}${ogImage}`);
+    updateMetaTag('name', 'twitter:image', resolvedOgImage);
 
     // Keep canonical URL aligned with route
     updateLinkTag('canonical', resolvedCanonical);
