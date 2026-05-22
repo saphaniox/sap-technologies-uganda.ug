@@ -162,7 +162,7 @@ const IoTProjects = () => {
         {/* Admin Stats Dashboard */}
         {user?.role === "admin" && adminStats && (
           <div className="iot-admin-stats">
-            <h3>IoT Admin Overview</h3>
+            <h3>IoT Projects Admin Overview</h3>
             <div className="stats-grid">
               <div className="stat-card">
                 <span className="stat-label">Total Projects</span>
@@ -195,7 +195,7 @@ const IoTProjects = () => {
         {/* Section Header */}
         <div className="iot-header">
           <div className="header-content">
-            <h2 className="section-title">Connected Projects</h2>
+            <h2 className="section-title">IoT Projects</h2>
             <p className="section-description">
               A practical look at the systems we build, test, and improve for real users.
             </p>

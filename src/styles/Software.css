@@ -9,25 +9,26 @@
 }
 
 .software-page-header {
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: linear-gradient(135deg, #07111f 0%, #0f2f4a 48%, #0b5d66 100%);
   color: white;
-  padding: 4rem 2rem;
+  padding: 5rem 2rem 4.5rem;
   text-align: center;
   margin-bottom: 3rem;
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid rgba(14, 165, 233, 0.28);
 }
 
 .software-page-header::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="100" fill="rgba(255,255,255,0.05)"/><circle cx="800" cy="300" r="150" fill="rgba(255,255,255,0.05)"/><circle cx="400" cy="700" r="80" fill="rgba(255,255,255,0.05)"/></svg>');
-  opacity: 0.3;
-  animation: float 20s ease-in-out infinite;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.28;
+  pointer-events: none;
 }
 
 @keyframes float {
@@ -38,7 +39,7 @@
 .software-page-header .container {
   position: relative;
   z-index: 1;
-  max-width: 800px;
+  max-width: 920px;
   margin: 0 auto;
 }
 
@@ -72,9 +73,12 @@
 }
 
 .software-page-header h1 {
-  font-size: 3rem;
+  color: #ffffff;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 850;
+  line-height: 1;
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 0 18px 42px rgba(0, 0, 0, 0.38);
   animation: slideInDown 0.6s ease-out;
 }
 
@@ -86,10 +90,32 @@
 }
 
 .software-page-subtitle {
-  font-size: 1.2rem;
-  opacity: 0.95;
-  line-height: 1.6;
+  color: #e2e8f0;
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  font-weight: 500;
+  line-height: 1.7;
+  margin: 0 auto;
+  max-width: 760px;
   animation: fadeIn 1s ease-out 0.3s both;
+}
+
+.software-page-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.software-page-highlights span {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 800;
+  padding: 0.48rem 0.85rem;
+  backdrop-filter: blur(8px);
 }
 
 @keyframes slideInDown {
@@ -132,8 +158,21 @@
 
 .software .section-header {
   text-align: center;
-  margin-bottom: 60px;
+  margin: 0 auto 48px;
+  max-width: 860px;
+  padding-bottom: 1.35rem;
   position: relative;
+}
+
+.software .section-header::after {
+  background: linear-gradient(90deg, transparent, #0ea5e9, #14b8a6, transparent);
+  bottom: 0;
+  content: "";
+  height: 3px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  width: min(340px, 72%);
 }
 
 .software .back-button {
@@ -166,16 +205,32 @@
 }
 
 .software .section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 15px;
+  color: #0f172a;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  font-weight: 850;
+  line-height: 1.05;
+  margin: 0 0 0.9rem;
+}
+
+.software .section-eyebrow {
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  border-radius: 999px;
+  color: #0369a1;
+  display: inline-flex;
+  font-size: 0.78rem;
+  font-weight: 850;
+  margin-bottom: 0.85rem;
+  padding: 0.38rem 0.75rem;
+  text-transform: uppercase;
 }
 
 .software .section-description {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  max-width: 700px;
+  color: #334155;
+  font-size: clamp(1rem, 1.8vw, 1.18rem);
+  font-weight: 500;
+  line-height: 1.7;
+  max-width: 760px;
   margin: 0 auto;
 }
 
@@ -661,7 +716,7 @@
   }
 
   .software-page-header h1 {
-    font-size: 2rem;
+    font-size: 2.45rem;
   }
 
   .software-page-subtitle {
@@ -678,7 +733,7 @@
   
   .software .section-header {
     margin-bottom: 40px;
-    padding-top: 50px;
+    padding-top: 24px;
   }
   
   .software .back-button {
@@ -715,7 +770,7 @@
 
 @media (max-width: 480px) {
   .software-page-header h1 {
-    font-size: 1.75rem;
+    font-size: 2.2rem;
   }
 
   .software-page-subtitle {
@@ -723,7 +778,7 @@
   }
 
   .software .section-title {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
   
   .software .software-image {

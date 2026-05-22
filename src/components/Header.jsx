@@ -80,7 +80,7 @@ const NAV_ITEMS = [
   { id: "services", label: "Services" },
   { id: "portfolio", label: "Projects" },
   { id: "software", label: "Software Apps", route: "/software" },
-  { id: "iot", label: "IoT", route: "/iot" },
+  { id: "iot", label: "IoT Projects", route: "/iot" },
   { id: "products", label: "Products" },
   { id: "partners", label: "Partners" },
   { id: "companies", label: "Companies" },

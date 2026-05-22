@@ -342,7 +342,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content iot-form-modal" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{project ? "Edit Connected Project" : "Add Connected Project"}</h2>
+          <h2>{project ? "Edit IoT Project" : "Add IoT Project"}</h2>
           <button onClick={onClose} className="btn-close">
             <i className="fas fa-times"></i>
           </button>

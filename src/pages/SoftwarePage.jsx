@@ -60,6 +60,11 @@ const SoftwarePage = () => {
               Explore our portfolio of innovative web applications and digital tools. 
               Launch apps directly from your browser - no downloads or installations required.
             </p>
+            <div className="software-page-highlights" aria-label="Software app benefits">
+              <span>Browser based</span>
+              <span>No installs</span>
+              <span>Business ready</span>
+            </div>
           </div>
         </div>
 

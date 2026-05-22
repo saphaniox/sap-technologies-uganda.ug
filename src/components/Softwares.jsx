@@ -118,16 +118,12 @@ const Softwares = () => {
     setEditingSoftware(null);
   };
   
-  const handleSoftwareClick = async (item) => {
-    // Track click
+  const trackSoftwareClick = async (itemId) => {
     try {
-      await apiService.request(`/api/software/${item._id}/click`, "POST");
+      await apiService.request(`/api/software/${itemId}/click`, "POST");
     } catch (error) {
       console.error("Error tracking click:", error);
     }
-    
-    // Open URL
-    window.open(item.url, "_blank", "noopener,noreferrer");
   };
   
   const filteredSoftware = selectedCategory === "all"
@@ -157,14 +153,28 @@ const Softwares = () => {
       </section>
     );
   }
+
+  if (error) {
+    return (
+      <section id="software" className="software">
+        <div className="container">
+          <div className="software-loading-state" role="alert">
+            <h2>Software apps could not load</h2>
+            <p>{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
   
   return (
     <section id="software" className="software">
       <div className="container">
         <div className="section-header">
+          <span className="section-eyebrow">Digital tools</span>
           <h2 className="section-title">Software Apps</h2>
           <p className="section-description">
-            Explore our latest software applications and tools designed to solve real-world problems
+            Explore our portfolio of innovative web applications and digital tools. Launch apps directly from your browser - no downloads or installations required.
           </p>
         </div>
         
@@ -296,7 +306,7 @@ const Softwares = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="platform-btn btn-web"
-                          onClick={async () => { try { await apiService.request(`/api/software/${item._id}/click`, "POST"); } catch (e) {} }}
+                          onClick={() => trackSoftwareClick(item._id)}
                         >
                           🌐 Web
                         </a>
