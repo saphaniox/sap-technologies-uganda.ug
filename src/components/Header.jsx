@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,6 +7,7 @@ import { getImageUrl } from "../utils/imageUrl";
 import apiService from "../services/api";
 import "../styles/Header.css";
 
+const Motion = motion;
 
 const toArray = (value) => {
   if (Array.isArray(value)) return value;
@@ -68,6 +69,11 @@ const fallbackSearch = async (query) => {
     projects: filterSearchItems(projects, query, ["title", "name", "description", "longDescription", "category", "technologies", "techStack"])
   };
 };
+
+const hasSearchResults = (results) => Boolean(
+  results?.products?.length || results?.services?.length || results?.projects?.length
+);
+
 const NAV_ITEMS = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
@@ -138,9 +144,30 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
     };
   }, [menuOpen]);
 
-  const openSearch = () => {
+  const focusSearchInput = useCallback(() => {
+    const input = searchInputRef.current;
+    if (!input) return;
+
+    input.focus({ preventScroll: true });
+    input.setSelectionRange?.(input.value.length, input.value.length);
+  }, []);
+
+  const openSearch = (event) => {
+    event?.preventDefault?.();
+    event?.stopPropagation?.();
     setMenuOpen(false);
     setSearchOpen(true);
+
+    if (typeof window !== "undefined") {
+      window.setTimeout(focusSearchInput, 0);
+      window.setTimeout(focusSearchInput, 120);
+    }
+  };
+
+  const handleSearchButtonPointerUp = (event) => {
+    if (event.pointerType === "touch" || event.pointerType === "pen") {
+      openSearch(event);
+    }
   };
 
   const closeSearch = () => {
@@ -154,52 +181,48 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
   useEffect(() => {
     if (!searchOpen) return undefined;
 
-    const focusInput = () => {
-      searchInputRef.current?.focus({ preventScroll: true });
-    };
-
-    focusInput();
-    const frame = window.requestAnimationFrame(focusInput);
-    const timer = window.setTimeout(focusInput, 80);
+    focusSearchInput();
+    const frame = window.requestAnimationFrame(focusSearchInput);
+    const timer = window.setTimeout(focusSearchInput, 80);
+    const lateTimer = window.setTimeout(focusSearchInput, 250);
 
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(timer);
+      window.clearTimeout(lateTimer);
     };
-  }, [searchOpen]);
+  }, [focusSearchInput, searchOpen]);
 
   const handleSearchInput = (e) => {
     const val = e.target.value;
     setSearchQuery(val);
     setSearchError("");
     clearTimeout(searchTimerRef.current);
-    if (val.trim().length < 2) {
+    if (val.trim().length < 1) {
       setSearchResults(null);
       return;
     }
     searchTimerRef.current = setTimeout(async () => {
       setSearchLoading(true);
       try {
-        const res = await apiService.search(val.trim());
-        const results = extractSearchResults(res);
-        if (results) {
-          setSearchResults(results);
-          setSearchError("");
-          return;
+        let results = null;
+
+        try {
+          const res = await apiService.search(val.trim());
+          results = extractSearchResults(res);
+        } catch {
+          results = null;
         }
 
-        const fallbackResults = await fallbackSearch(val.trim());
-        setSearchResults(fallbackResults);
+        if (!hasSearchResults(results)) {
+          results = await fallbackSearch(val.trim());
+        }
+
+        setSearchResults(results);
         setSearchError("");
       } catch {
-        try {
-          const fallbackResults = await fallbackSearch(val.trim());
-          setSearchResults(fallbackResults);
-          setSearchError("");
-        } catch {
-          setSearchResults(null);
-          setSearchError("Search is not available right now. Please try again.");
-        }
+        setSearchResults(null);
+        setSearchError("Search is not available right now. Please try again.");
       } finally {
         setSearchLoading(false);
       }
@@ -320,20 +343,20 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
   };
 
   return (
-    <motion.header 
+    <Motion.header
       className={`header ${isMobile ? "mobile" : "desktop"} ${isScrolled ? "scrolled" : ""} ${legalOpen ? "legal-open" : ""}`}
       initial="hidden"
       animate="visible"
       variants={navVariants}
     >
-      <motion.nav className={`nav ${userRole === "admin" ? "nav-admin" : ""}`}>
+      <Motion.nav className={`nav ${userRole === "admin" ? "nav-admin" : ""}`}>
         {/* Animated background glow */}
-        <motion.div 
+        <Motion.div
           className={`nav-glow ${userRole === "admin" ? "nav-glow-admin" : ""}`}
           variants={glowVariants}
         />
         
-        <motion.div 
+        <Motion.div
           className="logo"
           variants={logoVariants}
           whileHover="hover"
@@ -341,7 +364,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           onClick={handleHomeNavigation}
           style={{ cursor: "pointer" }}
         >
-          <motion.img 
+          <Motion.img
             src="/images/logo.png" 
             alt="SAP Logo" 
             className="logo-img"
@@ -354,20 +377,21 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
             }}
           />
-          <motion.span
+          <Motion.span
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
             SAPTech Uganda
-          </motion.span>
-        </motion.div>
+          </Motion.span>
+        </Motion.div>
 
         {/* Center Search */}
-        <motion.button
+        <Motion.button
           type="button"
           className="nav-search-btn"
           onClick={openSearch}
+          onPointerUp={handleSearchButtonPointerUp}
           title="Search products, services and projects"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -378,20 +402,20 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
         >
           <span className="nav-search-icon" aria-hidden="true">Search</span>
           <span className="nav-search-text">Products, services, projects</span>
-        </motion.button>
+        </Motion.button>
 
         <div className="nav-actions">
           {/* Theme Toggle */}
-          <motion.div
+          <Motion.div
             className="nav-theme-toggle"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.8, duration: 0.5 }}
           >
             <ThemeToggle />
-          </motion.div>
+          </Motion.div>
 
-          <motion.button
+          <Motion.button
             type="button"
             className={`nav-menu-toggle ${menuOpen ? "open" : ""}`}
             onClick={() => setMenuOpen(open => !open)}
@@ -407,13 +431,13 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               <span></span>
               <span></span>
             </span>
-          </motion.button>
+          </Motion.button>
         </div>
 
         <AnimatePresence>
           {menuOpen && (
             <>
-              <motion.button
+              <Motion.button
                 type="button"
                 className="nav-sidebar-backdrop"
                 onClick={closeMenu}
@@ -423,7 +447,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               />
-              <motion.aside
+              <Motion.aside
                 id="main-navigation-sidebar"
                 className={`nav-sidebar ${userRole === "admin" ? "nav-sidebar-admin" : ""}`}
                 initial={{ y: -12, opacity: 0, scale: 0.98 }}
@@ -510,16 +534,16 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                     )}
                   </div>
                 </nav>
-              </motion.aside>
+              </Motion.aside>
             </>
           )}
         </AnimatePresence>
-      </motion.nav>
+      </Motion.nav>
 
       {/* Global Search Overlay */}
       <AnimatePresence>
         {searchOpen && typeof document !== "undefined" && createPortal(
-          <motion.div
+          <Motion.div
             className="search-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -527,7 +551,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
             transition={{ duration: 0.2 }}
             onClick={(e) => e.target === e.currentTarget && closeSearch()}
           >
-            <motion.div
+            <Motion.div
               className="search-modal"
               initial={{ y: -40, opacity: 0, scale: 0.97 }}
               animate={{ y: 0, opacity: 1, scale: 1 }}
@@ -535,8 +559,10 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
               transition={{ duration: 0.25 }}
             >
               <div className="search-modal-header">
-                <div
+                <form
                   className="search-input-wrap"
+                  role="search"
+                  onSubmit={(event) => event.preventDefault()}
                   onClick={() => searchInputRef.current?.focus({ preventScroll: true })}
                 >
                   <span className="search-modal-icon">Search</span>
@@ -546,6 +572,8 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                     autoFocus
                     value={searchQuery}
                     onChange={handleSearchInput}
+                    inputMode="search"
+                    enterKeyHint="search"
                     placeholder="Search products, services, projects..."
                     className="search-modal-input"
                     onKeyDown={(e) => e.key === "Escape" && closeSearch()}
@@ -553,6 +581,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                   />
                   {searchQuery && (
                     <button
+                      type="button"
                       className="search-input-clear"
                       onClick={() => { setSearchQuery(""); setSearchResults(null); setSearchError(""); searchInputRef.current?.focus(); }}
                       aria-label="Clear search"
@@ -560,7 +589,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                       x
                     </button>
                   )}
-                </div>
+                </form>
                 <button className="search-close-btn" onClick={closeSearch}>Close</button>
               </div>
 
@@ -627,12 +656,12 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                   </div>
                 )}
               </div>
-            </motion.div>
-          </motion.div>
+            </Motion.div>
+          </Motion.div>
         , document.body)
         }
       </AnimatePresence>
-    </motion.header>
+    </Motion.header>
   );
 };
 
