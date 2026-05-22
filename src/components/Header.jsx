@@ -517,7 +517,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                             {userProfilePic ? (
                               <img src={getImageUrl(userProfilePic)} alt={userName || "Profile"} className="profile-pic-small" />
                             ) : (
-                              <span className="profile-icon">U</span>
+                              <span className="profile-icon" aria-hidden="true"></span>
                             )}
                             <span className="profile-name">{userName || "My Account"}</span>
                           </span>

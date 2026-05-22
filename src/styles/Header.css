@@ -1394,7 +1394,44 @@
 }
 
 .profile-icon {
-  font-size: 1.2rem;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a237e, #3949ab);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.profile-icon::before,
+.profile-icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.profile-icon::before {
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.profile-icon::after {
+  bottom: 6px;
+  width: 15px;
+  height: 8px;
+  border-radius: 999px 999px 6px 6px;
+}
+
+.account-action:hover .profile-icon,
+.account-btn:hover .profile-icon {
+  border-color: rgba(255, 255, 255, 0.65);
+  transform: scale(1.08);
 }
 
 .profile-name {
