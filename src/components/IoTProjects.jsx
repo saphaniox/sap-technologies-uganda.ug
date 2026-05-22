@@ -162,7 +162,7 @@ const IoTProjects = () => {
         {/* Admin Stats Dashboard */}
         {user?.role === "admin" && adminStats && (
           <div className="iot-admin-stats">
-            <h3>📊 Admin Dashboard</h3>
+            <h3>IoT Admin Overview</h3>
             <div className="stats-grid">
               <div className="stat-card">
                 <span className="stat-label">Total Projects</span>
@@ -195,15 +195,15 @@ const IoTProjects = () => {
         {/* Section Header */}
         <div className="iot-header">
           <div className="header-content">
-            <h2 className="section-title">IoT Projects & Innovations</h2>
+            <h2 className="section-title">Connected Projects</h2>
             <p className="section-description">
-              Browse our collection of innovative IoT projects and embedded systems
+              A practical look at the systems we build, test, and improve for real users.
             </p>
           </div>
           
           {user?.role === "admin" && (
             <button onClick={handleAddProject} className="btn-add-project">
-              <i className="fas fa-plus"></i> Add IoT Project
+              <i className="fas fa-plus"></i> Add Project
             </button>
           )}
         </div>
@@ -211,13 +211,14 @@ const IoTProjects = () => {
         {/* Filters */}
         <div className="iot-filters">
           <div className="filter-group">
-            <label>Category:</label>
+            <label htmlFor="iot-category-filter">Category</label>
             <select 
+              id="iot-category-filter"
               value={selectedCategory} 
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="filter-select"
             >
-              <option value="all">All Categories</option>
+              <option value="all">View all categories</option>
               {categories.map(category => (
                 <option key={category} value={category}>{category}</option>
               ))}
@@ -225,13 +226,14 @@ const IoTProjects = () => {
           </div>
           
           <div className="filter-group">
-            <label>Status:</label>
+            <label htmlFor="iot-status-filter">Progress</label>
             <select 
+              id="iot-status-filter"
               value={selectedStatus} 
               onChange={(e) => setSelectedStatus(e.target.value)}
               className="filter-select"
             >
-              <option value="all">All Status</option>
+              <option value="all">Any progress</option>
               <option value="completed">Completed</option>
               <option value="in-progress">In Progress</option>
               <option value="prototype">Prototype</option>
@@ -240,7 +242,7 @@ const IoTProjects = () => {
           </div>
           
           <div className="results-count">
-            Showing {filteredProjects.length} of {projects.length} projects
+            {filteredProjects.length} of {projects.length} projects shown
           </div>
         </div>
         
@@ -248,14 +250,14 @@ const IoTProjects = () => {
         {filteredProjects.length === 0 ? (
           <div className="no-projects">
             <i className="fas fa-microchip fa-3x"></i>
-            <p>No IoT projects found</p>
+            <p>No projects match those filters yet.</p>
           </div>
         ) : (
           <div className="iot-grid">
             {filteredProjects.map((project) => (
               <div key={project._id} className="iot-card">
                 {project.isFeatured && (
-                  <div className="featured-badge">⭐ Featured</div>
+                  <div className="featured-badge">Featured</div>
                 )}
                 
                 <div className="iot-image-container">

@@ -5,6 +5,18 @@ import { getImageUrl } from "../utils/imageUrl";
 import { compressImageFiles } from "../utils/mediaCompression";
 import "../styles/AdminForms.css";
 
+const IOT_CATEGORY_OPTIONS = [
+  "Smart Home",
+  "Industrial Monitoring",
+  "Agriculture",
+  "Security",
+  "Energy",
+  "Education",
+  "Health",
+  "Automation",
+  "General"
+];
+
 const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -248,8 +260,10 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.title.trim()) {
-      showAlert.error("Missing title", "Please give your IoT project a title before saving.");
+    const projectTitle = formData.title.trim();
+
+    if (!projectTitle) {
+      showAlert.error("Project title needed", "Add a short title first. Everything else can be completed now or later.");
       return;
     }
     
@@ -258,12 +272,25 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
       
       const submitData = new FormData();
       
-      // Add text fields
-      Object.keys(formData).forEach(key => {
-        if (Array.isArray(formData[key])) {
-          submitData.append(key, JSON.stringify(formData[key].filter(item => item.trim() !== "")));
+      const normalizedFormData = {
+        ...formData,
+        title: projectTitle,
+        description: formData.description.trim() || "A connected technology project from SAPTech Uganda.",
+        category: formData.category.trim() || "General",
+        status: formData.status || "completed",
+        order: formData.order || 0
+      };
+
+      // Add text fields. Most fields are optional, so blank values are skipped.
+      Object.keys(normalizedFormData).forEach(key => {
+        const value = normalizedFormData[key];
+
+        if (Array.isArray(value)) {
+          submitData.append(key, JSON.stringify(value.filter(item => item.trim() !== "")));
+        } else if (value !== "" && value !== null && value !== undefined) {
+          submitData.append(key, value);
         } else {
-          submitData.append(key, formData[key]);
+          submitData.delete(key);
         }
       });
       
@@ -295,7 +322,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
       
       if (response.status === "success") {
         showAlert.success(
-          "Saved! ✅",
+          "Project saved",
           project ? "Your IoT project has been updated." : "Your IoT project has been added successfully!"
         );
         onSuccess();
@@ -315,7 +342,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content iot-form-modal" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{project ? "Edit IoT Project" : "Add IoT Project"}</h2>
+          <h2>{project ? "Edit Connected Project" : "Add Connected Project"}</h2>
           <button onClick={onClose} className="btn-close">
             <i className="fas fa-times"></i>
           </button>
@@ -323,56 +350,65 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
         
         {/* Instructions for adding IoT projects */}
         <div className="software-form-instructions">
-          <div className="instruction-icon">💡</div>
+          <div className="instruction-icon">Info</div>
           <div className="instruction-content">
-            <strong>Document Your Innovation:</strong>
-            <p>Share your IoT projects with detailed images, schematics, and technical specs. Upload up to 10 high-quality photos showing your project in action!</p>
+            <strong>Start simple. Improve the details later.</strong>
+            <p>Add the project title first. Photos, links, hardware, features, and dates are optional, so you can save a clean draft without forcing every field.</p>
           </div>
         </div>
         
         <form onSubmit={handleSubmit} className="software-form">
           {/* Basic Information */}
           <div className="form-section">
-            <h3>📋 Basic Information</h3>
+            <h3>Project basics</h3>
             
             <div className="form-group">
-              <label>Project Title *</label>
+              <label htmlFor="iot-title">Project title <span className="form-required">Required</span></label>
               <input
                 type="text"
+                id="iot-title"
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
                 required
-                placeholder="e.g., Smart Home Automation System"
+                placeholder="e.g., Smart irrigation monitor"
               />
             </div>
             
             <div className="form-group">
-              <label>Description</label>
+              <label htmlFor="iot-description">Description <span className="form-optional">Optional</span></label>
               <textarea
+                id="iot-description"
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 rows="5"
-                placeholder="Detailed description of your IoT project, what it does, and how it works..."
+                placeholder="Write a short, human explanation: what problem it solves, where it is used, and what makes it useful."
               />
             </div>
             
             <div className="form-row">
               <div className="form-group">
-                <label>Category</label>
+                <label htmlFor="iot-category">Category <span className="form-optional">Optional</span></label>
                 <input
                   type="text"
+                  id="iot-category"
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  placeholder="e.g., Smart Home, Industrial, Agriculture"
+                  list="iot-category-options"
+                  placeholder="Choose or type a category"
                 />
+                <datalist id="iot-category-options">
+                  {IOT_CATEGORY_OPTIONS.map((category) => (
+                    <option key={category} value={category} />
+                  ))}
+                </datalist>
               </div>
               
               <div className="form-group">
-                <label>Status</label>
-                <select name="status" value={formData.status} onChange={handleInputChange}>
+                <label htmlFor="iot-status">Progress <span className="form-optional">Optional</span></label>
+                <select id="iot-status" name="status" value={formData.status} onChange={handleInputChange}>
                   <option value="completed">Completed</option>
                   <option value="in-progress">In Progress</option>
                   <option value="prototype">Prototype</option>
@@ -383,9 +419,10 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             
             <div className="form-row">
               <div className="form-group">
-                <label>Completion Date</label>
+                <label htmlFor="iot-completion-date">Completion date <span className="form-optional">Optional</span></label>
                 <input
                   type="date"
+                  id="iot-completion-date"
                   name="completionDate"
                   value={formData.completionDate}
                   onChange={handleInputChange}
@@ -393,32 +430,33 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
               </div>
               
               <div className="form-group">
-                <label>Display Order</label>
+                <label htmlFor="iot-display-order">Display order <span className="form-optional">Optional</span></label>
                 <input
                   type="number"
+                  id="iot-display-order"
                   name="order"
                   value={formData.order}
                   onChange={handleInputChange}
                   min="0"
                 />
-                <small>Lower numbers appear first</small>
+                <small>Use this only when you want a project to appear earlier.</small>
               </div>
             </div>
           </div>
           
           {/* Technologies & Hardware */}
           <div className="form-section">
-            <h3>🔧 Technologies & Hardware</h3>
+            <h3>Technical details</h3>
             
             <div className="form-group">
-              <label>Technologies Used</label>
+              <label>Technologies used <span className="form-optional">Optional</span></label>
               {formData.technologies.map((tech, index) => (
                 <div key={index} className="array-input">
                   <input
                     type="text"
                     value={tech}
                     onChange={(e) => handleArrayFieldChange("technologies", index, e.target.value)}
-                    placeholder="e.g., Arduino, Python, MQTT"
+                    placeholder="e.g., ESP32, MQTT, React dashboard"
                   />
                   {formData.technologies.length > 1 && (
                     <button
@@ -436,19 +474,19 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
                 onClick={() => addArrayField("technologies")}
                 className="btn-add-array"
               >
-                + Add Technology
+                Add technology
               </button>
             </div>
             
             <div className="form-group">
-              <label>Hardware Components</label>
+              <label>Hardware components <span className="form-optional">Optional</span></label>
               {formData.hardware.map((hw, index) => (
                 <div key={index} className="array-input">
                   <input
                     type="text"
                     value={hw}
                     onChange={(e) => handleArrayFieldChange("hardware", index, e.target.value)}
-                    placeholder="e.g., ESP32, DHT22 Sensor, Relay Module"
+                    placeholder="e.g., ESP32, soil sensor, relay module"
                   />
                   {formData.hardware.length > 1 && (
                     <button
@@ -466,19 +504,19 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
                 onClick={() => addArrayField("hardware")}
                 className="btn-add-array"
               >
-                + Add Hardware
+                Add hardware
               </button>
             </div>
             
             <div className="form-group">
-              <label>Key Features</label>
+              <label>Key features <span className="form-optional">Optional</span></label>
               {formData.features.map((feature, index) => (
                 <div key={index} className="array-input">
                   <input
                     type="text"
                     value={feature}
                     onChange={(e) => handleArrayFieldChange("features", index, e.target.value)}
-                    placeholder="e.g., Remote control via mobile app"
+                    placeholder="e.g., Sends alerts when moisture is low"
                   />
                   {formData.features.length > 1 && (
                     <button
@@ -496,66 +534,70 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
                 onClick={() => addArrayField("features")}
                 className="btn-add-array"
               >
-                + Add Feature
+                Add feature
               </button>
             </div>
           </div>
           
           {/* Links */}
           <div className="form-section">
-            <h3>🔗 Links</h3>
+            <h3>Useful links</h3>
             
             <div className="form-group">
-              <label>Project URL</label>
+              <label htmlFor="iot-project-url">Project URL <span className="form-optional">Optional</span></label>
               <input
                 type="url"
+                id="iot-project-url"
                 name="projectUrl"
                 value={formData.projectUrl}
                 onChange={handleInputChange}
                 placeholder="https://project-demo.com"
               />
-              <small className="form-hint">Link to live demo or documentation</small>
+              <small className="form-hint">Add a demo, documentation page, or case study link.</small>
             </div>
             
             <div className="form-group">
-              <label>GitHub URL</label>
+              <label htmlFor="iot-github-url">GitHub URL <span className="form-optional">Optional</span></label>
               <input
                 type="url"
+                id="iot-github-url"
                 name="githubUrl"
                 value={formData.githubUrl}
                 onChange={handleInputChange}
                 placeholder="https://github.com/username/repo"
               />
-              <small className="form-hint">Link to source code repository</small>
+              <small className="form-hint">Use this only when the code should be public.</small>
             </div>
             
             <div className="form-group">
-              <label>Video URL</label>
+              <label htmlFor="iot-video-url">Demo video URL <span className="form-optional">Optional</span></label>
               <input
                 type="url"
+                id="iot-video-url"
                 name="videoUrl"
                 value={formData.videoUrl}
                 onChange={handleInputChange}
                 placeholder="https://youtube.com/watch?v=..."
               />
-              <small className="form-hint">YouTube or Vimeo demo video</small>
+              <small className="form-hint">Paste a YouTube, Vimeo, or public demo video link.</small>
             </div>
           </div>
           
           {/* Images */}
           <div className="form-section">
-            <h3>📷 Project Images</h3>
+            <h3>Project images</h3>
             
             <div className="form-group">
-              <label>Upload Images (Max 10, up to 20MB each)</label>
+              <label htmlFor="iot-images">Upload images <span className="form-optional">Optional</span></label>
               <input
                 type="file"
+                id="iot-images"
                 accept="image/*"
                 multiple
                 onChange={handleImageChange}
                 className="file-input"
               />
-              <small className="form-hint">🖼️ Images will be automatically compressed and optimized</small>
+              <small className="form-hint">Add up to 10 images. They will be compressed for faster loading.</small>
             </div>
             
             {imagePreviews.length > 0 && (
@@ -578,19 +620,20 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
           
           {/* Videos */}
           <div className="form-section">
-            <h3>🎥 Project Videos (Optional)</h3>
+            <h3>Project videos</h3>
 
             <div className="form-group">
-              <label>Upload Videos (Max 3, up to 200MB each)</label>
+              <label htmlFor="iot-videos">Upload videos <span className="form-optional">Optional</span></label>
               <input
                 type="file"
+                id="iot-videos"
                 accept="video/*"
                 multiple
                 onChange={handleVideoChange}
                 className="file-input"
                 disabled={newVideoFiles.length >= 3}
               />
-              <small className="form-hint">🎬 Supported: MP4, WebM, MOV, AVI. Videos are compressed in the cloud for fast loading.</small>
+              <small className="form-hint">Add up to 3 videos, 50MB each. MP4, WebM, MOV, and AVI are supported.</small>
             </div>
 
             {/* Existing uploaded videos */}
@@ -644,7 +687,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
 
           {/* Settings */}
           <div className="form-section">
-            <h3>⚙️ Settings</h3>
+            <h3>Visibility</h3>
             
             <div className="checkbox-group">
               <label className="checkbox-label">
@@ -654,7 +697,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
                   checked={formData.isPublic}
                   onChange={handleInputChange}
                 />
-                <span>Make this project public</span>
+                <span>Show this project to visitors</span>
               </label>
               
               <label className="checkbox-label">
@@ -664,7 +707,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
                   checked={formData.isFeatured}
                   onChange={handleInputChange}
                 />
-                <span>⭐ Feature this project (show prominently)</span>
+                <span>Feature this project</span>
               </label>
             </div>
           </div>
@@ -675,7 +718,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
               Cancel
             </button>
             <button type="submit" disabled={loading} className="btn-submit">
-              {loading ? "Saving..." : project ? "Update Project" : "Create Project"}
+              {loading ? "Saving..." : project ? "Save Changes" : "Save Project"}
             </button>
           </div>
         </form>

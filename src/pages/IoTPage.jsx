@@ -8,8 +8,8 @@ const IoTPage = () => {
   const navigate = useNavigate();
   // SEO data for better search engine visibility
   const seoData = {
-    title: "IoT Projects & Tech Innovations - SAPTech Uganda",
-    description: "Explore cutting-edge Internet of Things (IoT) projects and tech innovations by SAPTech Uganda. Discover our Arduino, Raspberry Pi, ESP32, and custom hardware solutions for smart systems, automation, and connected devices.",
+    title: "IoT Solutions & Connected Systems - SAPTech Uganda",
+    description: "Explore practical Internet of Things (IoT) projects by SAPTech Uganda, from smart monitoring and automation to custom hardware, sensors, and connected devices built for real environments.",
     keywords: "IoT projects Uganda, Internet of Things, SAPTech Uganda IoT, smart systems, Arduino projects, Raspberry Pi, ESP32, tech innovation Uganda, automation projects, embedded systems, hardware projects, smart home, industrial IoT, IoT solutions Africa, connected devices",
     ogType: "website",
     ogImage: "/images/iot-banner.jpg",
@@ -19,8 +19,8 @@ const IoTPage = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "IoT Projects & Tech Innovations",
-    "description": "Innovative Internet of Things projects and embedded systems developed by SAPTech Uganda",
+    "name": "IoT Solutions & Connected Systems",
+    "description": "Practical Internet of Things projects and embedded systems developed by SAPTech Uganda",
     "provider": {
       "@type": "Organization",
       "name": "SAPTech Uganda",
@@ -53,10 +53,10 @@ const IoTPage = () => {
             <button onClick={() => navigate("/")} className="back-button" aria-label="Back to homepage">
               <i className="fas fa-arrow-left"></i> Back
             </button>
-            <h1>IoT Projects & Tech Innovations</h1>
+            <h1>IoT Solutions Built for Real Work</h1>
             <p className="iot-page-subtitle">
-              Explore our innovative Internet of Things projects and embedded systems. 
-              From smart home automation to industrial solutions, we build connected devices that make life easier.
+              Explore connected systems designed for homes, farms, workshops, schools, and businesses.
+              We turn sensors, devices, and automation into useful tools people can actually rely on.
             </p>
           </div>
         </div>
@@ -68,10 +68,9 @@ const IoTPage = () => {
         <div className="seo-content" style={{ position: "absolute", left: "-9999px" }}>
           <h2>SAPTech Uganda IoT Innovations</h2>
           <p>
-            SAPTech Uganda specializes in developing innovative Internet of Things (IoT) 
-            solutions and embedded systems. Our projects leverage cutting-edge technologies including 
-            Arduino, Raspberry Pi, ESP32, and custom hardware designs to create smart, connected devices 
-            that solve real-world problems.
+            SAPTech Uganda develops practical Internet of Things (IoT) solutions and embedded systems.
+            Our work combines Arduino, Raspberry Pi, ESP32, sensors, connectivity, and custom hardware
+            to create connected devices for real-world monitoring, automation, and control.
           </p>
           <h3>Our IoT Expertise</h3>
           <ul>

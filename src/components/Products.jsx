@@ -7,7 +7,6 @@ import ConfirmDialog from "./ConfirmDialog";
 import ImageSlider from "./ImageSlider";
 import { LoadingOverlay, showAlert } from "../utils/alerts.jsx";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
-import { humanizeError } from "../utils/errorMessages";
 import "../styles/Products.css";
 
 const WhatsAppIcon = ({ className = "product-whatsapp-icon" }) => (
@@ -77,7 +76,7 @@ const Products = () => {
                 if (categoriesResponse.status === "success") {
                     setCategories(categoriesResponse.data.categories);
                 }
-            } catch (error) {
+            } catch {
                 setError("We're having trouble loading products right now. Please refresh the page and try again.");
             } finally {
                 setLoading(false);
@@ -362,48 +361,53 @@ const Products = () => {
                     </p>
                 </div>
 
-                {/* Search Bar */}
-                <div
-                    className="products-search-bar"
-                    onClick={() => productSearchInputRef.current?.focus({ preventScroll: true })}
-                >
-                    <span className="products-search-icon" aria-hidden="true">Search</span>
-                    <input
-                        ref={productSearchInputRef}
-                        type="text"
-                        className="products-search-input"
-                        placeholder="Search products by name, category, or keyword..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                    />
-                    {searchTerm && (
-                        <button
-                            className="products-search-clear"
-                            onClick={() => { setSearchTerm(""); setProducts(applyFilters(allProductsRef.current, selectedCategory, "")); }}
-                            aria-label="Clear search"
+                {/* Product Controls */}
+                <div className="products-controls">
+                    <div
+                        className="products-search-bar"
+                        onClick={() => productSearchInputRef.current?.focus({ preventScroll: true })}
+                    >
+                        <span className="products-search-icon" aria-hidden="true">Search</span>
+                        <input
+                            ref={productSearchInputRef}
+                            type="text"
+                            className="products-search-input"
+                            placeholder="Search products by name, category, or keyword..."
+                            value={searchTerm}
+                            onChange={handleSearch}
+                        />
+                        {searchTerm && (
+                            <button
+                                className="products-search-clear"
+                                onClick={() => { setSearchTerm(""); setProducts(applyFilters(allProductsRef.current, selectedCategory, "")); }}
+                                aria-label="Clear search"
+                            >
+                                x
+                            </button>
+                        )}
+                    </div>
+
+                    <div className="products-category-filter">
+                        <label htmlFor="product-category-filter">Category</label>
+                        <select
+                            id="product-category-filter"
+                            className="products-category-select"
+                            value={selectedCategory}
+                            onChange={(event) => handleCategoryFilter(event.target.value)}
                         >
-                            x
-                        </button>
-                    )}
+                            <option value="all">View all products</option>
+                            {categories.map((category) => (
+                                <option key={category._id} value={category._id}>
+                                    {category._id} ({category.count})
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
 
-                {/* Category Filter */}
-                <div className="category-filter">
-                    <button 
-                        className={`filter-btn ${selectedCategory === "all" ? "active" : ""}`}
-                        onClick={() => handleCategoryFilter("all")}
-                    >
-                        All Products
-                    </button>
-                    {categories.map((category) => (
-                        <button
-                            key={category._id}
-                            className={`filter-btn ${selectedCategory === category._id ? "active" : ""}`}
-                            onClick={() => handleCategoryFilter(category._id)}
-                        >
-                            {category._id} ({category.count})
-                        </button>
-                    ))}
+                <div className="products-filter-summary" aria-live="polite">
+                    {products.length} product{products.length === 1 ? "" : "s"} shown
+                    {selectedCategory !== "all" ? ` in ${selectedCategory}` : ""}
                 </div>
 
                 {/* Products Grid */}

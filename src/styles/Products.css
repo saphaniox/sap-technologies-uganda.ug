@@ -112,6 +112,17 @@
 }
 
 /* Products Search Bar */
+.products-controls {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) minmax(220px, 300px);
+    gap: 16px;
+    align-items: end;
+    max-width: 960px;
+    margin: 0 auto 16px;
+}
+
 .products-search-bar {
     position: relative;
     display: flex;
@@ -153,6 +164,12 @@
     touch-action: manipulation;
 }
 
+.products-controls .products-search-bar {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
 .products-search-input::placeholder {
     color: #aaa;
 }
@@ -172,6 +189,50 @@
 .products-search-clear:hover {
     background: #f0f0f0;
     color: #333;
+}
+
+.products-category-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.products-category-filter label {
+    color: #34495e;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.products-category-select {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 44px 0 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 16px;
+    background: #ffffff;
+    color: #2c3e50;
+    font-size: 0.98rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(52, 152, 219, 0.08);
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.products-category-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 4px 20px rgba(52, 152, 219, 0.18);
+}
+
+.products-filter-summary {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto 28px;
+    color: #64748b;
+    font-size: 0.94rem;
+    font-weight: 600;
+    text-align: right;
 }
 
 /* Products Grid */
@@ -658,6 +719,16 @@
         grid-template-columns: 1fr;
         gap: 20px;
     }
+
+    .products-controls {
+        grid-template-columns: 1fr;
+        padding: 0 10px;
+    }
+
+    .products-filter-summary {
+        padding: 0 10px;
+        text-align: left;
+    }
     
     .product-card {
         margin: 0 10px;
@@ -843,6 +914,24 @@
 [data-theme="dark"] .products-search-clear:hover {
     background: var(--bg-tertiary);
     color: var(--text-color);
+}
+
+[data-theme="dark"] .products-category-filter label {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .products-category-select {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .products-category-select:focus {
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .products-filter-summary {
+    color: var(--text-color-secondary);
 }
 
 /* Product visibility and theme polish */
