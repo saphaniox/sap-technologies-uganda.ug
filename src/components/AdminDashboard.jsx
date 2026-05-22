@@ -15,6 +15,88 @@ import "../styles/AdminDashboard.css";
 const getPartnerDisplayName = (partner) => partner?.name?.trim() || "Logo-only partner";
 const getPartnerInitial = (partner) => getPartnerDisplayName(partner).charAt(0).toUpperCase();
 
+const NOT_REPORTED = "Not reported yet";
+
+const getHealthValue = (source, paths, fallback = NOT_REPORTED) => {
+  if (!source) return fallback;
+
+  for (const path of paths) {
+    const value = path.split(".").reduce((current, key) => current?.[key], source);
+    if (value !== undefined && value !== null && value !== "") {
+      return value;
+    }
+  }
+
+  return fallback;
+};
+
+const formatDashboardNumber = (value) => (
+  typeof value === "number" ? value.toLocaleString() : value || "0"
+);
+
+const formatMetricValue = (value, fallback = NOT_REPORTED) => {
+  if (value === undefined || value === null || value === "") return fallback;
+  if (typeof value === "boolean") return value ? "Yes" : "No";
+  if (typeof value === "number") return value.toLocaleString();
+  return String(value);
+};
+
+const formatPercent = (value) => {
+  if (value === undefined || value === null || value === "") return NOT_REPORTED;
+  const number = Number(value);
+  if (Number.isNaN(number)) return String(value);
+  return `${number > 1 ? number.toFixed(1) : (number * 100).toFixed(1)}%`;
+};
+
+const formatBytes = (value) => {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return NOT_REPORTED;
+
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let size = number;
+  let unitIndex = 0;
+
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex += 1;
+  }
+
+  return `${size >= 10 || unitIndex === 0 ? size.toFixed(0) : size.toFixed(1)} ${units[unitIndex]}`;
+};
+
+const formatMemoryValue = (value) => {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return NOT_REPORTED;
+
+  if (number > 1024 * 1024) return formatBytes(number);
+  return `${number.toLocaleString()} MB`;
+};
+
+const formatDateTime = (value) => {
+  if (!value) return NOT_REPORTED;
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return NOT_REPORTED;
+  return date.toLocaleString();
+};
+
+const getStatusClass = (value) => {
+  const normalized = String(value || "").toLowerCase();
+
+  if (["online", "connected", "healthy", "running", "active", "ok", "available", "ready", "up"].some(status => normalized.includes(status))) {
+    return "online";
+  }
+
+  if (["warning", "degraded", "slow", "pending", "syncing", "limited"].some(status => normalized.includes(status))) {
+    return "warning";
+  }
+
+  if (["offline", "down", "failed", "error", "critical", "disconnected", "unhealthy"].some(status => normalized.includes(status))) {
+    return "offline";
+  }
+
+  return "unknown";
+};
+
 const AdminDashboard = ({ user, onClose }) => {
   // Main navigation state - tracks which admin section is currently active
   const [activeTab, setActiveTab] = useState("overview");
@@ -23,6 +105,7 @@ const AdminDashboard = ({ user, onClose }) => {
   // Data states - all the information we display in different admin sections
   const [dashboardStats, setDashboardStats] = useState(null); // Overview numbers and charts
   const [systemHealth, setSystemHealth] = useState(null); // Server performance info
+  const [systemHealthFetchedAt, setSystemHealthFetchedAt] = useState(null); // Last health refresh time in the admin UI
   const [users, setUsers] = useState([]); // All registered users
   const [contacts, setContacts] = useState([]); // Contact form submissions
   const [newsletters, setNewsletters] = useState([]); // Newsletter subscribers
@@ -39,7 +122,6 @@ const AdminDashboard = ({ user, onClose }) => {
   const [updating, setUpdating] = useState(false); // For updates/deletions without blocking UI
   const [error, setError] = useState("");
   const [message, setMessage] = useState(""); // Success/error messages for user actions
-  const [refreshInterval, setRefreshInterval] = useState(null); // Auto-refresh timer
   
   // Pagination states - for handling large lists of data
   // We don't want to load 1000 users at once, so we paginate them
@@ -115,18 +197,12 @@ const AdminDashboard = ({ user, onClose }) => {
     
     // Set up auto-refresh every 30 seconds
     const interval = setInterval(() => {
-      if (activeTab === "overview") {
-        fetchDashboardStats();
-        fetchSystemHealth();
-      }
+      fetchDashboardStats();
+      fetchSystemHealth();
     }, 30000);
-    
-    setRefreshInterval(interval);
 
     return () => {
-      if (refreshInterval) {
-        clearInterval(refreshInterval);
-      }
+      clearInterval(interval);
     };
   }, []);
 
@@ -134,6 +210,7 @@ const AdminDashboard = ({ user, onClose }) => {
     // Fetch data when tab changes
     switch (activeTab) {
       case "overview":
+      case "operations":
         fetchDashboardStats();
         fetchSystemHealth();
         break;
@@ -225,7 +302,8 @@ const AdminDashboard = ({ user, onClose }) => {
   const fetchSystemHealth = async () => {
     try {
       const response = await apiService.getSystemHealth();
-      setSystemHealth(response.data.system);
+      setSystemHealth(response.data.system || response.data);
+      setSystemHealthFetchedAt(new Date());
     } catch (error) {
       console.error("System health fetch error:", error);
       if (error.message === "Authentication required" || error.message?.includes("Authentication")) {
@@ -564,7 +642,7 @@ const AdminDashboard = ({ user, onClose }) => {
   };
 
   // Service handlers
-  const handleServiceSubmit = async (serviceData) => {
+  const handleServiceSubmit = async () => {
     // ServiceForm handles the API call, this is just a callback
     setEditingService(null);
     setShowServiceForm(false);
@@ -606,7 +684,7 @@ const AdminDashboard = ({ user, onClose }) => {
   };
 
   // Project handlers
-  const handleProjectSubmit = async (projectData) => {
+  const handleProjectSubmit = async () => {
     // ProjectForm handles the API call, this is just a callback
     // We can optionally refresh data here if needed
     setEditingProject(null);
@@ -804,7 +882,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
         setProductInquiries(prev => prev.filter(inquiry => inquiry._id !== inquiryId));
         setAutoMessage("Product inquiry removed successfully");
         // Clear API cache and refetch to ensure data consistency
-        try { apiService.clearCache(); } catch(e) { /* ignore */ }
+        try { apiService.clearCache(); } catch { /* ignore */ }
         fetchProductInquiries(productInquiriesPagination.currentPage);
       }
     } catch (error) {
@@ -1034,10 +1112,226 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
   };
 
   const formatUptime = (seconds) => {
-    const days = Math.floor(seconds / 86400);
-    const hours = Math.floor((seconds % 86400) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
+    const totalSeconds = Number(seconds);
+    if (!Number.isFinite(totalSeconds)) return NOT_REPORTED;
+
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
     return `${days}d ${hours}h ${minutes}m`;
+  };
+
+  const getStatusValue = (paths) => {
+    const rawValue = getHealthValue(systemHealth, paths, NOT_REPORTED);
+
+    if (rawValue && typeof rawValue === "object") {
+      return getHealthValue(rawValue, ["status", "connection", "state", "health"], NOT_REPORTED);
+    }
+
+    return rawValue;
+  };
+
+  const formatMemoryPair = (memory, usedPaths = ["used", "heapUsed", "rss"], totalPaths = ["total", "heapTotal"]) => {
+    if (!memory || typeof memory !== "object") return NOT_REPORTED;
+
+    const used = getHealthValue(memory, usedPaths, null);
+    const total = getHealthValue(memory, totalPaths, null);
+
+    if (used !== null && total !== null) {
+      return `${formatMemoryValue(used)} / ${formatMemoryValue(total)}`;
+    }
+
+    if (used !== null) return formatMemoryValue(used);
+    return NOT_REPORTED;
+  };
+
+  const formatStoragePair = (storage) => {
+    if (!storage || typeof storage !== "object") return NOT_REPORTED;
+
+    const used = getHealthValue(storage, ["used", "usedBytes", "dataSize", "storageSize"], null);
+    const total = getHealthValue(storage, ["total", "totalBytes", "allocated", "limit"], null);
+
+    if (used !== null && total !== null) return `${formatBytes(used)} / ${formatBytes(total)}`;
+    if (used !== null) return formatBytes(used);
+    return NOT_REPORTED;
+  };
+
+  const formatCpuLoad = (value) => {
+    const formatLoadValue = (item) => {
+      const number = Number(item);
+      return Number.isFinite(number) ? number.toFixed(2) : String(item);
+    };
+
+    if (Array.isArray(value)) {
+      return value.map(formatLoadValue).join(" / ");
+    }
+
+    if (value && typeof value === "object") {
+      const percentage = getHealthValue(value, ["percentage", "percent", "usage"], null);
+      const loadAverage = getHealthValue(value, ["loadAverage", "loadavg", "average"], null);
+
+      if (percentage !== null) return formatPercent(percentage);
+      if (Array.isArray(loadAverage)) return loadAverage.map(formatLoadValue).join(" / ");
+    }
+
+    return formatMetricValue(value);
+  };
+
+  const normalizeCollections = (collections) => {
+    if (Array.isArray(collections)) return collections;
+
+    if (collections && typeof collections === "object") {
+      return Object.entries(collections).map(([name, value]) => (
+        value && typeof value === "object"
+          ? { name, ...value }
+          : { name, count: value }
+      ));
+    }
+
+    return [];
+  };
+
+  const renderOpsMetric = ({ label, value, detail, status, accent = "neutral" }) => (
+    <div className={`ops-metric-card accent-${accent}`}>
+      <div className="ops-metric-topline">
+        <span>{label}</span>
+        {status && <span className={`ops-status-dot ${getStatusClass(status)}`} aria-label={`${label} status`} />}
+      </div>
+      <strong>{formatMetricValue(value)}</strong>
+      {detail && <small>{detail}</small>}
+    </div>
+  );
+
+  const renderDetailRow = (label, value, status) => (
+    <div className="ops-detail-row">
+      <span>{label}</span>
+      <strong className={status ? `ops-text-${getStatusClass(status)}` : ""}>{formatMetricValue(value)}</strong>
+    </div>
+  );
+
+  const renderOperationsCenter = () => {
+    const stats = dashboardStats?.stats || {};
+    const processMemory = getHealthValue(systemHealth, ["process.memory", "runtime.memory", "memory"], null);
+    const systemMemory = getHealthValue(systemHealth, ["system.memory", "host.memory", "os.memory", "ram"], null);
+    const mongodbStorage = getHealthValue(systemHealth, ["mongodb.storage", "mongo.storage", "database.storage", "atlas.storage", "storage"], null);
+    const collectionRows = normalizeCollections(getHealthValue(systemHealth, ["database.collections", "mongodb.collections", "mongo.collections", "collections"], []));
+    const reportedServerStatus = getStatusValue(["server.status", "status", "health", "server"]);
+    const serverStatus = reportedServerStatus === NOT_REPORTED && systemHealth ? "Online" : reportedServerStatus;
+    const databaseStatus = getStatusValue(["database.status", "database.connection", "database.state", "mongodb.status", "mongo.status", "database"]);
+    const clusterStatus = getStatusValue(["cluster.status", "mongodb.cluster.status", "atlas.clusterStatus", "atlas.status"]);
+    const backupStatus = getStatusValue(["backup.status", "database.backup.status", "backups.status"]);
+    const uptime = getHealthValue(systemHealth, ["uptime", "server.uptime", "process.uptime"], null);
+    const cpuLoad = getHealthValue(systemHealth, ["cpu.load", "cpu.usage", "system.cpu.load", "host.cpu.load", "loadAverage"], NOT_REPORTED);
+    const nodeVersion = getHealthValue(systemHealth, ["nodeVersion", "node.version", "runtime.nodeVersion"], NOT_REPORTED);
+    const hostSystem = getHealthValue(systemHealth, ["host.name", "host.hostname", "server.host", "hostname"], NOT_REPORTED);
+    const platform = getHealthValue(systemHealth, ["host.platform", "system.platform", "os.platform", "platform"], NOT_REPORTED);
+    const apiLatency = getHealthValue(systemHealth, ["api.latency", "server.latency", "latency"], NOT_REPORTED);
+    const visitorsOnline = getHealthValue(systemHealth, ["visitors.online", "traffic.online", "analytics.onlineVisitors"], NOT_REPORTED);
+    const visitorsToday = getHealthValue(systemHealth, ["visitors.today", "traffic.today", "analytics.today"], NOT_REPORTED);
+    const totalVisitors = getHealthValue(systemHealth, ["visitors.total", "traffic.total", "analytics.totalVisitors"], stats.totalVisitors ?? NOT_REPORTED);
+    const databaseName = getHealthValue(systemHealth, ["database.name", "mongodb.database", "mongo.database", "dbName"], NOT_REPORTED);
+    const clusterName = getHealthValue(systemHealth, ["cluster.name", "mongodb.cluster.name", "atlas.clusterName"], NOT_REPORTED);
+    const lastBackup = getHealthValue(systemHealth, ["backup.lastRun", "backup.lastBackupAt", "backups.lastRun"], NOT_REPORTED);
+    const nextBackup = getHealthValue(systemHealth, ["backup.nextRun", "backup.nextBackupAt", "backups.nextRun"], NOT_REPORTED);
+    const processId = getHealthValue(systemHealth, ["process.pid", "pid"], NOT_REPORTED);
+    const cpuCores = getHealthValue(systemHealth, ["cpu.cores", "system.cpu.cores", "host.cpu.cores"], NOT_REPORTED);
+    const ramUsage = formatMemoryPair(systemMemory, ["used", "usedBytes", "active"], ["total", "totalBytes"]);
+    const processMemoryUsage = formatMemoryPair(processMemory);
+    const storageUsage = formatStoragePair(mongodbStorage);
+    const hasCollections = collectionRows.length > 0;
+
+    return (
+      <section className="admin-ops-center">
+        <div className="ops-header">
+          <div>
+            <span className="ops-eyebrow">Platform control room</span>
+            <h3>Operations Center</h3>
+            <p>Track server health, database readiness, backups, traffic and host resources from one professional admin view.</p>
+          </div>
+          <div className="ops-refresh-pill">
+            <span className={`ops-status-dot ${getStatusClass(serverStatus)}`} />
+            <div>
+              <span>Last refreshed</span>
+              <strong>{systemHealthFetchedAt ? formatDateTime(systemHealthFetchedAt) : NOT_REPORTED}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div className="ops-metrics-grid">
+          {renderOpsMetric({ label: "Server Status", value: serverStatus, detail: hostSystem, status: serverStatus, accent: "green" })}
+          {renderOpsMetric({ label: "Database", value: databaseStatus, detail: databaseName, status: databaseStatus, accent: "blue" })}
+          {renderOpsMetric({ label: "Server Uptime", value: uptime !== null ? formatUptime(uptime) : NOT_REPORTED, detail: "Process runtime", accent: "violet" })}
+          {renderOpsMetric({ label: "Cluster Status", value: clusterStatus, detail: clusterName, status: clusterStatus, accent: "cyan" })}
+          {renderOpsMetric({ label: "CPU Load", value: formatCpuLoad(cpuLoad), detail: `${formatMetricValue(cpuCores)} CPU cores`, accent: "amber" })}
+          {renderOpsMetric({ label: "System RAM", value: ramUsage, detail: platform, accent: "slate" })}
+          {renderOpsMetric({ label: "Process Memory", value: processMemoryUsage, detail: `PID ${formatMetricValue(processId)}`, accent: "indigo" })}
+          {renderOpsMetric({ label: "MongoDB Atlas Storage", value: storageUsage, detail: "Storage used / limit", accent: "teal" })}
+          {renderOpsMetric({ label: "Backup Status", value: backupStatus, detail: `Last: ${formatDateTime(lastBackup)}`, status: backupStatus, accent: "green" })}
+          {renderOpsMetric({ label: "Visitors Online", value: visitorsOnline, detail: `${formatMetricValue(visitorsToday)} today`, accent: "pink" })}
+        </div>
+
+        <div className="ops-panels-grid">
+          <article className="ops-panel">
+            <div className="ops-panel-header">
+              <h4>Server Runtime</h4>
+              <span className={`ops-status-badge ${getStatusClass(serverStatus)}`}>{formatMetricValue(serverStatus)}</span>
+            </div>
+            {renderDetailRow("Host system", hostSystem)}
+            {renderDetailRow("Platform", platform)}
+            {renderDetailRow("Node.js", nodeVersion)}
+            {renderDetailRow("Process ID", processId)}
+            {renderDetailRow("Uptime", uptime !== null ? formatUptime(uptime) : NOT_REPORTED)}
+            {renderDetailRow("API latency", apiLatency)}
+          </article>
+
+          <article className="ops-panel">
+            <div className="ops-panel-header">
+              <h4>Database & Collections</h4>
+              <span className={`ops-status-badge ${getStatusClass(databaseStatus)}`}>{formatMetricValue(databaseStatus)}</span>
+            </div>
+            {renderDetailRow("Database name", databaseName)}
+            {renderDetailRow("Atlas cluster", clusterName)}
+            {renderDetailRow("Atlas storage", storageUsage)}
+            <div className="ops-collection-list">
+              {hasCollections ? collectionRows.slice(0, 6).map(collection => (
+                <div className="ops-collection-row" key={collection.name || collection.collection || collection._id}>
+                  <span>{collection.name || collection.collection || "Collection"}</span>
+                  <strong>{formatDashboardNumber(collection.count ?? collection.documents ?? collection.size ?? 0)}</strong>
+                </div>
+              )) : (
+                <div className="ops-empty-state">Collection telemetry is not reported yet.</div>
+              )}
+            </div>
+          </article>
+
+          <article className="ops-panel">
+            <div className="ops-panel-header">
+              <h4>Data Management & Backup</h4>
+              <span className={`ops-status-badge ${getStatusClass(backupStatus)}`}>{formatMetricValue(backupStatus)}</span>
+            </div>
+            {renderDetailRow("Users", stats.totalUsers || 0)}
+            {renderDetailRow("Products", stats.totalProducts || 0)}
+            {renderDetailRow("Services", stats.totalServices || 0)}
+            {renderDetailRow("Projects", stats.totalProjects || 0)}
+            {renderDetailRow("Last backup", formatDateTime(lastBackup))}
+            {renderDetailRow("Next backup", formatDateTime(nextBackup))}
+          </article>
+
+          <article className="ops-panel">
+            <div className="ops-panel-header">
+              <h4>Visitors & Traffic</h4>
+              <span className="ops-status-badge unknown">Analytics</span>
+            </div>
+            {renderDetailRow("Online now", visitorsOnline)}
+            {renderDetailRow("Visitors today", visitorsToday)}
+            {renderDetailRow("Total visitors", totalVisitors)}
+            {renderDetailRow("Contact messages", stats.totalContacts || 0)}
+            {renderDetailRow("Product inquiries", stats.totalProductInquiries || 0)}
+            {renderDetailRow("Service quotes", stats.totalServiceQuotes || 0)}
+          </article>
+        </div>
+      </section>
+    );
   };
 
   if (loading) {
@@ -1099,6 +1393,11 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                 onClick={() => { setActiveTab("overview"); setSidebarOpen(false); }}>
                 <span className="nav-icon" aria-hidden="true">{"\uD83D\uDCCA"}</span>
                 <span>Overview</span>
+              </button>
+              <button className={`nav-btn ${activeTab === "operations" ? "active" : ""}`}
+                onClick={() => { setActiveTab("operations"); setSidebarOpen(false); }}>
+                <span className="nav-icon" aria-hidden="true">{"\uD83D\uDDA5\uFE0F"}</span>
+                <span>Operations</span>
               </button>
               <button className={`nav-btn ${activeTab === "users" ? "active" : ""}`}
                 onClick={() => { setActiveTab("users"); setSidebarOpen(false); }}>
@@ -1267,31 +1566,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
                 </div>
               </div>
 
-              <div className="system-health">
-                <h3>System Health</h3>
-                <div className="health-grid">
-                  <div className="health-item">
-                    <span className="health-label">Database:</span>
-                    <span className={`health-status ${systemHealth?.database === "connected" ? "online" : "offline"}`}>
-                      {systemHealth?.database || "Unknown"}
-                    </span>
-                  </div>
-                  <div className="health-item">
-                    <span className="health-label">Uptime:</span>
-                    <span className="health-value">{systemHealth ? formatUptime(systemHealth.uptime) : "Unknown"}</span>
-                  </div>
-                  <div className="health-item">
-                    <span className="health-label">Memory:</span>
-                    <span className="health-value">
-                      {systemHealth ? `${systemHealth.memory.used}MB / ${systemHealth.memory.total}MB` : "Unknown"}
-                    </span>
-                  </div>
-                  <div className="health-item">
-                    <span className="health-label">Node.js:</span>
-                    <span className="health-value">{systemHealth?.nodeVersion || "Unknown"}</span>
-                  </div>
-                </div>
-              </div>
+              {renderOperationsCenter()}
 
               <div className="recent-users">
                 <h3>Recent Users</h3>
@@ -1317,6 +1592,12 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
               <div className="debug-section" style={{ marginTop: '2rem' }}>
                 <AdminDebugTools />
               </div>
+            </div>
+          )}
+
+          {activeTab === "operations" && (
+            <div className="tab-panel">
+              {renderOperationsCenter()}
             </div>
           )}
 
