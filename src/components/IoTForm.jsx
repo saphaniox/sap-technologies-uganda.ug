@@ -376,7 +376,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label htmlFor="iot-description">Description <span className="form-optional">Optional</span></label>
+              <label htmlFor="iot-description">Description <span className="form-optional">(optional)</span></label>
               <textarea
                 id="iot-description"
                 name="description"
@@ -389,7 +389,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="iot-category">Category <span className="form-optional">Optional</span></label>
+                <label htmlFor="iot-category">Category <span className="form-optional">(optional)</span></label>
                 <input
                   type="text"
                   id="iot-category"
@@ -407,7 +407,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
               </div>
               
               <div className="form-group">
-                <label htmlFor="iot-status">Progress <span className="form-optional">Optional</span></label>
+                <label htmlFor="iot-status">Progress <span className="form-optional">(optional)</span></label>
                 <select id="iot-status" name="status" value={formData.status} onChange={handleInputChange}>
                   <option value="completed">Completed</option>
                   <option value="in-progress">In Progress</option>
@@ -419,7 +419,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="iot-completion-date">Completion date <span className="form-optional">Optional</span></label>
+                <label htmlFor="iot-completion-date">Completion date <span className="form-optional">(optional)</span></label>
                 <input
                   type="date"
                   id="iot-completion-date"
@@ -430,7 +430,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
               </div>
               
               <div className="form-group">
-                <label htmlFor="iot-display-order">Display order <span className="form-optional">Optional</span></label>
+                <label htmlFor="iot-display-order">Display order <span className="form-optional">(optional)</span></label>
                 <input
                   type="number"
                   id="iot-display-order"
@@ -446,10 +446,10 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
           
           {/* Technologies & Hardware */}
           <div className="form-section">
-            <h3>Technical details</h3>
+            <h3>Technical details <span className="form-optional">(optional)</span></h3>
             
             <div className="form-group">
-              <label>Technologies used <span className="form-optional">Optional</span></label>
+              <label>Technologies used <span className="form-optional">(optional)</span></label>
               {formData.technologies.map((tech, index) => (
                 <div key={index} className="array-input">
                   <input
@@ -479,7 +479,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label>Hardware components <span className="form-optional">Optional</span></label>
+              <label>Hardware components <span className="form-optional">(optional)</span></label>
               {formData.hardware.map((hw, index) => (
                 <div key={index} className="array-input">
                   <input
@@ -509,7 +509,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label>Key features <span className="form-optional">Optional</span></label>
+              <label>Key features <span className="form-optional">(optional)</span></label>
               {formData.features.map((feature, index) => (
                 <div key={index} className="array-input">
                   <input
@@ -541,10 +541,10 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
           
           {/* Links */}
           <div className="form-section">
-            <h3>Useful links</h3>
+            <h3>Useful links <span className="form-optional">(optional)</span></h3>
             
             <div className="form-group">
-              <label htmlFor="iot-project-url">Project URL <span className="form-optional">Optional</span></label>
+              <label htmlFor="iot-project-url">Project URL <span className="form-optional">(optional)</span></label>
               <input
                 type="url"
                 id="iot-project-url"
@@ -557,7 +557,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label htmlFor="iot-github-url">GitHub URL <span className="form-optional">Optional</span></label>
+              <label htmlFor="iot-github-url">GitHub URL <span className="form-optional">(optional)</span></label>
               <input
                 type="url"
                 id="iot-github-url"
@@ -570,7 +570,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
             </div>
             
             <div className="form-group">
-              <label htmlFor="iot-video-url">Demo video URL <span className="form-optional">Optional</span></label>
+              <label htmlFor="iot-video-url">Demo video URL <span className="form-optional">(optional)</span></label>
               <input
                 type="url"
                 id="iot-video-url"
@@ -585,10 +585,10 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
           
           {/* Images */}
           <div className="form-section">
-            <h3>Project images</h3>
+            <h3>Project images <span className="form-optional">(optional)</span></h3>
             
             <div className="form-group">
-              <label htmlFor="iot-images">Upload images <span className="form-optional">Optional</span></label>
+              <label htmlFor="iot-images">Upload images <span className="form-optional">(optional)</span></label>
               <input
                 type="file"
                 id="iot-images"
@@ -620,10 +620,10 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
           
           {/* Videos */}
           <div className="form-section">
-            <h3>Project videos</h3>
+            <h3>Project videos <span className="form-optional">(optional)</span></h3>
 
             <div className="form-group">
-              <label htmlFor="iot-videos">Upload videos <span className="form-optional">Optional</span></label>
+              <label htmlFor="iot-videos">Upload videos <span className="form-optional">(optional)</span></label>
               <input
                 type="file"
                 id="iot-videos"
@@ -687,7 +687,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
 
           {/* Settings */}
           <div className="form-section">
-            <h3>Visibility</h3>
+            <h3>Visibility <span className="form-optional">(optional)</span></h3>
             
             <div className="checkbox-group">
               <label className="checkbox-label">
@@ -697,7 +697,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
                   checked={formData.isPublic}
                   onChange={handleInputChange}
                 />
-                <span>Show this project to visitors</span>
+                <span>Show this project to visitors <span className="form-optional">(optional)</span></span>
               </label>
               
               <label className="checkbox-label">
@@ -707,7 +707,7 @@ const IoTForm = ({ isOpen, onClose, project, onSuccess }) => {
                   checked={formData.isFeatured}
                   onChange={handleInputChange}
                 />
-                <span>Feature this project</span>
+                <span>Feature this project <span className="form-optional">(optional)</span></span>
               </label>
             </div>
           </div>
