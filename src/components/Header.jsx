@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { createPortal } from "react-dom";
+import { createPortal, flushSync } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import { getImageUrl } from "../utils/imageUrl";
@@ -100,6 +100,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
   const [menuOpen, setMenuOpen] = useState(false);
   const searchTimerRef = useRef(null);
   const searchInputRef = useRef(null);
+  const searchRequestIdRef = useRef(0);
   
   const location = useLocation();
   const isAwardsPage = location.pathname === "/awards";
@@ -152,46 +153,112 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
     input.setSelectionRange?.(input.value.length, input.value.length);
   }, []);
 
-  const openSearch = (event) => {
+  const closeSearch = useCallback(() => {
+    searchRequestIdRef.current += 1;
+    setSearchOpen(false);
+    setSearchQuery("");
+    setSearchResults(null);
+    setSearchError("");
+    setSearchLoading(false);
+    clearTimeout(searchTimerRef.current);
+  }, []);
+
+  const openSearch = useCallback((event) => {
     event?.preventDefault?.();
     event?.stopPropagation?.();
-    setMenuOpen(false);
-    setSearchOpen(true);
+    clearTimeout(searchTimerRef.current);
+
+    if (searchOpen) {
+      focusSearchInput();
+      return;
+    }
+
+    flushSync(() => {
+      setMenuOpen(false);
+      setSearchOpen(true);
+    });
+
+    focusSearchInput();
 
     if (typeof window !== "undefined") {
-      window.setTimeout(focusSearchInput, 0);
-      window.setTimeout(focusSearchInput, 120);
+      window.requestAnimationFrame(focusSearchInput);
+      window.setTimeout(focusSearchInput, 80);
+      window.setTimeout(focusSearchInput, 250);
     }
-  };
+  }, [focusSearchInput, searchOpen]);
 
-  const handleSearchButtonPointerUp = (event) => {
+  const handleSearchButtonPointerDown = (event) => {
     if (event.pointerType === "touch" || event.pointerType === "pen") {
       openSearch(event);
     }
   };
 
-  const closeSearch = () => {
-    setSearchOpen(false);
-    setSearchQuery("");
-    setSearchResults(null);
-    setSearchError("");
-    clearTimeout(searchTimerRef.current);
-  };
-
   useEffect(() => {
     if (!searchOpen) return undefined;
 
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") closeSearch();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
     focusSearchInput();
     const frame = window.requestAnimationFrame(focusSearchInput);
     const timer = window.setTimeout(focusSearchInput, 80);
     const lateTimer = window.setTimeout(focusSearchInput, 250);
 
     return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
       window.cancelAnimationFrame(frame);
       window.clearTimeout(timer);
       window.clearTimeout(lateTimer);
     };
-  }, [focusSearchInput, searchOpen]);
+  }, [closeSearch, focusSearchInput, searchOpen]);
+
+  const performSearch = useCallback(async (rawQuery) => {
+    const query = rawQuery.trim();
+    if (query.length < 1) {
+      setSearchResults(null);
+      setSearchLoading(false);
+      return;
+    }
+
+    const requestId = searchRequestIdRef.current + 1;
+    searchRequestIdRef.current = requestId;
+    setSearchLoading(true);
+    setSearchError("");
+
+    try {
+      let results = null;
+
+      try {
+        const res = await apiService.search(query);
+        results = extractSearchResults(res);
+      } catch {
+        results = null;
+      }
+
+      if (!hasSearchResults(results)) {
+        results = await fallbackSearch(query);
+      }
+
+      if (requestId !== searchRequestIdRef.current) return;
+
+      setSearchResults(results);
+      setSearchError("");
+    } catch {
+      if (requestId !== searchRequestIdRef.current) return;
+
+      setSearchResults(null);
+      setSearchError("Search is not available right now. Please try again.");
+    } finally {
+      if (requestId === searchRequestIdRef.current) {
+        setSearchLoading(false);
+      }
+    }
+  }, []);
 
   const handleSearchInput = (e) => {
     const val = e.target.value;
@@ -199,34 +266,20 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
     setSearchError("");
     clearTimeout(searchTimerRef.current);
     if (val.trim().length < 1) {
+      searchRequestIdRef.current += 1;
       setSearchResults(null);
+      setSearchLoading(false);
       return;
     }
-    searchTimerRef.current = setTimeout(async () => {
-      setSearchLoading(true);
-      try {
-        let results = null;
-
-        try {
-          const res = await apiService.search(val.trim());
-          results = extractSearchResults(res);
-        } catch {
-          results = null;
-        }
-
-        if (!hasSearchResults(results)) {
-          results = await fallbackSearch(val.trim());
-        }
-
-        setSearchResults(results);
-        setSearchError("");
-      } catch {
-        setSearchResults(null);
-        setSearchError("Search is not available right now. Please try again.");
-      } finally {
-        setSearchLoading(false);
-      }
+    searchTimerRef.current = setTimeout(() => {
+      performSearch(val);
     }, 400);
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    clearTimeout(searchTimerRef.current);
+    performSearch(searchQuery);
   };
 
   const scrollToSection = (sectionId) => {
@@ -391,7 +444,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           type="button"
           className="nav-search-btn"
           onClick={openSearch}
-          onPointerUp={handleSearchButtonPointerUp}
+          onPointerDown={handleSearchButtonPointerDown}
           title="Search products, services and projects"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -399,6 +452,8 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           aria-label="Open search"
+          aria-haspopup="dialog"
+          aria-expanded={searchOpen}
         >
           <span className="nav-search-icon" aria-hidden="true">Search</span>
           <span className="nav-search-text">Products, services, projects</span>
@@ -545,6 +600,9 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
         {searchOpen && typeof document !== "undefined" && createPortal(
           <Motion.div
             className="search-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site search"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -562,7 +620,7 @@ const Header = ({ isAuthenticated, userName, userRole, userProfilePic, onAuthMod
                 <form
                   className="search-input-wrap"
                   role="search"
-                  onSubmit={(event) => event.preventDefault()}
+                  onSubmit={handleSearchSubmit}
                   onClick={() => searchInputRef.current?.focus({ preventScroll: true })}
                 >
                   <span className="search-modal-icon">Search</span>

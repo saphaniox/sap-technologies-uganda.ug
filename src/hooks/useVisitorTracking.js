@@ -17,6 +17,41 @@ const getApiUrl = () => {
 const API_BASE_URL = getApiUrl();
 const TRACKING_ENDPOINT = `${API_BASE_URL}/api/visitor/track`;
 
+const getStoredSessionItem = (key) => {
+  try {
+    return sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
+};
+
+const setStoredSessionItem = (key, value) => {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch {
+    // Session storage can be unavailable in private browsing modes.
+  }
+};
+
+const getPerformanceTiming = () => {
+  if (typeof performance === "undefined") return {};
+
+  const timing = performance.timing;
+  if (!timing) return {};
+
+  const loadTime = timing.loadEventEnd > 0
+    ? timing.loadEventEnd - timing.navigationStart
+    : 0;
+  const domReady = timing.domContentLoadedEventEnd > 0
+    ? timing.domContentLoadedEventEnd - timing.navigationStart
+    : 0;
+
+  return {
+    loadTime: Math.max(0, loadTime),
+    domReady: Math.max(0, domReady),
+  };
+};
+
 // Generate a unique fingerprint for the visitor
 const generateFingerprint = () => {
   const canvas = document.createElement("canvas");
@@ -59,28 +94,40 @@ const generateFingerprint = () => {
 
 // Get or create session ID
 const getSessionId = () => {
-  let sessionId = sessionStorage.getItem("visitor_session_id");
+  let sessionId = getStoredSessionItem("visitor_session_id");
   
   if (!sessionId) {
     sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    sessionStorage.setItem("visitor_session_id", sessionId);
+    setStoredSessionItem("visitor_session_id", sessionId);
   }
   
   return sessionId;
 };
 
 const sendTrackingPayload = async (payload, preferBeacon = false) => {
-  const body = new URLSearchParams();
-  body.set("payload", JSON.stringify(payload));
+  const enrichedPayload = {
+    ...payload,
+    fingerprint: payload.fingerprint || getStoredSessionItem("x-fingerprint") || "",
+    url: payload.url || window.location.href,
+  };
 
   if (preferBeacon && navigator.sendBeacon) {
+    const body = new Blob([JSON.stringify(enrichedPayload)], {
+      type: "application/json"
+    });
     navigator.sendBeacon(TRACKING_ENDPOINT, body);
     return;
   }
 
   await fetch(TRACKING_ENDPOINT, {
     method: "POST",
-    body,
+    headers: {
+      "Content-Type": "application/json",
+      "X-Session-ID": enrichedPayload.sessionId,
+      "X-Fingerprint": enrichedPayload.fingerprint,
+    },
+    credentials: "include",
+    body: JSON.stringify(enrichedPayload),
     keepalive: true,
   });
 };
@@ -98,28 +145,15 @@ export const useVisitorTracking = () => {
     startTimeRef.current = Date.now();
     maxScrollRef.current = 0;
 
-    // Send initial page view (will be created by backend middleware)
-    // We just need to send fingerprint for identification
-    const sendPageView = async () => {
-      try {
-        // The backend middleware will automatically track the page view
-        // We don't need to make an explicit API call for initial tracking
-        
-        // Store in sessionStorage for subsequent updates
-        sessionStorage.setItem("x-fingerprint", fingerprint.current);
-      } catch (error) {
-        console.error("Tracking error:", error);
-      }
-    };
-
-    sendPageView();
+    setStoredSessionItem("x-fingerprint", fingerprint.current);
 
     // Track scroll depth
     const handleScroll = () => {
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const scrollPercentage = Math.round((scrollTop / (documentHeight - windowHeight)) * 100);
+      const scrollableHeight = Math.max(1, documentHeight - windowHeight);
+      const scrollPercentage = Math.min(100, Math.max(0, Math.round((scrollTop / scrollableHeight) * 100)));
       
       maxScrollRef.current = Math.max(maxScrollRef.current, scrollPercentage);
     };
@@ -133,19 +167,19 @@ export const useVisitorTracking = () => {
       try {
         await sendTrackingPayload({
           sessionId: sessionId.current,
+          fingerprint: fingerprint.current,
           path: location.pathname,
           title: document.title,
           timeOnPage,
           scrollDepth: maxScrollRef.current,
-          performance: {
-            loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
-            domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
-          }
+          performance: getPerformanceTiming()
         });
       } catch (error) {
         console.error("Failed to update page view:", error);
       }
     };
+
+    sendPageViewUpdate();
 
     // Send update before leaving page
     const handleBeforeUnload = () => {
@@ -153,14 +187,12 @@ export const useVisitorTracking = () => {
 
       sendTrackingPayload({
         sessionId: sessionId.current,
+        fingerprint: fingerprint.current,
         path: location.pathname,
         title: document.title,
         timeOnPage,
         scrollDepth: maxScrollRef.current,
-        performance: {
-          loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
-          domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
-        }
+        performance: getPerformanceTiming()
       }, true).catch(() => {});
     };
 
@@ -191,6 +223,7 @@ export const trackEvent = async (eventName, eventValue = "") => {
     
     await sendTrackingPayload({
       sessionId,
+      fingerprint,
       path: window.location.pathname,
       event: {
         name: eventName,
