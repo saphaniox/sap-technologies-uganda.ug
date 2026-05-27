@@ -134,13 +134,49 @@
   to { opacity: 0.95; }
 }
 
-/* SEO Content (hidden but crawlable) */
-.seo-content {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+/* Search-friendly supporting content */
+.software-search-content {
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 4rem 0;
+}
+
+.software-search-content .container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.software-search-content h2 {
+  color: #0f172a;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 850;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+.software-search-content p {
+  color: #334155;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin: 0 0 1.5rem;
+  max-width: 900px;
+}
+
+.software-search-grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.software-search-grid span {
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  color: #0f172a;
+  font-weight: 750;
+  padding: 0.9rem 1rem;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
 }
 
 /* Software Section */

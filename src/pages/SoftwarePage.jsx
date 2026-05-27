@@ -8,11 +8,11 @@ const SoftwarePage = () => {
   const navigate = useNavigate();
   // SEO data for better search engine visibility
   const seoData = {
-    title: "Software Apps - SAPTech Uganda",
-    description: "Explore innovative software applications and web tools developed by SAPTech Uganda. Access our portfolio of custom web apps, business solutions, and digital tools designed to enhance productivity and efficiency.",
-    keywords: "SAPTech Uganda software, SAPTech Uganda apps, SAPTech Uganda software, web applications Uganda, custom software solutions, business apps, digital tools, technology solutions Uganda, web apps, software portfolio, SAPTech Uganda applications",
+    title: "Software Apps & Business Systems | SAPTech Uganda",
+    description: "Explore SAPTech Uganda software apps, custom web applications, business management systems, ecommerce tools, school systems, inventory systems, dashboards, and digital business platforms built in Uganda.",
+    keywords: "SAPTech Uganda software, software apps Uganda, custom software Uganda, web applications Uganda, business management software Uganda, school management system Uganda, inventory management system Uganda, ecommerce platform Uganda, restaurant ordering system Uganda, learning management system Uganda, digital tools Kampala, business apps Uganda",
     ogType: "website",
-    ogImage: "/images/software-banner.jpg", // Optional: Add a banner image
+    ogImage: "/images/software.jpg",
     canonicalUrl: "/software",
   };
 
@@ -71,24 +71,28 @@ const SoftwarePage = () => {
         {/* Main Software Component */}
         <Softwares />
 
-        {/* Additional SEO Content (hidden but crawlable) */}
-        <div className="seo-content" style={{ position: "absolute", left: "-9999px" }}>
-          <h2>SAPTech Uganda Software Solutions</h2>
-          <p>
-            SAPTech Uganda develops cutting-edge software applications and web-based tools
-            to help businesses and individuals achieve their goals. Our software portfolio includes
-            custom web applications, business management tools, productivity apps, and innovative
-            digital solutions tailored to the Ugandan market and beyond.
-          </p>
-          <h3>Why Choose SAPTech Uganda software?</h3>
-          <ul>
-            <li>Web-based applications - access from anywhere</li>
-            <li>No installation required - launch instantly</li>
-            <li>Custom solutions tailored to your needs</li>
-            <li>Secure and reliable technology</li>
-            <li>Regular updates and support</li>
-          </ul>
-        </div>
+        <section className="software-search-content" aria-labelledby="software-search-title">
+          <div className="container">
+            <h2 id="software-search-title">Software solutions for Ugandan businesses</h2>
+            <p>
+              SAPTech Uganda builds practical software for companies, schools, shops, restaurants,
+              organizations, and startups that need reliable digital tools. Our work covers custom
+              web applications, business management systems, ecommerce platforms, inventory tracking,
+              school management systems, learning platforms, dashboards, booking tools, and internal
+              workflow systems.
+            </p>
+            <div className="software-search-grid" aria-label="Common software project types">
+              <span>Custom web applications</span>
+              <span>Business management software</span>
+              <span>School management systems</span>
+              <span>Inventory management systems</span>
+              <span>Ecommerce platforms</span>
+              <span>Restaurant ordering systems</span>
+              <span>Learning management systems</span>
+              <span>Dashboards and reporting tools</span>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );

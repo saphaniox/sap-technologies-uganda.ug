@@ -60,6 +60,18 @@ const Services = () => {
    */
   const WHATSAPP_NUMBER = "+256706564628";
 
+  const popularServiceSearches = [
+    "Website design in Uganda",
+    "Custom software development",
+    "Mobile app development",
+    "IoT automation systems",
+    "Smart home and security systems",
+    "Electrical engineering designs",
+    "Lithium battery power solutions",
+    "Graphics and logo design",
+    "Cloud services and cybersecurity"
+  ];
+
   /**
    * Core Services Array
    * 
@@ -477,8 +489,16 @@ const Services = () => {
           
           {/* Introduction text */}
           <p className="services-intro">
-            Discover our comprehensive range of professional services designed to help your business thrive in the digital world.
+            Discover practical technology and engineering services for businesses, schools, startups,
+            shops, homes, and organizations in Uganda. We help with websites, software, IoT systems,
+            automation, electrical designs, branding, cloud, cybersecurity, and power solutions.
           </p>
+
+          <div className="services-keyword-strip" aria-label="Popular SAPTech Uganda services">
+            {popularServiceSearches.map((service) => (
+              <span key={service}>{service}</span>
+            ))}
+          </div>
 
           {/* Loading spinner while fetching API services */}
           {loading && (

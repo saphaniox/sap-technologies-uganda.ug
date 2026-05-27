@@ -54,6 +54,34 @@
   box-shadow: 0 2px 4px rgba(26, 35, 126, 0.3);
 }
 
+.services-intro {
+  color: #334155;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin: 0 auto 1.4rem;
+  max-width: 900px;
+  text-align: center;
+}
+
+.services-keyword-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
+  margin: 0 auto var(--space-8);
+  max-width: 980px;
+}
+
+.services-keyword-strip span {
+  background: #f8fafc;
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+  color: #1e3a8a;
+  font-size: 0.9rem;
+  font-weight: 750;
+  padding: 0.55rem 0.85rem;
+}
+
 .services-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

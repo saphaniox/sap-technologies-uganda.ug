@@ -87,6 +87,50 @@
   animation: fadeIn 1s ease-out 0.3s both;
 }
 
+.iot-search-content {
+  background: #f8fafc;
+  border-top: 1px solid #dcfce7;
+  padding: 4rem 0;
+}
+
+.iot-search-content .container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.iot-search-content h2 {
+  color: #064e3b;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 850;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+.iot-search-content p {
+  color: #334155;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin: 0 0 1.5rem;
+  max-width: 900px;
+}
+
+.iot-search-grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.iot-search-grid span {
+  background: #ffffff;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  color: #0f172a;
+  font-weight: 750;
+  padding: 0.9rem 1rem;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+}
+
 /* IoT Section */
 .iot-section {
   padding: 60px 0;

@@ -8,11 +8,11 @@ const IoTPage = () => {
   const navigate = useNavigate();
   // SEO data for better search engine visibility
   const seoData = {
-    title: "IoT Projects - SAPTech Uganda",
-    description: "Explore practical Internet of Things (IoT) projects by SAPTech Uganda, from smart monitoring and automation to custom hardware, sensors, and connected devices built for real environments.",
-    keywords: "IoT projects Uganda, Internet of Things, SAPTech Uganda IoT, smart systems, Arduino projects, Raspberry Pi, ESP32, tech innovation Uganda, automation projects, embedded systems, hardware projects, smart home, industrial IoT, IoT solutions Africa, connected devices",
+    title: "IoT Projects, Automation & Smart Systems | SAPTech Uganda",
+    description: "Explore SAPTech Uganda IoT projects, smart home systems, security systems, farm monitoring, industrial automation, Arduino, Raspberry Pi, ESP32, sensors, and connected devices built for Uganda.",
+    keywords: "IoT projects Uganda, Internet of Things Uganda, SAPTech Uganda IoT, IoT services Uganda, smart home systems Uganda, security systems Uganda, automation projects Uganda, Arduino projects Uganda, Raspberry Pi projects Uganda, ESP32 projects Uganda, embedded systems Uganda, sensor networks Uganda, remote monitoring Uganda, smart farming Uganda, industrial IoT Uganda, connected devices Africa",
     ogType: "website",
-    ogImage: "/images/iot-banner.jpg",
+    ogImage: "/images/ioT.jpg",
     canonicalUrl: "/iot",
   };
 
@@ -64,32 +64,28 @@ const IoTPage = () => {
         {/* Main IoT Projects Component */}
         <IoTProjects />
 
-        {/* Additional SEO Content (hidden but crawlable) */}
-        <div className="seo-content" style={{ position: "absolute", left: "-9999px" }}>
-          <h2>SAPTech Uganda IoT Projects</h2>
-          <p>
-            SAPTech Uganda develops practical Internet of Things (IoT) solutions and embedded systems.
-            Our work combines Arduino, Raspberry Pi, ESP32, sensors, connectivity, and custom hardware
-            to create connected devices for real-world monitoring, automation, and control.
-          </p>
-          <h3>Our IoT Expertise</h3>
-          <ul>
-            <li>Smart Home Automation Systems</li>
-            <li>Industrial IoT Solutions</li>
-            <li>Environmental Monitoring Devices</li>
-            <li>Agriculture Tech & Smart Farming</li>
-            <li>Security & Surveillance Systems</li>
-            <li>Custom Hardware Development</li>
-            <li>Sensor Networks & Data Collection</li>
-            <li>Remote Monitoring & Control</li>
-          </ul>
-          <h3>Technologies We Use</h3>
-          <p>
-            Arduino, Raspberry Pi, ESP8266, ESP32, NodeMCU, STM32, MQTT, LoRaWAN, 
-            Bluetooth, WiFi, Zigbee, custom PCB design, 3D printing, sensors, 
-            actuators, and cloud integration.
-          </p>
-        </div>
+        <section className="iot-search-content" aria-labelledby="iot-search-title">
+          <div className="container">
+            <h2 id="iot-search-title">IoT, automation, and connected device services</h2>
+            <p>
+              SAPTech Uganda develops Internet of Things systems and embedded electronics for
+              real-world monitoring, automation, and control. We combine sensors, Arduino,
+              Raspberry Pi, ESP32, NodeMCU, WiFi, Bluetooth, MQTT, dashboards, and cloud
+              integrations to create smart devices for homes, schools, farms, workshops,
+              businesses, and industrial sites.
+            </p>
+            <div className="iot-search-grid" aria-label="Common IoT project types">
+              <span>Smart home automation</span>
+              <span>Security and surveillance systems</span>
+              <span>Smart farming and agriculture tech</span>
+              <span>Environmental monitoring</span>
+              <span>Industrial IoT dashboards</span>
+              <span>Remote monitoring and control</span>
+              <span>Sensor networks</span>
+              <span>Custom hardware prototypes</span>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );

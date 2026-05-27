@@ -9,9 +9,9 @@ const toAbsoluteUrl = (value) => {
 };
 
 const SEO = ({ 
-  title = "SAPTech Uganda | Professional in Engineering & Technology solutions",
-  description = "SAPTech Uganda offers professional IT solutions in engineering & technology — web development, mobile apps, cloud services, cybersecurity, and digital transformation.",
-  keywords = "SAPTech Uganda, IT solutions Uganda, web development, mobile apps, Softwaredevelopment and cloud services",
+  title = "SAPTech Uganda | Web Design, Software, IoT & Engineering",
+  description = "SAPTech Uganda offers engineering and technology services in Uganda, including web design, software development, IoT systems, electrical designs, graphics, cloud, cybersecurity, and digital transformation.",
+  keywords = "SAPTech Uganda, technology company Uganda, web design Uganda, software development Uganda, IoT projects Uganda, electrical engineering Uganda",
   ogImage = "/images/logo.png",
   url,
   ogType = "website",
@@ -92,7 +92,7 @@ const updateStructuredData = (structuredData) => {
   const script = existing || document.createElement('script');
   script.type = 'application/ld+json';
   script.id = 'dynamic-structured-data';
-  script.text = JSON.stringify(structuredData);
+  script.textContent = JSON.stringify(structuredData);
 
   if (!existing) {
     document.head.appendChild(script);

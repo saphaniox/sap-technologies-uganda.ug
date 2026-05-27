@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense, useCallback } from "react";
+import React, { useState, useEffect, lazy, Suspense, useCallback, useMemo } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Header from "./components/Header";
@@ -36,6 +36,28 @@ import "./styles/theme-complete.css";
 
 const SITE_URL = "https://www.sap-technologies.com";
 
+const CORE_SEARCH_TERMS = [
+  "SAPTech Uganda",
+  "SAP Technologies Uganda",
+  "technology company Uganda",
+  "IT services Kampala",
+  "web design Uganda",
+  "website development Kampala",
+  "custom software Uganda",
+  "mobile app development Uganda",
+  "IoT projects Uganda",
+  "smart home systems Uganda",
+  "security systems Uganda",
+  "electrical engineering Uganda",
+  "electronics design Uganda",
+  "lithium battery solutions Uganda",
+  "graphics design Uganda",
+  "logo design Uganda",
+  "cloud services Uganda",
+  "cybersecurity Uganda",
+  "digital transformation Uganda"
+].join(", ");
+
 const SECTION_ROUTE_MAP = {
   "/": "home",
   "/about": "about",
@@ -51,58 +73,117 @@ const SECTION_ROUTE_MAP = {
 const SECTION_SEO = {
   home: {
     path: "/",
-    title: "SAPTech Uganda | Engineering & Technology Solutions",
-    description: "SAPTech Uganda provides web development, software, IoT, engineering, cloud, cybersecurity, and digital transformation services in Uganda.",
-    keywords: "SAPTech Uganda, technology company Uganda, web development Uganda, software development Uganda, IoT projects Uganda"
+    title: "SAPTech Uganda | Web Design, Software, IoT & Engineering",
+    description: "SAPTech Uganda provides web design, custom software, mobile apps, IoT projects, electrical designs, lithium battery power solutions, graphics, cloud, cybersecurity, and digital transformation in Uganda.",
+    keywords: CORE_SEARCH_TERMS,
+    topics: ["Web design", "Software development", "IoT projects", "Electrical engineering", "Power solutions"]
   },
   about: {
     path: "/about",
     title: "About SAPTech Uganda | Engineering & Technology Team",
-    description: "Learn about SAPTech Uganda, a Kampala technology team building practical engineering, software, and digital solutions for businesses and communities.",
-    keywords: "about SAPTech Uganda, technology team Uganda, engineering company Kampala"
+    description: "Learn about SAPTech Uganda, a Kampala technology and engineering team building websites, software, IoT systems, electrical designs, branding, and digital tools for businesses and communities.",
+    keywords: `${CORE_SEARCH_TERMS}, about SAPTech Uganda, technology team Uganda, engineering company Kampala, software team Kampala`,
+    topics: ["Technology team", "Engineering company", "Software team", "Kampala business technology"]
   },
   services: {
     path: "/services",
-    title: "Services | SAPTech Uganda",
-    description: "Explore SAPTech Uganda services including web development, mobile apps, custom software, cloud services, cybersecurity, IoT, and engineering support.",
-    keywords: "IT services Uganda, web development services Uganda, mobile app development Uganda, cybersecurity Uganda, IoT services Uganda"
+    title: "Services | Web, Software, IoT & Engineering in Uganda",
+    description: "Explore SAPTech Uganda services: website design, ecommerce sites, custom software, mobile apps, cloud, cybersecurity, IoT automation, smart homes, security systems, electrical designs, lithium battery power, graphics, and branding.",
+    keywords: `${CORE_SEARCH_TERMS}, ecommerce website Uganda, business website Uganda, software solutions Uganda, IoT services Uganda, Arduino projects Uganda, Raspberry Pi projects Uganda, ESP32 projects Uganda, circuit design Uganda`,
+    topics: ["Website design", "Ecommerce development", "Custom software", "IoT automation", "Electrical designs", "Branding"]
   },
   portfolio: {
     path: "/portfolio",
     title: "Projects & Portfolio | SAPTech Uganda",
-    description: "View SAPTech Uganda projects across web platforms, business systems, software products, engineering, IoT, and digital transformation.",
-    keywords: "SAPTech Uganda projects, technology portfolio Uganda, software projects Kampala"
+    description: "View SAPTech Uganda projects including ecommerce platforms, business websites, school management systems, inventory systems, restaurant ordering apps, IoT dashboards, mobile apps, and branding work.",
+    keywords: `${CORE_SEARCH_TERMS}, SAPTech Uganda projects, technology portfolio Uganda, software projects Kampala, ecommerce platform Uganda, school management system Uganda, inventory management system Uganda`,
+    topics: ["Ecommerce platforms", "Business websites", "School management systems", "Inventory management", "IoT dashboards"]
   },
   products: {
     path: "/products",
-    title: "Products | SAPTech Uganda",
-    description: "Browse technology products, software tools, and digital solutions available from SAPTech Uganda.",
-    keywords: "SAPTech Uganda products, technology products Uganda, software products Uganda"
+    title: "Technology Products | SAPTech Uganda",
+    description: "Browse SAPTech Uganda technology products, electronics, software tools, power solutions, IoT devices, and digital business systems available for order or custom build.",
+    keywords: `${CORE_SEARCH_TERMS}, SAPTech Uganda products, technology products Uganda, electronics products Uganda, software products Uganda, IoT devices Uganda, power solutions Uganda`,
+    topics: ["Technology products", "Electronics", "IoT devices", "Power solutions", "Software products"]
   },
   partners: {
     path: "/partners",
     title: "Partners | SAPTech Uganda",
-    description: "Meet SAPTech Uganda partners and collaborators supporting technology, engineering, software, and digital growth.",
-    keywords: "SAPTech Uganda partners, technology partners Uganda, business partners Kampala"
+    description: "Meet SAPTech Uganda partners and collaborators supporting technology, engineering, software, IoT, electronics, education, and digital business growth in Uganda.",
+    keywords: `${CORE_SEARCH_TERMS}, SAPTech Uganda partners, technology partners Uganda, engineering partners Uganda, business partners Kampala`,
+    topics: ["Technology partners", "Engineering partners", "Business collaboration", "Digital growth"]
   },
   companies: {
     path: "/companies",
     title: "Platforms & Companies | SAPTech Uganda",
-    description: "Explore SAPTech Uganda platforms, companies, and connected initiatives in engineering and technology.",
-    keywords: "SAPTech Uganda platforms, SAPTech companies, Uganda technology platforms"
+    description: "Explore SAPTech Uganda platforms, connected companies, and technology initiatives across software, engineering, IoT, products, education, and digital services.",
+    keywords: `${CORE_SEARCH_TERMS}, SAPTech Uganda platforms, SAPTech companies, Uganda technology platforms, digital platforms Uganda`,
+    topics: ["Technology platforms", "Digital services", "Software initiatives", "Engineering initiatives"]
   },
   testimonials: {
     path: "/testimonials",
     title: "Testimonials | SAPTech Uganda",
-    description: "Read client feedback and testimonials from people and organizations working with SAPTech Uganda.",
-    keywords: "SAPTech Uganda testimonials, SAPTech reviews, technology company reviews Uganda"
+    description: "Read client feedback and testimonials from people and organizations working with SAPTech Uganda on websites, software, engineering, IoT, products, and digital projects.",
+    keywords: `${CORE_SEARCH_TERMS}, SAPTech Uganda testimonials, SAPTech reviews, technology company reviews Uganda, software company reviews Kampala`,
+    topics: ["Client testimonials", "Technology reviews", "Software project feedback", "Engineering project feedback"]
   },
   contact: {
     path: "/contact",
     title: "Contact SAPTech Uganda",
-    description: "Contact SAPTech Uganda for software development, web design, engineering, IoT, cloud, cybersecurity, and digital transformation projects.",
-    keywords: "contact SAPTech Uganda, SAPTech Kampala, software developer Uganda contact"
+    description: "Contact SAPTech Uganda in Kampala for web design, software development, mobile apps, IoT systems, electrical engineering, graphics, cloud, cybersecurity, power solutions, and digital transformation projects.",
+    keywords: `${CORE_SEARCH_TERMS}, contact SAPTech Uganda, SAPTech Kampala, software developer Uganda contact, website designer Kampala contact, IoT engineer Uganda contact`,
+    topics: ["Contact SAPTech Uganda", "Software project inquiry", "Website project inquiry", "IoT project inquiry", "Engineering project inquiry"]
   }
+};
+
+const buildSectionStructuredData = ({ path, title, description, topics = [] }) => {
+  const url = `${SITE_URL}${path === "/" ? "/" : path}`;
+  const breadcrumbItems = [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": `${SITE_URL}/`
+    }
+  ];
+
+  if (path !== "/") {
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      "position": 2,
+      "name": title.split("|")[0].trim(),
+      "item": url
+    });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        "url": url,
+        "name": title,
+        "description": description,
+        "isPartOf": {
+          "@id": `${SITE_URL}/#website`
+        },
+        "publisher": {
+          "@id": `${SITE_URL}/#organization`
+        },
+        "inLanguage": "en-UG",
+        "about": topics.map((name) => ({
+          "@type": "Thing",
+          "name": name
+        }))
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        "itemListElement": breadcrumbItems
+      }
+    ]
+  };
 };
 
 const normalizePath = (pathname) => {
@@ -153,6 +234,10 @@ function App() {
   const currentSectionId = getSectionIdFromPath(location.pathname);
   const currentSectionSeo = SECTION_SEO[currentSectionId] || SECTION_SEO.home;
   const currentSectionUrl = `${SITE_URL}${currentSectionSeo.path === "/" ? "/" : currentSectionSeo.path}`;
+  const currentSectionStructuredData = useMemo(
+    () => buildSectionStructuredData(currentSectionSeo),
+    [currentSectionSeo]
+  );
 
   useEffect(() => {
     // Start keep-alive service to prevent server from sleeping
@@ -363,6 +448,7 @@ function App() {
                 canonicalUrl={currentSectionUrl}
                 url={currentSectionUrl}
                 ogImage="/images/logo.png"
+                structuredData={currentSectionStructuredData}
               />
               <Header 
                 key={`header-${isAuthenticated ? 'auth' : 'guest'}`}
