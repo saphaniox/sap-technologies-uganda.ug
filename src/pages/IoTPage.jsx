@@ -24,7 +24,7 @@ const IoTPage = () => {
     "provider": {
       "@type": "Organization",
       "name": "SAPTech Uganda",
-      "url": "https://www.sap-technologies.com"
+      "url": "https://sap-technologies.com"
     },
     "about": {
       "@type": "Technology",

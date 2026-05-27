@@ -3,115 +3,115 @@
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://www.sap-technologies.com/</loc>
+    <loc>https://sap-technologies.com/</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/logo.png</image:loc>
+      <image:loc>https://sap-technologies.com/images/logo.png</image:loc>
       <image:title>SAPTech Uganda logo</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/about</loc>
+    <loc>https://sap-technologies.com/about</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/me.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/me.jpg</image:loc>
       <image:title>SAPTech Uganda engineering and technology team</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/services</loc>
+    <loc>https://sap-technologies.com/services</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/WEB-DESIGN.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/WEB-DESIGN.jpg</image:loc>
       <image:title>Website design services in Uganda</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/electrical.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/electrical.jpg</image:loc>
       <image:title>Electrical engineering designs in Uganda</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/software.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/software.jpg</image:loc>
       <image:title>Custom software development services</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/software</loc>
+    <loc>https://sap-technologies.com/software</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/software.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/software.jpg</image:loc>
       <image:title>SAPTech Uganda software apps and business systems</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/iot</loc>
+    <loc>https://sap-technologies.com/iot</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/ioT.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/ioT.jpg</image:loc>
       <image:title>IoT projects and smart systems in Uganda</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/portfolio</loc>
+    <loc>https://sap-technologies.com/portfolio</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/ecommerce-platform.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/ecommerce-platform.jpg</image:loc>
       <image:title>Ecommerce platform project by SAPTech Uganda</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/school-management.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/school-management.jpg</image:loc>
       <image:title>School management system project in Uganda</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/inventory-management.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/inventory-management.jpg</image:loc>
       <image:title>Inventory management system project</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/products</loc>
+    <loc>https://sap-technologies.com/products</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/sap-business-management.png</image:loc>
+      <image:loc>https://sap-technologies.com/images/sap-business-management.png</image:loc>
       <image:title>SAPTech Uganda technology products</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/partners</loc>
+    <loc>https://sap-technologies.com/partners</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/companies</loc>
+    <loc>https://sap-technologies.com/companies</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/testimonials</loc>
+    <loc>https://sap-technologies.com/testimonials</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <image:image>
-      <image:loc>https://www.sap-technologies.com/images/testimonial-jk.jpg</image:loc>
+      <image:loc>https://sap-technologies.com/images/testimonial-jk.jpg</image:loc>
       <image:title>SAPTech Uganda client testimonial</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://www.sap-technologies.com/contact</loc>
+    <loc>https://sap-technologies.com/contact</loc>
     <lastmod>2026-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>

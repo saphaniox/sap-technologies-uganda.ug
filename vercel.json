@@ -36,7 +36,7 @@
         },
         {
           "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
+          "value": "max-age=0; includeSubDomains"
         },
         {
           "key": "Permissions-Policy",
@@ -51,19 +51,6 @@
           "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagservices.com https://fundingchoicesmessages.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https://res.cloudinary.com https://*.cloudinary.com; connect-src 'self' https://sap-technologies-ug.onrender.com https://res.cloudinary.com https://*.cloudinary.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com; object-src 'none'; base-uri 'self'; form-action 'self';"
         }
       ]
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "sap-technologies.com"
-        }
-      ],
-      "destination": "https://www.sap-technologies.com/:path*",
-      "permanent": true
     }
   ]
 }

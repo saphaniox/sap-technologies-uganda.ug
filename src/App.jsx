@@ -34,7 +34,7 @@ import "./styles/App.css";
 import "./styles/ErrorBoundary.css";
 import "./styles/theme-complete.css";
 
-const SITE_URL = "https://www.sap-technologies.com";
+const SITE_URL = "https://sap-technologies.com";
 
 const CORE_SEARCH_TERMS = [
   "SAPTech Uganda",
