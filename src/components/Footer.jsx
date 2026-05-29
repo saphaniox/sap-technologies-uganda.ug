@@ -13,7 +13,7 @@ const SECTION_LINKS = [
   { id: "companies", label: "Our Platforms" }
 ];
 
-const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
+const Footer = ({ onNavigate }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -106,23 +106,23 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
         <div className="footer-legal">
           <p>&copy; 2026 SAPTech Uganda-Africa. All rights reserved.</p>
           <div className="legal-links">
-            <button
-              type="button"
-              onClick={onPrivacyPolicyOpen}
+            <a
+              href="/privacy-policy"
+              onClick={(event) => { event.preventDefault(); goToRoute("/privacy-policy"); }}
               className="legal-link"
               aria-label="Privacy Policy"
             >
               Privacy Policy
-            </button>
+            </a>
             <span className="separator">|</span>
-            <button
-              type="button"
-              onClick={onTermsOfServiceOpen}
+            <a
+              href="/terms-of-service"
+              onClick={(event) => { event.preventDefault(); goToRoute("/terms-of-service"); }}
               className="legal-link"
               aria-label="Terms of Service"
             >
               Terms of Service
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -131,7 +131,7 @@ const Footer = ({ onPrivacyPolicyOpen, onTermsOfServiceOpen, onNavigate }) => {
         <p>
           Designed & Powered by{" "}
           <a
-            href="https://sap-technologies.com"
+            href="https://www.sap-technologies.com"
             target="_blank"
             rel="noopener noreferrer"
             className="credits-link"

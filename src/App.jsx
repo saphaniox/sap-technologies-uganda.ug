@@ -34,7 +34,7 @@ import "./styles/App.css";
 import "./styles/ErrorBoundary.css";
 import "./styles/theme-complete.css";
 
-const SITE_URL = "https://sap-technologies.com";
+const SITE_URL = "https://www.sap-technologies.com";
 
 const CORE_SEARCH_TERMS = [
   "SAPTech Uganda",
@@ -439,6 +439,40 @@ function App() {
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           <Route path="/software" element={<SoftwarePage />} />
           <Route path="/iot" element={<IoTPage />} />
+          <Route path="/privacy-policy" element={
+            <>
+              <SEO
+                title="Privacy Policy | SAPTech Uganda"
+                description="Read the SAPTech Uganda privacy policy, including how we handle contact information, cookies, analytics, Google AdSense advertising, and user data."
+                keywords="SAPTech Uganda privacy policy, SAPTech cookies, SAPTech AdSense privacy, Uganda technology company privacy policy"
+                canonicalUrl={`${SITE_URL}/privacy-policy`}
+                url={`${SITE_URL}/privacy-policy`}
+                ogImage="/images/logo.png"
+              />
+              <PrivacyPolicy
+                onClose={() => navigate("/")}
+                onNavigate={handleSiteNavigation}
+                onTermsOfServiceOpen={() => navigate("/terms-of-service")}
+              />
+            </>
+          } />
+          <Route path="/terms-of-service" element={
+            <>
+              <SEO
+                title="Terms of Service | SAPTech Uganda"
+                description="Read SAPTech Uganda terms of service for website use, technology services, software projects, engineering work, payments, intellectual property, and support."
+                keywords="SAPTech Uganda terms of service, SAPTech service terms, software project terms Uganda, technology services terms"
+                canonicalUrl={`${SITE_URL}/terms-of-service`}
+                url={`${SITE_URL}/terms-of-service`}
+                ogImage="/images/logo.png"
+              />
+              <TermsOfService
+                onClose={() => navigate("/")}
+                onNavigate={handleSiteNavigation}
+                onPrivacyPolicyOpen={() => navigate("/privacy-policy")}
+              />
+            </>
+          } />
           <Route path="/*" element={
             <>
               <SEO
