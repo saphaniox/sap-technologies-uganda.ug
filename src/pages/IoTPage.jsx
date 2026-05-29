@@ -61,31 +61,30 @@ const IoTPage = () => {
           </div>
         </div>
 
-        {/* Main IoT Projects Component */}
-        <IoTProjects />
-
         <section className="iot-search-content" aria-labelledby="iot-search-title">
           <div className="container">
-            <h2 id="iot-search-title">IoT, automation, and connected device services</h2>
+            <h2 id="iot-search-title">Connected systems we build</h2>
             <p>
-              SAPTech Uganda develops Internet of Things systems and embedded electronics for
-              real-world monitoring, automation, and control. We combine sensors, Arduino,
-              Raspberry Pi, ESP32, NodeMCU, WiFi, Bluetooth, MQTT, dashboards, and cloud
-              integrations to create smart devices for homes, schools, farms, workshops,
-              businesses, and industrial sites.
+              SAPTech Uganda develops sensor-based systems for monitoring, automation, and
+              control in real environments. We combine embedded hardware, dashboards, alerts,
+              and connectivity so homes, farms, schools, workshops, and businesses can track
+              what matters and respond faster.
             </p>
             <div className="iot-search-grid" aria-label="Common IoT project types">
               <span>Smart home automation</span>
               <span>Security and surveillance systems</span>
               <span>Smart farming and agriculture tech</span>
               <span>Environmental monitoring</span>
-              <span>Industrial IoT dashboards</span>
+              <span>Industrial monitoring dashboards</span>
               <span>Remote monitoring and control</span>
-              <span>Sensor networks</span>
-              <span>Custom hardware prototypes</span>
+              <span>Sensor networks and alerts</span>
+              <span>Custom device prototypes</span>
             </div>
           </div>
         </section>
+
+        {/* Main IoT Projects Component */}
+        <IoTProjects />
       </div>
     </>
   );

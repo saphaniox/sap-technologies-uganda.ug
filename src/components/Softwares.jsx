@@ -172,9 +172,9 @@ const Softwares = () => {
       <div className="container">
         <div className="section-header">
           <span className="section-eyebrow">Digital tools</span>
-          <h2 className="section-title">Software Apps</h2>
+          <h2 className="section-title">Available software tools</h2>
           <p className="section-description">
-            Explore our portfolio of innovative web applications and digital tools. Launch apps directly from your browser - no downloads or installations required.
+            Browse live web tools, demos, and business-ready applications from SAPTech Uganda.
           </p>
         </div>
         

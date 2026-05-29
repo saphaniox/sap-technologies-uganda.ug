@@ -68,31 +68,30 @@ const SoftwarePage = () => {
           </div>
         </div>
 
-        {/* Main Software Component */}
-        <Softwares />
-
         <section className="software-search-content" aria-labelledby="software-search-title">
           <div className="container">
-            <h2 id="software-search-title">Software solutions for Ugandan businesses</h2>
+            <h2 id="software-search-title">Business software we build</h2>
             <p>
-              SAPTech Uganda builds practical software for companies, schools, shops, restaurants,
-              organizations, and startups that need reliable digital tools. Our work covers custom
-              web applications, business management systems, ecommerce platforms, inventory tracking,
-              school management systems, learning platforms, dashboards, booking tools, and internal
-              workflow systems.
+              SAPTech Uganda builds reliable digital systems for companies, schools, shops,
+              restaurants, startups, and organizations that need smoother daily operations.
+              We design browser-based tools for sales, records, orders, stock, learning,
+              reporting, bookings, and team workflows.
             </p>
             <div className="software-search-grid" aria-label="Common software project types">
-              <span>Custom web applications</span>
-              <span>Business management software</span>
-              <span>School management systems</span>
-              <span>Inventory management systems</span>
+              <span>Custom business portals</span>
+              <span>School records and results</span>
+              <span>Inventory and stock control</span>
               <span>Ecommerce platforms</span>
-              <span>Restaurant ordering systems</span>
-              <span>Learning management systems</span>
-              <span>Dashboards and reporting tools</span>
+              <span>Restaurant ordering tools</span>
+              <span>Learning and training systems</span>
+              <span>Booking and scheduling tools</span>
+              <span>Reports and dashboards</span>
             </div>
           </div>
         </section>
+
+        {/* Main Software Component */}
+        <Softwares />
       </div>
     </>
   );
