@@ -52,5 +52,40 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.saptechug.com"
+        }
+      ],
+      "destination": "https://saptechug.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "sap-technologies.com"
+        }
+      ],
+      "destination": "https://saptechug.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.sap-technologies.com"
+        }
+      ],
+      "destination": "https://saptechug.com/:path*",
+      "permanent": true
+    }
   ]
 }

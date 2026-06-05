@@ -1,5 +1,5 @@
 # robots.txt for SAPTech Uganda
-# https://www.sap-technologies.com
+# https://saptechug.com
 
 User-agent: *
 Allow: /
@@ -13,5 +13,5 @@ Disallow: /login
 Disallow: /register
 Disallow: /api/
 
-Sitemap: https://www.sap-technologies.com/sitemap.xml
-Host: www.sap-technologies.com
+Sitemap: https://saptechug.com/sitemap.xml
+Host: saptechug.com

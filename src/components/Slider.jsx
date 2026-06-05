@@ -32,7 +32,7 @@ const Slider = () => {
     {
       image: "/images/banner2.jpg",
       title: "Business Platforms",
-      description: "Empowering Ugandan businesses with modern technology solutions."
+      description: "Empowering businesses in Uganda and worldwide with modern technology solutions."
     },
     {
       image: "/images/GRAPHICS-DESIGN.jpg",

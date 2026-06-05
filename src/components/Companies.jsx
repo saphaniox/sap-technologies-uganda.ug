@@ -31,7 +31,7 @@ const Companies = () => {
     {
       title: "SAP E-Commerce",
       image: "/images/sap-ecomerce-site.jpg",
-      description: "Modern online shopping platform for Ugandan businesses and customers. Secure payments, product management, and seamless user experience.",
+      description: "Modern online shopping platform for businesses and customers in Uganda and worldwide. Secure payments, product management, and seamless user experience.",
       comingSoon: true
     }
   ];

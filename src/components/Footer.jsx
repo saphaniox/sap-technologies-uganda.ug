@@ -131,7 +131,7 @@ const Footer = ({ onNavigate }) => {
         <p>
           Designed & Powered by{" "}
           <a
-            href="https://www.sap-technologies.com"
+            href="https://saptechug.com"
             target="_blank"
             rel="noopener noreferrer"
             className="credits-link"

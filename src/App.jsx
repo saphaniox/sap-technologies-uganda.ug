@@ -34,7 +34,7 @@ import "./styles/App.css";
 import "./styles/ErrorBoundary.css";
 import "./styles/theme-complete.css";
 
-const SITE_URL = "https://www.sap-technologies.com";
+const SITE_URL = "https://saptechug.com";
 
 const CORE_SEARCH_TERMS = [
   "SAPTech Uganda",
@@ -74,8 +74,8 @@ const SECTION_SEO = {
   home: {
     path: "/",
     title: "SAPTech Uganda | Web Design, Software, IoT & Engineering",
-    description: "SAPTech Uganda provides web design, custom software, mobile apps, IoT projects, electrical designs, lithium battery power solutions, graphics, cloud, cybersecurity, and digital transformation in Uganda.",
-    keywords: CORE_SEARCH_TERMS,
+    description: "SAPTech Uganda provides web design, custom software, mobile apps, IoT projects, electrical designs, lithium battery power solutions, graphics, cloud, cybersecurity, and digital transformation for clients in Uganda and worldwide.",
+    keywords: `${CORE_SEARCH_TERMS}, web design worldwide, custom software worldwide, remote software development, international technology company`,
     topics: ["Web design", "Software development", "IoT projects", "Electrical engineering", "Power solutions"]
   },
   about: {
@@ -87,9 +87,9 @@ const SECTION_SEO = {
   },
   services: {
     path: "/services",
-    title: "Services | Web, Software, IoT & Engineering in Uganda",
-    description: "Explore SAPTech Uganda services: website design, ecommerce sites, custom software, mobile apps, cloud, cybersecurity, IoT automation, smart homes, security systems, electrical designs, lithium battery power, graphics, and branding.",
-    keywords: `${CORE_SEARCH_TERMS}, ecommerce website Uganda, business website Uganda, software solutions Uganda, IoT services Uganda, Arduino projects Uganda, Raspberry Pi projects Uganda, ESP32 projects Uganda, circuit design Uganda`,
+    title: "Services | Web, Software, IoT & Engineering Worldwide",
+    description: "Explore SAPTech Uganda services for local and international clients: website design, ecommerce sites, custom software, mobile apps, cloud, cybersecurity, IoT automation, smart homes, security systems, electrical designs, lithium battery power, graphics, and branding.",
+    keywords: `${CORE_SEARCH_TERMS}, ecommerce website Uganda, business website Uganda, software solutions Uganda, web design worldwide, custom software worldwide, IoT services Uganda, Arduino projects Uganda, Raspberry Pi projects Uganda, ESP32 projects Uganda, circuit design Uganda`,
     topics: ["Website design", "Ecommerce development", "Custom software", "IoT automation", "Electrical designs", "Branding"]
   },
   portfolio: {
