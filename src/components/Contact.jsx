@@ -14,8 +14,8 @@ const contactInfo = [
   {
     iconClass: "mail",
     title: "Email",
-    info: "saptechnologies256@gmail.com",
-    link: "mailto:saptechnologies256@gmail.com"
+    info: "info@saptechug.com",
+    link: "mailto:info@saptechug.com"
   },
   {
     iconClass: "phone",

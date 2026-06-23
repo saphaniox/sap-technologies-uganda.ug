@@ -197,6 +197,8 @@ const getSectionIdFromPath = (pathname) => SECTION_ROUTE_MAP[normalizePath(pathn
 const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
 const SoftwarePage = lazy(() => import("./pages/SoftwarePage"));
 const IoTPage = lazy(() => import("./pages/IoTPage"));
+const Careers = lazy(() => import("./pages/Careers"));
+const Gallery = lazy(() => import("./components/Gallery"));
 const ForgotPassword = lazy(() => import("./components/ForgotPassword"));
 const Account = lazy(() => import("./components/Account"));
 const AdminDashboard = lazy(() => import("./components/AdminDashboard"));
@@ -439,6 +441,8 @@ function App() {
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           <Route path="/software" element={<SoftwarePage />} />
           <Route path="/iot" element={<IoTPage />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/privacy-policy" element={
             <>
               <SEO

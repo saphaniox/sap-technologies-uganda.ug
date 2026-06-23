@@ -167,7 +167,7 @@ const PrivacyPolicy = ({ onClose, onNavigate, onTermsOfServiceOpen }) => {
               If you have any questions about this Privacy Policy, please contact us:
             </p>
             <div className="contact-info">
-              <p><strong>Email:</strong> saptechnologies256@gmail.com</p>
+              <p><strong>Email:</strong> privacy@saptechug.com</p>
               <p><strong>Phone:</strong> +256 706 564 628</p>
               <p><strong>Address:</strong> Kampala, Uganda</p>
             </div>
@@ -196,7 +196,7 @@ const PrivacyPolicy = ({ onClose, onNavigate, onTermsOfServiceOpen }) => {
             </button>
           </div>
           <div className="legal-footer-contact">
-            <a href="mailto:saptechnologies256@gmail.com">Email</a>
+            <a href="mailto:privacy@saptechug.com">Email</a>
             <a href="tel:+256706564628">Call</a>
             <a href="https://wa.me/256706564628" target="_blank" rel="noopener noreferrer">WhatsApp</a>
           </div>

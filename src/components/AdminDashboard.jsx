@@ -7,6 +7,8 @@ import ServiceForm from "./ServiceForm";
 import ProjectForm from "./ProjectForm";
 import PartnerForm from "./PartnerForm";
 import ProductForm from "./ProductForm";
+import GalleryForm from "./GalleryForm";
+import JobForm from "./JobForm";
 import AdminDebugTools from "./AdminDebugTools";
 import AwardsAdmin from "./AwardsAdmin";
 import VisitorAnalytics from "./VisitorAnalytics";
@@ -116,6 +118,8 @@ const AdminDashboard = ({ user, onClose }) => {
   const [products, setProducts] = useState([]); // Company products
   const [productInquiries, setProductInquiries] = useState([]); // Product inquiry submissions
   const [serviceQuotes, setServiceQuotes] = useState([]); // Service quote requests
+  const [galleryItems, setGalleryItems] = useState([]); // Gallery images
+  const [jobs, setJobs] = useState([]); // Job postings
   
   // UI state for loading and error handling
   const [loading, setLoading] = useState(true);
@@ -159,6 +163,8 @@ const AdminDashboard = ({ user, onClose }) => {
   const [productInquiriesStatusFilter, setProductInquiriesStatusFilter] = useState("");
   const [serviceQuotesSearch, setServiceQuotesSearch] = useState("");
   const [serviceQuotesStatusFilter, setServiceQuotesStatusFilter] = useState("");
+  const [gallerySearch, setGallerySearch] = useState("");
+  const [jobsSearch, setJobsSearch] = useState("");
   
   // Settings states
   const [currentSignature, setCurrentSignature] = useState(null);
@@ -179,6 +185,10 @@ const AdminDashboard = ({ user, onClose }) => {
   const [editingProject, setEditingProject] = useState(null);
   const [editingPartner, setEditingPartner] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [showGalleryForm, setShowGalleryForm] = useState(false);
+  const [showJobForm, setShowJobForm] = useState(false);
+  const [editingGallery, setEditingGallery] = useState(null);
+  const [editingJob, setEditingJob] = useState(null);
   const [hasFetchedInitialData, setHasFetchedInitialData] = useState(false);
 
   // Utility function to set message with auto-dismissal

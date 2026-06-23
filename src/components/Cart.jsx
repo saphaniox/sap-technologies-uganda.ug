@@ -5,7 +5,7 @@ import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/Cart.css";
 
 const WHATSAPP_NUMBER = "256706564628";
-const BUSINESS_EMAIL = "saptechnologies256@gmail.com";
+const BUSINESS_EMAIL = "sales@saptechug.com";
 
 const formatPrice = (price) => {
   if (!price || price.type === "contact-for-price" || !price.amount) return "Contact for price";

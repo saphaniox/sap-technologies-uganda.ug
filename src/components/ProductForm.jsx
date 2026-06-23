@@ -4,6 +4,7 @@ import { showAlert } from "../utils/alerts.jsx";
 import { getImageUrl } from "../utils/imageUrl";
 import { compressImageFiles, removeConnectedBackgroundToWhite } from "../utils/mediaCompression";
 import "../styles/ProductForm.css";
+import "../styles/ProductFormToggle.css";
 
 const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
     const [formData, setFormData] = useState({
@@ -30,6 +31,7 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
     const [imagesToDelete, setImagesToDelete] = useState([]);
     const [newImageFiles, setNewImageFiles] = useState([]);
     const [imageProcessing, setImageProcessing] = useState(false);
+    const [removeBackground, setRemoveBackground] = useState(true);
 
     useEffect(() => {
         if (product) {
@@ -175,11 +177,12 @@ const ProductForm = ({ isOpen, onClose, product, onSuccess }) => {
 
             let optimizedFiles;
             try {
-                const whiteBackgroundFiles = await Promise.all(
-                    files.map((file) => removeConnectedBackgroundToWhite(file))
-                );
+                // Only remove background if the toggle is enabled
+                const processedFiles = removeBackground 
+                    ? await Promise.all(files.map((file) => removeConnectedBackgroundToWhite(file)))
+                    : files;
 
-                optimizedFiles = await compressImageFiles(whiteBackgroundFiles, {
+                optimizedFiles = await compressImageFiles(processedFiles, {
                     maxWidth: 1400,
                     maxHeight: 1400,
                     quality: 0.82
@@ -536,6 +539,24 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
                     <div className="form-section">
                         <h3>Product Images (Max 5) <span className="optional">(optional)</span></h3>
                         <div className="image-upload-section">
+                            <div className="background-removal-toggle">
+                                <label className="toggle-label">
+                                    <input
+                                        type="checkbox"
+                                        checked={removeBackground}
+                                        onChange={(e) => setRemoveBackground(e.target.checked)}
+                                    />
+                                    <span className="toggle-text">
+                                        {removeBackground ? '✓ Remove Background (White)' : '✗ Keep Original Background'}
+                                    </span>
+                                </label>
+                                <small className="toggle-help">
+                                    {removeBackground 
+                                        ? 'Images will be cleaned onto a white background automatically'
+                                        : 'Images will keep their original background'}
+                                </small>
+                            </div>
+                            
                             <input
                                 type="file"
                                 multiple
@@ -555,9 +576,6 @@ let errorMessage = error.message || "Something went wrong saving the product. Pl
                             >
                                 <i className="fas fa-plus"></i> {imageProcessing ? "Preparing Images..." : `Add Images (${imagePreviews.length}/5)`}
                             </button>
-                            <p className="image-upload-help">
-                                Product images are automatically cleaned onto a white background before upload.
-                            </p>
                             
                             {/* Image Previews Grid */}
                             {imagePreviews.length > 0 && (

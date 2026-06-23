@@ -766,6 +766,87 @@ class ApiService {
     });
   }
 
+  // Gallery methods
+  async getPublicGallery() {
+    return this.request("/api/gallery/public");
+  }
+
+  async getAdminGallery() {
+    return this.request("/api/gallery");
+  }
+
+  async createGalleryItem(formData) {
+    return this.request("/api/gallery", {
+      method: "POST",
+      body: formData
+    });
+  }
+
+  async updateGalleryItem(galleryId, formData) {
+    return this.request(`/api/gallery/${galleryId}`, {
+      method: "PUT",
+      body: formData
+    });
+  }
+
+  async deleteGalleryItem(galleryId) {
+    return this.request(`/api/gallery/${galleryId}`, {
+      method: "DELETE"
+    });
+  }
+
+  // Jobs methods
+  async getPublicJobs() {
+    return this.request("/api/jobs/public");
+  }
+
+  async getAdminJobs() {
+    return this.request("/api/jobs");
+  }
+
+  async createJob(jobData) {
+    return this.request("/api/jobs", {
+      method: "POST",
+      body: JSON.stringify(jobData),
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  async updateJob(jobId, jobData) {
+    return this.request(`/api/jobs/${jobId}`, {
+      method: "PUT",
+      body: JSON.stringify(jobData),
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  async deleteJob(jobId) {
+    return this.request(`/api/jobs/${jobId}`, {
+      method: "DELETE"
+    });
+  }
+
+  async applyForJob(jobId, applicationData) {
+    return this.request(`/api/jobs/${jobId}/apply`, {
+      method: "POST",
+      body: JSON.stringify(applicationData),
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  async getJobApplications(jobId, params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.request(`/api/jobs/${jobId}/applications${queryString ? `?${queryString}` : ""}`);
+  }
+
+  async updateApplicationStatus(applicationId, status, adminNotes = "") {
+    return this.request(`/api/jobs/applications/${applicationId}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status, adminNotes }),
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
   // Products methods
   async getProducts(params = {}) {
     const queryParams = new URLSearchParams(params).toString();

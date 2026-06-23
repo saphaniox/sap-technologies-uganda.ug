@@ -133,7 +133,7 @@ const CertificateVerify = () => {
                     </div>
                     <div className="contact-info">
                         <p>For assistance, please contact us at:</p>
-                        <a href="mailto:saptechnologies256@gmail.com">saptechnologies256@gmail.com</a>
+                        <a href="mailto:support@saptechug.com">support@saptechug.com</a>
                     </div>
                 </div>
             </div>

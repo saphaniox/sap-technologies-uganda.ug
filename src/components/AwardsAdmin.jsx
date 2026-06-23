@@ -1288,7 +1288,7 @@ const AwardsAdmin = () => {
                   
                   // Auto-fill nominator info with admin defaults
                   formData.append('nominatorName', 'SAPTech Uganda Admin');
-                  formData.append('nominatorEmail', 'admin@saptechnologies.com');
+                  formData.append('nominatorEmail', 'admin@saptechug.com');
                   formData.append('nominatorOrganization', 'SAPTech Uganda');
                   
                   const response = await apiService.createAdminNomination(formData);
