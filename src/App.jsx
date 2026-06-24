@@ -70,6 +70,8 @@ const SECTION_ROUTE_MAP = {
   "/contact": "contact"
 };
 
+const SECTION_ROUTES = Object.keys(SECTION_ROUTE_MAP);
+
 const SECTION_SEO = {
   home: {
     path: "/",
@@ -133,6 +135,21 @@ const SECTION_SEO = {
     description: "Contact SAPTech Uganda in Kampala for web design, software development, mobile apps, IoT systems, electrical engineering, graphics, cloud, cybersecurity, power solutions, and digital transformation projects.",
     keywords: `${CORE_SEARCH_TERMS}, contact SAPTech Uganda, SAPTech Kampala, software developer Uganda contact, website designer Kampala contact, IoT engineer Uganda contact`,
     topics: ["Contact SAPTech Uganda", "Software project inquiry", "Website project inquiry", "IoT project inquiry", "Engineering project inquiry"]
+  }
+};
+
+const SECONDARY_PAGE_SEO = {
+  careers: {
+    title: "Careers | Join SAPTech Uganda",
+    description: "Explore open career opportunities at SAPTech Uganda and apply to join a team building websites, software, IoT systems, engineering solutions, and digital tools.",
+    keywords: `${CORE_SEARCH_TERMS}, SAPTech Uganda careers, technology jobs Uganda, software jobs Kampala, engineering jobs Uganda`,
+    path: "/careers"
+  },
+  gallery: {
+    title: "Gallery | SAPTech Uganda Projects, Services & Team",
+    description: "View photos from SAPTech Uganda projects, services, events, team moments, office work, and technology activities across software, IoT, design, and engineering.",
+    keywords: `${CORE_SEARCH_TERMS}, SAPTech Uganda gallery, SAPTech photos, technology projects Uganda, engineering project photos`,
+    path: "/gallery"
   }
 };
 
@@ -431,6 +448,125 @@ function App() {
     }
   };
 
+  const renderHeader = () => (
+    <Header
+      key={`header-${isAuthenticated ? "auth" : "guest"}`}
+      isAuthenticated={isAuthenticated}
+      userName={userName}
+      userRole={userDetails?.role}
+      userProfilePic={userDetails?.profilePic}
+      onAuthModalOpen={handleAuthModalOpen}
+      onAccountOpen={handleAccountOpen}
+      onAdminOpen={handleAdminOpen}
+      onLogout={handleLogout}
+      onNavigate={handleSiteNavigation}
+      legalOpen={legalPageOpen}
+    />
+  );
+
+  const renderFooter = () => (
+    <Suspense fallback={null}>
+      <Footer onNavigate={handleSiteNavigation} />
+    </Suspense>
+  );
+
+  const renderSharedSiteTools = () => (
+    <>
+      <BackToTop />
+      <WhatsAppButton />
+      <CookieConsent onPrivacyPolicyOpen={handlePrivacyPolicyOpen} />
+      <PhotoLightbox />
+      <Cart />
+      <CartFloatButton />
+
+      <AuthModal
+        isOpen={authModal.isOpen}
+        mode={authModal.mode}
+        onClose={handleAuthModalClose}
+        onAuthSuccess={handleAuthSuccess}
+        onModeSwitch={handleAuthModeSwitch}
+      />
+
+      <ForgotPassword
+        isOpen={showForgotPassword}
+        onClose={() => setShowForgotPassword(false)}
+      />
+
+      {showAccount && (
+        <Account
+          onClose={handleAccountClose}
+        />
+      )}
+
+      {showAdmin && (
+        <AdminDashboard
+          user={userDetails}
+          onClose={handleAdminClose}
+        />
+      )}
+
+      {showPrivacyPolicy && (
+        <PrivacyPolicy
+          onClose={handlePrivacyPolicyClose}
+          onNavigate={handleSiteNavigation}
+          onTermsOfServiceOpen={handleTermsOfServiceOpen}
+        />
+      )}
+
+      {showTermsOfService && (
+        <TermsOfService
+          onClose={handleTermsOfServiceClose}
+          onNavigate={handleSiteNavigation}
+          onPrivacyPolicyOpen={handlePrivacyPolicyOpen}
+        />
+      )}
+    </>
+  );
+
+  const renderHomePage = () => (
+    <>
+      <SEO
+        title={currentSectionSeo.title}
+        description={currentSectionSeo.description}
+        keywords={currentSectionSeo.keywords}
+        canonicalUrl={currentSectionUrl}
+        url={currentSectionUrl}
+        ogImage="/images/logo.png"
+        structuredData={currentSectionStructuredData}
+      />
+      {renderHeader()}
+
+      <main>
+        <Hero />
+        <Slider />
+        <About />
+        <Suspense fallback={null}>
+          <Services />
+          <Portfolio />
+          <Partners />
+          <Companies />
+          <Products />
+          <Testimonials />
+          <Contact />
+        </Suspense>
+      </main>
+
+      {renderFooter()}
+      {renderSharedSiteTools()}
+    </>
+  );
+
+  const renderPublicPage = (children) => (
+    <>
+      {renderHeader()}
+      <main className="route-page-shell">
+        {children}
+      </main>
+      {renderFooter()}
+      {renderSharedSiteTools()}
+    </>
+  );
+
   return (
     <ErrorBoundary>
       <CartProvider>
@@ -439,10 +575,34 @@ function App() {
         <Suspense fallback={null}>
         <Routes>
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
-          <Route path="/software" element={<SoftwarePage />} />
-          <Route path="/iot" element={<IoTPage />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/software" element={renderPublicPage(<SoftwarePage />)} />
+          <Route path="/iot" element={renderPublicPage(<IoTPage />)} />
+          <Route path="/careers" element={renderPublicPage(
+            <>
+              <SEO
+                title={SECONDARY_PAGE_SEO.careers.title}
+                description={SECONDARY_PAGE_SEO.careers.description}
+                keywords={SECONDARY_PAGE_SEO.careers.keywords}
+                canonicalUrl={`${SITE_URL}${SECONDARY_PAGE_SEO.careers.path}`}
+                url={`${SITE_URL}${SECONDARY_PAGE_SEO.careers.path}`}
+                ogImage="/images/logo.png"
+              />
+              <Careers />
+            </>
+          )} />
+          <Route path="/gallery" element={renderPublicPage(
+            <>
+              <SEO
+                title={SECONDARY_PAGE_SEO.gallery.title}
+                description={SECONDARY_PAGE_SEO.gallery.description}
+                keywords={SECONDARY_PAGE_SEO.gallery.keywords}
+                canonicalUrl={`${SITE_URL}${SECONDARY_PAGE_SEO.gallery.path}`}
+                url={`${SITE_URL}${SECONDARY_PAGE_SEO.gallery.path}`}
+                ogImage="/images/logo.png"
+              />
+              <Gallery />
+            </>
+          )} />
           <Route path="/privacy-policy" element={
             <>
               <SEO
@@ -477,104 +637,10 @@ function App() {
               />
             </>
           } />
-          <Route path="/*" element={
-            <>
-              <SEO
-                title={currentSectionSeo.title}
-                description={currentSectionSeo.description}
-                keywords={currentSectionSeo.keywords}
-                canonicalUrl={currentSectionUrl}
-                url={currentSectionUrl}
-                ogImage="/images/logo.png"
-                structuredData={currentSectionStructuredData}
-              />
-              <Header 
-                key={`header-${isAuthenticated ? 'auth' : 'guest'}`}
-                isAuthenticated={isAuthenticated}
-                userName={userName}
-                userRole={userDetails?.role}
-                userProfilePic={userDetails?.profilePic}
-                onAuthModalOpen={handleAuthModalOpen}
-                onAccountOpen={handleAccountOpen}
-                onAdminOpen={handleAdminOpen}
-                onLogout={handleLogout}
-                onNavigate={handleSiteNavigation}
-                legalOpen={legalPageOpen}
-              />
-              
-              <main>
-                <Hero />
-                <Slider />
-                <About />
-                <Suspense fallback={null}>
-                  <Services />
-                  <Portfolio />
-                  <Partners />
-                  <Companies />
-                  <Products />
-                  <Testimonials />
-                  <Contact />
-                </Suspense>
-              </main>
-              
-              <Suspense fallback={null}>
-                <Footer 
-                  onPrivacyPolicyOpen={handlePrivacyPolicyOpen}
-                  onTermsOfServiceOpen={handleTermsOfServiceOpen}
-                  onNavigate={handleSiteNavigation}
-                />
-              </Suspense>
-              <BackToTop />
-              <WhatsAppButton />
-              <CookieConsent onPrivacyPolicyOpen={handlePrivacyPolicyOpen} />
-              <PhotoLightbox />
-              <Cart />
-              <CartFloatButton />
-              
-              <AuthModal 
-                isOpen={authModal.isOpen}
-                mode={authModal.mode}
-                onClose={handleAuthModalClose}
-                onAuthSuccess={handleAuthSuccess}
-                onModeSwitch={handleAuthModeSwitch}
-              />
-              
-              <ForgotPassword 
-                isOpen={showForgotPassword}
-                onClose={() => setShowForgotPassword(false)}
-              />
-              
-              {showAccount && (
-                <Account 
-                  onClose={handleAccountClose}
-                />
-              )}
-              
-              {showAdmin && (
-                <AdminDashboard 
-                  user={userDetails}
-                  onClose={handleAdminClose}
-                />
-              )}
-
-              {showPrivacyPolicy && (
-                <PrivacyPolicy 
-                  onClose={handlePrivacyPolicyClose}
-                  onNavigate={handleSiteNavigation}
-                  onTermsOfServiceOpen={handleTermsOfServiceOpen}
-                />
-              )}
-
-              {showTermsOfService && (
-                <TermsOfService 
-                  onClose={handleTermsOfServiceClose}
-                  onNavigate={handleSiteNavigation}
-                  onPrivacyPolicyOpen={handlePrivacyPolicyOpen}
-                />
-              )}
-            </>
-          } />
-          <Route path="*" element={<NotFound />} />
+          {SECTION_ROUTES.map((path) => (
+            <Route key={path} path={path} element={renderHomePage()} />
+          ))}
+          <Route path="*" element={renderPublicPage(<NotFound />)} />
         </Routes>
         </Suspense>
       </div>

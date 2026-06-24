@@ -77,6 +77,16 @@ const Footer = ({ onNavigate }) => {
                 IoT Projects
               </a>
             </li>
+            <li>
+              <a href="/gallery" onClick={(event) => { event.preventDefault(); goToRoute("/gallery"); }}>
+                Gallery
+              </a>
+            </li>
+            <li>
+              <a href="/careers" onClick={(event) => { event.preventDefault(); goToRoute("/careers"); }}>
+                Careers
+              </a>
+            </li>
           </ul>
         </div>
 
