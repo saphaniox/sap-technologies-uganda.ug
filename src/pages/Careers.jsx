@@ -142,6 +142,30 @@ const Careers = () => {
           )}
         </div>
 
+        <div className="careers-info-grid" aria-label="Career areas at SAPTech Uganda">
+          <article>
+            <h3>Engineering & IoT</h3>
+            <p>
+              Work on connected devices, automation systems, sensors, embedded prototypes,
+              smart homes, security systems, and practical engineering projects for real users.
+            </p>
+          </article>
+          <article>
+            <h3>Software & Web</h3>
+            <p>
+              Build business websites, dashboards, mobile-friendly apps, ecommerce platforms,
+              school systems, inventory tools, and custom workflow software for local and global clients.
+            </p>
+          </article>
+          <article>
+            <h3>Design & Client Delivery</h3>
+            <p>
+              Support branding, graphics, project planning, documentation, testing, training,
+              and client communication so every solution is clear, useful, and maintainable.
+            </p>
+          </article>
+        </div>
+
         {jobs.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">💼</div>

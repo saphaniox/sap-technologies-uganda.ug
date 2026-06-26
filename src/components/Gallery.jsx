@@ -154,6 +154,30 @@ const Gallery = () => {
           )}
         </div>
 
+        <div className="gallery-story-grid" aria-label="What SAPTech Uganda documents in the gallery">
+          <article>
+            <h3>Project Builds</h3>
+            <p>
+              Photos from websites, business systems, IoT devices, electronics prototypes,
+              installation work, testing sessions, and client-ready technology solutions.
+            </p>
+          </article>
+          <article>
+            <h3>Service Delivery</h3>
+            <p>
+              A visual record of design, software development, graphics, electrical engineering,
+              automation, security, and digital transformation work delivered by the team.
+            </p>
+          </article>
+          <article>
+            <h3>Team & Events</h3>
+            <p>
+              Moments from workshops, training, office work, community events, partnerships,
+              and the people behind SAPTech Uganda's engineering and technology projects.
+            </p>
+          </article>
+        </div>
+
         <div className="gallery-filters">
           {CATEGORIES.map((cat) => (
             <button

@@ -4,7 +4,7 @@
   xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://saptechug.com/</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://saptechug.com/about</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -24,45 +24,25 @@
   </url>
   <url>
     <loc>https://saptechug.com/services</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
       <image:loc>https://saptechug.com/images/WEB-DESIGN.jpg</image:loc>
-      <image:title>Website design services for clients worldwide</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://saptechug.com/images/electrical.jpg</image:loc>
-      <image:title>Electrical engineering designs for local and international clients</image:title>
+      <image:title>Website design services for local and international clients</image:title>
     </image:image>
     <image:image>
       <image:loc>https://saptechug.com/images/software.jpg</image:loc>
       <image:title>Custom software development services</image:title>
     </image:image>
-  </url>
-  <url>
-    <loc>https://saptechug.com/software</loc>
-    <lastmod>2026-05-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
-      <image:loc>https://saptechug.com/images/software.jpg</image:loc>
-      <image:title>SAPTech Uganda software apps and business systems</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://saptechug.com/iot</loc>
-    <lastmod>2026-05-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>https://saptechug.com/images/ioT.jpg</image:loc>
-      <image:title>IoT projects and smart systems for clients worldwide</image:title>
+      <image:loc>https://saptechug.com/images/electrical.jpg</image:loc>
+      <image:title>Electrical engineering and power solution services</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://saptechug.com/portfolio</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -73,36 +53,78 @@
       <image:loc>https://saptechug.com/images/school-management.jpg</image:loc>
       <image:title>School management system project in Uganda</image:title>
     </image:image>
-    <image:image>
-      <image:loc>https://saptechug.com/images/inventory-management.jpg</image:loc>
-      <image:title>Inventory management system project</image:title>
-    </image:image>
   </url>
   <url>
     <loc>https://saptechug.com/products</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
       <image:loc>https://saptechug.com/images/sap-business-management.png</image:loc>
-      <image:title>SAPTech Uganda technology products</image:title>
+      <image:title>SAPTech Uganda technology products and IoT devices</image:title>
     </image:image>
   </url>
   <url>
+    <loc>https://saptechug.com/software</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://saptechug.com/images/software.jpg</image:loc>
+      <image:title>SAPTech Uganda software apps and business systems</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://saptechug.com/iot</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://saptechug.com/images/ioT.jpg</image:loc>
+      <image:title>IoT projects and smart systems for clients worldwide</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://saptechug.com/gallery</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://saptechug.com/images/banner2.jpg</image:loc>
+      <image:title>SAPTech Uganda project and service gallery</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://saptechug.com/awards</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+    <image:image>
+      <image:loc>https://saptechug.com/images/logo.png</image:loc>
+      <image:title>TECH AWARDS 2026 by SAPTech Uganda</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://saptechug.com/careers</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://saptechug.com/partners</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://saptechug.com/companies</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://saptechug.com/testimonials</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <image:image>
@@ -112,19 +134,19 @@
   </url>
   <url>
     <loc>https://saptechug.com/contact</loc>
-    <lastmod>2026-05-27</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://saptechug.com/privacy-policy</loc>
-    <lastmod>2026-05-29</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://saptechug.com/terms-of-service</loc>
-    <lastmod>2026-05-29</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
