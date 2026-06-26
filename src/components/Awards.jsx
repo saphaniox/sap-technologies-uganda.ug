@@ -11,7 +11,7 @@ import { Icon } from "./IconLibrary";
 import "../styles/Awards.css";
 import "../styles/IconLibrary.css";
 
-const Awards = ({ onClose }) => {
+const Awards = ({ onClose, showStandaloneChrome = true }) => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [nominations, setNominations] = useState([]);
@@ -72,8 +72,8 @@ const Awards = ({ onClose }) => {
   useEffect(() => {
     loadCategories();
     
-    // Countdown timer - Awards deadline: December 25, 2025, 23:59:59
-    const deadline = new Date("2025-12-25T23:59:59").getTime();
+    // Countdown timer - TECH AWARDS 2026 deadline: December 25, 2026, 23:59:59
+    const deadline = new Date("2026-12-25T23:59:59").getTime();
     
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -330,8 +330,12 @@ const Awards = ({ onClose }) => {
       }
     ).then((result) => {
       if (result.isConfirmed) {
-        // Close the awards modal
-        onClose();
+        // Close the awards modal when it is opened as a modal; otherwise go home.
+        if (onClose) {
+          onClose();
+        } else {
+          navigate("/");
+        }
         // Small delay to ensure modal closes first
         setTimeout(() => {
           // Try to scroll to the section on main page
@@ -347,6 +351,7 @@ const Awards = ({ onClose }) => {
   return (
     <div className="awards-standalone-page">
       {/* Simple Awards Header */}
+      {showStandaloneChrome && (
       <div className="awards-simple-header">
         <div className="awards-header-content">
           <button 
@@ -357,11 +362,12 @@ const Awards = ({ onClose }) => {
             ← Back to Home
           </button>
           <h1 className="awards-header-title">
-            🏆 Welcome to Saphaniox Awards 2025
+            TECH AWARDS 2026
           </h1>
           <div className="header-spacer"></div>
         </div>
       </div>
+      )}
 
       {/* Hero Section - Inspirational */}
       <section className="awards-hero-section">
@@ -376,28 +382,28 @@ const Awards = ({ onClose }) => {
             {/* Awards Logo */}
             <div className="awards-logo animated fadeInDown">
               <img 
-                src="/images/saphaniox-awards-image.jpg" 
-                alt="Saphaniox Awards Logo" 
+                src="/images/logo.png" 
+                alt="TECH AWARDS 2026 Logo" 
                 className="awards-logo-image"
               />
             </div>
 
             <div className="hero-badge animated fadeInDown delay-1">
               <span className="badge-icon">🏆</span>
-              <span className="badge-text">5 Years of Saphaniox Awards</span>
+              <span className="badge-text">TECH AWARDS 2026</span>
             </div>
             
             <h1 className="awards-hero-title animated fadeInUp">
-              <span className="title-line title-line-1">Celebrating</span>
-              <span className="title-line title-line-2">Excellence in</span>
+              <span className="title-line title-line-1">TECH AWARDS</span>
+              <span className="title-line title-line-2">2026</span>
               <span className="title-line title-line-3">
-                <span className="gradient-text">Engineering</span> & <span className="gradient-text">Technology</span>
+                <span className="gradient-text">Engineering</span> & <span className="gradient-text">Technology Excellence</span>
               </span>
             </h1>
             
             <p className="awards-hero-subtitle animated fadeInUp delay-1">
-              Recognizing outstanding contributions to technology advancement, innovation, 
-              and engineering excellence in Uganda and across the international community. 
+              Recognizing outstanding contributions to technology advancement, innovation,
+              and engineering excellence in Uganda and across the international community.
               Join us in honoring the minds that shape our digital future.
             </p>
             
@@ -481,7 +487,7 @@ const Awards = ({ onClose }) => {
             
             {/* Social Sharing */}
             <div className="social-sharing animated fadeInUp delay-5">
-              <p className="sharing-text">Share the awards:</p>
+              <p className="sharing-text">Share TECH AWARDS 2026:</p>
               <div className="social-buttons">
                 <a 
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
@@ -495,7 +501,7 @@ const Awards = ({ onClose }) => {
                   </svg>
                 </a>
                 <a 
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=Check%20out%20Saphaniox%20Awards%202025!`}
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=Check%20out%20TECH%20AWARDS%202026!`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-btn twitter"
@@ -517,7 +523,7 @@ const Awards = ({ onClose }) => {
                   </svg>
                 </a>
                 <a 
-                  href={`https://wa.me/?text=Check%20out%20Saphaniox%20Awards%202025!%20${encodeURIComponent(window.location.href)}`}
+                  href={`https://wa.me/?text=Check%20out%20TECH%20AWARDS%202026!%20${encodeURIComponent(window.location.href)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-btn whatsapp"
@@ -528,7 +534,7 @@ const Awards = ({ onClose }) => {
                   </svg>
                 </a>
                 <a 
-                  href={`https://www.tiktok.com/share?url=${encodeURIComponent(window.location.href)}&title=Check%20out%20Saphaniox%20Awards%202025!`}
+                  href={`https://www.tiktok.com/share?url=${encodeURIComponent(window.location.href)}&title=Check%20out%20TECH%20AWARDS%202026!`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-btn tiktok"
@@ -571,7 +577,7 @@ const Awards = ({ onClose }) => {
             🏆 Award Categories
           </h2>
           <p>
-            Explore our diverse categories celebrating different aspects of technological excellence
+            Explore the 2026 categories celebrating different aspects of technological excellence
           </p>
           
           {loading.categories ? (
@@ -821,24 +827,26 @@ const Awards = ({ onClose }) => {
       )}
       
       {/* Footer */}
+      {showStandaloneChrome && (
       <Footer 
         onPrivacyPolicyOpen={handlePrivacyPolicyOpen}
         onTermsOfServiceOpen={handleTermsOfServiceOpen}
         onNavigate={handleFooterNavigate}
       />
+      )}
       
       {/* Privacy Policy Modal */}
-      {showPrivacyPolicy && (
+      {showStandaloneChrome && showPrivacyPolicy && (
         <PrivacyPolicy onClose={handlePrivacyPolicyClose} />
       )}
       
       {/* Terms of Service Modal */}
-      {showTermsOfService && (
+      {showStandaloneChrome && showTermsOfService && (
         <TermsOfService onClose={handleTermsOfServiceClose} />
       )}
       
       {/* Back to Top Button */}
-      <BackToTop />
+      {showStandaloneChrome && <BackToTop />}
     </div>
   );
 };

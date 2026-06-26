@@ -1006,7 +1006,7 @@ const AwardsAdmin = () => {
   return (
     <div className="awards-admin">
       <div className="admin-section-header">
-        <h2>🏆 Awards Management</h2>
+        <h2>🏆 Tech Awards 2026 Management</h2>
         <div className="sub-tabs">
           <button
             className={`sub-tab ${activeSubTab === "nominations" ? "active" : ""}`}

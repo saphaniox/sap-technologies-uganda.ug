@@ -22,6 +22,17 @@ main {
   flex-direction: column;
 }
 
+.route-page-shell {
+  padding-top: 96px;
+  background: var(--bg-color);
+}
+
+@media (max-width: 700px) {
+  .route-page-shell {
+    padding-top: 0;
+  }
+}
+
 /* ===========================
    RESPONSIVE SECTIONS
    =========================== */

@@ -82,6 +82,7 @@ const NAV_ITEMS = [
   { id: "software", label: "Software Apps", route: "/software" },
   { id: "iot", label: "IoT Projects", route: "/iot" },
   { id: "gallery", label: "Gallery", route: "/gallery" },
+  { id: "awards", label: "Tech Awards 2026", route: "/awards" },
   { id: "careers", label: "Careers", route: "/careers" },
   { id: "products", label: "Products" },
   { id: "partners", label: "Partners" },

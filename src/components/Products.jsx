@@ -9,6 +9,8 @@ import { LoadingOverlay, showAlert } from "../utils/alerts.jsx";
 import { getImageUrl, PLACEHOLDERS } from "../utils/imageUrl";
 import "../styles/Products.css";
 
+const DEFAULT_PRODUCT_CATEGORY = "IoT Devices";
+
 const WhatsAppIcon = ({ className = "product-whatsapp-icon" }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +28,7 @@ const Products = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("all");
+    const [selectedCategory, setSelectedCategory] = useState(DEFAULT_PRODUCT_CATEGORY);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showInquiryForm, setShowInquiryForm] = useState(false);
     const [categories, setCategories] = useState([]);
@@ -40,6 +42,7 @@ const Products = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const { addToCart, isInCart } = useCart();
+    const isAdmin = user?.role === "admin";
 
     // Cache of all products; never overwritten between category switches
     const allProductsRef = useRef([]);
@@ -68,13 +71,22 @@ const Products = () => {
                     apiService.request("/api/products/categories")
                 ]);
 
-                if (productsResponse.status === "success") {
-                    allProductsRef.current = productsResponse.data.products;
-                    setProducts(productsResponse.data.products);
-                }
+                const productList = productsResponse.status === "success" ? productsResponse.data.products : [];
+                const categoryList = categoriesResponse.status === "success" ? categoriesResponse.data.categories : [];
+                const defaultCategory = categoryList.find((category) =>
+                    String(category._id).toLowerCase().includes("iot")
+                )?._id || productList.find((product) =>
+                    String(product.category).toLowerCase().includes("iot")
+                )?.category || DEFAULT_PRODUCT_CATEGORY;
 
+                if (productsResponse.status === "success") {
+                    allProductsRef.current = productList;
+                    setSelectedCategory(defaultCategory);
+                    setProducts(applyFilters(productList, defaultCategory, ""));
+                }
+                
                 if (categoriesResponse.status === "success") {
-                    setCategories(categoriesResponse.data.categories);
+                    setCategories(categoryList);
                 }
             } catch {
                 setError("We're having trouble loading products right now. Please refresh the page and try again.");
@@ -252,7 +264,7 @@ const Products = () => {
         <section className="products-section" id="products">
             <div className="container">
                 {/* Admin Info Panel - Displayed at Top for Admins */}
-                {user && user.role === "admin" && (
+                {isAdmin && (
                     <div className="admin-info-panel" style={{
                         background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                         color: "white",
@@ -340,7 +352,7 @@ const Products = () => {
                 )}
 
                 {/* User Info Badge - For logged-in non-admin users */}
-                {user && user.role !== "admin" && (
+                {user && !isAdmin && (
                     <div style={{
                         background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
                         color: "#333",
@@ -398,17 +410,23 @@ const Products = () => {
                             <option value="all">View all products</option>
                             {categories.map((category) => (
                                 <option key={category._id} value={category._id}>
-                                    {category._id} ({category.count})
+                                    {category._id}{isAdmin ? ` (${category.count})` : ""}
                                 </option>
                             ))}
                         </select>
                     </div>
                 </div>
 
-                <div className="products-filter-summary" aria-live="polite">
-                    {products.length} product{products.length === 1 ? "" : "s"} shown
-                    {selectedCategory !== "all" ? ` in ${selectedCategory}` : ""}
-                </div>
+                {isAdmin ? (
+                    <div className="products-filter-summary" aria-live="polite">
+                        {products.length} product{products.length === 1 ? "" : "s"} shown
+                        {selectedCategory !== "all" ? ` in ${selectedCategory}` : ""}
+                    </div>
+                ) : (
+                    <div className="products-filter-summary public-summary" aria-live="polite">
+                        {selectedCategory !== "all" ? `${selectedCategory} products` : "Browse our products"}
+                    </div>
+                )}
 
                 {/* Products Grid */}
                 <div className="products-grid">
@@ -445,7 +463,7 @@ const Products = () => {
                                         <div className="featured-badge">Featured</div>
                                     )}
 {/* Admin Controls */}
-                                    {user && user.role === "admin" && (
+                                    {isAdmin && (
                                         <div className="admin-controls">
                                             <button
                                                 className="edit-btn"

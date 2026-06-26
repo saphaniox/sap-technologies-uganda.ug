@@ -3,14 +3,38 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Newsletter from "./Newsletter";
 import "../styles/Footer.css";
 
-const SECTION_LINKS = [
-  { id: "home", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "services", label: "Services" },
-  { id: "portfolio", label: "Our Featured Projects" },
-  { id: "products", label: "Products" },
-  { id: "contact", label: "Contact" },
-  { id: "companies", label: "Our Platforms" }
+const FOOTER_LINK_GROUPS = [
+  {
+    title: "Company",
+    links: [
+      { id: "home", label: "Home" },
+      { id: "about", label: "About" },
+      { id: "partners", label: "Partners" },
+      { id: "companies", label: "Platforms" },
+      { route: "/careers", label: "Careers" },
+      { id: "contact", label: "Contact" }
+    ]
+  },
+  {
+    title: "Services",
+    links: [
+      { id: "services", label: "Services" },
+      { id: "portfolio", label: "Projects" },
+      { route: "/software", label: "Software Apps" },
+      { route: "/iot", label: "IoT Projects" },
+      { id: "products", label: "Products" },
+      { route: "/gallery", label: "Gallery" }
+    ]
+  },
+  {
+    title: "Community",
+    links: [
+      { route: "/awards", label: "Tech Awards 2026" },
+      { id: "testimonials", label: "Testimonials" },
+      { route: "/privacy-policy", label: "Privacy Policy" },
+      { route: "/terms-of-service", label: "Terms of Service" }
+    ]
+  }
 ];
 
 const Footer = ({ onNavigate }) => {
@@ -42,59 +66,74 @@ const Footer = ({ onNavigate }) => {
     navigate(route);
   };
 
+  const renderFooterLink = (link) => {
+    if (link.route) {
+      return (
+        <a
+          href={link.route}
+          onClick={(event) => {
+            event.preventDefault();
+            goToRoute(link.route);
+          }}
+        >
+          {link.label}
+        </a>
+      );
+    }
+
+    return (
+      <a
+        href={`/#${link.id}`}
+        onClick={(event) => {
+          event.preventDefault();
+          scrollToSection(link.id);
+        }}
+      >
+        {link.label}
+      </a>
+    );
+  };
+
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-brand">
           <img src="/images/logo.png" alt="SAPTech Uganda" className="footer-logo" />
           <span>SAPTech Uganda</span>
-          <p>Kampala Uganda</p>
+          <p className="footer-brand-description">
+            Engineering, software, IoT, products, and digital transformation for teams in Uganda and beyond.
+          </p>
+          <div className="footer-meta">
+            <span>Kampala, Uganda</span>
+            <span>Global delivery</span>
+          </div>
         </div>
 
         <div className="footer-links">
-          <h4>Quick Links</h4>
-          <ul>
-            {SECTION_LINKS.map((link) => (
-              <li key={link.id}>
-                <a
-                  href={`/#${link.id}`}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    scrollToSection(link.id);
-                  }}
-                >
-                  {link.label}
-                </a>
-              </li>
+          <h4>Explore</h4>
+          <div className="footer-link-groups">
+            {FOOTER_LINK_GROUPS.map((group) => (
+              <div className="footer-link-group" key={group.title}>
+                <h5>{group.title}</h5>
+                <ul>
+                  {group.links.map((link) => (
+                    <li key={link.route || link.id}>
+                      {renderFooterLink(link)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
-            <li>
-              <a href="/software" onClick={(event) => { event.preventDefault(); goToRoute("/software"); }}>
-                Software Apps
-              </a>
-            </li>
-            <li>
-              <a href="/iot" onClick={(event) => { event.preventDefault(); goToRoute("/iot"); }}>
-                IoT Projects
-              </a>
-            </li>
-            <li>
-              <a href="/gallery" onClick={(event) => { event.preventDefault(); goToRoute("/gallery"); }}>
-                Gallery
-              </a>
-            </li>
-            <li>
-              <a href="/careers" onClick={(event) => { event.preventDefault(); goToRoute("/careers"); }}>
-                Careers
-              </a>
-            </li>
-          </ul>
+          </div>
         </div>
 
         <div className="footer-contact">
           <h4>Contact</h4>
-          <p>Email: <a href="mailto:info@saptechug.com">info@saptechug.com</a></p>
-          <p>Phone: <a href="tel:+256706564628">+256 706 564 628</a></p>
-          <p>WhatsApp: <a href="https://wa.me/256706564628" target="_blank" rel="noopener noreferrer">Chat with us</a></p>
+          <div className="footer-contact-list">
+            <p>Email: <a href="mailto:info@saptechug.com">info@saptechug.com</a></p>
+            <p>Phone: <a href="tel:+256706564628">+256 706 564 628</a></p>
+            <p>WhatsApp: <a href="https://wa.me/256706564628" target="_blank" rel="noopener noreferrer">Chat with us</a></p>
+          </div>
         </div>
 
         <div className="footer-social">

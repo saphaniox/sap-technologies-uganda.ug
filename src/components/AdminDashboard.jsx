@@ -1462,7 +1462,7 @@ ${request.adminNotes ? `Admin Notes:\n${request.adminNotes}` : ""}`);
               <button className={`nav-btn ${activeTab === "awards" ? "active" : ""}`}
                 onClick={() => { setActiveTab("awards"); setSidebarOpen(false); }}>
                 <span className="nav-icon" aria-hidden="true">{"\uD83C\uDFC6"}</span>
-                <span>Awards Management</span>
+                <span>Tech Awards 2026</span>
               </button>
               <button className={`nav-btn ${activeTab === "analytics" ? "active" : ""}`}
                 onClick={() => { setActiveTab("analytics"); setSidebarOpen(false); }}>
@@ -3044,7 +3044,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                   <h3>Certificate Signature</h3>
                   <p className="section-description">
                     Upload a signature image that will appear on all generated certificates. 
-                    The signature will be displayed above "SAPHANIOX Awards Committee" text.
+                    The signature will be displayed above "TECH AWARDS 2026 Committee" text.
                   </p>
 
                   {currentSignature && (
@@ -3134,7 +3134,7 @@ IP: ${quote.metadata?.ipAddress || 'N/A'}
                     <div className="loading-state">Loading certificates...</div>
                   ) : allCertificates.length === 0 ? (
                     <div className="empty-state">
-                      <p>No certificates found. Generate certificates from the Awards tab.</p>
+                      <p>No certificates found. Generate certificates from the Tech Awards 2026 tab.</p>
                     </div>
                   ) : (
                     <>

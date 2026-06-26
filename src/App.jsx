@@ -150,6 +150,12 @@ const SECONDARY_PAGE_SEO = {
     description: "View photos from SAPTech Uganda projects, services, events, team moments, office work, and technology activities across software, IoT, design, and engineering.",
     keywords: `${CORE_SEARCH_TERMS}, SAPTech Uganda gallery, SAPTech photos, technology projects Uganda, engineering project photos`,
     path: "/gallery"
+  },
+  awards: {
+    title: "TECH AWARDS 2026 | SAPTech Uganda",
+    description: "Explore TECH AWARDS 2026 nominations, categories, votes, and technology excellence recognition from SAPTech Uganda.",
+    keywords: `${CORE_SEARCH_TERMS}, TECH AWARDS 2026, SAPTech Uganda awards, technology awards Uganda, engineering awards Uganda`,
+    path: "/awards"
   }
 };
 
@@ -216,6 +222,7 @@ const SoftwarePage = lazy(() => import("./pages/SoftwarePage"));
 const IoTPage = lazy(() => import("./pages/IoTPage"));
 const Careers = lazy(() => import("./pages/Careers"));
 const Gallery = lazy(() => import("./components/Gallery"));
+const Awards = lazy(() => import("./components/Awards"));
 const ForgotPassword = lazy(() => import("./components/ForgotPassword"));
 const Account = lazy(() => import("./components/Account"));
 const AdminDashboard = lazy(() => import("./components/AdminDashboard"));
@@ -601,6 +608,19 @@ function App() {
                 ogImage="/images/logo.png"
               />
               <Gallery />
+            </>
+          )} />
+          <Route path="/awards" element={renderPublicPage(
+            <>
+              <SEO
+                title={SECONDARY_PAGE_SEO.awards.title}
+                description={SECONDARY_PAGE_SEO.awards.description}
+                keywords={SECONDARY_PAGE_SEO.awards.keywords}
+                canonicalUrl={`${SITE_URL}${SECONDARY_PAGE_SEO.awards.path}`}
+                url={`${SITE_URL}${SECONDARY_PAGE_SEO.awards.path}`}
+                ogImage="/images/logo.png"
+              />
+              <Awards onClose={() => navigate("/")} showStandaloneChrome={false} />
             </>
           )} />
           <Route path="/privacy-policy" element={
